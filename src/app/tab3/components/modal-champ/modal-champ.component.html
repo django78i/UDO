@@ -1,0 +1,58 @@
+<ion-content>
+  <ion-toolbar>
+    <ion-button slot="start" (click)="close()" style="--background: transparent;--background-activated:transparent">
+      <img src="../../../../assets/mocks/Icon feather-arrow-left.svg" alt="">
+    </ion-button>
+    <ion-buttons slot="end">
+      <ion-button>
+        <img src="../../../../assets/mocks/Icon feather-share-2.svg" alt="">
+      </ion-button>
+      <ion-button>
+        <img src="../../../../assets/mocks/Icon feather-settings.svg" alt="">
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <section>
+    <ion-card [style.background]="championnat.color" [ngClass]="{'notActive' : segmentValue != 'resume' }">
+      <ion-card-header [ngClass]="{'notActiveContent' : segmentValue != 'resume' }">
+        <ion-card-subtitle>
+          {{championnat.dateFin|timeRelative}}
+        </ion-card-subtitle>
+        <ion-card-title style="color: white;">{{championnat.name}}</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <div style="display: flex;">
+          <ng-container *ngFor="let champ of championnat.participants;let i = index">
+            <ion-avatar style="--i : {{i}}; --mess : {{champ.niveau}} ">
+              <img [src]="champ.avatar" alt="">
+              <ion-badge>{{champ.niveau}}</ion-badge>
+            </ion-avatar>
+          </ng-container>
+          <div class="champCarousel">
+            <p style="font-size: 20px">{{championnat.nbParticipants}}</p>
+          </div>
+        </div>
+        <div class="iconPhoto">
+          <ion-icon name="camera" style="color: rgb(0, 0, 0);font-size: 25px;"></ion-icon>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </section>
+  <section style="padding: 0 15px;">
+    <ion-segment (ionChange)="segmentChanged($event)" [value]="segmentValue" mode="ios">
+      <ion-segment-button value="resume">
+        <ion-label>Résumé</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="participants">
+        <ion-label>Participants</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="feed">
+        <ion-label>Feed</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+    <app-classement *ngIf="segmentValue == 'participants'" [champ]="championnat"></app-classement>
+    <app-feeds *ngIf="segmentValue == 'feed'"></app-feeds>
+    <app-resume *ngIf="segmentValue == 'resume'" [champ]="championnat"></app-resume>
+  </section>
+</ion-content>

@@ -1,0 +1,5 @@
+<swiper #swiper [config]="config" style="padding-left: 15px;">
+  <ng-template swiperSlide *ngFor="let bann of bannieres">
+    <img [src]="bann" alt="" (click)="chooseSlide(bann)">
+  </ng-template>
+</swiper>

@@ -1,0 +1,22 @@
+[
+  {
+    "avatar": "assets/mocks/7.jpg",
+    "niveau": "70",
+    "name": "SammyOttomatik"
+  },
+  {
+    "avatar": "assets/mocks/8.jpg",
+    "niveau": "50",
+    "name": "IvanDuBois"
+  },
+  {
+    "avatar": "assets/mocks/5.jpg",
+    "niveau": "65",
+    "name": "SamExit"
+  },
+  {
+    "avatar": "assets/mocks/2.jpg",
+    "niveau": "10",
+    "name": "Maximus"
+  }
+]

@@ -1,0 +1,262 @@
+<ion-content>
+  <swiper #swiper [config]="config" style="height: 100%">
+    <ng-template swiperSlide>
+      <div style="height: 100%; overflow-y: auto">
+        <ion-toolbar>
+          <ion-button
+            slot="start"
+            (click)="close()"
+            style="
+              --background: transparent;
+              --background-activated: transparent;
+            "
+          >
+            <img
+              src="../../../../assets/mocks/Icon feather-arrow-left.svg"
+              alt=""
+            />
+          </ion-button>
+        </ion-toolbar>
+
+        <ion-card [ngStyle]="{ 'background-image': 'url(' + ban + ')' }">
+          <ion-card-header>
+            <ion-card-subtitle> DEMARRAGE MANUEL </ion-card-subtitle>
+            <ion-card-title style="color: white">{{
+              title | async
+            }}</ion-card-title>
+          </ion-card-header>
+
+          <ion-card-content>
+            <div style="display: flex">
+              <ion-avatar>
+                <img src="../../../../assets/mocks/6.jpg" alt="" />
+                <ion-badge>40</ion-badge>
+              </ion-avatar>
+            </div>
+            <div class="iconPhoto">
+              <ion-icon
+                name="camera"
+                style="color: rgb(0, 0, 0); font-size: 25px"
+              ></ion-icon>
+            </div>
+          </ion-card-content>
+        </ion-card>
+        <form [formGroup]="formChamp">
+          <mat-form-field appearance="outline" color="warn">
+            <mat-label>Nom du championnat</mat-label>
+            <input
+              matInput
+              placeholder="Placeholder"
+              class="form-control"
+              formControlName="name"
+              (keyup)="onKey()"
+            />
+            <mat-hint
+              >Respectez les conditions d’utilisations, évitez les insultes et
+              grossièretés.</mat-hint
+            >
+          </mat-form-field>
+        </form>
+        <ion-item lines="none">
+          <ion-label slot="start" style="font-size: 14px; font-weight: 600"
+            >Couleur</ion-label
+          >
+          <!-- <ion-radio-group slot="start" [value]="bannieres[0].url">
+            <ng-container *ngFor="let bann of bannieres; let i = index">
+              <ion-item lines="none">
+                <ion-radio
+                  [value]="bann.url"
+                  style="--dataColor:{{ bann.color }};"
+                  class="radioChoice"
+                  mode="md"
+                  (ionFocus)="focused(bann.url)"
+                ></ion-radio>
+              </ion-item>
+            </ng-container>
+          </ion-radio-group> -->
+          <ng-container *ngFor="let bann of bannieres; let i = index">
+            <ion-checkbox
+              class="checkZone"
+              style="--dataColor:{{ bann.color }};"
+              #checkBanniere
+              (click)="focused(bann.url, i)"
+              (ionFocus)="afffich($event)"
+            ></ion-checkbox>
+          </ng-container>
+        </ion-item>
+        <ion-item lines="none" class="champColor">
+          <ion-icon
+            name="trophy-outline"
+            style="
+              padding: 10px;
+              border-radius: 50%;
+              border: 1px solid grey;
+              margin-right: 10px;
+            "
+          ></ion-icon>
+          <ion-label>
+            <p class="sousTitre">Ouvrir au public</p>
+            <p style="font-size: 10px">Mode actuel :</p>
+          </ion-label>
+          <ion-toggle slot="end"></ion-toggle>
+        </ion-item>
+        <ion-item lines="none" class="champColor">
+          <ion-thumbnail slot="start" class="thumbZone">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 12.02 12.02"
+              class="thumbIcon"
+            >
+              <defs>
+                <style>
+                  .cls-1 {
+                    fill: #000000;
+                  }
+                </style>
+              </defs>
+              <g id="Layer_2" data-name="Layer 2">
+                <g id="Layer_1-2" data-name="Layer 1">
+                  <path
+                    id="Icon_material-timelapse"
+                    data-name="Icon material-timelapse"
+                    class="cls-1"
+                    d="M8.55,3.46A3.57,3.57,0,0,0,6,2.4V6L3.46,8.56a3.6,3.6,0,0,0,5.09-5.1ZM6,0a6,6,0,1,0,6,6A6,6,0,0,0,6,0ZM6,10.81A4.81,4.81,0,1,1,10.81,6,4.8,4.8,0,0,1,6,10.81Z"
+                  />
+                </g>
+              </g>
+            </svg>
+          </ion-thumbnail>
+          <!-- <ion-icon
+            name="trophy-outline"
+            style="
+              padding: 10px;
+              border-radius: 50%;
+              border: 1px solid grey;
+              margin-right: 10px;
+            "
+          ></ion-icon> -->
+          <ion-label>
+            <p class="sousTitre">Nombre de semaines</p>
+            <p style="font-size: 10px">Durée maximum du championnat</p>
+          </ion-label>
+          <ion-item lines="none" class="addSub" slot="end">
+            <ion-button (click)="sub()" slot="start">
+              <img src="../../../../assets/icon/minus.svg" alt="" />
+            </ion-button>
+            <ion-label> {{ dataCount }}</ion-label>
+            <ion-button (click)="add()" slot="end">
+              <img src="../../../../assets/icon/plus.svg" alt="" />
+            </ion-button>
+          </ion-item>
+        </ion-item>
+        <ion-item lines="full" class="champColor">
+          <ion-thumbnail class="thumbZone" slot="start">
+            <img class="thumbIcon" src="assets/icon/friends.svg" alt="" />
+          </ion-thumbnail>
+          <ion-label>
+            <p class="sousTitre">Séances par semaine</p>
+            <p style="font-size: 10px">Minimum de séances par semaine</p>
+          </ion-label>
+          <ion-item lines="none" class="addSub" slot="end">
+            <ion-button (click)="sub()" slot="start">
+              <img src="../../../../assets/icon/minus.svg" alt="" />
+            </ion-button>
+            <ion-label> {{ dataCount }}</ion-label>
+            <ion-button
+              (click)="add()"
+              slot="end"
+              class="ion-activatable ripple-parent"
+            >
+              <img src="../../../../assets/icon/plus.svg" alt="" />
+            </ion-button>
+          </ion-item>
+        </ion-item>
+        <ion-item lines="none" class="champColor">
+          <ion-icon
+            name="trophy-outline"
+            style="
+              padding: 10px;
+              border-radius: 50%;
+              border: 1px solid grey;
+              margin-right: 10px;
+            "
+          ></ion-icon>
+          <ion-label>
+            <p class="sousTitre">Activer la limite de niveaux</p>
+            <p style="font-size: 10px">
+              Activer la limite de participants maximum
+            </p>
+          </ion-label>
+          <ion-toggle slot="end" (ionChange)="change()"></ion-toggle>
+        </ion-item>
+
+        <ion-item
+          lines="full"
+          class="champColor"
+          [ngClass]="{ maxPlay: maxPlayer === false }"
+        >
+          <ion-range
+            id="dual-range"
+            dual-knobs
+            pin="true"
+            color="dark"
+            min="0"
+            max="200"
+            step="20"
+            snaps="true"
+            mode="md"
+            #ranger
+            (ionChange)="changement($event)"
+          >
+            <ion-label slot="start" *ngIf="range">{{ range.lower }}</ion-label>
+            <ion-label slot="end" *ngIf="range">{{ range.upper }}</ion-label>
+          </ion-range>
+        </ion-item>
+        <ion-item
+          detail
+          lines="full"
+          class="champColor"
+          (click)="slideNext('activity')"
+        >
+          <ion-thumbnail class="thumbZone" slot="start">
+            <img class="thumbIcon" src="assets/icon/icons8-course.svg" alt="" />
+          </ion-thumbnail>
+          <ion-label>
+            <p class="sousTitre">Liste des activités</p>
+            <p style="font-size: 10px">Sélectionnez les activités</p>
+          </ion-label>
+        </ion-item>
+        <ion-item
+          detail
+          lines="full"
+          class="champColor"
+          (click)="slideNext('amis')"
+        >
+        <ion-thumbnail class="thumbZone" slot="start">
+          <img class="thumbIcon" src="assets/icon/icons8-ajouter-un-groupe-d'utilisateurs-homme-homme.svg" alt="" />
+        </ion-thumbnail>
+        <ion-label>
+            <p class="sousTitre">Inviter des participants</p>
+            <p style="font-size: 10px">
+              Consulter et gérer votre liste de contacts
+            </p>
+          </ion-label>
+        </ion-item>
+      </div>
+    </ng-template>
+    <ng-template swiperSlide>
+      <div style="height: 100%; overflow-y: auto">
+        <div id="top">
+          <app-activity-list
+            *ngIf="sliderPage == 'activity'"
+            (backAction)="backSlide($event)"
+          ></app-activity-list>
+          <app-friends-list
+            *ngIf="sliderPage == 'amis'"
+            (backAction)="backSlide($event)"
+          ></app-friends-list>
+        </div>
+      </div>
+    </ng-template>
+  </swiper>
+</ion-content>

@@ -1,0 +1,41 @@
+ion-tab-bar {
+    width: 40%;
+    align-self: center;
+    --background: white;
+    border-radius: 30px;
+    position: relative;
+    bottom: 10px;
+}
+
+ion-fab-button {
+    --background: #3b393b;
+    --border-radius: 23px;
+}
+
+
+ion-tab-button {
+    --color-selected: rgb(196, 0, 0);
+}
+
+.inner-center-btn {
+    position: absolute;
+    left: calc(50% - 51px); // position your button in the center
+    bottom: 0px; // position your button slightly above the half bezel
+    font-size: 70px;
+    display: flex;
+    justify-content: center;
+    width: 100px;
+    background: white;
+}
+
+.circleTab {
+    width: 60px;
+    /* height: 57px; */
+    justify-content: center;
+    display: flex;
+    position: relative;
+    top: -20px;
+    border-radius: 50%;
+    background: white;
+    z-index: 10000;
+}

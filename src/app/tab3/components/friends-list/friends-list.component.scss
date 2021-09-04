@@ -1,0 +1,52 @@
+.champColor {
+  height: 70px;
+  --detail-icon-opacity: 1;
+  --detail-icon-color: black;
+  &::part(detail-icon) {
+    background: #e0e0e0;
+    padding: 5px;
+    width: 30px;
+    height: 31px;
+    border-radius: 11px;
+  }
+}
+
+ion-badge {
+  font-size: 10px;
+  position: absolute;
+  min-width: 26px;
+  min-height: 26px;
+  --padding-top: 8px;
+  --padding-end: 0;
+  --padding-bottom: 8px;
+  --padding-start: 0;
+  --background: white;
+  --color: black;
+  right: 0;
+  bottom: 0;
+  border-radius: 50%;
+}
+ion-avatar {
+  position: relative;
+  height: 57px;
+  width: 57px;
+}
+
+ion-item {
+  display: flex;
+  align-items: center;
+  --inner-padding-top: 3px;
+  --inner-padding-bottom: 5px;
+}
+
+ion-title {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.sendButton {
+  --background: blue;
+  --background-activated: blue;
+  --color: white;
+  font-size: 12px;
+}

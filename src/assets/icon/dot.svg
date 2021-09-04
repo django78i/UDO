@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 9 9">
+    <defs>
+        <style>.a{fill:#777981;}</style>
+    </defs>
+    <g transform="translate(0 0)">
+        <circle class="a" cx="1.5" cy="1.5" r="1.5" transform="translate(0 0)" />
+        <circle class="a" cx="1.5" cy="1.5" r="1.5" transform="translate(0 6)" />
+        <circle class="a" cx="1.5" cy="1.5" r="1.5" transform="translate(6 0)" />
+        <circle class="a" cx="1.5" cy="1.5" r="1.5" transform="translate(6 6)" />
+    </g>
+</svg>

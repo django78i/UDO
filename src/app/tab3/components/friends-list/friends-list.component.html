@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-button
+      slot="start"
+      (click)="back()"
+      style="--background: transparent; --background-activated: transparent"
+    >
+      <img src="../../../../assets/mocks/Icon feather-arrow-left.svg" alt="" />
+    </ion-button>
+    <ion-title>Inviter des participants</ion-title>
+    <ion-button class="sendButton" slot="end" (click)="sendInvitation()">
+      Envoyer
+    </ion-button>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar (ionChange)="filterFriends($event)" [(ngModel)]="filteredFriends"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<section>
+  <ng-container *ngIf="friendsList$ | async as friends">
+    <ion-item lines="full" class="champColor" *ngFor="let friend of friendsList">
+      <ion-avatar style="margin-right: 10px">
+        <img [src]="friend.avatar" alt="" />
+        <ion-badge>{{ friend.niveau }}</ion-badge>
+      </ion-avatar>
+      <ion-label>
+        <p class="sousTitre">{{ friend.name }}</p>
+      </ion-label>
+      <ion-checkbox
+        (ionChange)="change($event)"
+        (click)="selectFriend(friend)"
+      ></ion-checkbox>
+    </ion-item>
+  </ng-container>
+</section>

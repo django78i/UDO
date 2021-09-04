@@ -1,0 +1,197 @@
+form {
+  padding: 0 15px;
+  margin-bottom: 10px;
+  mat-form-field {
+    width: 100%;
+    input {
+      height: 30px;
+    }
+  }
+}
+
+.thumbZone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  margin-right: 8px ;
+  border-radius: 50%;
+  border: 1px solid grey;
+}
+
+.thumbIcon {
+  height: 22px;
+  width: 26px;
+}
+
+.form-control {
+  font-size: 10px;
+}
+
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix {
+  padding: 0 0 7px;
+}
+
+.champColor {
+  margin-bottom: 20px;
+  margin-top: 0;
+  height: 60px;
+  --detail-icon-opacity: 1;
+  --detail-icon-color: black;
+  &::part(detail-icon) {
+    background: #e0e0e0;
+    padding: 5px;
+    width: 30px;
+    height: 31px;
+    border-radius: 11px;
+  }
+}
+
+.checkZone {
+  --background: var(--dataColor);
+  --border-color-checked: var(--dataColor);
+  --border-color: var(--dataColor);
+}
+
+.check {
+  --border-color-checked: var(--dataColor);
+  --background-checked: var(--dataColor);
+  --size: 30px;
+}
+
+ion-button {
+  --background: transparent;
+  --background-activated: transparent;
+}
+
+.addSub {
+  --background: #eaebef;
+  --border-radius: 13px;
+  min-width: 108px;
+  &::part(native) {
+    padding-left: 5px;
+  }
+  .button[slot="start"] {
+    margin-right: 3px;
+  }
+  .button[slot="end"] {
+    margin: 4px 0px;
+  }
+  ion-label {
+    margin-left: 9px;
+    margin-right: 0;
+    font-size: 20px;
+    font-weight: 700;
+  }
+}
+
+.ripple-parent {
+  position: relative;
+  overflow: hidden;
+}
+
+ion-item {
+  transition: 0.5s ease all;
+  margin-top: 0;
+}
+
+.maxPlay {
+  height: 0;
+  margin: 0;
+}
+
+ion-card {
+  height: 214px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 27px;
+  transition: 0.5s ease all;
+  margin-top: 0;
+}
+
+ion-card-subtitle {
+  background: white;
+  color: black;
+  display: initial;
+  padding: 1px 8px;
+  border-radius: 7px;
+  font-size: 10px;
+}
+
+ion-card-header {
+  transition: 0.3s ease all;
+}
+
+ion-card-content {
+  display: flex;
+  justify-content: space-between;
+  ion-avatar {
+    position: relative;
+    height: 57px;
+    width: 57px;
+    ion-badge {
+      font-size: 10px;
+      position: absolute;
+      min-width: 26px;
+      min-height: 26px;
+      --padding-top: 8px;
+      --padding-end: 0;
+      --padding-bottom: 8px;
+      --padding-start: 0;
+      --background: white;
+      --color: black;
+      right: 0;
+      bottom: 0;
+      border-radius: 50%;
+    }
+  }
+}
+
+.iconPhoto {
+  background: white;
+  height: 34px;
+  display: flex;
+  border-radius: 50%;
+  padding: 5px;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  right: 10px;
+  align-self: flex-end;
+}
+
+.loader {
+  position: absolute;
+  z-index: 1000;
+  height: 100%;
+  width: 100%;
+  background: #000000a6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+ion-spinner {
+  --color: rgb(14, 6, 6);
+}
+
+mat-hint {
+  font-size: 10px;
+}
+
+ion-range::part(pin) {
+  font-weight: 600;
+  padding: 6px 0;
+}
+
+ion-radio-group {
+  display: flex;
+  gap: 5px;
+}
+
+.radioChoice {
+  --color: var(--dataColor);
+  --color-checked: var(--dataColor);
+}

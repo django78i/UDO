@@ -1,0 +1,37 @@
+.champColor {
+    margin-bottom: 20px;
+    margin-top: 0;
+    height: 60px;
+    --detail-icon-opacity: 1;
+    --detail-icon-color: black;
+    &::part(detail-icon) {
+        background: #e0e0e0;
+        padding: 5px;
+        width: 30px;
+        height: 31px;
+        border-radius: 11px;
+    }
+}
+
+
+.notActiveContent::part(detail-icon){
+    transform: rotate(90deg);
+}
+
+ion-item::part(detail-icon){
+    transform: rotate(0deg);
+    transition: 0.3s ease all;
+}
+
+.extend{
+    height: auto;
+}
+
+.accord{
+    transition: 0.3s ease all;
+}
+
+
+.small{
+    height: 0px;
+}

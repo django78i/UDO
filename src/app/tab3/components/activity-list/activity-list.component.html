@@ -1,0 +1,64 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-button
+      slot="start"
+      (click)="back()"
+      style="--background: transparent; --background-activated: transparent"
+    >
+      <img src="../../../../assets/mocks/Icon feather-arrow-left.svg" alt="" />
+    </ion-button>
+    <ion-title>Liste des Activités</ion-title>
+  </ion-toolbar>
+</ion-header>
+<section>
+  <ng-container *ngFor="let act of activites$ | async; let i = index">
+    <ion-item
+      detail
+      lines="full"
+      class="champColor"
+      [ngClass]="{ notActiveContent: act.active == true }"
+      (click)="activate(i)"
+    >
+      <!-- <ion-icon
+        name="trophy-outline"
+        style="
+          padding: 10px;
+          border-radius: 50%;
+          border: 1px solid grey;
+          margin-right: 10px;
+        "
+      ></ion-icon> -->
+      <ion-label>
+        <p class="sousTitre">{{ act.nom }}</p>
+        <p style="font-size: 10px">{{ act.nbActivites }} Activtés</p>
+      </ion-label>
+    </ion-item>
+    <ng-container>
+      <div class="accord">
+        <ion-item lines="none" [ngClass]="{ small: !act.active }">
+          <ion-checkbox
+            slot="start"
+            (ionChange)="all($event)"
+            [(ngModel)]="act.all"
+            (click)="selectAll(i)"
+            [indeterminate]="isIndeterminate"
+            [ngModelOptions]="{ standalone: true }"
+          ></ion-checkbox>
+          <ion-label slot="start">Tous</ion-label>
+          <ion-label slot="start">{{ act.all }}</ion-label>
+        </ion-item>
+        <ng-container *ngFor="let sous of act.ssActivites">
+          <ion-item lines="none" [ngClass]="{ small: !act.active }">
+            <ion-checkbox
+              slot="start"
+              [(ngModel)]="sous.isChecked"
+              (ionChange)="change($event)"
+              [ngModelOptions]="{ standalone: true }"
+            ></ion-checkbox>
+            <ion-label slot="start">{{ sous.nom }}</ion-label>
+          </ion-item>
+        </ng-container>
+      </div>
+    </ng-container>
+  </ng-container>
+</section>

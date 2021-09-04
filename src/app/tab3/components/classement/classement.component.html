@@ -1,0 +1,30 @@
+<section>
+  <div class="iconTitle">
+    <img src="../../../../assets/icon/dot.svg"
+      style="background-color: rgb(233, 229, 229);padding: 10px;border-radius: 50%;" alt="">
+    <h4 style="font-weight: 900;margin: 0;">CLASSEMENT</h4>
+  </div>
+  <ng-container *ngFor="let cl of classement;let i=index">
+    <ion-toolbar>
+      <ion-label slot="start" style="font-size: 28px; font-weight: 700;">{{i+1}}</ion-label>
+      <ion-item lines="none">
+        <ion-avatar slot="start">
+          <img [src]="cl.avatar" alt="">
+          <ion-badge>{{cl.niveau}}</ion-badge>
+        </ion-avatar>
+        <ion-label>
+          <h3 style="font-size : 14px;color: black;font-weight: 700;margin: 0 0 2px;">{{cl.name}}</h3>
+          <p style="font-size : 12px;font-weight: 500;color: black;">J.<span
+              style="font-weight: 600">{{cl.journeeEnCours}}</span>
+            <ion-icon name="ellipse" style="font-size: 6px;margin: 0 5px;color:#6C6B6C;"></ion-icon>
+            Bonus <span style="font-weight: 600">{{cl.bonus}}</span>
+          </p>
+        </ion-label>
+      </ion-item>
+      <ion-label slot="end" style="display: flex;align-items: center;flex-direction: column;">
+        <p style="font-size: 18px;font-weight : 700;color: black;margin: 4px 0;">{{cl.points}}</p>
+        <p style="font-size: 10px;font-weight : 700;color: black;">pts</p>
+      </ion-label>
+    </ion-toolbar>
+  </ng-container>
+</section>

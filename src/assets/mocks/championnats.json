@@ -1,0 +1,122 @@
+[
+    {
+        "id": 0,
+        "name": "Perpignan : All Stars",
+        "type": "Friends&Familly",
+        "createur": "Tony",
+        "avatar": "assets/mocks/2.jpg",
+        "text": "A simple card without content and blabla. Lorem ipsum dolor amet typewriter cray pitchfork echo park shaman",
+        "dateFin": "2021-08-30T10:20:30Z",
+        "nbParticipants": 31,
+        "participants": [
+            {
+                "avatar": "assets/mocks/7.jpg",
+                "niveau": "70"
+            },
+            {
+                "avatar": "assets/mocks/8.jpg",
+                "niveau": "50"
+            },
+            {
+                "avatar": "assets/mocks/3.jpg",
+                "niveau": "65"
+            },
+            {
+                "avatar": "assets/mocks/2.jpg",
+                "niveau": "10"
+            }
+        ],
+        "duree": 10,
+        "color": " transparent linear-gradient(180deg, #EF3374 0%, #EA194A 100%)"
+    },
+    {
+        "id": 1,
+        "name": "Ligue des Champions ",
+        "createur": "Michel",
+        "type": "Friends&Familly",
+        "dateFin" : "2021-08-30T10:20:30Z",
+        "avatar": "assets/mocks/7.jpg",
+        "text": "A simple card without content and blabla. Lorem ipsum dolor amet typewriter cray pitchfork echo park shaman",
+        "nbParticipants": 45,
+        "participants": [
+            {
+                "avatar": "assets/mocks/7.jpg",
+                "niveau": "70"
+            },
+            {
+                "avatar": "assets/mocks/8.jpg",
+                "niveau": "50"
+            },
+            {
+                "avatar": "assets/mocks/3.jpg",
+                "niveau": "65"
+            },
+            {
+                "avatar": "assets/mocks/2.jpg",
+                "niveau": "10"
+            }
+        ],
+        "duree": 6,
+        "color": "transparent linear-gradient(180deg, #FDDC4E 0%, #FCC122 100%)"
+    },
+    {
+        "id": 1,
+        "name": "Ligue des Champions ",
+        "createur": "Binta",
+        "type": "Network",
+        "dateFin" : "2021-08-30T10:20:30Z",
+        "avatar": "assets/mocks/5.jpg",
+        "text": "A simple card without content and blabla. Lorem ipsum dolor amet typewriter cray pitchfork echo park shaman",
+        "nbParticipants": 100,
+        "participants": [
+            {
+                "avatar": "assets/mocks/7.jpg",
+                "niveau": "70"
+            },
+            {
+                "avatar": "assets/mocks/8.jpg",
+                "niveau": "50"
+            },
+            {
+                "avatar": "assets/mocks/5.jpg",
+                "niveau": "65"
+            },
+            {
+                "avatar": "assets/mocks/2.jpg",
+                "niveau": "10"
+            }
+        ],
+        "duree": 11,
+        "color": "transparent linear-gradient(180deg, #7C3FD0 0%, #3A1A91 100%)"
+    },
+    {
+        "id": 1,
+        "name": "Ligue des Champions ",
+        "createur": "Nadine",
+        "type": "Network",
+        "dateFin" : "2021-08-30T10:20:30Z",
+        "avatar": "assets/mocks/4.jpg",
+        "text": "A simple card without content and blabla. Lorem ipsum dolor amet typewriter cray pitchfork echo park shaman",
+        "nbParticipants": 10,
+        "participants": [
+            {
+                "avatar": "assets/mocks/7.jpg",
+                "niveau": "70"
+            },
+            {
+                "avatar": "assets/mocks/8.jpg",
+                "niveau": "50"
+            },
+            {
+                "avatar": "assets/mocks/5.jpg",
+                "niveau": "65"
+            },
+            {
+                "avatar": "assets/mocks/2.jpg",
+                "niveau": "10"
+            }
+        ],
+        "duree": 8,
+        "color": "transparent linear-gradient(180deg, #FA824D 0%, #F7634D 100%)"
+    }
+]

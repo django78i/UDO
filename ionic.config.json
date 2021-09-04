@@ -1,0 +1,7 @@
+{
+  "name": "UDOblank",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}
