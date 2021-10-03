@@ -11,6 +11,7 @@ import { MusicFeedService } from './services/music-feed.service';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { GooglePlus } from '@ionic-native/google-plus/ngx';
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -22,14 +23,15 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
-    MatFormFieldModule
+    MatFormFieldModule,
   ],
   providers: [
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy, },
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     VideoPlayer,
     AppLauncher,
-    MusicFeedService
+    MusicFeedService,
+    GooglePlus,
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

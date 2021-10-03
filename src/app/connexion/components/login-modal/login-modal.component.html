@@ -1,0 +1,205 @@
+<ion-content>
+  <mat-horizontal-stepper #stepper style="height: 100%">
+    <mat-step [editable]="isEditable" style="height: 100% !important">
+      <ng-template matStepLabel>Fill out your name</ng-template>
+
+      <ion-toolbar style="--background: #ffffff00">
+        <ion-icon name="arrow-back-outline" (click)="close()"></ion-icon>
+      </ion-toolbar>
+      <h3 style="text-align: center">Vous y êtes presque !</h3>
+      <h4 style="text-align: center">
+        Choisissez l’une des options ci-dessous pour commencer à utiliser UDO™
+      </h4>
+      <ion-segment
+        (ionChange)="segmentChanged($event)"
+        [value]="seg"
+        color="secondary"
+      >
+        <ion-segment-button value="s'inscrire">s'inscrire </ion-segment-button>
+        <ion-segment-button value="se connecter">
+          déjà un compte
+        </ion-segment-button>
+      </ion-segment>
+      <form
+        [formGroup]="formUser"
+        style="
+          display: flex;
+          align-items: center;
+          flex-direction: column;
+          margin-bottom: 54px;
+        "
+      >
+        <mat-form-field appearance="outline" color="warn">
+          <mat-label>Mail</mat-label>
+          <input matInput class="form-control" formControlName="mail" />
+          <mat-hint *ngIf="!mail.value">choisissez un mail</mat-hint>
+        </mat-form-field>
+        <mat-form-field appearance="outline" color="warn">
+          <mat-label>Mot de passe</mat-label>
+          <input
+            [type]="hide ? 'password' : 'text'"
+            matInput
+            class="form-control"
+            formControlName="password"
+          />
+          <mat-icon matSuffix (click)="hide = !hide">
+            <ion-icon
+              [name]="hide ? 'eye-off-outline' : 'eye-outline'"
+            ></ion-icon>
+          </mat-icon>
+          <mat-hint *ngIf="!password.value"
+            >choisissez un mot de passe</mat-hint
+          >
+        </mat-form-field>
+        <button
+          mat-button
+          style="
+            padding-bottom: 5px;
+            padding-top: 5px;
+            background: #3e4add;
+            color: white;
+            width: 100%;
+            border-radius: 13px;
+          "
+        >
+          Connexion
+        </button>
+      </form>
+      <ion-button
+        expand="block"
+        shape="round"
+        style="--background: white; --color: black; margin-bottom: 5px"
+      >
+        <ion-icon name="logo-google" slot="start"></ion-icon>Se connecter avec
+        Google</ion-button
+      >
+      <ion-button
+        expand="block"
+        shape="round"
+        style="--background: #3e4add; --color: white; margin-bottom: 5px"
+      >
+        <ion-icon name="logo-facebook" slot="start"></ion-icon>Se connecter avec
+        Facebook</ion-button
+      >
+      <ion-button
+        expand="block"
+        shape="round"
+        style="
+          --background: transparent
+            linear-gradient(261deg, #d90fba 0%, #fd6b00 100%);
+          --color: white;
+          margin-bottom: 5px;
+        "
+      >
+        <ion-icon name="logo-instagram" slot="start"></ion-icon>Se connecter
+        avec Instagram</ion-button
+      >
+      <button mat-button matStepperNext>Next</button>
+    </mat-step>
+    <mat-step
+      [editable]="isEditable"
+      style="height: 100% !important; position: relative"
+    >
+      <ng-template matStepLabel>Fill out your name</ng-template>
+      <ion-toolbar style="--background: #ffffff00; margin-bottom: 20px">
+        <ion-icon name="arrow-back-outline" (click)="close()"></ion-icon>
+      </ion-toolbar>
+      <ion-label>00%</ion-label>
+      <ion-progress-bar
+        color="primary"
+        value="0.5"
+        style="height: 5px; border-radius: 5px; margin-bottom: 20px"
+      ></ion-progress-bar>
+      <ion-label>
+        <h3 style="text-align: center">Choisissez un pseudo</h3>
+        <p>
+          In publishing and graphic design, Lorem ipsum is a placeholder text
+          commonly used.
+        </p>
+      </ion-label>
+      <mat-form-field appearance="outline" style="margin-top: 100px">
+        <mat-label>Mail</mat-label>
+        <input matInput class="form-control" />
+        <mat-hint *ngIf="!mail.value">choisissez un mail</mat-hint>
+      </mat-form-field>
+      <div style="position: absolute; bottom: 15px; width: 90%">
+        <button
+          mat-button
+          matStepperNext
+          style="
+            padding-top: 15px;
+            padding-bottom: 15px;
+            background: #3e4add;
+            border-radius: 23px;
+            width: 100%;
+            color: white;
+          "
+        >
+          Suivant
+        </button>
+        <button mat-button matStepperPrevious>Back</button>
+      </div>
+    </mat-step>
+    <mat-step
+      [editable]="isEditable"
+      style="height: 100% !important; position: relative"
+    >
+      <ng-template matStepLabel>Fill out your name</ng-template>
+      <ion-toolbar style="--background: #ffffff00; margin-bottom: 20px">
+        <ion-icon name="arrow-back-outline" (click)="close()"></ion-icon>
+      </ion-toolbar>
+      <ion-label>00%</ion-label>
+      <ion-progress-bar
+        color="primary"
+        value="0.5"
+        style="height: 5px; border-radius: 5px; margin-bottom: 20px"
+      ></ion-progress-bar>
+      <ion-label>
+        <h3 style="text-align: center">Choisissez un pseudo</h3>
+        <p>
+          In publishing and graphic design, Lorem ipsum is a placeholder text
+          commonly used.
+        </p>
+      </ion-label>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <div style="display: flex; justify-content: center">
+              <img src="assets/icon/Icon ionic-md-female.svg" alt="" />
+            </div>
+          </ion-col>
+          <ion-col>
+            <div><img src="assets/icon/Icon ionic-md-male.svg" alt="" /></div>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <div style="display: flex; justify-content: center">
+              <img src="assets/icon/Icon ionic-md-female.svg" alt="" />
+            </div>
+          </ion-col>
+          <ion-col>
+            <div><img src="assets/icon/Icon ionic-md-male.svg" alt="" /></div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <div style="width: 90%">
+        <button
+          mat-button
+          matStepperNext
+          style="
+            padding-top: 15px;
+            padding-bottom: 15px;
+            background: #3e4add;
+            border-radius: 23px;
+            width: 100%;
+            color: white;
+          "
+        >
+          Suivant
+        </button>
+        <button mat-button matStepperPrevious>Back</button>
+      </div>
+    </mat-step>
+  </mat-horizontal-stepper>
+</ion-content>

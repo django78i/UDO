@@ -1,0 +1,27 @@
+mat-form-field {
+  width: 100%;
+}
+
+ion-progress-bar::part(progress) {
+  border-radius: 10px;
+  background-color: #3e4add;
+}
+
+ion-segment {
+  margin-bottom: 15px;
+}
+
+:host ::ng-deep {
+  .mat-horizontal-stepper-header-container {
+    display: none !important;
+  }
+
+  .mat-horizontal-content-container {
+    padding: 0 15px !important;
+  }
+
+  .mat-stepper-horizontal,
+  .mat-stepper-vertical {
+    background: #ffffff00;
+  }
+}

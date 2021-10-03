@@ -15,6 +15,9 @@ ion-card-header {
   padding-right: 0px !important;
 }
 
+ion-card {
+  --background: #2b2b2b00;
+}
 
 ion-chip {
   --color: #777981;
@@ -82,7 +85,6 @@ ion-grid {
   --ion-grid-width: 100%;
 }
 
-
 :host ::ng-deep .sliderFilter .swiper-slide {
   width: auto !important;
 }
@@ -149,12 +151,12 @@ swiper ion-card {
     display: flex;
     align-items: center;
   }
-  ion-label{
+  ion-label {
     color: white;
     font-size: 24px;
     font-weight: 900;
   }
-  ion-note{
+  ion-note {
     color: white;
     font-size: 9px;
     font-weight: 700;

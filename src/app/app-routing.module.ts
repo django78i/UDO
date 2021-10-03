@@ -5,7 +5,17 @@ const routes: Routes = [
   {
     path: '',
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
-  }
+  },
+  {
+    path: 'connexion',
+    loadChildren: () => import('./connexion/connexion.module').then( m => m.ConnexionPageModule)
+  },
+  // {
+  //   path: '',
+  //   redirectTo: 'connexion',
+  //   pathMatch: 'full',
+  // },
+
 ];
 @NgModule({
   imports: [

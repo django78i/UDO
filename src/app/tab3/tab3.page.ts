@@ -73,6 +73,10 @@ export class Tab3Page implements OnInit, AfterContentChecked {
 	}
 
 
+	navigate(){
+		window.location.href = 'http://localhost:8100';
+	}
+
 	challChoice(event) {
 		this.affiche.next(event);
 		console.log(event);

@@ -1,3 +1,137 @@
-<p>
-  feeds works!
-</p>
+<section>
+  <ion-item *ngFor="let item of feed | async" style="padding: 0 15px">
+    <ion-card style="box-shadow: none; width: 100%">
+      <ion-card-header *ngIf="item.live == 'false'">
+        <ion-toolbar class="postZone">
+          <ion-grid>
+            <ion-row>
+              <ion-col size="10">
+                <ion-item lines="none">
+                  <ion-avatar style="margin-right: 10px" slot="start">
+                    <img
+                      src="../../assets/mocks/ToyFaces_Colored_BG_56@2x.png"
+                    />
+                  </ion-avatar>
+                  <ion-label>
+                    <p>{{ item.name }}</p>
+                    <div style="display: flex; gap: 5px; align-items: center">
+                      <img
+                        src="../../assets/icon/testIconCateg.svg"
+                        alt=""
+                        *ngIf="item.type == 'Natation'"
+                      />
+                      <img
+                        src="../../assets/icon/icons8-soccer-player-50.svg"
+                        alt=""
+                        *ngIf="item.type == 'Football'"
+                      />
+                      <img
+                        src="../../assets/icon/icons8-handicapped-50.svg"
+                        alt=""
+                        *ngIf="item.type == 'Handisport'"
+                      />
+                      <p style="font-size: 10px; font-weight: 900">
+                        {{ item.type }}
+                      </p>
+                      <ion-note style="font-size: 10px">Il y'a 5 min</ion-note>
+                    </div>
+                  </ion-label>
+                </ion-item>
+              </ion-col>
+              <ion-col size="2" style="--ion-grid-column-padding: 20px">
+                <img
+                  src="../../assets/icon/threeDot.svg"
+                  alt=""
+                  style="height: 20px"
+                />
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-toolbar>
+        <p style="padding-left: 20px; margin: 0">{{ item.title }}</p>
+        <div *ngIf="item.src" class="postPhoto">
+          <ion-skeleton-text></ion-skeleton-text>
+          <!-- <video
+            #player
+            playsinline
+            preload="auto"
+            autoplay="true"
+            (click)="sound()"
+          >
+            <source [src]="item.src" type="video/mp4" />
+          </video> -->
+        </div>
+        <div *ngIf="!item.src" class="postPhoto">
+          <ion-skeleton-text></ion-skeleton-text>
+        </div>
+      </ion-card-header>
+      <ion-card-header *ngIf="item.live == 'true'">
+        <ion-item lines="none" class="liveZone">
+          <ion-avatar style="margin-right: 10px" slot="start">
+            <img src="../../assets/mocks/ToyFaces_Colored_BG_56@2x.png" />
+          </ion-avatar>
+          <ion-label>
+            <p>
+              {{ item.name }}
+              <ion-icon
+                name="ellipse"
+                style="font-size: 6px; margin-right: 5px"
+              ></ion-icon>
+              <ion-note style="font-size: 10px">Il y'a 5 min</ion-note>
+            </p>
+            <div style="display: flex; gap: 5px; align-items: center">
+              <img
+                src="../../assets/icon/testIconCateg.svg"
+                alt=""
+                *ngIf="item.type == 'Natation'"
+              />
+              <img
+                src="../../assets/icon/icons8-soccer-player-50.svg"
+                alt=""
+                *ngIf="item.type == 'Football'"
+              />
+              <img
+                src="../../assets/icon/icons8-handicapped-50.svg"
+                alt=""
+                *ngIf="item.type == 'Handisport'"
+              />
+              <p style="font-size: 10px; font-weight: 900">{{ item.type }}</p>
+              <ion-icon name="ellipse" style="font-size: 6px"></ion-icon>
+              <p class="liveIndicator">LIVE</p>
+            </div>
+          </ion-label>
+        </ion-item>
+      </ion-card-header>
+      <ion-card-content style="padding: 0">
+        <div style="display: flex; justify-content: space-between">
+          <img src="../../assets/icon/Icon feather-share-2.svg" alt="" />
+          <img
+            src="../../assets/icon/Icon material-add-circle-outline.svg"
+            alt=""
+          />
+          <ion-chip outline>
+            <img src="../../assets/icon/Icon awesome-laugh-wink.svg" alt="" />
+            <ion-label *ngIf="item.reactions">{{
+              item.reactions.like
+            }}</ion-label>
+          </ion-chip>
+          <ion-chip outline>
+            <img src="../../assets/icon/Icon feather-thumbs-up.svg" alt="" />
+            <ion-label *ngIf="item.reactions">{{
+              item.reactions.dislike
+            }}</ion-label>
+          </ion-chip>
+          <ion-chip outline>
+            <img
+              src="../../assets/icon/Icon awesome-grin-tongue-wink.svg"
+              alt=""
+            />
+            <ion-label *ngIf="item.reactions">{{
+              item.reactions.shit
+            }}</ion-label>
+          </ion-chip>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </ion-item>
+</section>
