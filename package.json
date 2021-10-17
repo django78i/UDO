@@ -76,7 +76,11 @@
   "description": "An Ionic project",
   "cordova": {
     "plugins": {
-      "cordova-plugin-app-launcher": {}
+      "cordova-plugin-app-launcher": {},
+      "cordova-plugin-googleplus": {
+        "REVERSED_CLIENT_ID": "com.googleusercontent.apps.911285735248-p38u0egepsqdnjc0stbmepg11g1cf4bc",
+        "WEB_APPLICATION_CLIENT_ID": "911285735248-p38u0egepsqdnjc0stbmepg11g1cf4bc.apps.googleusercontent.com"
+      }
     }
   }
 }

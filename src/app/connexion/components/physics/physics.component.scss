@@ -1,0 +1,14 @@
+:host ::ng-deep {
+  .swiper-slide {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    font-size: 30px !important;
+  }
+}
+.active {
+  opacity: 1;
+}
+.notActive {
+  opacity: 0.5;
+}

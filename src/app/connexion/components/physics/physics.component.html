@@ -1,0 +1,58 @@
+<section style="display: flex; margin-top: 50px">
+  <div style="position: relative; flex: 1">
+    <swiper
+      #swiper
+      [config]="config"
+      style="height: 300px"
+      (slideChange)="changePoids($event)"
+    >
+      <ng-template swiperSlide *ngFor="let value of valuesTailles" let-data>
+        <div [className]="data.isActive ? 'active' : 'notActive'">
+          {{ value }}
+        </div>
+      </ng-template>
+    </swiper>
+    <div
+      style="
+        position: absolute;
+        width: 100%;
+        top: 133px;
+        height: 33px;
+        background-color: rgba(255, 0, 0, 0.068);
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+      "
+    >
+      <ion-label>KG</ion-label>
+    </div>
+  </div>
+  <div style="position: relative; flex: 1">
+    <swiper
+      #swiper2
+      [config]="config"
+      style="height: 300px"
+      (slideChange)="changeTaille($event)"
+    >
+      <ng-template swiperSlide *ngFor="let value of valuesPoids" let-data>
+        <div [className]="data.isActive ? 'active' : 'notActive'">
+          {{ value }}
+        </div>
+      </ng-template>
+    </swiper>
+    <div
+      style="
+        position: absolute;
+        width: 100%;
+        top: 133px;
+        height: 33px;
+        background-color: rgba(255, 0, 0, 0.068);
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+      "
+    >
+      <ion-label>CM</ion-label>
+    </div>
+  </div>
+</section>

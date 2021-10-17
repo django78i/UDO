@@ -1,14 +1,5 @@
-mat-form-field {
-  width: 100%;
-}
-
-ion-progress-bar::part(progress) {
+.progress::part(progress) {
   border-radius: 10px;
-  background-color: #3e4add;
-}
-
-ion-segment {
-  margin-bottom: 15px;
 }
 
 :host ::ng-deep {
@@ -16,6 +7,11 @@ ion-segment {
     display: none !important;
   }
 
+  .mat-horizontal-content-container,
+  .mat-horizontal-stepper-content {
+    height: 100%;
+    // height: 100% !important;
+  }
   .mat-horizontal-content-container {
     padding: 0 15px !important;
   }
@@ -24,4 +20,46 @@ ion-segment {
   .mat-stepper-vertical {
     background: #ffffff00;
   }
+  .picker-opt {
+    background: rgb(0, 0, 0) !important;
+  }
+
+  .mat-input-element {
+    height: 17px;
+  }
+}
+
+.notShow {
+  opacity: 0;
+}
+.champColor {
+  margin-bottom: 20px;
+  margin-top: 0;
+  height: 60px;
+  --detail-icon-opacity: 1;
+  --detail-icon-color: black;
+  &::part(detail-icon) {
+    background: #e0e0e0;
+    padding: 5px;
+    width: 30px;
+    height: 31px;
+    border-radius: 11px;
+  }
+}
+
+.notActiveContent::part(detail-icon) {
+  transform: rotate(90deg);
+}
+
+ion-item::part(detail-icon) {
+  // transform: rotate(0deg);
+  transition: 0.3s ease all;
+}
+
+.notActive {
+  height: 0;
+}
+
+.fullSize {
+  height: 100% !important;
 }

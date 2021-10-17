@@ -1,0 +1,39 @@
+<section style="height: 400px; overflow: auto">
+  <ng-container *ngFor="let act of activites$ | async; let i = index">
+    <ion-item
+      detail
+      lines="full"
+      class="champColor"
+      [detailIcon]="act.active == true ? 'remove-outline' : 'add-outline'"
+      (click)="activate(i)"
+    >
+      <ion-label>
+        <p class="sousTitre black">{{ act.nom }}</p>
+        <p style="font-size: 10px">{{ act.nbActivites }} Activtés</p>
+      </ion-label>
+    </ion-item>
+    <ng-container>
+      <div class="accord">
+        <ion-item lines="none" [ngClass]="{ small: !act.active }">
+          <ion-checkbox
+            (ionChange)="all($event)"
+            [(ngModel)]="act.all"
+            (click)="selectAll(i)"
+            [indeterminate]="isIndeterminate"
+            [ngModelOptions]="{ standalone: true }"
+          ></ion-checkbox>
+          <ion-label>Tous</ion-label>
+        </ion-item>
+        <ng-container *ngFor="let sous of act.ssActivites; let j = index">
+          <ion-item lines="none" [ngClass]="{ small: !act.active }">
+            <ion-checkbox
+              [(ngModel)]="sous.isChecked"
+              (ionChange)="change($event, i, j, sous)"
+            ></ion-checkbox>
+            <ion-label>{{ sous.nom }}</ion-label>
+          </ion-item>
+        </ng-container>
+      </div>
+    </ng-container>
+  </ng-container>
+</section>
