@@ -7,6 +7,7 @@
     >
       <img src="assets/mocks/Icon feather-arrow-left.svg" alt="" />
     </ion-button>
+    <ion-button slot="end" (click)="logout()"> Se déconnecter </ion-button>
   </ion-toolbar>
   <ion-item lines="none">
     <img
@@ -33,18 +34,18 @@
 </ion-header>
 <ion-content>
   <ion-list>
-    <ion-item lines="none" detail class="champColor">
-      <ion-icon
-        name="trophy-outline"
+    <ion-item lines="none" detail class="champColor" (click)="openProfil()">
+      <img
+        src="assets/icon/profil.svg"
         style="
           padding: 10px;
           border-radius: 50%;
           border: 1px solid grey;
           margin-right: 10px;
         "
-      ></ion-icon>
+      />
       <ion-label>
-        <p class="sousTitre">Ouvrir au public</p>
+        <p class="sousTitre black">Mon profil</p>
         <p style="font-size: 10px">Mode actuel :</p>
       </ion-label>
     </ion-item>
@@ -59,7 +60,7 @@
         "
       ></ion-icon>
       <ion-label>
-        <p class="sousTitre">Ouvrir au public</p>
+        <p class="sousTitre black">Ouvrir au public</p>
         <p style="font-size: 10px">Mode actuel :</p>
       </ion-label>
     </ion-item>
@@ -74,7 +75,7 @@
         "
       ></ion-icon>
       <ion-label>
-        <p class="sousTitre">Ouvrir au public</p>
+        <p class="sousTitre black">Ouvrir au public</p>
         <p style="font-size: 10px">Mode actuel :</p>
       </ion-label>
     </ion-item>
@@ -89,7 +90,7 @@
         "
       ></ion-icon>
       <ion-label>
-        <p class="sousTitre">Ouvrir au public</p>
+        <p class="sousTitre black">Ouvrir au public</p>
         <p style="font-size: 10px">Mode actuel :</p>
       </ion-label>
     </ion-item>
@@ -104,7 +105,7 @@
         "
       ></ion-icon>
       <ion-label>
-        <p class="sousTitre">Ouvrir au public</p>
+        <p class="sousTitre black">Ouvrir au public</p>
         <p style="font-size: 10px">Mode actuel :</p>
       </ion-label>
     </ion-item>

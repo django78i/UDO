@@ -1,99 +1,124 @@
 <section>
   <div class="iconTitle">
-    <img src="../../../../assets/icon/dot.svg"
-      style="background-color: rgb(233, 229, 229);padding: 10px;border-radius: 50%;" alt="">
-    <h4 style="font-weight: 900;margin: 0;">VOS INFORMATIONS</h4>
+    <img
+      src="../../../../assets/icon/dot.svg"
+      style="
+        background-color: rgb(233, 229, 229);
+        padding: 10px;
+        border-radius: 50%;
+      "
+      alt=""
+    />
+    <h4 style="font-weight: 900; margin: 0">VOS INFORMATIONS</h4>
   </div>
   <ion-toolbar class="barStat">
     <ion-item slot="start" lines="none" class="itemLeft">
       <ion-label class="titre">
-        {{champ.semaineEnCours}}
+        {{ champ.semaineEnCours }}
       </ion-label>
-      <ion-label class="sousTitre">
-        Semaines
-      </ion-label>
+      <ion-label class="sousTitre black"> Semaines </ion-label>
     </ion-item>
     <ion-title>
       <ion-item lines="none">
         <ion-label class="titre">
-          {{champ.journee}}<span style="font-weight: 500;color: #C5C6CE;">/</span><span
-            style="color: #C5C6CE;">{{champ.journeeTotale}}</span>
+          {{ champ.journee
+          }}<span style="font-weight: 500; color: #c5c6ce">/</span
+          ><span style="color: #c5c6ce">{{ champ.journeeTotale }}</span>
         </ion-label>
-        <ion-label class="sousTitre">Journées</ion-label>
+        <ion-label class="sousTitre black">Journées</ion-label>
       </ion-item>
     </ion-title>
     <ion-item slot="end" lines="none">
       <ion-label class="titre">
-        {{champ.bonus}}
+        {{ champ.bonus }}
       </ion-label>
-      <ion-label class="sousTitre">
-        Bonus
-      </ion-label>
+      <ion-label class="sousTitre black"> Bonus </ion-label>
     </ion-item>
   </ion-toolbar>
 </section>
 <section>
   <div class="iconTitle">
-    <img src="../../assets/icon/dot.svg" style="background-color: rgb(233, 229, 229);padding: 10px;border-radius: 50%;"
-      alt="">
-    <h4 style="font-weight: 900;margin: 0;">DETAIL</h4>
+    <img
+      src="../../assets/icon/dot.svg"
+      style="
+        background-color: rgb(233, 229, 229);
+        padding: 10px;
+        border-radius: 50%;
+      "
+      alt=""
+    />
+    <h4 style="font-weight: 900; margin: 0">DETAIL</h4>
   </div>
-  <p style="font-size: 12px;">{{champ.text}}</p>
-  </section>
-  <section>
+  <p style="font-size: 12px">{{ champ.text }}</p>
+</section>
+<section>
   <div class="iconTitle">
-    <img src="../../../../assets/icon/dot.svg"
-      style="background-color: rgb(233, 229, 229);padding: 10px;border-radius: 50%;" alt="">
-    <h4 style="font-weight: 900;margin: 0;">ACTIVITES</h4>
+    <img
+      src="../../../../assets/icon/dot.svg"
+      style="
+        background-color: rgb(233, 229, 229);
+        padding: 10px;
+        border-radius: 50%;
+      "
+      alt=""
+    />
+    <h4 style="font-weight: 900; margin: 0">ACTIVITES</h4>
   </div>
   <ion-chip *ngFor="let act of champ.activites">
     <ion-avatar>
-      <img [src]="act.avatar">
+      <img [src]="act.avatar" />
     </ion-avatar>
-    <ion-label>{{act.name}}</ion-label>
+    <ion-label>{{ act.name }}</ion-label>
   </ion-chip>
 </section>
 <section>
   <div class="iconTitle">
-    <img src="../../../../assets/icon/dot.svg"
-      style="background-color: rgb(233, 229, 229);padding: 10px;border-radius: 50%;" alt="">
-    <h4 style="font-weight: 900;margin: 0;">INFORMATIONS</h4>
+    <img
+      src="../../../../assets/icon/dot.svg"
+      style="
+        background-color: rgb(233, 229, 229);
+        padding: 10px;
+        border-radius: 50%;
+      "
+      alt=""
+    />
+    <h4 style="font-weight: 900; margin: 0">INFORMATIONS</h4>
   </div>
   <ion-toolbar>
-    <ion-thumbnail slot="start" style="margin-right: 10px;">
-      <img src="../../../../assets/icon/lock.svg" alt="">
+    <ion-thumbnail slot="start" style="margin-right: 10px">
+      <img src="../../../../assets/icon/lock.svg" alt="" />
     </ion-thumbnail>
     <ion-label>
-      <p class="sousTitre"> Confidentialité</p>
+      <p class="sousTitre black">Confidentialité</p>
       <p class="detailTitre">Mode actuel :</p>
     </ion-label>
     <ion-thumbnail slot="end" class="friends">
-      <img src="../../../../assets/icon/friends-white.svg" alt="">
+      <img src="../../../../assets/icon/friends-white.svg" alt="" />
     </ion-thumbnail>
   </ion-toolbar>
   <ion-toolbar>
-    <ion-thumbnail slot="start" style="margin-right: 10px;">
-      <img src="../../../../assets/icon/clock.svg" alt="">
+    <ion-thumbnail slot="start" style="margin-right: 10px">
+      <img src="../../../../assets/icon/clock.svg" alt="" />
     </ion-thumbnail>
     <ion-label>
-      <p class="sousTitre"> Durée de championnat</p>
+      <p class="sousTitre black">Durée de championnat</p>
       <p class="detailTitre">Activer la limite de participants maximum</p>
     </ion-label>
     <ion-thumbnail class="labelRight" slot="end">
-      <ion-label>{{champ.duree}}</ion-label>
+      <ion-label>{{ champ.duree }}</ion-label>
       <!-- <img src="../../../../assets/icon/friends-white.svg" alt=""> -->
     </ion-thumbnail>
   </ion-toolbar>
   <ion-toolbar>
-    <ion-thumbnail slot="start" style="margin-right: 10px;">
-      <img src="../../../../assets/icon/repeat.svg" alt="">
+    <ion-thumbnail slot="start" style="margin-right: 10px">
+      <img src="../../../../assets/icon/repeat.svg" alt="" />
     </ion-thumbnail>
     <ion-label>
-      <p class="sousTitre"> Séance par semaine</p>
+      <p class="sousTitre black">Séance par semaine</p>
       <p class="detailTitre">Minimum de séances par semaine</p>
     </ion-label>
     <ion-thumbnail slot="end" class="labelRight">
-      <ion-label>{{champ.seanceSemaine}}</ion-label>
+      <ion-label>{{ champ.seanceSemaine }}</ion-label>
     </ion-thumbnail>
   </ion-toolbar>
 </section>

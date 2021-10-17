@@ -11,7 +11,7 @@
 
 /* Core CSS required for Ionic components to work properly */
 @import "~@ionic/angular/css/core.css";
-
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 /* Basic CSS for apps built with Ionic */
 @import "~@ionic/angular/css/normalize.css";
 @import "~@ionic/angular/css/structure.css";
@@ -27,31 +27,33 @@
 //Swiper
 @import "~swiper/swiper-bundle";
 
-ion-content{
-    --background: #F7F7FA;
+ion-content {
+  --background: #f7f7fa;
 }
 
 ion-toolbar,
-ion-item{
-    --background: #ffffff00;
+ion-item {
+  --background: #ffffff00;
 }
 
 * {
-    font-family: "Poppins", sans-serif !important;
+  font-family: "Poppins", sans-serif !important;
 }
 
 h4 {
-    font-size: 14px;
+  font-size: 14px;
 }
 
 .sousTitre {
-    font-size: 14px;
-    font-weight: 700;
-    margin: 0;
-    color: black !important;
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0;
 }
 
-// .testModal .modal-wrapper {
-//     background: #ffffff00;
-//   }
+.black {
+  color: black !important;
+}
 
+.grey {
+  color: #707070;
+}

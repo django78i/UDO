@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Platform } from '@ionic/angular';
+import { AlertController, Platform } from '@ionic/angular';
 import firebase from 'firebase/app';
-import { GooglePlus } from '@ionic-native/google-plus/ngx';
+// import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import {
   doc,
   getDoc,
@@ -21,17 +21,25 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
 } from 'firebase/auth';
+import { GooglePlus } from '@ionic-native/google-plus/ngx';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserServiceService {
-  constructor(public platform: Platform, private googlePlus: GooglePlus) {}
+  constructor(
+    private googlePlus: GooglePlus,
+    public platform: Platform, // private googlePlus: GooglePlus,
+    public alertController: AlertController
+  ) {}
 
   connectGoogle() {
+    console.log('check');
     if (this.platform.is('android')) {
+      console.log('androZone');
       this.googleSignIn();
     } else {
+      console.log('NotandroZone');
       this.logUserWithGoogle();
     }
   }
@@ -52,6 +60,7 @@ export class UserServiceService {
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider)
       .then((result) => {
+        console.log(result);
         // This gives you a Google Access Token. You can use it to access the Google API.
         const credential = GoogleAuthProvider.credentialFromResult(result);
         const token = credential.accessToken;
@@ -62,7 +71,7 @@ export class UserServiceService {
           if (!userDatabase) {
             console.log('notfind');
             this.createUserDataBase(user, user.displayName);
-          } 
+          }
         });
       })
       .catch((error) => {
@@ -78,33 +87,41 @@ export class UserServiceService {
   }
 
   async findUser(userUid) {
+    console.log(userUid);
     const db = getFirestore();
     const user = await getDoc(doc(db, 'users', userUid));
+    console.log('UserFind', JSON.stringify(user.data()));
     return user;
   }
 
   async googleSignIn() {
+    console.log('entree');
     const auth = getAuth();
     try {
       const gplUser = await this.googlePlus.login({
         webClientId:
-          '84932470385-pd9pgtetadfar56b667ggfprofeslf4b.apps.googleusercontent.com',
+          '911285735248-p38u0egepsqdnjc0stbmepg11g1cf4bc.apps.googleusercontent.com',
       });
 
-      console.log(gplUser);
-
-      signInWithCredential(
+      await signInWithCredential(
         auth,
-        GoogleAuthProvider.credentialFromResult(gplUser.idToken)
+        GoogleAuthProvider.credential(gplUser.idToken)
       );
 
-      auth.onAuthStateChanged((user) => {
+      // console.log('userGoogle',auth);
+      console.log('userGoogle', gplUser.idToken);
+
+      await auth.onAuthStateChanged((user) => {
         if (user) {
-          this.findUser(user).then((userDatabase) => {
-            if (!userDatabase) {
+          this.findUser(user.uid).then((userDatabase) => {
+            // console.log('userDatabase', userDatabase);
+            if (!userDatabase.data()) {
+              console.log('userDatabase', userDatabase);
               this.createUserDataBase(user, user.displayName);
             }
           });
+        } else {
+          this.presentAlert('rien');
         }
       });
     } catch (err) {
@@ -112,8 +129,20 @@ export class UserServiceService {
     }
   }
 
+  async presentAlert(msg) {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Alert',
+      subHeader: 'Subtitle',
+      message: msg,
+      buttons: ['OK'],
+    });
+  }
+
   logout() {
     const auth = getAuth();
     auth.signOut();
   }
+
+
 }

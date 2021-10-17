@@ -7,9 +7,10 @@ import { TabsPageRoutingModule } from './tabs-routing.module';
 
 import { TabsPage } from './tabs.page';
 import { MenuUserComponent } from '../components/menu-user/menu-user.component';
+import { UserProfilComponent } from '../components/user-profil/user-profil.component';
 
 @NgModule({
   imports: [IonicModule, CommonModule, FormsModule, TabsPageRoutingModule],
-  declarations: [TabsPage, MenuUserComponent],
+  declarations: [TabsPage, MenuUserComponent, UserProfilComponent],
 })
 export class TabsPageModule {}

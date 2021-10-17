@@ -12,9 +12,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { LoginModalComponent } from './components/login-modal/login-modal.component';
-import {MatIconModule} from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 import { MatStepperModule } from '@angular/material/stepper';
-
+import { AccordeonComponent } from './components/accordeon/accordeon.component';
+import { PhysicsComponent } from './components/physics/physics.component';
+import { GenderComponent } from './components/gender/gender.component';
+import { ConnexionChoiceComponent } from './components/connexion-choice/connexion-choice.component';
 
 @NgModule({
   imports: [
@@ -28,8 +31,15 @@ import { MatStepperModule } from '@angular/material/stepper';
     MatFormFieldModule,
     ReactiveFormsModule,
     MatInputModule,
-    MatIconModule
+    MatIconModule,
   ],
-  declarations: [ConnexionPage, LoginModalComponent],
+  declarations: [
+    ConnexionPage,
+    LoginModalComponent,
+    AccordeonComponent,
+    PhysicsComponent,
+    GenderComponent,
+    ConnexionChoiceComponent
+  ],
 })
 export class ConnexionPageModule {}
