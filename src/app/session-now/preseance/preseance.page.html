@@ -1,0 +1,143 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-item lines="none">
+      <ion-img slot="start" class="img-back" src="assets/images/backArrow.svg" (click)="retour()"> </ion-img>
+      <ion-img slot="end" class="img-info" src="assets/images/feather-info.svg" (click)="information()"> </ion-img>
+    </ion-item>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-slides [options]="slideOptsOne" #mySlider>
+
+    <ion-slide>
+      <ion-grid>
+        <ion-row class="firstPart">
+          <span class="rond" (click)="choisirActivite()">
+            <ion-img [src]="activite?.image"></ion-img>
+            <span class="single">
+              <ion-img src="assets/images/swap.svg"></ion-img>
+            </span>
+          </span>
+
+        </ion-row>
+        <ion-row class="row-activite">
+          <ion-label class="activite" >
+           {{activite?.name}}
+          </ion-label>
+        </ion-row>
+        <ion-row class="classic-item">
+          <ion-item lines="none">
+            <span class="trace">
+              <ion-img src="assets/images/trace.svg"></ion-img>
+            </span>
+            <span class="rondV"></span>
+            <ion-label class="classic2">
+              Classic Tournament
+            </ion-label>
+          </ion-item>
+        </ion-row>
+       
+
+        <!-- </ion-grid>
+            <ion-grid> -->
+
+      </ion-grid>
+    </ion-slide>
+
+    <ion-slide>
+
+      <ion-row class="firstPart2">
+        <span class="rond" (click)="choisirActivite()">
+          <ion-img [src]="activite.image"></ion-img>
+          <span class="single">
+            <ion-img src="assets/images/swap.svg"></ion-img>
+          </span>
+        </span>
+      </ion-row>
+     
+      <ion-row class="row-activite">
+        <ion-label class="activite" >
+         {{activite?.name}}
+        </ion-label>
+      </ion-row>
+      <ion-row class="classic-item">
+        <ion-item lines="none">
+          <!-- <span class="trace">
+            <ion-img src="assets/images/trace.svg"></ion-img>
+          </span> -->
+          <ion-label class="classic">
+            Séance Libre
+          </ion-label>
+        </ion-item>
+      </ion-row>
+
+    </ion-slide>
+
+    <ion-slide>
+
+      <ion-row class="firstPart3">
+        <span class="rond" (click)="choisirActivite()">
+          <ion-img [src]="activite?.name"></ion-img>
+          <span class="single">
+            <ion-img src="assets/images/swap.svg"></ion-img>
+          </span>
+        </span>
+      </ion-row>
+      <ion-row class="row-activite">
+        <ion-label class="activite" >
+          {{activite?.name}}
+        </ion-label>
+      </ion-row>
+      <ion-row class="classic-item">
+        <ion-item lines="none">
+          <span class="trace">
+            <ion-img src="assets/images/sidactionIcon.svg"></ion-img>
+          </span>
+          <ion-label class="classic2">
+            Sidaction Challenge
+          </ion-label>
+        </ion-item>
+      </ion-row>
+    
+      <ion-grid class="c-compt">
+        <ion-row >
+          <round-progress [current]="current" [max]="max" [color]="'#F9608F'" [background]="'rgb(150, 149, 149)'"
+            [radius]="125" [stroke]="7">
+          </round-progress>
+          <div class="percentageValue">
+            90 <span>%</span>
+          </div>
+        </ion-row>
+
+      </ion-grid>
+    </ion-slide>
+
+  </ion-slides>
+  <ion-grid class="demarrage">
+    <ion-row class="row-demarrage">
+      <ion-item lines="none">
+        <span class="param" slot="start" (click)="reglage()">
+          <ion-img src="assets/images/settings.svg"></ion-img>
+        </span>
+        <ion-img class="feather-rose" *ngIf="!isActif" src="assets/images/warning.svg"></ion-img>
+
+        <span class="start" (click)="start()">
+          <ion-img  src="assets/images/play.svg"></ion-img>
+        </span>
+
+        <span class="photo" slot="end" (click)="openCamera()">
+          <ion-img src="assets/images/photo.svg"></ion-img>
+        </span>
+      </ion-item>
+    </ion-row>
+  </ion-grid>
+
+
+</ion-content>
+<!-- <ion-content>
+     
+     
+      
+  
+</ion-content> -->

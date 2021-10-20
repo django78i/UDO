@@ -1,0 +1,53 @@
+ion-header{
+    --ion-background-color: #F4F5FA;
+    .close{
+        width: 13px;
+    }
+}
+ion-content{
+    --ion-background-color: #F4F5FA;
+    .c-row{
+        margin: auto;
+        .nombre{
+            font-size: 70px;
+            font-family: "StaatlichesRegular";
+            color: black;
+            margin:49px auto 25px auto;
+        }
+        .name{
+            font-family: "PoppinsMedium";
+            color: black;
+            margin: auto;
+            opacity: 50%;
+            font-size: 14px;
+        }
+    }
+    .c-grid{
+        margin-top: 55px;
+    }
+    .c-col{
+        margin-bottom: 74px;
+    }
+    // .label-img{
+    //     width: 25px;
+    //     height: 21px;
+    // }
+    .label-name{
+        font-family: "PoppinsMedium";
+        color: #2A2A2C;
+        margin: auto;
+        opacity: 50%;
+        font-size: 14px;
+        margin-top: 30px;
+
+    }
+    .c-img{
+        width: 54px;
+        height: 54px;
+        margin: auto;
+        border-radius: 50%;
+        padding: 14px;
+    }
+
+   
+}

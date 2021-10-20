@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-item lines="none">
+      <ion-img slot="start" class="close" (click)="close()" src="assets/images/close.svg"> </ion-img>
+      <ion-title>Encouragements</ion-title>
+      <ion-label class="c-head-label" slot="end"> 1307</ion-label>
+    </ion-item>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-row class="c-row">
+    <ion-item lines="none" class="c-item" *ngFor="let item of listNotif">
+      <ion-row slot="start" class="c-row-first">
+        <ion-img [src]="item?.img" class="img-personn"></ion-img>
+        <ion-label class="nombre"> {{item?.nombre}}</ion-label>
+      </ion-row>
+      <ion-grid class="c-grid">
+        <ion-row>
+          <ion-item  lines="none" class="item-name">
+            <ion-label  class="name" > {{item?.name}} </ion-label>
+            <!-- <span class="point" ></span> -->
+            <ion-label slot="end" class="date"> {{item?.date}} </ion-label>
+          </ion-item>
+        </ion-row>
+        
+        <ion-row class="comment">
+          <ion-label>
+            {{item?.comment}}
+          </ion-label>
+        </ion-row>
+      </ion-grid>
+        <ion-img slot="end" class="icon-end" [src]="item?.icon"></ion-img>
+    </ion-item>
+  </ion-row>
+
+</ion-content>

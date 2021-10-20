@@ -1,0 +1,36 @@
+<ion-content>
+  <!-- <ion-img [src]="listImages[currentCompteur]"></ion-img> -->
+  <ion-grid>
+    <ion-row class="progress" (click)="goTo()">
+      <round-progress [current]="current" [max]="max" [color]="'#F9608F'" [background]="'rgb(150, 149, 149)'"
+        [radius]="125" [stroke]="7">
+      </round-progress>
+      <div class="percentageValue">
+        {{currentCompteur}}
+      </div>
+    </ion-row>
+  </ion-grid>
+  <ion-row class="c-row">
+    <ion-label class="value">
+      {{currentElement}}
+    </ion-label>
+  </ion-row>
+  <!-- <div class="percentageValue">
+    {{currentCompteur}}
+</div> -->
+
+  <!-- <ion-row class="c-row">
+    <div class="circular">
+      <div class="inner"></div>
+      <div class="number">100%</div>
+      <div class="circle">
+        <div class="bar left">
+          <div class="progress"></div>
+        </div>
+        <div class="bar right">
+          <div class="progress"></div>
+        </div>
+      </div>
+    </div>
+  </ion-row> -->
+</ion-content>
