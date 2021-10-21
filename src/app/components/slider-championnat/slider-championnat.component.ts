@@ -1,4 +1,13 @@
-import { AfterContentChecked, Component, EventEmitter, Input, OnInit, Output, QueryList, ViewChildren } from '@angular/core';
+import {
+  AfterContentChecked,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  QueryList,
+  ViewChildren,
+} from '@angular/core';
 import { SwiperOptions } from 'swiper';
 import { SwiperComponent } from 'swiper/angular';
 
@@ -15,9 +24,10 @@ export class SliderChampionnatComponent implements OnInit, AfterContentChecked {
   @ViewChildren('swiper') swiper: QueryList<SwiperComponent>;
   @Output() champ: EventEmitter<any> = new EventEmitter();
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
+    console.log(this.championnats);
   }
 
   config: SwiperOptions = {
@@ -25,18 +35,14 @@ export class SliderChampionnatComponent implements OnInit, AfterContentChecked {
     spaceBetween: 20,
   };
 
-
   ngAfterContentChecked(): void {
     if (this.swiper) {
-      this.swiper.map(swip => swip.updateSwiper({}));
+      this.swiper.map((swip) => swip.updateSwiper({}));
     }
   }
 
-
   choice(champ) {
-    console.log(champ)
+    console.log(champ);
     this.champ.emit(champ);
   }
-
-
 }

@@ -23,37 +23,6 @@ export class TabsPage implements OnInit {
       : this.msService.currentPlay$.next(true);
   }
 
-  async showMenu() {
-    const enterAnimation = (baseEl: any) => {
-      const backdropAnimation = this.animationCtrl
-        .create()
-        .addElement(baseEl.querySelector('ion-backdrop')!)
-        .fromTo('opacity', '0.0', '0');
-
-      const wrapperAnimation = this.animationCtrl
-        .create()
-        .addElement(baseEl.querySelector('.modal-wrapper')!)
-        .fromTo('transform', 'translateX(-300px)', 'translateX(0px)');
-
-      return this.animationCtrl
-        .create()
-        .addElement(baseEl)
-        .easing('ease-out')
-        .duration(500)
-        .addAnimation([backdropAnimation, wrapperAnimation]);
-    };
-
-    const leaveAnimation = (baseEl: any) => {
-      return enterAnimation(baseEl).direction('reverse');
-    };
-
-    const modal = await this.modalController.create({
-      component: MenuUserComponent,
-      enterAnimation,
-      leaveAnimation,
-    });
-    return await modal.present();
-  }
 
   launch(){
     window.location.href = 'http://localhost:8100';

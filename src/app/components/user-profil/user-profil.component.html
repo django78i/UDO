@@ -16,7 +16,7 @@
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
-  <section style="height: 200px; position: relative">
+  <section style="height: 200px; position: relative; margin-bottom: 150px">
     <ion-card
       style="
         background: transparent
@@ -26,18 +26,28 @@
       "
     >
     </ion-card>
-    <ion-avatar
+    <div
       style="
+        width: 200px;
         position: absolute;
-        bottom: -50px;
-        transform: translateX(132px);
-        height: 100px;
-        width: 100px;
-        border: 5px solid white;
+        bottom: -130px;
+        left: calc(50% - 100px);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
       "
     >
-      <img src="assets/mocks/5.jpg" alt="" />
-    </ion-avatar>
+      <ion-avatar style="height: 100px; width: 100px; border: 5px solid white">
+        <img src="assets/mocks/5.jpg" alt="" />
+      </ion-avatar>
+      <h3>{{ user.userName }}</h3>
+      <div style="display: flex; gap: 10px; align-items: center">
+        <p>248 amis</p>
+        <ion-chip>
+          <ion-label style="font-size: 10px">Avancé</ion-label>
+        </ion-chip>
+      </div>
+    </div>
   </section>
   <section style="padding: 0 15px; margin-top: 50px">
     <ion-segment
@@ -50,9 +60,76 @@
       <ion-segment-button value="amis"> Mes amis </ion-segment-button>
       <ion-segment-button value="historique"> Historique </ion-segment-button>
     </ion-segment>
-    <div style="margin-top: 50px; display: flex; justify-content: center">
+    <div class="iconTitle">
+      <img
+        src="assets/icon/dot.svg"
+        style="
+          background-color: rgb(233, 229, 229);
+          padding: 10px;
+          border-radius: 50%;
+        "
+        alt=""
+      />
+      <h4 style="font-weight: 900; margin: 0">skills</h4>
+    </div>
+
+    <div style="margin-top: 15px; display: flex; justify-content: center">
       <div style="margin: auto">
-        <svg width="250px" height="250px">
+        <svg width="300px" height="250px">
+          <text
+            x="0"
+            y="80"
+            font-family="Verdana"
+            font-size="10"
+            font-weight="700"
+          >
+            CRD
+          </text>
+          <text
+            x="0"
+            y="180"
+            font-family="Verdana"
+            font-size="10"
+            font-weight="700"
+          >
+            GNG
+          </text>
+          <text
+            x="120"
+            y="10"
+            font-family="Verdana"
+            font-size="10"
+            font-weight="700"
+          >
+            CH
+          </text>
+          <text
+            x="240"
+            y="80"
+            font-family="Verdana"
+            font-size="10"
+            font-weight="700"
+          >
+            XPL
+          </text>
+          <text
+            x="240"
+            y="180"
+            font-family="Verdana"
+            font-size="10"
+            font-weight="700"
+          >
+            SPL
+          </text>
+          <text
+            x="120"
+            y="250"
+            font-family="Verdana"
+            font-size="10"
+            font-weight="700"
+          >
+            SPL
+          </text>
           <!-- <defs>
             <filter id="round">
               <feGaussianBlur
@@ -72,10 +149,9 @@
           <polygon
             style="
               position: relative;
-              fill: rgb(255, 255, 255);
+              fill: #f7f7fa;
               stroke-linejoin: round;
               stroke: #cfced6;
-              
             "
             *ngFor="let form of donneeFormat"
             #hexagon
@@ -90,9 +166,119 @@
             "
             #stat
           ></polygon>
-          <circle id="pointA" #points r="3" *ngFor="let stat of statTable" />
+          <circle
+            style="fill: #f7f7fa; stroke-width: 2px; stroke: black"
+            id="pointA"
+            #points
+            r="2"
+            *ngFor="let stat of statTable"
+          />
         </svg>
       </div>
     </div>
+    <div class="iconTitle">
+      <img
+        src="assets/icon/dot.svg"
+        style="
+          background-color: rgb(233, 229, 229);
+          padding: 10px;
+          border-radius: 50%;
+        "
+        alt=""
+      />
+      <h4 style="font-weight: 900; margin: 0">DETAILS</h4>
+    </div>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-card class="cardActivities">
+            <ion-card-header>
+              <ion-card-title>
+                <img
+                  src="https://img.icons8.com/ios-glyphs/30/000000/pullups.png"
+                />
+              </ion-card-title>
+            </ion-card-header>
+            <ion-card-content style="padding: 0 20px 10px">
+              <ion-card-title>{{ statTable[0].ratio }} % </ion-card-title>
+              <ion-card-subtitle> {{ statTable[0].name }} </ion-card-subtitle>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+        <ion-col>
+          <ion-card class="cardActivities">
+            <ion-card-header>
+              <img
+                src="https://img.icons8.com/ios-glyphs/30/000000/squats.png"
+              />
+            </ion-card-header>
+            <ion-card-content style="padding: 0 20px 10px">
+              <ion-card-title>{{ statTable[1].ratio }} % </ion-card-title>
+              <ion-card-subtitle> {{ statTable[1].name }} </ion-card-subtitle>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-card class="cardActivities">
+            <ion-card-header>
+              <ion-card-title>
+                <img
+                  src="https://img.icons8.com/material-rounded/24/000000/like--v2.png"
+                />
+              </ion-card-title>
+            </ion-card-header>
+            <ion-card-content style="padding: 0 20px 10px">
+              <ion-card-title>{{ statTable[2].ratio }} %</ion-card-title>
+              <ion-card-subtitle> {{ statTable[2].name }} </ion-card-subtitle>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+        <ion-col>
+          <ion-card class="cardActivities">
+            <ion-card-header>
+              <img
+                src="https://img.icons8.com/material-rounded/24/000000/sports-mode.png"
+              />
+            </ion-card-header>
+            <ion-card-content style="padding: 0 20px 10px">
+              <ion-card-title>{{ statTable[3].ratio }} % </ion-card-title>
+              <ion-card-subtitle> {{ statTable[3].name }}</ion-card-subtitle>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-card class="cardActivities">
+            <ion-card-header>
+              <ion-card-title>
+                <img
+                  src="https://img.icons8.com/material-rounded/24/000000/stretching.png"
+                />
+              </ion-card-title>
+            </ion-card-header>
+            <ion-card-content style="padding: 0 20px 10px">
+              <ion-card-title>{{ statTable[4].ratio }} %</ion-card-title>
+              <ion-card-subtitle> {{ statTable[4].name }} </ion-card-subtitle>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+        <ion-col>
+          <ion-card class="cardActivities">
+            <ion-card-header>
+              <img
+                src="https://img.icons8.com/ios-filled/24/000000/plank.png"
+              />
+            </ion-card-header>
+            <ion-card-content style="padding: 0 20px 10px">
+              <ion-card-title> {{ statTable[5].ratio }} % </ion-card-title>
+              <ion-card-subtitle>{{ statTable[5].name }} </ion-card-subtitle>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </section>
 </ion-content>

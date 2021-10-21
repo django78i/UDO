@@ -5,10 +5,10 @@ import {
   QueryList,
   ViewChildren,
 } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, NavController } from '@ionic/angular';
 import { SwiperOptions } from 'swiper';
 import { SwiperComponent } from 'swiper/angular';
-import { LoginModalComponent } from './components/login-modal/login-modal.component';
+import { LoginModalComponent } from './components/login-modal/login/login-modal.component';
 
 @Component({
   selector: 'app-connexion',
@@ -46,7 +46,10 @@ export class ConnexionPage implements OnInit, AfterContentChecked {
 
   @ViewChildren('swiper') swiper: QueryList<SwiperComponent>;
 
-  constructor(public modalController: ModalController) {}
+  constructor(
+    public modalController: ModalController,
+    public navController: NavController
+  ) {}
 
   ngOnInit() {}
 
@@ -56,10 +59,7 @@ export class ConnexionPage implements OnInit, AfterContentChecked {
     }
   }
 
-  async openConnect() {
-    const modal = await this.modalController.create({
-      component: LoginModalComponent,
-    });
-    return await modal.present();
+  openConnect() {
+    this.navController.navigateForward('connexion/login');
   }
 }

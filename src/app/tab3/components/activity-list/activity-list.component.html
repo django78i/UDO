@@ -10,24 +10,15 @@
     <ion-title>Liste des Activités</ion-title>
   </ion-toolbar>
 </ion-header>
-<section>
+<section style="coverflow: auto">
   <ng-container *ngFor="let act of activites$ | async; let i = index">
     <ion-item
       detail
       lines="full"
       class="champColor"
-      [ngClass]="{ notActiveContent: act.active == true }"
+      [detailIcon]="act.active == true ? 'remove-outline' : 'add-outline'"
       (click)="activate(i)"
     >
-      <!-- <ion-icon
-        name="trophy-outline"
-        style="
-          padding: 10px;
-          border-radius: 50%;
-          border: 1px solid grey;
-          margin-right: 10px;
-        "
-      ></ion-icon> -->
       <ion-label>
         <p class="sousTitre black">{{ act.nom }}</p>
         <p style="font-size: 10px">{{ act.nbActivites }} Activtés</p>
@@ -37,25 +28,21 @@
       <div class="accord">
         <ion-item lines="none" [ngClass]="{ small: !act.active }">
           <ion-checkbox
-            slot="start"
             (ionChange)="all($event)"
             [(ngModel)]="act.all"
             (click)="selectAll(i)"
             [indeterminate]="isIndeterminate"
             [ngModelOptions]="{ standalone: true }"
           ></ion-checkbox>
-          <ion-label slot="start">Tous</ion-label>
-          <ion-label slot="start">{{ act.all }}</ion-label>
+          <ion-label>Tous</ion-label>
         </ion-item>
-        <ng-container *ngFor="let sous of act.ssActivites">
+        <ng-container *ngFor="let sous of act.ssActivites; let j = index">
           <ion-item lines="none" [ngClass]="{ small: !act.active }">
             <ion-checkbox
-              slot="start"
               [(ngModel)]="sous.isChecked"
-              (ionChange)="change($event)"
-              [ngModelOptions]="{ standalone: true }"
+              (ionChange)="change($event, i, j, sous)"
             ></ion-checkbox>
-            <ion-label slot="start">{{ sous.nom }}</ion-label>
+            <ion-label>{{ sous.nom }}</ion-label>
           </ion-item>
         </ng-container>
       </div>

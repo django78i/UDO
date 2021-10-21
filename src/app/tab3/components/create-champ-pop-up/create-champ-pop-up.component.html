@@ -42,7 +42,7 @@
           </ion-card-content>
         </ion-card>
         <form [formGroup]="formChamp">
-          <mat-form-field appearance="outline" color="warn">
+          <!-- <mat-form-field appearance="outline" color="warn">
             <mat-label>Nom du championnat</mat-label>
             <input
               matInput
@@ -55,32 +55,45 @@
               >Respectez les conditions d’utilisations, évitez les insultes et
               grossièretés.</mat-hint
             >
-          </mat-form-field>
+          </mat-form-field> -->
+          <ion-item lines="none">
+            <ion-label
+              position="floating"
+              style="
+                padding-left: 13px;
+                font-size: 14px;
+                --color: rgb(112 112 112);
+              "
+              >Nom du championnat</ion-label
+            >
+            <ion-input
+              style="
+                border: 1px solid rgba(112, 112, 112, 0.23);
+                border-radius: 5px;
+                --padding-start: 10px;
+              "
+              class="form-control"
+              formControlName="name"
+              (keyup)="onKey()"
+            ></ion-input>
+            <ion-note style="font-size: 12px"
+              >Respectez les conditions d’utilisations, évitez les insultes et
+              grossièretés.</ion-note
+            >
+          </ion-item>
         </form>
+
         <ion-item lines="none">
           <ion-label slot="start" style="font-size: 14px; font-weight: 600"
             >Couleur</ion-label
           >
-          <!-- <ion-radio-group slot="start" [value]="bannieres[0].url">
-            <ng-container *ngFor="let bann of bannieres; let i = index">
-              <ion-item lines="none">
-                <ion-radio
-                  [value]="bann.url"
-                  style="--dataColor:{{ bann.color }};"
-                  class="radioChoice"
-                  mode="md"
-                  (ionFocus)="focused(bann.url)"
-                ></ion-radio>
-              </ion-item>
-            </ng-container>
-          </ion-radio-group> -->
           <ng-container *ngFor="let bann of bannieres; let i = index">
             <ion-checkbox
+              mode="ios"
               class="checkZone"
               style="--dataColor:{{ bann.color }};"
               #checkBanniere
               (click)="focused(bann.url, i)"
-              (ionFocus)="afffich($event)"
             ></ion-checkbox>
           </ng-container>
         </ion-item>
@@ -96,9 +109,9 @@
           ></ion-icon>
           <ion-label>
             <p class="sousTitre black">Ouvrir au public</p>
-            <p style="font-size: 10px">Mode actuel :</p>
+            <p style="font-size: 10px">Mode actuel :{{ private.type }}</p>
           </ion-label>
-          <ion-toggle slot="end"></ion-toggle>
+          <ion-toggle slot="end" (ionChange)="privacy()"></ion-toggle>
         </ion-item>
         <ion-item lines="none" class="champColor">
           <ion-thumbnail slot="start" class="thumbZone">
@@ -126,25 +139,16 @@
               </g>
             </svg>
           </ion-thumbnail>
-          <!-- <ion-icon
-            name="trophy-outline"
-            style="
-              padding: 10px;
-              border-radius: 50%;
-              border: 1px solid grey;
-              margin-right: 10px;
-            "
-          ></ion-icon> -->
           <ion-label>
             <p class="sousTitre black">Nombre de semaines</p>
             <p style="font-size: 10px">Durée maximum du championnat</p>
           </ion-label>
           <ion-item lines="none" class="addSub" slot="end">
-            <ion-button (click)="sub()" slot="start">
+            <ion-button (click)="sub()" slot="start" mode="ios">
               <img src="../../../../assets/icon/minus.svg" alt="" />
             </ion-button>
-            <ion-label> {{ dataCount }}</ion-label>
-            <ion-button (click)="add()" slot="end">
+            <ion-label> {{ weekCount }}</ion-label>
+            <ion-button (click)="add()" slot="end" mode="ios">
               <img src="../../../../assets/icon/plus.svg" alt="" />
             </ion-button>
           </ion-item>
@@ -158,12 +162,13 @@
             <p style="font-size: 10px">Minimum de séances par semaine</p>
           </ion-label>
           <ion-item lines="none" class="addSub" slot="end">
-            <ion-button (click)="sub()" slot="start">
+            <ion-button (click)="subSeanceWeek()" slot="start" mode="ios">
               <img src="../../../../assets/icon/minus.svg" alt="" />
             </ion-button>
-            <ion-label> {{ dataCount }}</ion-label>
+            <ion-label> {{ seanceWeekCount }}</ion-label>
             <ion-button
-              (click)="add()"
+              mode="ios"
+              (click)="addSeanceWeek()"
               slot="end"
               class="ion-activatable ripple-parent"
             >
@@ -246,6 +251,14 @@
             </p>
           </ion-label>
         </ion-item>
+        <div style="display: flex; justify-content: center">
+          <ion-button
+            shape="round"
+            style="--background: #ed2d6a; width: 50%"
+            (click)="saveChamp()"
+            >Publier
+          </ion-button>
+        </div>
       </div>
     </ng-template>
     <ng-template swiperSlide>
@@ -253,10 +266,12 @@
         <div id="top">
           <app-activity-list
             *ngIf="sliderPage == 'activity'"
+            (activitesEvent)="eventActivite($event)"
             (backAction)="backSlide($event)"
           ></app-activity-list>
           <app-friends-list
             *ngIf="sliderPage == 'amis'"
+            (friendList)="chooseFriends($event)"
             (backAction)="backSlide($event)"
           ></app-friends-list>
         </div>
