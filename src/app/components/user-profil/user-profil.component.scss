@@ -1,0 +1,21 @@
+.iconTitle {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding-left: 15px;
+}
+
+ion-col > div {
+  background-color: #eaebef;
+  padding: 10px;
+}
+
+ion-card.cardActivities {
+  width: 100%;
+  margin: 0;
+  height: 135px;
+  --background: #eaebef;
+  box-shadow: none;
+}

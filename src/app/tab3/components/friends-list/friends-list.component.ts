@@ -10,6 +10,7 @@ import { map, switchMap, tap } from 'rxjs/operators';
 })
 export class FriendsListComponent implements OnInit {
   @Output() backAction: EventEmitter<any> = new EventEmitter();
+  @Output() friendList: EventEmitter<any> = new EventEmitter();
   friendsList$: Observable<any>;
   friendsList: any[] = [];
   friendsSelected: any[] = [];
@@ -38,6 +39,7 @@ export class FriendsListComponent implements OnInit {
   }
 
   back() {
+    console.log('back');
     this.backAction.emit(true);
   }
 
@@ -46,7 +48,13 @@ export class FriendsListComponent implements OnInit {
   }
 
   selectFriend(friend) {
-    this.friendsSelected.push(friend);
+    friend = { ...friend, etat: 'en attente' };
+    const ind = this.friendsSelected.findIndex((fr) => fr.name == friend.name);
+    ind != -1
+      ? this.friendsSelected.splice(ind, 1)
+      : this.friendsSelected.push(friend);
+    console.log(this.friendsSelected);
+    this.friendList.emit(this.friendsSelected);
   }
 
   sendInvitation() {

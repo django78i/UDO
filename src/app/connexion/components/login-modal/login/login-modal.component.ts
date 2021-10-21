@@ -8,8 +8,16 @@ import {
 } from '@angular/core';
 import { MatInput } from '@angular/material/input';
 import { MatStepper } from '@angular/material/stepper';
-import { ModalController, PickerController } from '@ionic/angular';
-import { BehaviorSubject } from 'rxjs';
+import { getAuth } from '@firebase/auth';
+import {
+  LoadingController,
+  ModalController,
+  NavController,
+  PickerController,
+} from '@ionic/angular';
+import { BehaviorSubject, from } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { UserServiceService as UserService } from 'src/app/services/user-service.service';
 
 @Component({
   selector: 'app-login-modal',
@@ -17,34 +25,25 @@ import { BehaviorSubject } from 'rxjs';
   styleUrls: ['./login-modal.component.scss'],
 })
 export class LoginModalComponent implements OnInit, AfterViewInit {
-  defaultColumnOptions = [['Dog', 'Cat', 'Bird', 'Lizard', 'Chinchilla']];
-
-  multiColumnOptions = [
-    ['Minified', 'Responsive', 'Full Stack', 'Mobile First', 'Serverless'],
-    ['Tomato', 'Avocado', 'Onion', 'Potato', 'Artichoke'],
-  ];
-  numOpts = [5, 5];
-  @ViewChild('inputPassword') passwordInput: MatInput;
   @ViewChild('stepperComp') stepperComp: MatStepper;
-  shows: BehaviorSubject<boolean> = new BehaviorSubject(false);
   pseudo: string = '';
   step: number = 0;
   sex: string = '';
-  poids: number = 50;
-  taille: number = 120;
-  disabled = true;
   activitesList: any;
   physicalParam = {
     poids: 50,
     taille: 120,
   };
-
+  user: any;
   stepperEvent: StepperSelectionEvent = new StepperSelectionEvent();
 
   constructor(
     public zone: NgZone,
     public modalCtl: ModalController,
-    public picker: PickerController
+    public picker: PickerController,
+    public loadingController: LoadingController,
+    public navController: NavController,
+    public userService: UserService
   ) {}
 
   ngOnInit() {}
@@ -70,13 +69,39 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
         ) {
           this.step += 0.25;
         }
-        if (r) {
-          this.zone.run(() => {
-            this.shows.next(true);
-          });
-        }
       })
     );
+  }
+
+  async redirect(): Promise<void> {
+    const loading = await this.loadingController.create({
+      message: 'Veuillez patienter...',
+      duration: 2000,
+    });
+    await loading.present();
+
+    const { role, data } = await loading.onDidDismiss();
+    console.log('Loading dismissed!');
+
+    this.navController.navigateForward(['']);
+  }
+
+  saveOnBoarding() {
+    this.user = {
+      ...this.user,
+      sex: this.sex,
+      activitesPratiquees: this.activitesList,
+      userName: this.pseudo,
+      physique: this.physicalParam,
+    };
+    console.log(this.user);
+    this.userService.updateUser(this.user);
+    this.redirect();
+  }
+
+  findPreference(user): boolean {
+    console.log(user);
+    return user?.userName ? true : false;
   }
 
   change(ev) {
@@ -108,5 +133,6 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
     if (this.activitesList) {
       this.step += 0.25;
     }
+    this.saveOnBoarding();
   }
 }

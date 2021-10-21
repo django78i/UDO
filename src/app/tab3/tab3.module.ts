@@ -23,6 +23,7 @@ import { MatInputModule } from '@angular/material/input';
 import { PopOverComponentComponent } from './components/pop-over-component/pop-over-component.component';
 import { ActivityListComponent } from './components/activity-list/activity-list.component';
 import { FriendsListComponent } from './components/friends-list/friends-list.component';
+import { AccordeonComponent } from '../components/accordeon/accordeon.component';
 
 @NgModule({
   imports: [
@@ -35,8 +36,7 @@ import { FriendsListComponent } from './components/friends-list/friends-list.com
     SwiperModule,
     MatFormFieldModule,
     ReactiveFormsModule,
-    MatInputModule
-
+    MatInputModule,
   ],
   declarations: [
     Tab3Page,
@@ -52,7 +52,8 @@ import { FriendsListComponent } from './components/friends-list/friends-list.com
     CreateChampPopUpComponent,
     PopOverComponentComponent,
     ActivityListComponent,
-    FriendsListComponent
-  ]
+    FriendsListComponent,
+    AccordeonComponent,
+  ],
 })
-export class Tab3PageModule { }
+export class Tab3PageModule {}

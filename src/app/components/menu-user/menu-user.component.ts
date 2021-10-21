@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { UserServiceService } from 'src/app/services/user-service.service';
 import { UserProfilComponent } from '../user-profil/user-profil.component';
@@ -9,6 +9,8 @@ import { UserProfilComponent } from '../user-profil/user-profil.component';
   styleUrls: ['./menu-user.component.scss'],
 })
 export class MenuUserComponent implements OnInit {
+  @Input() user: any;
+
   constructor(
     public modalController: ModalController,
     public userService: UserServiceService
@@ -20,6 +22,10 @@ export class MenuUserComponent implements OnInit {
     this.close();
     const modal = await this.modalController.create({
       component: UserProfilComponent,
+      componentProps: {
+        user: this.user,
+      },
+
     });
     return await modal.present();
   }

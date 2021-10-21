@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { UserServiceService } from 'src/app/services/user-service.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
@@ -11,7 +11,7 @@ export class ConnexionChoiceComponent implements OnInit {
   formUser: FormGroup;
   hide = true;
   seg = "s'inscrire";
-
+  @Output() log: EventEmitter<[]> = new EventEmitter();
   mdPasse: string = '';
   email: string = '';
 
@@ -30,7 +30,7 @@ export class ConnexionChoiceComponent implements OnInit {
 
   login() {
     console.log('log');
-    this.userService.connectGoogle();
+    this.log.emit([]);
   }
 
   get password() {

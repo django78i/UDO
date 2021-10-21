@@ -2,6 +2,7 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  Input,
   OnInit,
   QueryList,
   ViewChild,
@@ -22,8 +23,8 @@ export class UserProfilComponent implements OnInit, AfterViewInit {
   doneesIniitial = [
     {
       postion: {
-        x: 10,
-        y: 60,
+        x: 30,
+        y: 90,
       },
       vecteur: {
         x: -100,
@@ -32,8 +33,8 @@ export class UserProfilComponent implements OnInit, AfterViewInit {
     },
     {
       postion: {
-        x: 120,
-        y: 10,
+        x: 140,
+        y: 40,
       },
       vecteur: {
         x: 0,
@@ -42,8 +43,8 @@ export class UserProfilComponent implements OnInit, AfterViewInit {
     },
     {
       postion: {
-        x: 210,
-        y: 60,
+        x: 230,
+        y: 90,
       },
       vecteur: {
         x: 100,
@@ -52,8 +53,8 @@ export class UserProfilComponent implements OnInit, AfterViewInit {
     },
     {
       postion: {
-        x: 210,
-        y: 160,
+        x: 230,
+        y: 190,
       },
       vecteur: {
         x: 100,
@@ -62,8 +63,8 @@ export class UserProfilComponent implements OnInit, AfterViewInit {
     },
     {
       postion: {
-        x: 110,
-        y: 220,
+        x: 130,
+        y: 250,
       },
       vecteur: {
         x: 0,
@@ -72,8 +73,8 @@ export class UserProfilComponent implements OnInit, AfterViewInit {
     },
     {
       postion: {
-        x: 10,
-        y: 160,
+        x: 30,
+        y: 190,
       },
       vecteur: {
         x: -100,
@@ -84,12 +85,21 @@ export class UserProfilComponent implements OnInit, AfterViewInit {
 
   ratio = [1, 0.8, 0.6, 0.4, 0.2];
 
-  stats: number[] = [800, 500, 100, 100, 100, 200];
+  stats: any[] = [
+    { name: 'Corps haut', stat: 800 },
+    { name: 'Corps bas', stat: 500 },
+    { name: 'Cardio', stat: 100 },
+    { name: 'Explosivité', stat: 100 },
+    { name: 'Souplesse', stat: 100 },
+    { name: 'Gainage', stat: 200 },
+  ];
   max = 1000;
   donneeFormat: any[] = [];
   seg: string = 'résumé';
   statTable = [];
   position: string;
+  @Input() user: any;
+
   constructor(public modalController: ModalController) {}
 
   ngOnInit() {
@@ -102,11 +112,13 @@ export class UserProfilComponent implements OnInit, AfterViewInit {
     this.hexagon.map((hex, indice) => {
       const position = `${this.donneeFormat[indice][0].x},${this.donneeFormat[indice][0].y} ${this.donneeFormat[indice][1].x},${this.donneeFormat[indice][1].y} ${this.donneeFormat[indice][2].x},${this.donneeFormat[indice][2].y} ${this.donneeFormat[indice][3].x},${this.donneeFormat[indice][3].y} ${this.donneeFormat[indice][4].x},${this.donneeFormat[indice][4].y} ${this.donneeFormat[indice][5].x},${this.donneeFormat[indice][5].y}`;
       hex.nativeElement.setAttribute('points', position);
-      indice == 0 ? hex.nativeElement.style.strokeWidth= "2px" : hex.nativeElement.style.strokeWidth= "1px";
+      indice == 0
+        ? (hex.nativeElement.style.strokeWidth = '2px')
+        : (hex.nativeElement.style.strokeWidth = '1px');
     });
     this.points.map((hex, indice) => {
-      hex.nativeElement.setAttribute('cx', this.statTable[indice].x);
-      hex.nativeElement.setAttribute('cy', this.statTable[indice].y);
+      hex.nativeElement.setAttribute('cx', this.statTable[indice].position.x);
+      hex.nativeElement.setAttribute('cy', this.statTable[indice].position.y);
     });
     this.stat.nativeElement.setAttribute('points', this.position);
   }
@@ -118,16 +130,20 @@ export class UserProfilComponent implements OnInit, AfterViewInit {
   createStats() {
     let table: any[] = [];
     this.stats.map((stat, i) => {
-      const ratio = stat / this.max;
+      const ratio = stat.stat / this.max;
       console.log(ratio, this.doneesIniitial[i].vecteur.x * ratio);
       const position = {
-        x: 110 - this.doneesIniitial[i].vecteur.x * ratio,
-        y: 110 - this.doneesIniitial[i].vecteur.y * ratio,
+        x: 130 - this.doneesIniitial[i].vecteur.x * ratio,
+        y: 130 - this.doneesIniitial[i].vecteur.y * ratio,
       };
-      this.statTable.push(position);
+      this.statTable.push({
+        name: stat.name,
+        ratio: ratio * 100,
+        position: position,
+      });
     });
     let position;
-    return (position = `${this.statTable[0].x},${this.statTable[0].y} ${this.statTable[1].x},${this.statTable[1].y} ${this.statTable[2].x},${this.statTable[2].y} ${this.statTable[3].x},${this.statTable[3].y} ${this.statTable[4].x},${this.statTable[4].y} ${this.statTable[5].x},${this.statTable[5].y}`);
+    return (position = `${this.statTable[0].position.x},${this.statTable[0].position.y} ${this.statTable[1].position.x},${this.statTable[1].position.y} ${this.statTable[2].position.x},${this.statTable[2].position.y} ${this.statTable[3].position.x},${this.statTable[3].position.y} ${this.statTable[4].position.x},${this.statTable[4].position.y} ${this.statTable[5].position.x},${this.statTable[5].position.y}`);
   }
 
   createGraph() {
@@ -138,8 +154,8 @@ export class UserProfilComponent implements OnInit, AfterViewInit {
           y: ratio * vecteur.vecteur.y,
         };
         const svgPos = {
-          x: 110 - ratioVecteur.x,
-          y: 110 - ratioVecteur.y,
+          x: 130 - ratioVecteur.x,
+          y: 130 - ratioVecteur.y,
         };
         console.log(ratioVecteur, svgPos);
         return svgPos;

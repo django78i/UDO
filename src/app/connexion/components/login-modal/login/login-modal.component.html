@@ -22,7 +22,7 @@
         border-radius: 10px;
         height: 6px;
         --progress-background: #3e4add;
-        --background: #dfdfe8 ;
+        --background: #dfdfe8;
       "
       [value]="step"
       [ngClass]="{ notShow: stepperComp.selectedIndex == 0 }"
@@ -36,7 +36,7 @@
   >
     <mat-step [editable]="isEditable" style="height: 100% !important">
       <ng-template matStepLabel>Fill out your name</ng-template>
-      <app-connexion-choice></app-connexion-choice>
+      <app-connexion-choice (log)="login()"></app-connexion-choice>
     </mat-step>
     <mat-step
       [editable]="isEditable"
@@ -58,6 +58,9 @@
           >
             <mat-label>Pseudo</mat-label>
             <input matInput class="form-control" [(ngModel)]="pseudo" />
+            <mat-hint align="start" *ngIf="pseudo == ''"
+              >Cette donnée est obligatoire</mat-hint
+            >
           </mat-form-field>
         </div>
         <div
@@ -72,6 +75,7 @@
         >
           <button
             mat-button
+            [disabled]="pseudo == ''"
             matStepperNext
             (selectionChange)="next($event)"
             style="

@@ -4,14 +4,12 @@ import firebase from 'firebase/app';
 // import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import {
   doc,
+  DocumentData,
+  DocumentSnapshot,
   getDoc,
   getFirestore,
   setDoc,
-  addDoc,
-  collection,
-  onSnapshot,
-  getDocs,
-  query,
+  updateDoc,
 } from 'firebase/firestore';
 import {
   getAuth,
@@ -49,10 +47,9 @@ export class UserServiceService {
     const newUSer = {
       uid: user.uid,
       mail: user.email,
-      displayName: pseudo,
     };
     const db = getFirestore();
-    await setDoc(doc(db, 'pros', newUSer.uid), newUSer);
+    await setDoc(doc(db, 'users', newUSer.uid), newUSer);
   }
 
   logUserWithGoogle() {
@@ -68,7 +65,7 @@ export class UserServiceService {
         const user = result.user;
         console.log(user);
         this.findUser(user.uid).then((userDatabase) => {
-          if (!userDatabase) {
+          if (!userDatabase.data()) {
             console.log('notfind');
             this.createUserDataBase(user, user.displayName);
           }
@@ -86,12 +83,25 @@ export class UserServiceService {
       });
   }
 
-  async findUser(userUid) {
+  async getCurrentUser(): Promise<DocumentData> {
+    const auth = getAuth();
+    const user = await auth.currentUser;
+    const userDataBase = await this.findUser(user.uid);
+    console.log(userDataBase.data());
+    return userDataBase.data();
+  }
+
+  async findUser(userUid): Promise<DocumentSnapshot<DocumentData>> {
     console.log(userUid);
     const db = getFirestore();
     const user = await getDoc(doc(db, 'users', userUid));
     console.log('UserFind', JSON.stringify(user.data()));
     return user;
+  }
+
+  async updateUser(user) {
+    const db = getFirestore();
+    await updateDoc(doc(db, 'users', user.uid), user);
   }
 
   async googleSignIn() {

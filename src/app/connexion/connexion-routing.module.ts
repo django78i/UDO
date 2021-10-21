@@ -1,13 +1,18 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { LoginModalComponent } from './components/login-modal/login/login-modal.component';
 
 import { ConnexionPage } from './connexion.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: ConnexionPage
-  }
+    component: ConnexionPage,
+  },
+  {
+    path: 'login',
+    component: LoginModalComponent,
+  },
 ];
 
 @NgModule({
