@@ -4,6 +4,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  Input,
   OnInit,
   Output,
   QueryList,
@@ -16,10 +17,13 @@ import {
   IonRange,
   ModalController,
   PopoverController,
+  ToastController,
 } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
+import { ChampionnatsService } from 'src/app/services/championnats.service';
 import { SwiperOptions } from 'swiper';
 import { SwiperComponent } from 'swiper/angular';
+import moment from 'moment';
 
 @Component({
   selector: 'app-create-champ-pop-up',
@@ -30,12 +34,18 @@ export class CreateChampPopUpComponent
   implements OnInit, AfterContentChecked, AfterViewInit
 {
   formChamp: FormGroup;
-  dataCount: number = 2;
+  weekCount: number = 2;
+  seanceWeekCount: number = 2;
   maxPlayer = false;
+  private = {
+    privacy: false,
+    type: 'Friends&familly',
+  };
   ban: any = 'assets/banner/blackBanner.svg';
   title: BehaviorSubject<any> = new BehaviorSubject(null);
   @ViewChild('swiper') swiper: SwiperComponent;
   @Output() champ: EventEmitter<any> = new EventEmitter();
+  @Input() user: any;
 
   bannieres = [
     {
@@ -52,6 +62,9 @@ export class CreateChampPopUpComponent
     },
   ];
 
+  activitesList = [];
+  friendsList = [];
+
   config: SwiperOptions = {
     slidesPerView: 1,
     allowTouchMove: false,
@@ -65,7 +78,9 @@ export class CreateChampPopUpComponent
     private modalCtrl: ModalController,
     public fb: FormBuilder,
     public popoverController: PopoverController,
-    public elemRef: ElementRef
+    public elemRef: ElementRef,
+    public champService: ChampionnatsService,
+    public toastController: ToastController
   ) {}
 
   ngOnInit() {
@@ -97,17 +112,30 @@ export class CreateChampPopUpComponent
   }
 
   add() {
-    this.dataCount += 1;
-    console.log(this.dataCount);
+    this.weekCount += 1;
+    console.log(this.weekCount);
   }
 
   sub() {
-    if (this.dataCount != 0) {
-      this.dataCount -= 1;
-    } else {
-      this.dataCount = this.dataCount;
-    }
-    console.log(this.dataCount);
+    this.weekCount != 0
+      ? (this.weekCount -= 1)
+      : (this.weekCount = this.weekCount);
+  }
+
+  addSeanceWeek() {
+    this.seanceWeekCount += 1;
+    console.log(this.seanceWeekCount);
+  }
+
+  privacy() {
+    this.private.privacy = !this.private.privacy;
+    this.private.type = this.private.privacy ? 'Network' : 'Friends&Familly';
+  }
+
+  subSeanceWeek() {
+    this.seanceWeekCount != 0
+      ? (this.seanceWeekCount -= 1)
+      : (this.seanceWeekCount = this.seanceWeekCount);
   }
 
   change() {
@@ -116,7 +144,6 @@ export class CreateChampPopUpComponent
   }
 
   getBan(ev) {
-    console.log(ev);
     this.ban = ev;
   }
 
@@ -126,9 +153,7 @@ export class CreateChampPopUpComponent
   }
 
   slideNext(data) {
-    console.log(this.swiper);
     this.sliderPage = data;
-    // console.log(this.sliderPage);
     this.swiper.swiperRef.slideNext();
   }
 
@@ -137,17 +162,13 @@ export class CreateChampPopUpComponent
   }
 
   focused(ev, index) {
+    console.log(ev);
     const elemStyle = document.querySelectorAll('.checkZone');
     elemStyle.forEach((elem, i) => {
       console.log(elem);
-      if (index === i) {
-        console.log(index, i);
-        elem.classList.add('check');
-        console.log(elem)
-      } else {
-        console.log(index, i);
-        elem.classList.remove('check');
-      }
+      index === i
+        ? elem.classList.add('check')
+        : elem.classList.remove('check');
     });
 
     this.checkBanniere.map((ban, i) => {
@@ -161,11 +182,54 @@ export class CreateChampPopUpComponent
     this.ban = ev;
   }
 
+  eventActivite(event) {
+    console.log('ici', event);
+    this.activitesList = event;
+  }
+
   backSlide(ev) {
     this.swiper.swiperRef.slidePrev();
   }
 
   afffich(ev) {
     console.log(ev);
+  }
+
+  chooseFriends(event) {
+    this.friendsList = event;
+  }
+
+  saveChamp() {
+    const champ = {
+      dateCreation: new Date(),
+      dateDemarrage: moment(new Date()).add(7, 'days').toDate(),
+      banniere: this.ban,
+      name: this.formChamp.get('name').value,
+      dureeMax: this.weekCount,
+      seanceByWeek: this.seanceWeekCount,
+      niveauMax: this.range.upper,
+      niveauMin: this.range.lower,
+      activites: this.activitesList,
+      createur: {
+        name: this.user.userName,
+        uid: this.user.uid,
+      },
+      type: this.private.type,
+      participants: this.friendsList,
+      nbParticipants: this.friendsList.length,
+    };
+    console.log(champ);
+    this.champService.createChampionnat(champ);
+    this.presentToast();
+    this.close();
+  }
+
+  async presentToast() {
+    const toast = await this.toastController.create({
+      message: 'Votre championnat a été créé.',
+      duration: 2000,
+      cssClass : "toastMode"
+    });
+    toast.present();
   }
 }

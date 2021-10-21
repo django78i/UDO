@@ -84,7 +84,6 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
     console.log('Loading dismissed!');
 
     this.navController.navigateForward(['']);
-    this.modalCtl.dismiss();
   }
 
   saveOnBoarding() {

@@ -14,16 +14,13 @@ import { tap } from 'rxjs/operators';
   styleUrls: ['./activity-list.component.scss'],
 })
 export class ActivityListComponent implements OnInit {
-  @Output() backAction: EventEmitter<any> = new EventEmitter();
-
-  masterCheck: boolean = false;
   activites: any[] = [
     {
       nom: 'Athlétisme',
       nbActivites: 40,
       ssActivites: [
         { isChecked: false, nom: 'Saut en hauteur' },
-        { isChecked: true, nom: '100m' },
+        { isChecked: false, nom: '100m' },
         { isChecked: false, nom: '200m' },
         { isChecked: false, nom: 'Saut en longueur' },
       ],
@@ -70,9 +67,11 @@ export class ActivityListComponent implements OnInit {
       all: false,
     },
   ];
-
   activitesSub$: Subject<any[]> = new BehaviorSubject(null);
   activites$: Observable<any[]>;
+  choix: any[] = [];
+  @Output() activitesEvent: EventEmitter<any> = new EventEmitter();
+  @Output() backAction: EventEmitter<any> = new EventEmitter();
 
   constructor() {}
 
@@ -90,6 +89,7 @@ export class ActivityListComponent implements OnInit {
   }
 
   activate(index) {
+    console.log(this.activites[index].active);
     this.activites[index].active
       ? (this.activites[index].active = !this.activites[index].active)
       : (this.activites[index].active = true);
@@ -108,7 +108,17 @@ export class ActivityListComponent implements OnInit {
     this.activitesSub$.next(this.activites);
   }
 
-  change(event) {
-    console.log(event);
+  change(event, i, j, categ) {
+    console.log(event, this.activites[i].ssActivites[j].isChecked, categ);
+    if (categ.isChecked == true) {
+      this.choix.push(categ.nom);
+    } else {
+      const indCategorieInTable = this.choix.findIndex((r) => r == categ.nom);
+      indCategorieInTable != -1
+        ? this.choix.splice(indCategorieInTable, 1)
+        : '';
+    }
+    console.log(this.choix);
+    this.activitesEvent.emit(this.choix);
   }
 }

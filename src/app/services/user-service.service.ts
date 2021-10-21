@@ -4,6 +4,8 @@ import firebase from 'firebase/app';
 // import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import {
   doc,
+  DocumentData,
+  DocumentSnapshot,
   getDoc,
   getFirestore,
   setDoc,
@@ -81,7 +83,15 @@ export class UserServiceService {
       });
   }
 
-  async findUser(userUid) {
+  async getCurrentUser(): Promise<DocumentData> {
+    const auth = getAuth();
+    const user = await auth.currentUser;
+    const userDataBase = await this.findUser(user.uid);
+    console.log(userDataBase.data());
+    return userDataBase.data();
+  }
+
+  async findUser(userUid): Promise<DocumentSnapshot<DocumentData>> {
     console.log(userUid);
     const db = getFirestore();
     const user = await getDoc(doc(db, 'users', userUid));
