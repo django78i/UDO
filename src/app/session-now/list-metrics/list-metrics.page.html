@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-item lines="none">
+      <ion-img (click)="close(currentChoix)" class="close" slot="start" src="assets/images/close.svg"></ion-img>
+    </ion-item>
+   
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row class="c-row">
+      <ion-label class="nombre">
+        {{currentChoix?.nombre}}
+      </ion-label>
+    </ion-row>
+    <ion-row class="c-row">
+      <ion-label class="name">
+        {{currentChoix?.name}}
+      </ion-label>
+    </ion-row>
+  </ion-grid>
+  <ion-grid class="c-grid">
+    <ion-row>
+      <ion-col  class="c-col" size="4" *ngFor="let item of listChoix;let i=index">
+        <ion-row >
+          <span class="c-img" [ngStyle]="{'background-color':item.name ==currentChoix?.name ? item.color : 'transparent','padding' : item.padding ? item.padding : '0' }">
+             <ion-img (click)="getChoix(item)" [ngStyle]="{'width': item.width ? item.width : item.width,'height' : item.height ? item.height : item.height}"  class="label-img" [src]="item.active == false?item.img:item.secondeImg"></ion-img>
+          </span>
+        </ion-row>
+        <ion-row>
+          <ion-label class="label-name">
+            {{item?.name}}
+          </ion-label>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

@@ -1,0 +1,100 @@
+ion-header{
+    --ion-background-color: #F4F5FA;
+    .close{
+        width: 16px;
+        height: 16px;
+    }
+    ion-title{
+        text-align: center;
+        color: #2A2A2C;
+        font-family: "PoppinsBold";
+        font-size: 13px;
+    }
+    .c-head-label{
+        background: #FFFFFF;
+        color: #2A2A2C;
+        border-radius: 15px;
+        width: 50px;
+        height: 31px;
+        font-size: 14px;
+        font-family: "StaatlichesRegular";
+        padding: 11px 12px;
+    }
+}
+ion-content{
+    --ion-background-color: #F4F5FA;
+
+    .c-row{
+        margin-top: 45px;
+    }
+    .c-item{
+        --ion-background-color: #FFFFFF;
+        width: 95%;
+        margin: 7px 11px;
+        border-radius: 24px;
+    }
+    .point{
+        position: absolute;
+        width: 3px;
+        height: 3px;
+        background: #2A2A2C 0% 0% no-repeat padding-box;
+        border-radius: 50%;
+        margin-top: -28px;
+        left: 55px;
+    }
+    .c-row-first{
+        margin: 8px 0;
+    }
+    .nombre{
+        width: 30px;
+        background: white;
+        border-radius: 50%;
+        height: 30px;
+        position: absolute;
+        color: #14213A;
+        margin-left: 39px;
+        margin-top: 34px;
+        font-size: 12px;
+        padding-left: 8px;
+        padding-top: 11px;
+        font-family: "StaatlichesRegular";
+        display: none;
+    }
+    .item-name{
+        --ion-background-color: transparent; 
+        margin-left: -18px;
+        width: 100%;
+    }
+    .c-grid{
+        margin-left: 15px;
+    }
+    .name{
+        color: #2A2A2C;
+        font-family: "PoppinsSemiBold";
+        font-size: 14px;
+        margin-top: -18px;
+    }
+    .date{
+        color: #2A2A2C;
+        font-size: 10px;
+        margin-left: -103px;
+        margin-top: -19px;
+        opacity: 50%;
+    }
+    .comment{
+        opacity: 75%;
+        margin-top: -23px;
+        font-family: "PoppinsMedium";
+        color: #2A2A2C;
+        font-size: 12px;
+    }
+    .icon-end{
+        position: relative;
+        right: 5px;
+        top: -20px;
+        z-index: 9999999999;
+        width: 55px;
+        height: 53px;
+        transform: matrix(0.94, -0.34, 0.34, 0.94, 0, 0);
+    }
+}

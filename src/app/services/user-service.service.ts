@@ -85,7 +85,7 @@ export class UserServiceService {
     console.log(userUid);
     const db = getFirestore();
     const user = await getDoc(doc(db, 'users', userUid));
-    console.log('UserFind', user);
+    console.log('UserFind', JSON.stringify(user.data()));
     return user;
   }
 
@@ -143,4 +143,6 @@ export class UserServiceService {
     const auth = getAuth();
     auth.signOut();
   }
+
+
 }

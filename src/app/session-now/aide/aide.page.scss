@@ -1,0 +1,62 @@
+ion-header{
+    --ion-background-color: #F4F5FA;
+    ion-img{
+        width: 13.26px;
+        height: 13.26px;
+    }
+}
+ion-content{
+    --ion-background-color: #F4F5FA;
+    .bonHomme{
+        ion-img{
+            margin: 40px auto 73px auto;
+            width: 240px;
+        }
+    }
+    .bonHomme2{
+        ion-img{
+            margin: 0 auto 73px auto;
+            width: 240px;
+        }
+    }
+    .bonHomme3{
+        ion-img{
+            margin: 68px auto 68px auto;
+            width: 304px;
+        }
+    }
+    .info ion-label{
+        font-family: "PoppinsBold";
+        font-size: 24px;
+        margin: auto;
+        color: black;
+        // height: 44px;
+        margin-bottom: 15px;
+    }
+    .desc {
+        padding: 14px;
+        margin-top: -10px;
+        ion-label{
+            font-family: "PoppinsMedium";
+            font-size: 12px;
+            margin: auto;
+            color: #373738;
+            opacity: 50%;
+            margin-bottom: 20px;
+            
+        }
+    }
+    .desc2 {
+        padding: 14px 30px;
+        margin-top: -10px;
+        ion-label{
+            font-family: "PoppinsMedium";
+            font-size: 12px;
+            margin: auto;
+            color: #373738;
+            opacity: 50%;
+            margin-bottom: 20px;
+            
+        }
+    }
+}

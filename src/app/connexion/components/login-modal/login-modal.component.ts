@@ -41,9 +41,9 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
     public zone: NgZone,
     public modalCtl: ModalController,
     public picker: PickerController,
-    public userService: UserService,
+    public loadingController: LoadingController,
     public navController: NavController,
-    public loadingController: LoadingController
+    public userService: UserService
   ) {}
 
   ngOnInit() {}
@@ -52,26 +52,7 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
     this.modalCtl.dismiss();
   }
 
-  async ngAfterViewInit() {
-    const auth = getAuth();
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        const userDataBase = from(this.userService.findUser(user.uid));
-        userDataBase
-          .pipe(
-            tap((us) => {
-              this.findPreference(us.data())
-                ? this.redirect()
-                : this.stepperComp.next();
-            })
-          )
-          .subscribe((user) => {
-            this.user = user.data();
-            console.log(user.data());
-          });
-      }
-    });
-
+  ngAfterViewInit() {
     console.log(
       this.stepperComp?.selectionChange.subscribe((r) => {
         this.stepperEvent = r;
@@ -90,10 +71,6 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
         }
       })
     );
-  }
-
-  login() {
-    this.userService.connectGoogle();
   }
 
   async redirect(): Promise<void> {

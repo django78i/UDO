@@ -12,11 +12,13 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
+// import {CommonModule} from "@angular/common";
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
   imports: [
     BrowserModule,
+   // CommonModule,
     IonicModule.forRoot(),
     AppRoutingModule,
     BrowserAnimationsModule,
