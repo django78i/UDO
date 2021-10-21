@@ -1,7 +1,8 @@
 {
   "name": "UDOblank",
   "integrations": {
-    "cordova": {}
+    "cordova": {},
+    "capacitor": {}
   },
   "type": "angular"
 }
