@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { MusicFeedService } from '../services/music-feed.service';
-import { ModalController, AnimationController } from '@ionic/angular';
+import {
+  ModalController,
+  AnimationController,
+  NavController,
+} from '@ionic/angular';
 import { MenuUserComponent } from '../components/menu-user/menu-user.component';
 
 @Component({
@@ -12,7 +16,8 @@ export class TabsPage implements OnInit {
   constructor(
     public modalController: ModalController,
     public animationCtrl: AnimationController,
-    public msService: MusicFeedService
+    public msService: MusicFeedService,
+    public navController: NavController
   ) {}
 
   ngOnInit() {}
@@ -55,7 +60,7 @@ export class TabsPage implements OnInit {
     return await modal.present();
   }
 
-  launch(){
-    window.location.href = 'http://localhost:8100';
+  launch() {
+    this.navController.navigateForward(['session-now']);
   }
 }
