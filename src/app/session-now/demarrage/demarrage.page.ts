@@ -121,20 +121,37 @@ export class DemarragePage implements OnInit {
     for (let item of this.listElement){
      this.queryMetrics(item.fieldname,item);
     }
-    //let that=this;
+    let that=this;
     // this.getMetrics();
     // @ts-ignore
-    // setTimeout(()=>that.getMetrics(),10000);
+     setTimeout(()=>{that.getMetrics();},1000);
   }
   // @ts-ignore
   queryMetrics(metric,item){
-    return this.health.query({
-      startDate: new Date(new Date().getTime() - 10 * 24 * 60 * 60 * 1000), // three days ago
-      endDate: new Date(), // now
-      dataType: metric,
-      limit: 100
-    }).then(res=>{item.nombre=res.length>0?res[0]:'--';console.log('res',res);})
-      .catch(e => console.log('error1 ',e));
+    if (metric==='steps' || metric==='distance' ){
+      this.health.queryAggregated({
+        startDate: new Date(new Date().getTime() - 3 * 24 * 60 * 60 * 1000), // three days ago
+        endDate: new Date(), // now
+        dataType: metric,
+        bucket:'day',
+        //limit: 1000
+      }).then(res=>{
+        item.nombre=res.length>0?(Math.round((parseFloat(res[res.length-1]?.value) + Number.EPSILON) * 100) / 100):'0';
+        console.log('res',res);
+      })
+        .catch(e => console.log('error3 ', e));
+    }
+    else{
+      this.health.query({
+        startDate: new Date(new Date().getTime() - 10 * 24 * 60 * 60 * 1000), // three days ago
+        endDate: new Date(), // now
+        dataType: metric,
+        limit: 100
+      }).then(res=>{
+        item.nombre=res.length>0?(Math.round((parseFloat(res[res.length-1]?.value) + Number.EPSILON) * 100) / 100):'0';
+        console.log('res',res);})
+        .catch(e => console.log('error1 ',e));
+    }
   }
   async choix(item, index) {
     const modal = await this.modalCtrl.create({
