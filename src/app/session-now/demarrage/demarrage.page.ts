@@ -21,6 +21,13 @@ import { Platform } from '@ionic/angular';
 })
 export class DemarragePage implements OnInit {
   listElement: any = [];
+   t: any;
+   ms = 0;
+   s = 0;
+   mn = 0;
+   h = 0;
+   status='play';
+//Source : www.exelib.net
   listChoix = [
     {
       img: 'assets/images/distance.svg',
@@ -62,6 +69,7 @@ export class DemarragePage implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.start();
     this.checkPlatformReady();
 
     this.listElement = [
@@ -240,4 +248,33 @@ export class DemarragePage implements OnInit {
   back() {
     this.navController.navigateForward(['tabs/tab3']);
   }
+  /*La fonction update_chrono incrémente le nombre de millisecondes par 1 <==> 1*cadence = 100 */
+  updateChrono(){
+    this.ms+=1;
+    /*si ms=10 <==> ms*cadence = 1000ms <==> 1s alors on incrémente le nombre de secondes*/
+    if(this.ms===10){
+      this.ms=1;
+      this.s+=1;
+    }
+    /*on teste si s=60 pour incrémenter le nombre de minute*/
+    if(this.s===60){
+      this.s=0;
+      this.mn+=1;
+    }
+    if(this.mn===60){
+      this.mn=0;
+      this.h+=1;
+    }
+  }
+   start(){
+     this.status='play';
+    this.t =setInterval(()=> {this.updateChrono(); },100);
+   // btn_start.disabled=true;
+  }
+  stop(){
+    this.status='pause';
+    clearInterval(this.t);
+   //btn_start.disabled=false;
+  }
+//Source : www.exelib.net
 }

@@ -34,7 +34,7 @@
   </ion-row>
   <ion-grid class="time">
     <ion-row>
-      <span class="value"> 10:55 </span>
+      <span class="value"> {{mn | number: '2.0-0'}}:{{s| number: '2.0-0'}} </span>
     </ion-row>
     <ion-row>
       <span class="duree"> Durée </span>
@@ -77,8 +77,11 @@
             <ion-img src="assets/images/settings.svg"></ion-img>
           </span>
           <span class="start">
-            <div class="contenu">
+            <div class="contenu" *ngIf="status=='play'" (click)="stop()">
               <ion-img src="assets/images/demarrer.svg"></ion-img>
+            </div>
+             <div class="contenu" *ngIf="status=='pause'" (click)="stop()">
+              <ion-img src="assets/images/play.svg"></ion-img>
             </div>
           </span>
           <span class="photo" slot="end" (click)="openCamera()">
