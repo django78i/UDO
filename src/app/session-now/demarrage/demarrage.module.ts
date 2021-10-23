@@ -9,6 +9,7 @@ import { DemarragePageRoutingModule } from './demarrage-routing.module';
 import { DemarragePage } from './demarrage.page';
 import {Camera} from '@ionic-native/camera/ngx';
 import {RouteReuseStrategy} from '@angular/router';
+import {Health} from '@ionic-native/health/ngx';
 
 @NgModule({
   imports: [
@@ -18,7 +19,7 @@ import {RouteReuseStrategy} from '@angular/router';
     DemarragePageRoutingModule
   ],
   declarations: [DemarragePage],
-  providers: [Camera,{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [Camera,{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },Health],
 
 })
 export class DemarragePageModule {}

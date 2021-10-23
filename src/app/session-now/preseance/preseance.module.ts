@@ -13,6 +13,7 @@ import {Camera} from '@ionic-native/camera/ngx';
 import {RouteReuseStrategy} from '@angular/router';
 import {ActivitiesPage} from '../activities/activities.page';
 import {ListMetricsPage} from '../list-metrics/list-metrics.page';
+import {Health} from '@ionic-native/health/ngx';
 
 @NgModule({
   imports: [
@@ -24,7 +25,7 @@ import {ListMetricsPage} from '../list-metrics/list-metrics.page';
     RoundProgressModule
   ],
   declarations: [PreseancePage,ActivitiesPage,ListMetricsPage],
-  providers: [Camera,{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [Camera,{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },Health],
 
 })
 export class PreseancePageModule {}

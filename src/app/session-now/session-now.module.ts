@@ -24,6 +24,8 @@ import {ListMetricsPage} from './list-metrics/list-metrics.page';
 import { Camera } from '@ionic-native/camera/ngx';
 import {RoundProgressModule} from 'angular-svg-round-progressbar';
 import {PreseancePage} from './preseance/preseance.page';
+import {Health} from '@ionic-native/health/ngx';
+
 
 @NgModule({
   imports: [
@@ -44,7 +46,7 @@ import {PreseancePage} from './preseance/preseance.page';
   ],
   declarations: [SessionNowComponent,ActivitiesPage,ReglagesPage,ListMetricsPage],
   // entryComponents: [ActivitiesPage,ReglagesPage,ListMetricsPage],
-  providers: [Camera,{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [Camera,{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },Health],
 
 })
 export class SessionNowPageModule {}

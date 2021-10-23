@@ -9,6 +9,10 @@ import { NotificationsPage } from '../notifications/notifications.page';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { ReglagesPage } from '../reglages/reglages.page';
 import { Router } from '@angular/router';
+import { Health } from '@ionic-native/health/ngx';
+import { Platform } from '@ionic/angular';
+
+
 
 @Component({
   selector: 'app-demarrage',
@@ -23,24 +27,28 @@ export class DemarragePage implements OnInit {
       nombre: '1.78',
       name: 'Distance',
       exposant: 'KM',
+      fieldname:'distance'
     },
     {
       img: 'assets/images/pas.svg',
       nombre: '2617',
       name: 'Nombre de pas',
       exposant: '',
+      fieldname:'steps'
     },
     {
       img: 'assets/images/coeur.svg',
       nombre: '135',
       name: 'BPM',
       exposant: '',
+      fieldname:'height'
     },
     {
       img: 'assets/images/calorie.svg',
       nombre: '250',
       name: 'Calories',
       exposant: 'CAL',
+      fieldname:'weight'
     },
   ];
   constructor(
@@ -48,34 +56,42 @@ export class DemarragePage implements OnInit {
     private router: Router,
     private toastCtrl: ToastController,
     private camera: Camera,
-    public navController: NavController
+    public  navController: NavController,
+    private health: Health,
+    private platform: Platform
   ) {}
 
   ngOnInit() {
+    this.checkPlatformReady();
+
     this.listElement = [
       {
         img: 'assets/images/distance.svg',
         nombre: '1.78',
         name: 'Distance',
         exposant: 'KM',
+        fieldname:'distance'
       },
       {
         img: 'assets/images/pas.svg',
         nombre: '2617',
         name: 'Nombre de pas',
         exposant: '',
+        fieldname:'steps'
       },
       {
         img: 'assets/images/coeur.svg',
         nombre: '135',
         name: 'BPM',
         exposant: '',
+        fieldname:'height'
       },
       {
         img: 'assets/images/calorie.svg',
         nombre: '250',
         name: 'Calories',
         exposant: 'CAL',
+        fieldname:'weight'
       },
     ];
     let choix = localStorage.getItem('choix');
@@ -84,6 +100,41 @@ export class DemarragePage implements OnInit {
     } else {
       this.listElement = JSON.parse(localStorage.getItem('choix'));
     }
+  }
+  async checkPlatformReady() {
+    const ready = !!await this.platform.ready();
+    if (ready) {
+// Use plugin functions here
+      this.health.requestAuthorization([
+        'distance', 'nutrition',  //read and write permissions
+        {
+          read: ['steps','height', 'weight'],//read only permission
+          write: ['height', 'weight']  //write only permission
+        }
+      ])
+        .then(res => this.getMetrics())
+        .catch(e => console.log('error1 '+e));
+    }
+
+  }
+  getMetrics(){
+    for (let item of this.listElement){
+     this.queryMetrics(item.fieldname,item);
+    }
+    //let that=this;
+    // this.getMetrics();
+    // @ts-ignore
+    // setTimeout(()=>that.getMetrics(),10000);
+  }
+  // @ts-ignore
+  queryMetrics(metric,item){
+    return this.health.query({
+      startDate: new Date(new Date().getTime() - 10 * 24 * 60 * 60 * 1000), // three days ago
+      endDate: new Date(), // now
+      dataType: metric,
+      limit: 100
+    }).then(res=>{item.nombre=res.length>0?res[0]:'--';console.log('res',res);})
+      .catch(e => console.log('error1 ',e));
   }
   async choix(item, index) {
     const modal = await this.modalCtrl.create({

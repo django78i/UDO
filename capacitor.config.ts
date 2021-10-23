@@ -2,6 +2,7 @@ import { CapacitorConfig } from '@capacitor/cli';
 
 // @ts-ignore
 const config: CapacitorConfig = {
+ // appId: 'fr.udo.health.blueprint',
   appId: 'fr.udo.health.blueprint',
   appName: 'Udo',
   webDir: 'www',
