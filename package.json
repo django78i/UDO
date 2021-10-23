@@ -28,7 +28,6 @@
     "@capacitor/haptics": "1.1.2",
     "@capacitor/keyboard": "1.1.2",
     "@capacitor/status-bar": "1.0.5",
-    "@ionic-native/app-launcher": "^5.34.0",
     "@ionic-native/camera": "^5.36.0",
     "@ionic-native/core": "^5.34.0",
     "@ionic-native/google-plus": "^5.36.0",
@@ -39,7 +38,6 @@
     "cordova-plugin-camera": "^6.0.0",
     "cordova-plugin-googleplus": "^8.5.2",
     "cordova-plugin-health": "^2.0.3",
-    "cordova-plugin-video-player": "git+https://github.com/moust/cordova-plugin-videoplayer.git",
     "firebase": "^9.1.1",
     "moment": "^2.29.1",
     "ng-circle-progress": "^1.6.0",
@@ -66,7 +64,6 @@
     "@types/node": "^12.11.1",
     "@typescript-eslint/eslint-plugin": "4.16.1",
     "@typescript-eslint/parser": "4.16.1",
-    "cordova-plugin-app-launcher": "git+https://github.com/nchutchind/cordova-plugin-app-launcher.git",
     "eslint": "^7.6.0",
     "eslint-plugin-import": "2.22.1",
     "eslint-plugin-jsdoc": "30.7.6",
@@ -88,7 +85,6 @@
   "description": "An Ionic project",
   "cordova": {
     "plugins": {
-      "cordova-plugin-app-launcher": {},
       "cordova-plugin-googleplus": {
         "REVERSED_CLIENT_ID": "com.googleusercontent.apps.911285735248-p38u0egepsqdnjc0stbmepg11g1cf4bc",
         "WEB_APPLICATION_CLIENT_ID": "911285735248-p38u0egepsqdnjc0stbmepg11g1cf4bc.apps.googleusercontent.com"

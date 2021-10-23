@@ -6,7 +6,7 @@ import {SessionNowPageRoutingModule} from "./session-now/session-now-routing.mod
 const routes: Routes = [
   {
     path: '',
-    canActivate: [RouteGuardService],
+    // canActivate: [RouteGuardService],
     loadChildren: () =>
       import('./tabs/tabs.module').then((m) => m.TabsPageModule),
   },
