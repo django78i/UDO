@@ -15,7 +15,7 @@ ion-content{
             margin:49px auto 25px auto;
         }
         .name{
-            font-family: "PoppinsMedium";
+            font-family: "PoppinsMedium" !important;
             color: black;
             margin: auto;
             opacity: 50%;
@@ -33,7 +33,7 @@ ion-content{
     //     height: 21px;
     // }
     .label-name{
-        font-family: "PoppinsMedium";
+        font-family: "PoppinsMedium" !important;
         color: #2A2A2C;
         margin: auto;
         opacity: 50%;

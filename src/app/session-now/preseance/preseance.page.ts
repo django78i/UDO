@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonSlides, ModalController } from '@ionic/angular';
-import { ActivitiesPage } from '../activities/activities.page';
 import { ReglagesPage } from '../reglages/reglages.page';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { Router } from '@angular/router';
+import { ActivitiesPage } from '../activities/activities.page';
 
 @Component({
   selector: 'app-preseance',
@@ -19,15 +19,15 @@ export class PreseancePage implements OnInit {
   };
   current=90;
   max=100;
-  isActif: boolean =false;
-  activite={name:'Sélectionnez une activité',image:'assets/images/questionmark.svg',padding:'padding: 34px 40px;',width:'25px'}
-  constructor(private modalCtrl: ModalController,private camera: Camera,
-    private router: Router) { }
+  isActif:boolean =false;
+  activite={name:'Sélectionnez une activité',image:'assets/images/questionmark.svg',padding2:'34px 40px;',width2:'25px'}
+  constructor(private modalCtrl:ModalController,private camera: Camera,
+    private router:Router) { }
 
   ngOnInit() {
-    const item = JSON.parse(localStorage.getItem('activite'));
+    let item = localStorage.getItem('activite');
     if(item){
-      this.activite = item;
+      this.activite = JSON.parse(item);
       this.isActif = true;
     }
   }
@@ -40,10 +40,11 @@ export class PreseancePage implements OnInit {
       }
     });
     modal.onDidDismiss().then((data: any) => {
-     const value = JSON.parse(localStorage.getItem('activite'));
+     let value = JSON.parse(localStorage.getItem('activite'));
      if(value) {
-       this.activite =value;
-     }
+      this.activite =value
+      this.isActif=true;
+    }
     });
     return await modal.present();
 
@@ -58,14 +59,14 @@ export class PreseancePage implements OnInit {
       }
     });
     modal.onDidDismiss().then((data: any) => {
-
+      
     });
     return await modal.present();
 
   }
 
   information() {
-    this.router.navigate(['aide']);
+    this.router.navigate([['session-now/aide']]);
   }
 
 
@@ -75,8 +76,8 @@ export class PreseancePage implements OnInit {
       destinationType: this.camera.DestinationType.DATA_URL,
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE
-    };
-
+    }
+    
     this.camera.getPicture(options).then((imageData) => {
      // imageData is either a base64 encoded string or a file URI
      // If it's base64 (DATA_URL):
@@ -87,20 +88,27 @@ export class PreseancePage implements OnInit {
   }
 
   start(){
-    this.router.navigate(['/session-now/counter']);
+    if(this.isActif){
+      let choice =JSON.parse(localStorage.getItem('reglages'));
+      if(!choice)
+        this.router.navigate(['/session-now/counter']);
+      else{
+        if(choice.compteRebour == true){
+          this.router.navigate(['/session-now/demarrage']);
+        }else{
+          this.router.navigate(['/session-now/counter']);
+        }
+      }  
+    }
   }
 
   swipeNext(){
-
+    
     this.slides.getActiveIndex().then((index: number) => {
-      if(index !== 2){
-        this.slides.slideNext();
-      }
-      else {
-        this.slides.slideTo(0);
-      }
+      if(index != 2) this.slides.slideNext();
+      else this.slides.slideTo(0);
   });
-
+    
   }
   retour(){
     window.history.back();

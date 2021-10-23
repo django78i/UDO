@@ -2,162 +2,147 @@
   <ion-toolbar>
     <ion-item lines="none">
       <ion-img slot="start" class="backArrow" (click)="close()" src="assets/images/backArrow.svg"> </ion-img>
-    <ion-title>Réglages</ion-title>
-    <ion-img slot="end" class="info" (click)="information()" src="assets/images/feather-info.svg"> </ion-img>
-  </ion-item>
+      <ion-title>Réglages</ion-title>
+      <ion-img slot="end" class="info" (click)="information()" src="assets/images/feather-info.svg"> </ion-img>
+    </ion-item>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <!-- <ion-item class="regl-item" lines="none">
-   <span class="tapis-img">
-    <ion-img slot="start" class="tapis"  src="assets/images/tapis2.PNG"></ion-img>
-   </span>
-    <div  class="reglage">
+  <ion-item class="regl-item" lines="none">
+    <span class="tapis-img0">
+      <ion-img slot="start" class="rotate" src="assets/images/verouillage.PNG"></ion-img>
+    </span>
+    <div class="reglage">
       <ion-row class="name">
-        <ion-label >
-          Tapis de course
+        <ion-label>
+          Verrouilage de l'interface
         </ion-label>
       </ion-row>
       <ion-row class="nombre">
         <ion-label>
-        Type d'activité
+          Evite les faux mouvements
         </ion-label>
       </ion-row>
     </div>
-   <span class="arrow" slot="end" (click)="choisirActivite()">
-    <ion-img   src="assets/images/deployRight.svg" >
-    </ion-img>
-   </span>
-
-  </ion-item> -->
-  
-  <ion-item class="regl-item" lines="none">
-    <span class="tapis-img0">
-     <ion-img slot="start" class="rotate"  src="assets/images/verouillage.PNG"></ion-img>
-    </span>
-     <div  class="reglage">
-       <ion-row class="name">
-         <ion-label >
-          Verrouilage de l'interface
-         </ion-label>
-       </ion-row>
-       <ion-row class="nombre">
-         <ion-label>
-          Evite les faux mouvements
-         </ion-label>
-       </ion-row>
-     </div>
     <span class="toggle" slot="end">
-      <ion-toggle class="button iconChevron" toggle-class="toggle-calm" ></ion-toggle>
+      <ion-toggle mode="ios" [checked]="listReglages.verrouillage" (ionChange)="checkReglage($event,'verrouillage')"  class="button iconChevron" toggle-class="toggle-calm"></ion-toggle>
     </span>
- 
-   </ion-item>
+
+  </ion-item>
 
   <ion-item class="regl-item" lines="none">
     <span class="tapis-img2">
-     <ion-img slot="start" class="rotate"  src="assets/images/rotate.svg"></ion-img>
+      <ion-img slot="start" class="rotate" src="assets/images/rotate.svg"></ion-img>
     </span>
-     <div  class="reglage">
-       <ion-row class="name">
-         <ion-label >
+    <div class="reglage">
+      <ion-row class="name">
+        <ion-label>
           Rotation automatique
-         </ion-label>
-       </ion-row>
-       <ion-row class="nombre">
-         <ion-label>
+        </ion-label>
+      </ion-row>
+      <ion-row class="nombre">
+        <ion-label>
           Réarrangement de l’interface
-         </ion-label>
-       </ion-row>
-     </div>
+        </ion-label>
+      </ion-row>
+    </div>
     <span class="toggle" slot="end">
-      <ion-toggle class="button iconChevron" toggle-class="toggle-calm"></ion-toggle>
+      <ion-toggle mode="ios" [checked]="listReglages.rotation" (ionChange)="checkReglage($event,'rotation')"  class="button iconChevron" toggle-class="toggle-calm"></ion-toggle>
     </span>
- 
-   </ion-item>
-   <ion-item class="regl-item" lines="none">
+
+  </ion-item>
+  <ion-item class="regl-item" lines="none">
     <span class="tapis-img3">
-     <ion-img slot="start" class="carte"  src="assets/images/map.svg"></ion-img>
+      <ion-img slot="start" class="carte" src="assets/images/map.svg"></ion-img>
     </span>
-     <div  class="reglage">
-       <ion-row class="name">
-         <ion-label >
-           Carte
-         </ion-label>
-       </ion-row>
-       <ion-row class="nombre">
-         <ion-label>
+    <div class="reglage">
+      <ion-row class="name">
+        <ion-label>
+          Carte
+        </ion-label>
+      </ion-row>
+      <ion-row class="nombre">
+        <ion-label>
           Afficher votre position GPS
-         </ion-label>
-       </ion-row>
-     </div>
+        </ion-label>
+      </ion-row>
+    </div>
     <span class="arrow" slot="end">
-     <ion-img   src="assets/images/deployRight.svg" >
-     </ion-img>
+      <ion-img src="assets/images/deployRight.svg">
+      </ion-img>
     </span>
- 
-   </ion-item>
-   <ion-item class="regl-item" lines="none">
-     <span class="tapis-img4">
-      <ion-img slot="start" class="rotate"  src="assets/images/volume.svg"></ion-img>
-     </span>
-      <div  class="reglage">
-        <ion-row class="name">
-          <ion-label >
-            Son des encouragements
-          </ion-label>
-        </ion-row>
-        <ion-row class="nombre">
-          <ion-label>
-            Activer ou désactivez les effets sonores
-          </ion-label>
-        </ion-row>
-      </div>
-     <span class="toggle" slot="end">
-       <ion-toggle class="button iconChevron" toggle-class="toggle-calm" checked></ion-toggle>
-     </span>
-  
-    </ion-item>
-    <ion-item class="regl-item" lines="none">
-      <span class="tapis-img5">
-       <ion-img slot="start" class="tapis"  src="assets/images/countdown.svg"></ion-img>
-      </span>
-       <div  class="reglage">
-         <ion-row class="name">
-           <ion-label >
-            Compte à rebours
-           </ion-label>
-         </ion-row>
-         <ion-row class="nombre">
-           <ion-label>
-            Activez ou désactivez le compte à rebours
-           </ion-label>
-         </ion-row>
-       </div>
-       <span class="toggle" slot="end">
-        <ion-toggle class="button iconChevron" toggle-class="toggle-calm" checked></ion-toggle>
-      </span>
-   
-     </ion-item>
-     <ion-item class="regl-item" lines="none">
-       <span class="tapis-img6">
-        <ion-img slot="start" class="rotate"  src="assets/images/ghost.svg"></ion-img>
-       </span>
-        <div  class="reglage">
-          <ion-row class="name">
-            <ion-label >
-              Mode privé
-            </ion-label>
-          </ion-row>
-          <ion-row class="nombre">
-            <ion-label>
-              Masquer mes informations de séance
-            </ion-label>
-          </ion-row>
-        </div>
-       <span class="toggle" slot="end">
-         <ion-toggle class="button iconChevron" toggle-class="toggle-calm" ></ion-toggle>
-       </span>
-    
-      </ion-item>
+
+  </ion-item>
+  <ion-item class="regl-item" lines="none">
+    <span class="tapis-img4">
+      <ion-img slot="start" class="rotate" src="assets/images/volume.svg"></ion-img>
+    </span>
+    <div class="reglage">
+      <ion-row class="name">
+        <ion-label>
+          Son des encouragements
+        </ion-label>
+      </ion-row>
+      <ion-row class="nombre">
+        <ion-label>
+          Activer ou désactivez les effets sonores
+        </ion-label>
+      </ion-row>
+    </div>
+    <span class="toggle" slot="end">
+      <ion-toggle mode="ios" [checked]="listReglages.son" (ionChange)="checkReglage($event,'son')"  class="button iconChevron" toggle-class="toggle-calm"></ion-toggle>
+    </span>
+
+  </ion-item>
+  <ion-item class="regl-item" lines="none">
+    <span class="tapis-img5">
+      <ion-img slot="start" class="tapis" src="assets/images/countdown.svg"></ion-img>
+    </span>
+    <div class="reglage">
+      <ion-row class="name">
+        <ion-label>
+          Compte à rebours
+        </ion-label>
+      </ion-row>
+      <ion-row class="nombre">
+        <ion-label>
+          Activez ou désactivez le compte à rebours
+        </ion-label>
+      </ion-row>
+    </div>
+    <span class="toggle" slot="end">
+      <ion-toggle mode="ios" [checked]="listReglages.compteRebour" (ionChange)="checkReglage($event,'compteRebour')"  class="button iconChevron" toggle-class="toggle-calm" ></ion-toggle>
+    </span>
+
+  </ion-item>
+  <ion-item class="regl-item" lines="none">
+    <span class="tapis-img6">
+      <ion-img slot="start" class="rotate" src="assets/images/ghost.svg"></ion-img>
+    </span>
+    <div class="reglage">
+      <ion-row class="name">
+        <ion-label>
+          Mode privé
+        </ion-label>
+      </ion-row>
+      <ion-row class="nombre">
+        <ion-label>
+          Masquer mes informations de séance
+        </ion-label>
+      </ion-row>
+    </div>
+    <span class="toggle" slot="end">
+      <ion-toggle mode="ios" (ionChange)="checkReglage($event,'modePrive')" [checked]="listReglages.modePrive" class="button iconChevron" toggle-class="toggle-calm"></ion-toggle>
+    </span>
+
+  </ion-item>
+  <ion-fab class="c-ion-fab" (click)="close()" vertical="bottom" horizontal="center" slot="fixed">
+    <!-- <ion-fab-button> -->
+    <span class="c-fab">
+      <span class="textFab">10:55</span>
+      <ion-img src="assets/images/smallArrow.svg"></ion-img>
+    </span>
+    <!-- </ion-fab-button> -->
+  </ion-fab>
 </ion-content>

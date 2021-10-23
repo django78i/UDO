@@ -1,17 +1,18 @@
-ion-header{
-    --ion-background-color: #F4F5FA;
-    .img-back{
-        width: 13.26px;
-        height: 13.26px;
-    }
-    .img-info{
-        width: 23.14px;
-        height: 23.14px;
-    }
-}
+
 ion-content{
     --ion-background-color: #F4F5FA;
+    ion-toolbar{
+        --background: transparent !important;
    
+        .img-back{
+            width: 13.26px;
+            height: 13.26px;
+        }
+        .img-info{
+            width: 23.14px;
+            height: 23.14px;
+        }
+    }
     .firstPart{
         text-align: center;
         margin-top: 29px;
@@ -52,10 +53,6 @@ ion-content{
             border-radius: 50%;
             border-color: #EE457B;
             padding: 34px 40px;
-            
-            ion-img{
-                width: 25px;
-            }
         }
         .single{
             position: absolute;
@@ -81,10 +78,6 @@ ion-content{
             border-radius: 50%;
             border: 2px solid white;
             padding: 34px 40px;
-            
-            ion-img{
-                width: 25px;
-            }
         }
         .single{
             position: absolute;
@@ -127,13 +120,13 @@ ion-content{
         .classic{
             color: #2A2A2C;
             font-size: 16px;
-            font-family: "PoppinsSemiBold";
+            font-family: "PoppinsSemiBold" !important;
             opacity: 50%;
         }
         .classic2{
             color: #2A2A2C;
             font-size: 16px;
-            font-family: "PoppinsSemiBold";
+            font-family: "PoppinsSemiBold" !important;
             margin-left: 9px;
         }
         
@@ -150,7 +143,7 @@ ion-content{
         opacity: 30%;
         text-align: center;
         font-size: 20px;
-        font-family: "PoppinsBold";
+        font-family: "PoppinsBold" !important;
         margin: auto;
         margin-top: 30px;
     }
@@ -158,7 +151,7 @@ ion-content{
         color: #ffffff96;
         text-align: center;
         font-size: 17.5px;
-        font-family: "PoppinsSemiBold";
+        font-family: "PoppinsSemiBold" !important;
         margin: auto;
         margin-top: -10px;
     }
@@ -227,7 +220,6 @@ ion-content{
     .c-compt{
         margin-top: 35px;
         display: grid;
-        height: 100%;
         width: 100%;
         align-items: center;
         justify-items: center;
@@ -240,7 +232,7 @@ ion-content{
             font-weight: 600;
             color: black;
             left: 0px;
-            font-family: "PoppinsBold";
+            font-family: "PoppinsBold" !important;
             span{
                 font-size: 25px;
                 position: absolute;

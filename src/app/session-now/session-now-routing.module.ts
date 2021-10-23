@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { PublicationPageModule } from './publication/publication.module';
 
 
 const routes: Routes = [
@@ -22,6 +23,14 @@ const routes: Routes = [
   {
     path: 'notifications',
     loadChildren: () => import('./notifications/notifications.module').then( m => m.NotificationsPageModule)
+  },
+  {
+    path: 'resultat',
+    loadChildren: () => import('./resultat/resultat.module').then( m => m.ResultatPageModule)
+  },
+  {
+    path: 'felicitation',
+    loadChildren: () => import('./publication/publication.module').then( m => m.PublicationPageModule)
   },
   {
     path: 'help',

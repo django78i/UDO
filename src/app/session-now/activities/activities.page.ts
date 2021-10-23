@@ -13,81 +13,74 @@ export class ActivitiesPage implements OnInit {
   constructor(private modalCtr: ModalController) { }
 
   ngOnInit() {
-    const current = JSON.parse(localStorage.getItem('activite'));
+    let current = JSON.parse(localStorage.getItem('activite'));
     this.listActivites = [
       {
         id: 1, name: 'Athlétisme', nombres: 40, children: [
-          { image: 'assets/images/icon1.svg', checked: false, name: 'Power lifting', width: '27px', height: '24px', padding: '11px 10px' },
-          { image: 'assets/images/icon2.svg', checked: false, name: 'Bench press', width: '27px', height: '22px', padding: '11px 10px' },
-          { image: 'assets/images/icon3.svg', checked: false, name: 'Abdominaux', width: '20px', height: '19px', padding: '12px 14px' },
-          { image: 'assets/images/icon4.svg', checked: false, name: 'Cordes', width: '25px', height: '22px', padding: '11px 10px' },
-          { image: 'assets/images/icon5.svg', checked: false, name: 'Souplesse', width: '20px', height: '25px', padding: '9px 13px' },
-          { image: 'assets/images/icon6.svg', checked: false, name: 'Vélo elliptique', width: '21px', height: '26px', padding: '9px 14px' },
-          { image: 'assets/images/icon7.svg', checked: false, name: 'Tapis de course', width: '23px', height: '25px', padding: '9px 14px' }]
+          { image: "assets/images/icon1.svg", checked: false, name: "Power lifting", width: "27px", height: "24px", padding: "11px 10px",width2:"37px", padding2: "34px 34px" ,resultat:[{name:'Corps haut',nombre:'20',image:'assets/images/corps-haut.svg'},{name:'Corps bas',nombre:'100',image:'assets/images/corps-bas.svg'},{name:'Cardio',nombre:'20',image:'assets/images/cardio.svg'},{name:'Explosivité',nombre:'20',image:'assets/images/explosivite.svg'},{name:'Souplesse',nombre:'20',image:'assets/images/souplesse.svg'},{name:'Gainage',nombre:'20',image:'assets/images/gainage.svg'}]},
+          { image: "assets/images/icon2.svg", checked: false, name: "Bench press", width: "27px", height: "22px", padding: "11px 10px",width2:"37px", padding2: "34px 34px" ,resultat:[{name:'Corps haut',nombre:'20',image:'assets/images/corps-haut.svg'},{name:'Corps bas',nombre:'100',image:'assets/images/corps-bas.svg'},{name:'Cardio',nombre:'20',image:'assets/images/cardio.svg'},{name:'Explosivité',nombre:'20',image:'assets/images/explosivite.svg'},{name:'Souplesse',nombre:'20',image:'assets/images/souplesse.svg'},{name:'Gainage',nombre:'20',image:'assets/images/gainage.svg'}]},
+          { image: "assets/images/icon3.svg", checked: false, name: "Abdominaux", width: "20px", height: "19px", padding: "12px 14px" ,width2:"37px", padding2: "34px 34px",resultat:[{name:'Corps haut',nombre:'20',image:'assets/images/corps-haut.svg'},{name:'Corps bas',nombre:'100',image:'assets/images/corps-bas.svg'},{name:'Cardio',nombre:'20',image:'assets/images/cardio.svg'},{name:'Explosivité',nombre:'20',image:'assets/images/explosivite.svg'},{name:'Souplesse',nombre:'20',image:'assets/images/souplesse.svg'},{name:'Gainage',nombre:'20',image:'assets/images/gainage.svg'}]},
+          { image: "assets/images/icon4.svg", checked: false, name: "Cordes", width: "25px", height: "22px", padding: "11px 10px",width2:"37px", padding2: "34px 34px" ,resultat:[{name:'Corps haut',nombre:'20',image:'assets/images/corps-haut.svg'},{name:'Corps bas',nombre:'100',image:'assets/images/corps-bas.svg'},{name:'Cardio',nombre:'20',image:'assets/images/cardio.svg'},{name:'Explosivité',nombre:'20',image:'assets/images/explosivite.svg'},{name:'Souplesse',nombre:'20',image:'assets/images/souplesse.svg'},{name:'Gainage',nombre:'20',image:'assets/images/gainage.svg'}]},
+          { image: "assets/images/icon5.svg", checked: false, name: "Souplesse", width: "20px", height: "25px", padding: "9px 13px" ,width2:"37px", padding2: "34px 34px",resultat:[{name:'Corps haut',nombre:'20',image:'assets/images/corps-haut.svg'},{name:'Corps bas',nombre:'100',image:'assets/images/corps-bas.svg'},{name:'Cardio',nombre:'20',image:'assets/images/cardio.svg'},{name:'Explosivité',nombre:'20',image:'assets/images/explosivite.svg'},{name:'Souplesse',nombre:'20',image:'assets/images/souplesse.svg'},{name:'Gainage',nombre:'20',image:'assets/images/gainage.svg'}]},
+          { image: "assets/images/icon6.svg", checked: false, name: "Vélo elliptique", width: "21px", height: "26px", padding: "9px 14px" ,width2:"37px", padding2: "34px 34px",resultat:[{name:'Corps haut',nombre:'20',image:'assets/images/corps-haut.svg'},{name:'Corps bas',nombre:'100',image:'assets/images/corps-bas.svg'},{name:'Cardio',nombre:'20',image:'assets/images/cardio.svg'},{name:'Explosivité',nombre:'20',image:'assets/images/explosivite.svg'},{name:'Souplesse',nombre:'20',image:'assets/images/souplesse.svg'},{name:'Gainage',nombre:'20',image:'assets/images/gainage.svg'}]},
+          { image: "assets/images/icon7.svg", checked: false, name: "Tapis de course", width: "23px", height: "25px", padding: "9px 14px" ,width2:"37px", padding2: "34px 34px",resultat:[{name:'Corps haut',nombre:'20',image:'assets/images/corps-haut.svg'},{name:'Corps bas',nombre:'100',image:'assets/images/corps-bas.svg'},{name:'Cardio',nombre:'20',image:'assets/images/cardio.svg'},{name:'Explosivité',nombre:'20',image:'assets/images/explosivite.svg'},{name:'Souplesse',nombre:'20',image:'assets/images/souplesse.svg'},{name:'Gainage',nombre:'20',image:'assets/images/gainage.svg'}]}]
       },
 
       {
-        id: 2, name: 'Natation', nombres: 15, children:
-          [{ image: 'assets/images/icon1.svg', checked: false, name: 'Power lifting', width: '27px', height: '24px', padding: '11px 10px' },
-            { image: 'assets/images/icon2.svg', checked: false, name: 'Bench press', width: '27px', height: '22px', padding: '11px 10px' },
-            { image: 'assets/images/icon3.svg', checked: false, name: 'Abdominaux', width: '20px', height: '19px', padding: '12px 14px' },
-            { image: 'assets/images/icon4.svg', checked: false, name: 'Cordes', width: '25px', height: '22px', padding: '11px 10px' },
-            { image: 'assets/images/icon5.svg', checked: false, name: 'Souplesse', width: '20px', height: '25px', padding: '9px 13px' },
-            // eslint-disable-next-line max-len
-            { image: 'assets/images/icon6.svg', checked: false, name: 'Vélo elliptique', width: '21px', height: '26px', padding: '9px 14px' },
-            // eslint-disable-next-line max-len
-            { image: 'assets/images/icon7.svg', checked: false, name: 'Tapis de course', width: '23px', height: '25px', padding: '9px 14px' }]
-      }
-      , {
-        id: 3, name: 'Handisport', nombres: 8, children:
-          [
-            { image: 'assets/images/icon1.svg', checked: false, name: 'Power lifting', width: '27px', height: '24px', padding: '11px 10px' },
-            { image: 'assets/images/icon2.svg', checked: false, name: 'Bench press', width: '27px', height: '22px', padding: '11px 10px' },
-            { image: 'assets/images/icon3.svg', checked: false, name: 'Abdominaux', width: '20px', height: '19px', padding: '12px 14px' },
-            { image: 'assets/images/icon4.svg', checked: false, name: 'Cordes', width: '25px', height: '22px', padding: '11px 10px' },
-            { image: 'assets/images/icon5.svg', checked: false, name: 'Souplesse', width: '20px', height: '25px', padding: '9px 13px' },
-            { image: 'assets/images/icon6.svg', checked: false, name: 'Vélo elliptique', width: '21px', height: '26px', padding: '9px 14px' },
-            { image: 'assets/images/icon7.svg', checked: false, name: 'Tapis de course', width: '23px', height: '25px', padding: '9px 14px' }]
+        id: 2, name: 'Natation', nombres: 15, children: [
+          { image: "assets/images/icon1.svg", checked: false, name: "Power lifting", width: "27px", height: "24px", padding: "11px 10px",width2:"37px", padding2: "34px 34px" ,resultat:[{name:'Corps haut',nombre:'20',image:'assets/images/corps-haut.svg'},{name:'Corps bas',nombre:'100',image:'assets/images/corps-bas.svg'},{name:'Cardio',nombre:'20',image:'assets/images/cardio.svg'},{name:'Explosivité',nombre:'20',image:'assets/images/explosivite.svg'},{name:'Souplesse',nombre:'20',image:'assets/images/souplesse.svg'},{name:'Gainage',nombre:'20',image:'assets/images/gainage.svg'}]},
+          { image: "assets/images/icon2.svg", checked: false, name: "Bench press", width: "27px", height: "22px", padding: "11px 10px",width2:"37px", padding2: "34px 34px" ,resultat:[{name:'Corps haut',nombre:'20',image:'assets/images/corps-haut.svg'},{name:'Corps bas',nombre:'100',image:'assets/images/corps-bas.svg'},{name:'Cardio',nombre:'20',image:'assets/images/cardio.svg'},{name:'Explosivité',nombre:'20',image:'assets/images/explosivite.svg'},{name:'Souplesse',nombre:'20',image:'assets/images/souplesse.svg'},{name:'Gainage',nombre:'20',image:'assets/images/gainage.svg'}]},
+          { image: "assets/images/icon3.svg", checked: false, name: "Abdominaux", width: "20px", height: "19px", padding: "12px 14px" ,width2:"37px", padding2: "34px 34px",resultat:[{name:'Corps haut',nombre:'20',image:'assets/images/corps-haut.svg'},{name:'Corps bas',nombre:'100',image:'assets/images/corps-bas.svg'},{name:'Cardio',nombre:'20',image:'assets/images/cardio.svg'},{name:'Explosivité',nombre:'20',image:'assets/images/explosivite.svg'},{name:'Souplesse',nombre:'20',image:'assets/images/souplesse.svg'},{name:'Gainage',nombre:'20',image:'assets/images/gainage.svg'}]},
+          { image: "assets/images/icon4.svg", checked: false, name: "Cordes", width: "25px", height: "22px", padding: "11px 10px",width2:"37px", padding2: "34px 34px" ,resultat:[{name:'Corps haut',nombre:'20',image:'assets/images/corps-haut.svg'},{name:'Corps bas',nombre:'100',image:'assets/images/corps-bas.svg'},{name:'Cardio',nombre:'20',image:'assets/images/cardio.svg'},{name:'Explosivité',nombre:'20',image:'assets/images/explosivite.svg'},{name:'Souplesse',nombre:'20',image:'assets/images/souplesse.svg'},{name:'Gainage',nombre:'20',image:'assets/images/gainage.svg'}]},
+          { image: "assets/images/icon5.svg", checked: false, name: "Souplesse", width: "20px", height: "25px", padding: "9px 13px" ,width2:"37px", padding2: "34px 34px",resultat:[{name:'Corps haut',nombre:'20',image:'assets/images/corps-haut.svg'},{name:'Corps bas',nombre:'100',image:'assets/images/corps-bas.svg'},{name:'Cardio',nombre:'20',image:'assets/images/cardio.svg'},{name:'Explosivité',nombre:'20',image:'assets/images/explosivite.svg'},{name:'Souplesse',nombre:'20',image:'assets/images/souplesse.svg'},{name:'Gainage',nombre:'20',image:'assets/images/gainage.svg'}]},
+          { image: "assets/images/icon6.svg", checked: false, name: "Vélo elliptique", width: "21px", height: "26px", padding: "9px 14px" ,width2:"37px", padding2: "34px 34px",resultat:[{name:'Corps haut',nombre:'20',image:'assets/images/corps-haut.svg'},{name:'Corps bas',nombre:'100',image:'assets/images/corps-bas.svg'},{name:'Cardio',nombre:'20',image:'assets/images/cardio.svg'},{name:'Explosivité',nombre:'20',image:'assets/images/explosivite.svg'},{name:'Souplesse',nombre:'20',image:'assets/images/souplesse.svg'},{name:'Gainage',nombre:'20',image:'assets/images/gainage.svg'}]},
+          { image: "assets/images/icon7.svg", checked: false, name: "Tapis de course", width: "23px", height: "25px", padding: "9px 14px" ,width2:"37px", padding2: "34px 34px",resultat:[{name:'Corps haut',nombre:'20',image:'assets/images/corps-haut.svg'},{name:'Corps bas',nombre:'100',image:'assets/images/corps-bas.svg'},{name:'Cardio',nombre:'20',image:'assets/images/cardio.svg'},{name:'Explosivité',nombre:'20',image:'assets/images/explosivite.svg'},{name:'Souplesse',nombre:'20',image:'assets/images/souplesse.svg'},{name:'Gainage',nombre:'20',image:'assets/images/gainage.svg'}]}]
+      },
+
+      {
+        id: 3, name: "Handisport", nombres: 8, children: [
+          { image: "assets/images/icon1.svg", checked: false, name: "Power lifting", width: "27px", height: "24px", padding: "11px 10px",width2:"37px", padding2: "34px 34px" ,resultat:[{name:'Corps haut',nombre:'20',image:'assets/images/corps-haut.svg'},{name:'Corps bas',nombre:'100',image:'assets/images/corps-bas.svg'},{name:'Cardio',nombre:'20',image:'assets/images/cardio.svg'},{name:'Explosivité',nombre:'20',image:'assets/images/explosivite.svg'},{name:'Souplesse',nombre:'20',image:'assets/images/souplesse.svg'},{name:'Gainage',nombre:'20',image:'assets/images/gainage.svg'}]},
+          { image: "assets/images/icon2.svg", checked: false, name: "Bench press", width: "27px", height: "22px", padding: "11px 10px",width2:"37px", padding2: "34px 34px" ,resultat:[{name:'Corps haut',nombre:'20',image:'assets/images/corps-haut.svg'},{name:'Corps bas',nombre:'100',image:'assets/images/corps-bas.svg'},{name:'Cardio',nombre:'20',image:'assets/images/cardio.svg'},{name:'Explosivité',nombre:'20',image:'assets/images/explosivite.svg'},{name:'Souplesse',nombre:'20',image:'assets/images/souplesse.svg'},{name:'Gainage',nombre:'20',image:'assets/images/gainage.svg'}]},
+          { image: "assets/images/icon3.svg", checked: false, name: "Abdominaux", width: "20px", height: "19px", padding: "12px 14px" ,width2:"37px", padding2: "34px 34px",resultat:[{name:'Corps haut',nombre:'20',image:'assets/images/corps-haut.svg'},{name:'Corps bas',nombre:'100',image:'assets/images/corps-bas.svg'},{name:'Cardio',nombre:'20',image:'assets/images/cardio.svg'},{name:'Explosivité',nombre:'20',image:'assets/images/explosivite.svg'},{name:'Souplesse',nombre:'20',image:'assets/images/souplesse.svg'},{name:'Gainage',nombre:'20',image:'assets/images/gainage.svg'}]},
+          { image: "assets/images/icon4.svg", checked: false, name: "Cordes", width: "25px", height: "22px", padding: "11px 10px",width2:"37px", padding2: "34px 34px" ,resultat:[{name:'Corps haut',nombre:'20',image:'assets/images/corps-haut.svg'},{name:'Corps bas',nombre:'100',image:'assets/images/corps-bas.svg'},{name:'Cardio',nombre:'20',image:'assets/images/cardio.svg'},{name:'Explosivité',nombre:'20',image:'assets/images/explosivite.svg'},{name:'Souplesse',nombre:'20',image:'assets/images/souplesse.svg'},{name:'Gainage',nombre:'20',image:'assets/images/gainage.svg'}]},
+          { image: "assets/images/icon5.svg", checked: false, name: "Souplesse", width: "20px", height: "25px", padding: "9px 13px" ,width2:"37px", padding2: "34px 34px",resultat:[{name:'Corps haut',nombre:'20',image:'assets/images/corps-haut.svg'},{name:'Corps bas',nombre:'100',image:'assets/images/corps-bas.svg'},{name:'Cardio',nombre:'20',image:'assets/images/cardio.svg'},{name:'Explosivité',nombre:'20',image:'assets/images/explosivite.svg'},{name:'Souplesse',nombre:'20',image:'assets/images/souplesse.svg'},{name:'Gainage',nombre:'20',image:'assets/images/gainage.svg'}]},
+          { image: "assets/images/icon6.svg", checked: false, name: "Vélo elliptique", width: "21px", height: "26px", padding: "9px 14px" ,width2:"37px", padding2: "34px 34px",resultat:[{name:'Corps haut',nombre:'20',image:'assets/images/corps-haut.svg'},{name:'Corps bas',nombre:'100',image:'assets/images/corps-bas.svg'},{name:'Cardio',nombre:'20',image:'assets/images/cardio.svg'},{name:'Explosivité',nombre:'20',image:'assets/images/explosivite.svg'},{name:'Souplesse',nombre:'20',image:'assets/images/souplesse.svg'},{name:'Gainage',nombre:'20',image:'assets/images/gainage.svg'}]},
+          { image: "assets/images/icon7.svg", checked: false, name: "Tapis de course", width: "23px", height: "25px", padding: "9px 14px" ,width2:"37px", padding2: "34px 34px",resultat:[{name:'Corps haut',nombre:'20',image:'assets/images/corps-haut.svg'},{name:'Corps bas',nombre:'100',image:'assets/images/corps-bas.svg'},{name:'Cardio',nombre:'20',image:'assets/images/cardio.svg'},{name:'Explosivité',nombre:'20',image:'assets/images/explosivite.svg'},{name:'Souplesse',nombre:'20',image:'assets/images/souplesse.svg'},{name:'Gainage',nombre:'20',image:'assets/images/gainage.svg'}]}]
       },
       {
-        id: 4, name: 'Football', nombres: 3, children:
-          [
-            { image: 'assets/images/icon1.svg', checked: false, name: 'Power lifting', width: '27px', height: '24px', padding: '11px 10px' },
-            { image: 'assets/images/icon2.svg', checked: false, name: 'Bench press', width: '27px', height: '22px', padding: '11px 10px' },
-            { image: 'assets/images/icon3.svg', checked: false, name: 'Abdominaux', width: '20px', height: '19px', padding: '12px 14px' },
-            { image: 'assets/images/icon4.svg', checked: false, name: 'Cordes', width: '25px', height: '22px', padding: '11px 10px' },
-            { image: 'assets/images/icon5.svg', checked: false, name: 'Souplesse', width: '20px', height: '25px', padding: '9px 13px' },
-            { image: 'assets/images/icon6.svg', checked: false, name: 'Vélo elliptique', width: '21px', height: '26px', padding: '9px 14px' },
-            { image: 'assets/images/icon7.svg', checked: false, name: 'Tapis de course', width: '23px', height: '25px', padding: '9px 14px' }]
+        id: 4, name: "Football", nombres: 3, children: [
+          { image: "assets/images/icon1.svg", checked: false, name: "Power lifting", width: "27px", height: "24px", padding: "11px 10px",width2:"37px", padding2: "34px 34px" ,resultat:[{name:'Corps haut',nombre:'20',image:'assets/images/corps-haut.svg'},{name:'Corps bas',nombre:'100',image:'assets/images/corps-bas.svg'},{name:'Cardio',nombre:'20',image:'assets/images/cardio.svg'},{name:'Explosivité',nombre:'20',image:'assets/images/explosivite.svg'},{name:'Souplesse',nombre:'20',image:'assets/images/souplesse.svg'},{name:'Gainage',nombre:'20',image:'assets/images/gainage.svg'}]},
+          { image: "assets/images/icon2.svg", checked: false, name: "Bench press", width: "27px", height: "22px", padding: "11px 10px",width2:"37px", padding2: "34px 34px" ,resultat:[{name:'Corps haut',nombre:'20',image:'assets/images/corps-haut.svg'},{name:'Corps bas',nombre:'100',image:'assets/images/corps-bas.svg'},{name:'Cardio',nombre:'20',image:'assets/images/cardio.svg'},{name:'Explosivité',nombre:'20',image:'assets/images/explosivite.svg'},{name:'Souplesse',nombre:'20',image:'assets/images/souplesse.svg'},{name:'Gainage',nombre:'20',image:'assets/images/gainage.svg'}]},
+          { image: "assets/images/icon3.svg", checked: false, name: "Abdominaux", width: "20px", height: "19px", padding: "12px 14px" ,width2:"37px", padding2: "34px 34px",resultat:[{name:'Corps haut',nombre:'20',image:'assets/images/corps-haut.svg'},{name:'Corps bas',nombre:'100',image:'assets/images/corps-bas.svg'},{name:'Cardio',nombre:'20',image:'assets/images/cardio.svg'},{name:'Explosivité',nombre:'20',image:'assets/images/explosivite.svg'},{name:'Souplesse',nombre:'20',image:'assets/images/souplesse.svg'},{name:'Gainage',nombre:'20',image:'assets/images/gainage.svg'}]},
+          { image: "assets/images/icon4.svg", checked: false, name: "Cordes", width: "25px", height: "22px", padding: "11px 10px",width2:"37px", padding2: "34px 34px" ,resultat:[{name:'Corps haut',nombre:'20',image:'assets/images/corps-haut.svg'},{name:'Corps bas',nombre:'100',image:'assets/images/corps-bas.svg'},{name:'Cardio',nombre:'20',image:'assets/images/cardio.svg'},{name:'Explosivité',nombre:'20',image:'assets/images/explosivite.svg'},{name:'Souplesse',nombre:'20',image:'assets/images/souplesse.svg'},{name:'Gainage',nombre:'20',image:'assets/images/gainage.svg'}]},
+          { image: "assets/images/icon5.svg", checked: false, name: "Souplesse", width: "20px", height: "25px", padding: "9px 13px" ,width2:"37px", padding2: "34px 34px",resultat:[{name:'Corps haut',nombre:'20',image:'assets/images/corps-haut.svg'},{name:'Corps bas',nombre:'100',image:'assets/images/corps-bas.svg'},{name:'Cardio',nombre:'20',image:'assets/images/cardio.svg'},{name:'Explosivité',nombre:'20',image:'assets/images/explosivite.svg'},{name:'Souplesse',nombre:'20',image:'assets/images/souplesse.svg'},{name:'Gainage',nombre:'20',image:'assets/images/gainage.svg'}]},
+          { image: "assets/images/icon6.svg", checked: false, name: "Vélo elliptique", width: "21px", height: "26px", padding: "9px 14px" ,width2:"37px", padding2: "34px 34px",resultat:[{name:'Corps haut',nombre:'20',image:'assets/images/corps-haut.svg'},{name:'Corps bas',nombre:'100',image:'assets/images/corps-bas.svg'},{name:'Cardio',nombre:'20',image:'assets/images/cardio.svg'},{name:'Explosivité',nombre:'20',image:'assets/images/explosivite.svg'},{name:'Souplesse',nombre:'20',image:'assets/images/souplesse.svg'},{name:'Gainage',nombre:'20',image:'assets/images/gainage.svg'}]},
+          { image: "assets/images/icon7.svg", checked: false, name: "Tapis de course", width: "23px", height: "25px", padding: "9px 14px" ,width2:"37px", padding2: "34px 34px",resultat:[{name:'Corps haut',nombre:'20',image:'assets/images/corps-haut.svg'},{name:'Corps bas',nombre:'100',image:'assets/images/corps-bas.svg'},{name:'Cardio',nombre:'20',image:'assets/images/cardio.svg'},{name:'Explosivité',nombre:'20',image:'assets/images/explosivite.svg'},{name:'Souplesse',nombre:'20',image:'assets/images/souplesse.svg'},{name:'Gainage',nombre:'20',image:'assets/images/gainage.svg'}]}]
       },
       {
-        id: 5, name: 'Basketball', nombres: '3', children:
-          [
-            { image: 'assets/images/icon1.svg', checked: false, name: 'Power lifting', width: '27px', height: '24px', padding: '11px 10px' },
-            { image: 'assets/images/icon2.svg', checked: false, name: 'Bench press', width: '27px', height: '22px', padding: '11px 10px' },
-            { image: 'assets/images/icon3.svg', checked: false, name: 'Abdominaux', width: '20px', height: '19px', padding: '12px 14px' },
-            { image: 'assets/images/icon4.svg', checked: false, name: 'Cordes', width: '25px', height: '22px', padding: '11px 10px' },
-            { image: 'assets/images/icon5.svg', checked: false, name: 'Souplesse', width: '20px', height: '25px', padding: '9px 13px' },
-            { image: 'assets/images/icon6.svg', checked: false, name: 'Vélo elliptique', width: '21px', height: '26px', padding: '9px 14px' },
-            { image: 'assets/images/icon7.svg', checked: false, name: 'Tapis de course', width: '23px', height: '25px', padding: '9px 14px' }
-          ]
+        id: 5, name: "Basketball", nombres: "3", children: [
+          { image: "assets/images/icon1.svg", checked: false, name: "Power lifting", width: "27px", height: "24px", padding: "11px 10px",width2:"37px", padding2: "34px 34px" ,resultat:[{name:'Corps haut',nombre:'20',image:'assets/images/corps-haut.svg'},{name:'Corps bas',nombre:'100',image:'assets/images/corps-bas.svg'},{name:'Cardio',nombre:'20',image:'assets/images/cardio.svg'},{name:'Explosivité',nombre:'20',image:'assets/images/explosivite.svg'},{name:'Souplesse',nombre:'20',image:'assets/images/souplesse.svg'},{name:'Gainage',nombre:'20',image:'assets/images/gainage.svg'}]},
+          { image: "assets/images/icon2.svg", checked: false, name: "Bench press", width: "27px", height: "22px", padding: "11px 10px",width2:"37px", padding2: "34px 34px" ,resultat:[{name:'Corps haut',nombre:'20',image:'assets/images/corps-haut.svg'},{name:'Corps bas',nombre:'100',image:'assets/images/corps-bas.svg'},{name:'Cardio',nombre:'20',image:'assets/images/cardio.svg'},{name:'Explosivité',nombre:'20',image:'assets/images/explosivite.svg'},{name:'Souplesse',nombre:'20',image:'assets/images/souplesse.svg'},{name:'Gainage',nombre:'20',image:'assets/images/gainage.svg'}]},
+          { image: "assets/images/icon3.svg", checked: false, name: "Abdominaux", width: "20px", height: "19px", padding: "12px 14px" ,width2:"37px", padding2: "34px 34px",resultat:[{name:'Corps haut',nombre:'20',image:'assets/images/corps-haut.svg'},{name:'Corps bas',nombre:'100',image:'assets/images/corps-bas.svg'},{name:'Cardio',nombre:'20',image:'assets/images/cardio.svg'},{name:'Explosivité',nombre:'20',image:'assets/images/explosivite.svg'},{name:'Souplesse',nombre:'20',image:'assets/images/souplesse.svg'},{name:'Gainage',nombre:'20',image:'assets/images/gainage.svg'}]},
+          { image: "assets/images/icon4.svg", checked: false, name: "Cordes", width: "25px", height: "22px", padding: "11px 10px",width2:"37px", padding2: "34px 34px" ,resultat:[{name:'Corps haut',nombre:'20',image:'assets/images/corps-haut.svg'},{name:'Corps bas',nombre:'100',image:'assets/images/corps-bas.svg'},{name:'Cardio',nombre:'20',image:'assets/images/cardio.svg'},{name:'Explosivité',nombre:'20',image:'assets/images/explosivite.svg'},{name:'Souplesse',nombre:'20',image:'assets/images/souplesse.svg'},{name:'Gainage',nombre:'20',image:'assets/images/gainage.svg'}]},
+          { image: "assets/images/icon5.svg", checked: false, name: "Souplesse", width: "20px", height: "25px", padding: "9px 13px" ,width2:"37px", padding2: "34px 34px",resultat:[{name:'Corps haut',nombre:'20',image:'assets/images/corps-haut.svg'},{name:'Corps bas',nombre:'100',image:'assets/images/corps-bas.svg'},{name:'Cardio',nombre:'20',image:'assets/images/cardio.svg'},{name:'Explosivité',nombre:'20',image:'assets/images/explosivite.svg'},{name:'Souplesse',nombre:'20',image:'assets/images/souplesse.svg'},{name:'Gainage',nombre:'20',image:'assets/images/gainage.svg'}]},
+          { image: "assets/images/icon6.svg", checked: false, name: "Vélo elliptique", width: "21px", height: "26px", padding: "9px 14px" ,width2:"37px", padding2: "34px 34px",resultat:[{name:'Corps haut',nombre:'20',image:'assets/images/corps-haut.svg'},{name:'Corps bas',nombre:'100',image:'assets/images/corps-bas.svg'},{name:'Cardio',nombre:'20',image:'assets/images/cardio.svg'},{name:'Explosivité',nombre:'20',image:'assets/images/explosivite.svg'},{name:'Souplesse',nombre:'20',image:'assets/images/souplesse.svg'},{name:'Gainage',nombre:'20',image:'assets/images/gainage.svg'}]},
+          { image: "assets/images/icon7.svg", checked: false, name: "Tapis de course", width: "23px", height: "25px", padding: "9px 14px" ,width2:"37px", padding2: "34px 34px",resultat:[{name:'Corps haut',nombre:'20',image:'assets/images/corps-haut.svg'},{name:'Corps bas',nombre:'100',image:'assets/images/corps-bas.svg'},{name:'Cardio',nombre:'20',image:'assets/images/cardio.svg'},{name:'Explosivité',nombre:'20',image:'assets/images/explosivite.svg'},{name:'Souplesse',nombre:'20',image:'assets/images/souplesse.svg'},{name:'Gainage',nombre:'20',image:'assets/images/gainage.svg'}]}]
       },
       {
-        id: 6, name: 'Musculation', nombres: 35, children:
-          [
-            { image: 'assets/images/icon1.svg', checked: false, name: 'Power lifting', width: '27px', height: '24px', padding: '11px 10px' },
-            { image: 'assets/images/icon2.svg', checked: false, name: 'Bench press', width: '27px', height: '22px', padding: '11px 10px' },
-            { image: 'assets/images/icon3.svg', checked: false, name: 'Abdominaux', width: '20px', height: '19px', padding: '12px 14px' },
-            { image: 'assets/images/icon4.svg', checked: false, name: 'Cordes', width: '25px', height: '22px', padding: '11px 10px' },
-            { image: 'assets/images/icon5.svg', checked: false, name: 'Souplesse', width: '20px', height: '25px', padding: '9px 13px' },
-            { image: 'assets/images/icon6.svg', checked: false, name: 'Vélo elliptique', width: '21px', height: '26px', padding: '9px 14px' },
-            { image: 'assets/images/icon7.svg', checked: false, name: 'Tapis de course', width: '23px', height: '25px', padding: '9px 14px' }
-          ]
+        id: 6, name: "Musculation", nombres: 35, children: [
+          { image: "assets/images/icon1.svg", checked: false, name: "Power lifting", width: "27px", height: "24px", padding: "11px 10px",width2:"37px", padding2: "34px 34px" ,resultat:[{name:'Corps haut',nombre:'20',image:'assets/images/corps-haut.svg'},{name:'Corps bas',nombre:'100',image:'assets/images/corps-bas.svg'},{name:'Cardio',nombre:'20',image:'assets/images/cardio.svg'},{name:'Explosivité',nombre:'20',image:'assets/images/explosivite.svg'},{name:'Souplesse',nombre:'20',image:'assets/images/souplesse.svg'},{name:'Gainage',nombre:'20',image:'assets/images/gainage.svg'}]},
+          { image: "assets/images/icon2.svg", checked: false, name: "Bench press", width: "27px", height: "22px", padding: "11px 10px",width2:"37px", padding2: "34px 34px" ,resultat:[{name:'Corps haut',nombre:'20',image:'assets/images/corps-haut.svg'},{name:'Corps bas',nombre:'100',image:'assets/images/corps-bas.svg'},{name:'Cardio',nombre:'20',image:'assets/images/cardio.svg'},{name:'Explosivité',nombre:'20',image:'assets/images/explosivite.svg'},{name:'Souplesse',nombre:'20',image:'assets/images/souplesse.svg'},{name:'Gainage',nombre:'20',image:'assets/images/gainage.svg'}]},
+          { image: "assets/images/icon3.svg", checked: false, name: "Abdominaux", width: "20px", height: "19px", padding: "12px 14px" ,width2:"37px", padding2: "34px 34px",resultat:[{name:'Corps haut',nombre:'20',image:'assets/images/corps-haut.svg'},{name:'Corps bas',nombre:'100',image:'assets/images/corps-bas.svg'},{name:'Cardio',nombre:'20',image:'assets/images/cardio.svg'},{name:'Explosivité',nombre:'20',image:'assets/images/explosivite.svg'},{name:'Souplesse',nombre:'20',image:'assets/images/souplesse.svg'},{name:'Gainage',nombre:'20',image:'assets/images/gainage.svg'}]},
+          { image: "assets/images/icon4.svg", checked: false, name: "Cordes", width: "25px", height: "22px", padding: "11px 10px",width2:"37px", padding2: "34px 34px" ,resultat:[{name:'Corps haut',nombre:'20',image:'assets/images/corps-haut.svg'},{name:'Corps bas',nombre:'100',image:'assets/images/corps-bas.svg'},{name:'Cardio',nombre:'20',image:'assets/images/cardio.svg'},{name:'Explosivité',nombre:'20',image:'assets/images/explosivite.svg'},{name:'Souplesse',nombre:'20',image:'assets/images/souplesse.svg'},{name:'Gainage',nombre:'20',image:'assets/images/gainage.svg'}]},
+          { image: "assets/images/icon5.svg", checked: false, name: "Souplesse", width: "20px", height: "25px", padding: "9px 13px" ,width2:"37px", padding2: "34px 34px",resultat:[{name:'Corps haut',nombre:'20',image:'assets/images/corps-haut.svg'},{name:'Corps bas',nombre:'100',image:'assets/images/corps-bas.svg'},{name:'Cardio',nombre:'20',image:'assets/images/cardio.svg'},{name:'Explosivité',nombre:'20',image:'assets/images/explosivite.svg'},{name:'Souplesse',nombre:'20',image:'assets/images/souplesse.svg'},{name:'Gainage',nombre:'20',image:'assets/images/gainage.svg'}]},
+          { image: "assets/images/icon6.svg", checked: false, name: "Vélo elliptique", width: "21px", height: "26px", padding: "9px 14px" ,width2:"37px", padding2: "34px 34px",resultat:[{name:'Corps haut',nombre:'20',image:'assets/images/corps-haut.svg'},{name:'Corps bas',nombre:'100',image:'assets/images/corps-bas.svg'},{name:'Cardio',nombre:'20',image:'assets/images/cardio.svg'},{name:'Explosivité',nombre:'20',image:'assets/images/explosivite.svg'},{name:'Souplesse',nombre:'20',image:'assets/images/souplesse.svg'},{name:'Gainage',nombre:'20',image:'assets/images/gainage.svg'}]},
+          { image: "assets/images/icon7.svg", checked: false, name: "Tapis de course", width: "23px", height: "25px", padding: "9px 14px" ,width2:"37px", padding2: "34px 34px",resultat:[{name:'Corps haut',nombre:'20',image:'assets/images/corps-haut.svg'},{name:'Corps bas',nombre:'100',image:'assets/images/corps-bas.svg'},{name:'Cardio',nombre:'20',image:'assets/images/cardio.svg'},{name:'Explosivité',nombre:'20',image:'assets/images/explosivite.svg'},{name:'Souplesse',nombre:'20',image:'assets/images/souplesse.svg'},{name:'Gainage',nombre:'20',image:'assets/images/gainage.svg'}]}]
       }];
-    for(const item of this.listActivites){
-      for(const activite of item.children){
-        if(activite!=null && current!=null){
-          if(activite?.name === current?.name){
+    if (current) {
+      for (let item of this.listActivites) {
+        for (let activite of item.children) {
+          if (activite.name == current.name) {
             activite.checked = true;
           }
         }
@@ -96,31 +89,33 @@ export class ActivitiesPage implements OnInit {
   }
 
   iconWork(id: string) {
-    const icon1 = document.getElementById(id);
-    icon1.style.display = 'none';
+    let icon1 = document.getElementById(id);
+    icon1.style.display = "none";
 
-    const icon2 = document.getElementById(id + 'icon2');
-    icon2.style.display = 'block';
+    let icon2 = document.getElementById(id + 'icon2');
+    icon2.style.display = "block";
     this.value = id + 'icon2';
 
   }
 
   revIconWork(id: string) {
-    const icon1 = document.getElementById(id);
-    icon1.style.display = 'block';
+    let icon1 = document.getElementById(id);
+    icon1.style.display = "block";
 
-    const icon2 = document.getElementById(id + 'icon2');
-    icon2.style.display = 'none';
+    let icon2 = document.getElementById(id + 'icon2');
+    icon2.style.display = "none";
     this.value = id;
 
   }
 
   async close() {
-    const closeModal = 'Modal Closed';
+    const closeModal: string = 'Modal Closed';
     await this.modalCtr.dismiss(closeModal);
   }
 
   checkActivite(item) {
+    item.checked =true;
     localStorage.setItem('activite', JSON.stringify(item));
+    this.modalCtr.dismiss();
   }
 }

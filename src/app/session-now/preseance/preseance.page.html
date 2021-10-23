@@ -1,20 +1,21 @@
-<ion-header>
+<!-- <ion-header class="c-header">
+  
+</ion-header> -->
+
+<ion-content>
   <ion-toolbar>
     <ion-item lines="none">
       <ion-img slot="start" class="img-back" src="assets/images/backArrow.svg" (click)="retour()"> </ion-img>
       <ion-img slot="end" class="img-info" src="assets/images/feather-info.svg" (click)="information()"> </ion-img>
     </ion-item>
   </ion-toolbar>
-</ion-header>
-
-<ion-content>
-  <ion-slides [options]="slideOptsOne" #mySlider>
+  <ion-slides [options]="slideOptsOne" #mySlider pager="true" class="preseanceSlide">
 
     <ion-slide>
       <ion-grid>
         <ion-row class="firstPart">
-          <span class="rond" (click)="choisirActivite()">
-            <ion-img [src]="activite?.image"></ion-img>
+          <span [ngStyle]="{'padding' : activite?.padding2 ? activite?.padding2 : '0' }" class="rond" (click)="choisirActivite()">
+            <ion-img [ngStyle]="{'width': activite?.width2 ? activite?.width2 : activite?.width2}" [src]="activite?.image"></ion-img>
             <span class="single">
               <ion-img src="assets/images/swap.svg"></ion-img>
             </span>
@@ -48,8 +49,8 @@
     <ion-slide>
 
       <ion-row class="firstPart2">
-        <span class="rond" (click)="choisirActivite()">
-          <ion-img [src]="activite.image"></ion-img>
+        <span [ngStyle]="{'padding' : activite.padding2 ? activite.padding2 : activite.padding2 }" class="rond" (click)="choisirActivite()">
+          <ion-img [ngStyle]="{'width': activite?.width2 ? activite?.width2 : activite?.width2}" [src]="activite?.image"></ion-img>
           <span class="single">
             <ion-img src="assets/images/swap.svg"></ion-img>
           </span>
@@ -77,8 +78,8 @@
     <ion-slide>
 
       <ion-row class="firstPart3">
-        <span class="rond" (click)="choisirActivite()">
-          <ion-img [src]="activite?.name"></ion-img>
+        <span [ngStyle]="{'padding' : activite?.padding2 ? activite?.padding2 : '0' }" class="rond" (click)="choisirActivite()">
+          <ion-img [ngStyle]="{'width': activite?.width2 ? activite?.width2 : activite?.width2}" [src]="activite?.image"></ion-img>
           <span class="single">
             <ion-img src="assets/images/swap.svg"></ion-img>
           </span>
@@ -135,9 +136,3 @@
 
 
 </ion-content>
-<!-- <ion-content>
-     
-     
-      
-  
-</ion-content> -->
