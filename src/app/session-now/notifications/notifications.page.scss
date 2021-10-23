@@ -7,7 +7,7 @@ ion-header{
     ion-title{
         text-align: center;
         color: #2A2A2C;
-        font-family: "PoppinsBold";
+        font-family: "PoppinsBold" !important;
         font-size: 13px;
     }
     .c-head-label{
@@ -28,7 +28,7 @@ ion-content{
         margin-top: 45px;
     }
     .c-item{
-        --ion-background-color: #FFFFFF;
+        --background: #FFFFFF;
         width: 95%;
         margin: 7px 11px;
         border-radius: 24px;
@@ -70,7 +70,7 @@ ion-content{
     }
     .name{
         color: #2A2A2C;
-        font-family: "PoppinsSemiBold";
+        font-family: "PoppinsSemiBold" !important;
         font-size: 14px;
         margin-top: -18px;
     }
@@ -84,7 +84,7 @@ ion-content{
     .comment{
         opacity: 75%;
         margin-top: -23px;
-        font-family: "PoppinsMedium";
+        font-family: "PoppinsMedium" !important;
         color: #2A2A2C;
         font-size: 12px;
     }

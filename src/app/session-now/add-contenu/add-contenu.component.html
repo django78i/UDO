@@ -1,0 +1,28 @@
+<ion-content>
+<ion-grid class="element">
+  <ion-row class="c-row">
+    <ion-img (click)="close()" class="c-image" src="assets/images/closeGray.svg"></ion-img>
+    <span class="name">Ajouter du contenu</span>
+  </ion-row>
+  <ion-row class="c-item">
+    <ion-item class="cc-item" (click)="openCamera()">
+     <span class="rond">
+       <ion-img class="imgFirst" src="assets/images/photo.svg"></ion-img>
+     </span>
+     <ion-grid>
+       <ion-row class="title">Ouvrir l’appareil photo</ion-row>
+       <ion-row class="desc">Prendre des photos et des vidéos</ion-row>
+     </ion-grid>
+    </ion-item>
+    <ion-item class="cc-item" lines="none">
+     <span class="rond2">
+       <ion-img class="imgLast" src="assets/images/media.svg"></ion-img>
+     </span>
+     <ion-grid>
+       <ion-row class="title">Média</ion-row>
+       <ion-row class="desc">Partager des photos et des vidéos</ion-row>
+     </ion-grid>
+   </ion-item>
+  </ion-row>
+</ion-grid>
+</ion-content>

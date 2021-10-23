@@ -1,22 +1,17 @@
-ion-header{
-    --ion-background-color: #F4F5FA;
-    ion-title{
-        text-align: center;
-        color: #2A2A2C;
-        font-family: "PoppinsBold";
-        font-size: 13px;
-    }
-    .img-retour{
-        width: 13px;
-        height: 13px;
-    }
-    .img-search{
-        width: 19px;
-        height: 19px;
-    }
-}
+
 ion-content{
+
     --ion-background-color: #F4F5FA;
+    ion-toolbar{
+        .img-retour{
+            width: 13px;
+            height: 13px;
+        }
+        .img-search{
+            width: 19px;
+            height: 19px;
+        }
+    }
     .show{
         display: block;
         margin-top: 12px;
@@ -47,12 +42,12 @@ ion-content{
     }
     .name{
         color: #2A2A2C;
-        font-family: "PoppinsSemiBold";
+        font-family: "PoppinsSemiBold" !important;
         font-size: 14px;
     }
     .item-name{
         color: #2A2A2C;
-        font-family: "PoppinsSemiBold";
+        font-family: "PoppinsSemiBold" !important;
         font-size: 14px; 
         margin-left: 12px;
         margin-top: 15px;
@@ -77,18 +72,14 @@ ion-content{
     .rond{
         width: 27px;
         height: 27px;
-        border: 2px solid #2A2A2C;
         border-radius: 14px;
         opacity: 0.3;
         margin-right: 10px;
-        ion-checkbox{
+        ion-radio{
             margin-top: 1px;
             margin-left: 1px;
-            width: 21px;
-            background: transparent;
-            height: 21px;
-            border: none;
-            border-color: blue !important;
+            width: 27px;
+            height: 27px;
         }
     }
 }

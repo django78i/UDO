@@ -196,7 +196,7 @@ export class DemarragePage implements OnInit {
     toast.present();
   }
   information() {
-    this.router.navigate(['aide']);
+    this.router.navigate([['session-now/aide']]);
   }
 
   async notification() {

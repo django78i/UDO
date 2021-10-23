@@ -1,0 +1,30 @@
+<ion-content>
+<ion-grid class="element">
+  <ion-row class="c-row">
+    <ion-img (click)="close()" class="c-image" src="assets/images/closeGray.svg"></ion-img>
+  </ion-row>
+  <ion-row class="image">
+    <span class="rond">
+      <ion-img src="assets/images/ghost.svg"></ion-img>
+    </span>
+  </ion-row>
+  <ion-row>
+    <span class="donnees">Données privées</span>
+  </ion-row>
+  <ion-row>
+    <span class="desc">
+      Afin de protéger vos données de santé certaines statistiques ne seront pas publiées.
+    </span>
+  </ion-row>
+  <ion-row>
+   <span class="continuer" (click)="publier()">
+     <span class="c-text">Continuer quand même</span>
+   </span>
+  </ion-row>
+  <ion-row>
+    <span class="retour" (click)="close()">
+      <span class="c-text">Retour</span>
+    </span>
+   </ion-row>
+</ion-grid>
+</ion-content>
