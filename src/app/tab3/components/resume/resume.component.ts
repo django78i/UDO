@@ -6,15 +6,14 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./resume.component.scss'],
 })
 export class ResumeComponent implements OnInit {
-
   @Input() champ: any;
-
-  constructor() {
-
-   }
+  userInfo: any;
+  constructor() {}
 
   ngOnInit() {
-    console.log(this.champ)
-   }
-
+    this.userInfo = this.champ.participants.find(
+      (part) => part.uid == this.champ.createur.uid
+    );
+    console.log(this.champ);
+  }
 }

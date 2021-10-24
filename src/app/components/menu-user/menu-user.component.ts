@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { UserServiceService } from 'src/app/services/user-service.service';
+import { UserService } from 'src/app/services/user-service.service';
 import { UserProfilComponent } from '../user-profil/user-profil.component';
 
 @Component({
@@ -13,7 +13,7 @@ export class MenuUserComponent implements OnInit {
 
   constructor(
     public modalController: ModalController,
-    public userService: UserServiceService
+    public userService: UserService
   ) {}
 
   ngOnInit() {}

@@ -18,8 +18,8 @@
   </ion-toolbar>
   <section>
     <ion-card
-      [style.background]="championnat.color"
-      [ngClass]="{ notActive: segmentValue != 'resume' }"
+    [ngStyle]="{ 'background-image': 'url(' + championnat.banniere + ')' }"
+    [ngClass]="{ notActive: segmentValue != 'resume' }"
     >
       <ion-card-header
         [ngClass]="{ notActiveContent: segmentValue != 'resume' }"

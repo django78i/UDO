@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { UserServiceService } from 'src/app/services/user-service.service';
+import { UserService } from 'src/app/services/user-service.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
@@ -15,7 +15,7 @@ export class ConnexionChoiceComponent implements OnInit {
   mdPasse: string = '';
   email: string = '';
 
-  constructor(public userService: UserServiceService, public fb: FormBuilder) {}
+  constructor(public userService: UserService, public fb: FormBuilder) {}
 
   ngOnInit() {
     this.initForm();
@@ -31,6 +31,17 @@ export class ConnexionChoiceComponent implements OnInit {
   login() {
     console.log('log');
     this.log.emit([]);
+  }
+
+  connexion() {
+    const formValue = {
+      mail: this.email,
+      password: this.mdPasse,
+    };
+
+    this.seg == "s'inscrire"
+      ? this.userService.createUser(formValue)
+      : this.userService.log(formValue);
   }
 
   get password() {

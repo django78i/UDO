@@ -24,7 +24,9 @@ import { GooglePlus } from '@ionic-native/google-plus/ngx';
 @Injectable({
   providedIn: 'root',
 })
-export class UserServiceService {
+export class UserService {
+  db = getFirestore();
+  auth = getAuth();
   constructor(
     private googlePlus: GooglePlus,
     public platform: Platform, // private googlePlus: GooglePlus,
@@ -42,20 +44,19 @@ export class UserServiceService {
     }
   }
 
-  async createUserDataBase(user, pseudo) {
-    console.log(user, pseudo);
+  async createUserDataBase(user) {
+    console.log(user);
     const newUSer = {
       uid: user.uid,
       mail: user.email,
     };
-    const db = getFirestore();
-    await setDoc(doc(db, 'users', newUSer.uid), newUSer);
+    // const db = getFirestore();
+    await setDoc(doc(this.db, 'users', newUSer.uid), newUSer);
   }
 
   logUserWithGoogle() {
-    const auth = getAuth();
     const provider = new GoogleAuthProvider();
-    signInWithPopup(auth, provider)
+    signInWithPopup(this.auth, provider)
       .then((result) => {
         console.log(result);
         // This gives you a Google Access Token. You can use it to access the Google API.
@@ -67,7 +68,7 @@ export class UserServiceService {
         this.findUser(user.uid).then((userDatabase) => {
           if (!userDatabase.data()) {
             console.log('notfind');
-            this.createUserDataBase(user, user.displayName);
+            this.createUserDataBase(user);
           }
         });
       })
@@ -84,8 +85,7 @@ export class UserServiceService {
   }
 
   async getCurrentUser(): Promise<DocumentData> {
-    const auth = getAuth();
-    const user = await auth.currentUser;
+    const user = await this.auth.currentUser;
     const userDataBase = await this.findUser(user.uid);
     console.log(userDataBase.data());
     return userDataBase.data();
@@ -93,15 +93,13 @@ export class UserServiceService {
 
   async findUser(userUid): Promise<DocumentSnapshot<DocumentData>> {
     console.log(userUid);
-    const db = getFirestore();
-    const user = await getDoc(doc(db, 'users', userUid));
-    console.log('UserFind', user);
+    const user = await getDoc(doc(this.db, 'users', userUid));
+    console.log('UserFind', JSON.stringify(user.data()));
     return user;
   }
 
   async updateUser(user) {
-    const db = getFirestore();
-    await updateDoc(doc(db, 'users', user.uid), user);
+    await updateDoc(doc(this.db, 'users', user.uid), user);
   }
 
   async googleSignIn() {
@@ -127,11 +125,9 @@ export class UserServiceService {
             // console.log('userDatabase', userDatabase);
             if (!userDatabase.data()) {
               console.log('userDatabase', userDatabase);
-              this.createUserDataBase(user, user.displayName);
+              this.createUserDataBase(user);
             }
           });
-        } else {
-          this.presentAlert('rien');
         }
       });
     } catch (err) {
@@ -139,18 +135,40 @@ export class UserServiceService {
     }
   }
 
-  async presentAlert(msg) {
-    const alert = await this.alertController.create({
-      cssClass: 'my-custom-class',
-      header: 'Alert',
-      subHeader: 'Subtitle',
-      message: msg,
-      buttons: ['OK'],
-    });
+  log(info: any) {
+    console.log(info);
+    const auth = getAuth();
+    signInWithEmailAndPassword(auth, info.mail, info.password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // ..
+      });
+  }
+
+  createUser(info) {
+    console.log(info);
+    const auth = getAuth();
+    createUserWithEmailAndPassword(auth, info.mail, info.password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        this.createUserDataBase(user);
+        console.log(user);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // ..
+      });
   }
 
   logout() {
-    const auth = getAuth();
-    auth.signOut();
+    this.auth.signOut();
   }
 }
