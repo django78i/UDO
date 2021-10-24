@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonSlides, ModalController } from '@ionic/angular';
 import { ReglagesPage } from '../reglages/reglages.page';
-import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+import { Camera, CameraResultType } from '@capacitor/camera';
 import { Router } from '@angular/router';
 import { ActivitiesPage } from '../activities/activities.page';
 
@@ -17,12 +17,12 @@ export class PreseancePage implements OnInit {
     slidesPerView: 1,
     autoplay: false
   };
+  base64;
   current=90;
   max=100;
   isActif:boolean =false;
   activite={name:'Sélectionnez une activité',image:'assets/images/questionmark.svg',padding2:'34px 40px;',width2:'25px'}
-  constructor(private modalCtrl:ModalController,private camera: Camera,
-    private router:Router) { }
+  constructor(private modalCtrl:ModalController,private router:Router) { }
 
   ngOnInit() {
     let item = localStorage.getItem('activite');
@@ -70,21 +70,16 @@ export class PreseancePage implements OnInit {
   }
 
 
-  openCamera(){
-    const options: CameraOptions = {
-      quality: 20,
-      destinationType: this.camera.DestinationType.DATA_URL,
-      encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE
-    }
-    
-    this.camera.getPicture(options).then((imageData) => {
-     // imageData is either a base64 encoded string or a file URI
-     // If it's base64 (DATA_URL):
-     let base64Image = 'data:image/jpeg;base64,' + imageData;
-    }, (err) => {
-     // Handle error
+  async openCamera() {
+    const image = await Camera.getPhoto({
+      quality: 100,
+      allowEditing: false,
+      resultType: CameraResultType.DataUrl,
     });
+
+    // Here you get the image as result.
+    const theActualPicture = image.dataUrl;
+    this.base64 = theActualPicture;
   }
 
   start(){

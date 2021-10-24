@@ -1,5 +1,5 @@
 <ion-content>
-  <ion-row class="addMedia" (click)="openCamera()">
+  <ion-row  *ngIf="!base64" class="addMedia" (click)="openCamera()">
     <ion-img class="appareil" src="assets/images/photo2.svg"></ion-img>
     <div class="ajouter">
       Ajouter un média
@@ -8,6 +8,9 @@
       Taille maximum : 25 Mo
     </div>
   </ion-row>
+
+  <ion-img class="base-image" *ngIf="base64" (click)="openCamera()" [src]="base64"></ion-img>
+
   <ion-row class="c-date">
     <span class="day">Aujourd'hui</span>
     <span class="bounce">.</span>
@@ -31,7 +34,7 @@
   <ion-grid class="time">
     <ion-row>
       <span class="value">
-        {{now}}
+        {{counter.mn | number: '2.0-0'}}:{{counter.s| number: '2.0-0'}}
       </span>
     </ion-row>
     <ion-row>
@@ -41,16 +44,18 @@
     </ion-row>
   </ion-grid>
   <ion-grid class="choice">
-    <ion-row >
-      <ion-col  class="c-col" size="6" *ngFor="let item of listElement ; let i=index">
-        <ion-row > 
-          <ion-img class="c-image" [ngStyle]="{'width': item.width ? item.width : item.width,'height' : item.height ? item.height : item.height}" [src]="item.img"></ion-img>
+    <ion-row>
+      <ion-col class="c-col" size="6" *ngFor="let item of listElement ; let i=index">
+        <ion-row>
+          <ion-img class="c-image"
+            [ngStyle]="{'width': item.width ? item.width : item.width,'height' : item.height ? item.height : item.height}"
+            [src]="item.img"></ion-img>
         </ion-row>
         <ion-row>
-         <div class="element">
-          <ion-label class="nombre"> {{item.nombre}} </ion-label>
-          <span class="exposant" *ngIf="item.exposant"> {{item.exposant}} </span>
-         </div>
+          <div class="element">
+            <ion-label class="nombre"> {{item.nombre}} </ion-label>
+            <span class="exposant" *ngIf="item.exposant"> {{item.exposant}} </span>
+          </div>
         </ion-row>
         <ion-row>
           <ion-label class="name">
