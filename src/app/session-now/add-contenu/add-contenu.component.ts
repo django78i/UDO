@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Camera, CameraResultType} from '@capacitor/camera';
 import { ModalController } from '@ionic/angular';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-contenu',
@@ -9,14 +8,14 @@ import { Router } from '@angular/router';
   styleUrls: ['./add-contenu.component.scss'],
 })
 export class AddContenuComponent implements OnInit {
-  isPicture:boolean = true;
-  base64:any;
-  constructor(private modalCtr:ModalController,private router:Router) { }
+  isPicture = true;
+  base64: any;
+  constructor(private modalCtr: ModalController) { }
 
   ngOnInit() {}
 
   async close() {
-    const closeModal: string = 'Modal Closed';
+    const closeModal = 'Modal Closed';
     await this.modalCtr.dismiss(closeModal);
   }
 
@@ -26,12 +25,12 @@ export class AddContenuComponent implements OnInit {
       allowEditing: false,
       resultType: CameraResultType.DataUrl,
     });
-  
+
     // Here you get the image as result.
     const theActualPicture = image.dataUrl;
     this.base64=theActualPicture;
     console.log('image',this.base64);
-    
-  
+
+
   }
 }
