@@ -66,7 +66,7 @@ export class PreseancePage implements OnInit {
   }
 
   information() {
-    this.router.navigate([['session-now/aide']]);
+    this.router.navigate(['session-now/help']);
   }
 
 

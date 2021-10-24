@@ -20,7 +20,7 @@
     <span class="nameActivity">{{activite.name}}</span>
   </ion-row>
   <ion-row class="message">
-    <ion-textarea class="c-textarea" placeholder="Comment c’est passé votre séance ?">
+    <ion-textarea [(ngModel)]="commentaire" class="c-textarea" placeholder="Comment c’est passé votre séance ?">
     </ion-textarea>
     <ion-img class="crayon" src="assets/images/crayon.PNG"></ion-img>
   </ion-row>

@@ -1,13 +1,11 @@
-<ion-header>
+
+<ion-content>
   <ion-toolbar>
     <ion-item lines="none">
       <ion-img slot="start" (click)="close()" src="assets/images/close.svg"> </ion-img>
     </ion-item>
   </ion-toolbar>
-</ion-header>
-
-<ion-content>
-  <ion-slides [options]="slideOptsOne" >
+  <ion-slides [options]="slideOptsOne" pager="true" class="aideSlide">
     <ion-slide>
       <ion-row class="bonHomme">
         <ion-img src="assets/images/img1.png"></ion-img>

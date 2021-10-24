@@ -13,6 +13,7 @@ import {Health} from '@ionic-native/health/ngx';
 import { IonicGestureConfig } from '../../services/ionic-gesture-config.service';
 import {HAMMER_GESTURE_CONFIG} from '@angular/platform-browser';
 import {LongPressModule} from 'ionic-long-press';
+import { AidePage } from '../aide/aide.page';
 
 @NgModule({
   imports: [
@@ -22,7 +23,7 @@ import {LongPressModule} from 'ionic-long-press';
     DemarragePageRoutingModule,
     LongPressModule
   ],
-  declarations: [DemarragePage],
+  declarations: [DemarragePage,AidePage],
   providers: [Camera,{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },Health
  ,{provide: HAMMER_GESTURE_CONFIG, useClass: IonicGestureConfig} ],
 

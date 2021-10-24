@@ -48,7 +48,8 @@ export class ReglagesPage implements OnInit {
   }
 
   information() {
-    this.router.navigate([['session-now/aide']]);
+    this.close();
+    this.router.navigate(['session-now/help']);
   }
 
   checkReglage(evt,type){ 
