@@ -27,6 +27,7 @@ import {PreseancePage} from './preseance/preseance.page';
 import {Health} from '@ionic-native/health/ngx';
 import { IonicGestureConfig } from '../services/ionic-gesture-config.service';
 import {HAMMER_GESTURE_CONFIG} from '@angular/platform-browser';
+import {AppLauncher}  from '@ionic-native/app-launcher/ngx';
 
 @NgModule({
   imports: [
@@ -47,7 +48,7 @@ import {HAMMER_GESTURE_CONFIG} from '@angular/platform-browser';
   ],
   declarations: [SessionNowComponent,ActivitiesPage,ReglagesPage,ListMetricsPage],
   // entryComponents: [ActivitiesPage,ReglagesPage,ListMetricsPage],
-  providers: [Camera,{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },Health
+  providers: [Camera,{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },Health,AppLauncher
   ,{provide: HAMMER_GESTURE_CONFIG, useClass: IonicGestureConfig}
   ],
 

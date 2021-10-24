@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {ModalController, Platform} from '@ionic/angular';
-import { Plugins } from "@capacitor/core";
-import { AppState } from "@capacitor/app";
+import { AppLauncher, AppLauncherOptions } from '@ionic-native/app-launcher/ngx';
 
-const {App} = Plugins;
+
+
 @Component({
   selector: 'app-external-session-now-contenu',
   templateUrl: './external-session-now.component.html',
@@ -12,7 +12,10 @@ const {App} = Plugins;
 export class ExternalSessionNowComponent implements OnInit {
   isPicture: boolean = true;
   listExtenalApp=[];
-  constructor(private modalCtr: ModalController,private platform: Platform
+
+  constructor(private modalCtr: ModalController,
+              private platform: Platform,
+              private appLauncher: AppLauncher
 
              ) { }
 
@@ -51,13 +54,13 @@ console.log(this.platform.platforms());
       {
         img:'assets/logo/logo_strava.png',
         name:'Strava',
-        appId:'com.strava',
+        appId:'strava://',
         platform: 'ios'
       },
       {
         img:'assets/logo/apple_fitnes.png',
         name:'Apple Health',
-        appId:'com.sec.android.app.shealth',
+        appId:'x-apple-health://',
         platform: 'ios'
       }
 
@@ -74,9 +77,21 @@ console.log(this.platform.platforms());
     await this.modalCtr.dismiss(closeModal);
   }
 
-  async openExternalApp(appId: string){
-    var ret = await App.canOpenUrl({ url: appId });
-    var retx = await App.openUrl({ url:appId });
-    console.log('Open url response: ', ret);
+   openExternalApp(appId: string,appName: string){
+    const  options: AppLauncherOptions = {};
+     if(this.platform.is('ios')) {
+       options.uri = appId ; // 'fb://'
+     } else {
+       options.packageName = appId;
+     }
+
+     this.appLauncher.canLaunch(options)
+       .then((canLaunch: boolean) => this.launchExternalApp(options,appName))
+       .catch((error: any) => console.error(appName+ ' is not available'));
+  }
+  launchExternalApp(options,appName){
+    this.appLauncher.launch(options)
+      .then((launch: boolean)=>{console.log(appName +' is open'); })
+      .catch((error: any) => console.error('Error when trying to open '+appName));
   }
 }

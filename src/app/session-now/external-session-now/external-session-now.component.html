@@ -5,7 +5,7 @@
     <span class="name">Séance Now sur <br/>applications Tierce</span>
   </ion-row>
   <ion-row class="c-item">
-    <ion-item class="cc-item" *ngFor='let app of listExtenalApp;' (click)="openExternalApp(app.appId)">
+    <ion-item class="cc-item" *ngFor='let app of listExtenalApp;' (click)="openExternalApp(app.appId,app.name)">
      <span class="rond">
        <ion-img class="imgFirst" src="{{app.img}}"></ion-img>
      </span>
