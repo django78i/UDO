@@ -6,6 +6,8 @@ import {
   NavController,
 } from '@ionic/angular';
 import { MenuUserComponent } from '../components/menu-user/menu-user.component';
+import {AddContenuComponent} from "../session-now/add-contenu/add-contenu.component";
+import {ExternalSessionNowComponent} from "../session-now/external-session-now/external-session-now.component";
 
 @Component({
   selector: 'app-tabs',
@@ -17,7 +19,8 @@ export class TabsPage implements OnInit {
     public modalController: ModalController,
     public animationCtrl: AnimationController,
     public msService: MusicFeedService,
-    public navController: NavController
+    public navController: NavController,
+    private modalCtrl: ModalController
   ) {}
 
   ngOnInit() {}
@@ -31,5 +34,20 @@ export class TabsPage implements OnInit {
 
   launch() {
     this.navController.navigateForward(['session-now']);
+  }
+
+  /**
+   * this function call externalApp in a Modal
+   */
+  async launchExternalApp(){
+    console.log(1);
+      const modal = await this.modalCtrl.create({
+        component: ExternalSessionNowComponent,
+        cssClass: 'my-custom-contenu-modal',
+      });
+      modal.onDidDismiss().then((data: any) => {
+
+      });
+      return await modal.present();
   }
 }

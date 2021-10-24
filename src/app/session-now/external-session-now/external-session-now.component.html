@@ -1,0 +1,20 @@
+<ion-content>
+<ion-grid class="element">
+  <ion-row class="c-row">
+    <ion-img (click)="close()" class="c-image" src="assets/images/closeGray.svg"></ion-img>
+    <span class="name">Séance Now sur <br/>applications Tierce</span>
+  </ion-row>
+  <ion-row class="c-item">
+    <ion-item class="cc-item" *ngFor='let app of listExtenalApp;' (click)="openExternalApp(app.appId)">
+     <span class="rond">
+       <ion-img class="imgFirst" src="{{app.img}}"></ion-img>
+     </span>
+     <ion-grid>
+       <ion-row class="title">{{app.name}}</ion-row>
+       <ion-row class="desc"></ion-row>
+     </ion-grid>
+    </ion-item>
+
+  </ion-row>
+</ion-grid>
+</ion-content>
