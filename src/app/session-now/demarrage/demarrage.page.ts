@@ -1,12 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  ModalController,
-  NavController,
-  ToastController,
-} from '@ionic/angular';
+import { ModalController, NavController, ToastController } from '@ionic/angular';
 import { ListMetricsPage } from '../list-metrics/list-metrics.page';
 import { NotificationsPage } from '../notifications/notifications.page';
-import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+import { Camera, CameraResultType } from '@capacitor/camera';
 import { ReglagesPage } from '../reglages/reglages.page';
 import { Router } from '@angular/router';
 import { Health } from '@ionic-native/health/ngx';
@@ -23,14 +19,15 @@ import { DonneesPriveComponent } from '../donnees-prive/donnees-prive.component'
 export class DemarragePage implements OnInit {
 
   listElement: any = [];
-   t: any;
-   ms = 0;
-   s = 0;
-   mn = 0;
-   h = 0;
-   status='play';
-   activite: any;
-   pause = false;
+  base64;
+  t: any;
+  ms = 0;
+  s = 0;
+  mn = 0;
+  h = 0;
+  status = 'play';
+  activite: any;
+  pause = false;
 
   listChoix = [
     {
@@ -38,43 +35,42 @@ export class DemarragePage implements OnInit {
       nombre: '1.78',
       name: 'Distance',
       exposant: 'KM',
-      fieldname:'distance'
+      fieldname: 'distance'
     },
     {
       img: 'assets/images/pas.svg',
       nombre: '2617',
       name: 'Nombre de pas',
       exposant: '',
-      fieldname:'steps'
+      fieldname: 'steps'
     },
     {
       img: 'assets/images/coeur.svg',
       nombre: '135',
       name: 'BPM',
       exposant: '',
-      fieldname:'height'
+      fieldname: 'height'
     },
     {
       img: 'assets/images/calorie.svg',
       nombre: '250',
       name: 'Calories',
       exposant: 'CAL',
-      fieldname:'weight'
+      fieldname: 'weight'
     },
   ];
   constructor(
     private modalCtrl: ModalController,
     private router: Router,
     private toastCtrl: ToastController,
-    private camera: Camera,
-    public  navController: NavController,
+    public navController: NavController,
     private health: Health,
     private platform: Platform
-  ) {}
+  ) { }
 
   ngOnInit() {
     let valPause = localStorage.getItem('pause');
-    if(valPause){
+    if (valPause) {
       this.pause = true;
     }
     this.start();
@@ -86,99 +82,100 @@ export class DemarragePage implements OnInit {
         nombre: '1.78',
         name: 'Distance',
         exposant: 'KM',
-        fieldname:'distance'
+        fieldname: 'distance'
       },
       {
         img: 'assets/images/pas.svg',
         nombre: '2617',
         name: 'Nombre de pas',
         exposant: '',
-        fieldname:'steps'
+        fieldname: 'steps'
       },
       {
         img: 'assets/images/coeur.svg',
         nombre: '135',
         name: 'BPM',
         exposant: '',
-        fieldname:'height'
+        fieldname: 'height'
       },
       {
         img: 'assets/images/calorie.svg',
         nombre: '250',
         name: 'Calories',
         exposant: 'CAL',
-        fieldname:'weight'
+        fieldname: 'weight'
       },
     ];
     let item = JSON.parse(localStorage.getItem('activite'));
-    if(item){
+    if (item) {
       this.activite = item;
     }
     let choix = localStorage.getItem('choix');
-    if(!choix){
-      localStorage.setItem('choix',JSON.stringify(this.listChoix));
-    }else{
+    if (!choix) {
+      localStorage.setItem('choix', JSON.stringify(this.listChoix));
+    } else {
       this.listElement = JSON.parse(localStorage.getItem('choix'));
     }
   }
   async checkPlatformReady() {
     const ready = !!await this.platform.ready();
     if (ready) {
-// Use plugin functions here
+      // Use plugin functions here
       this.health.requestAuthorization([
         'distance', 'nutrition',  //read and write permissions
         {
-          read: ['steps','height', 'weight'],//read only permission
+          read: ['steps', 'height', 'weight'],//read only permission
           write: ['height', 'weight']  //write only permission
         }
       ])
         .then(res => this.getMetrics())
-        .catch(e => console.log('error1 '+e));
+        .catch(e => console.log('error1 ' + e));
     }
 
   }
-  getMetrics(){
-    for (let item of this.listElement){
-      this.queryMetrics(item.fieldname,item);
+  getMetrics() {
+    for (let item of this.listElement) {
+      this.queryMetrics(item.fieldname, item);
     }
-    let that=this;
+    let that = this;
     // this.getMetrics();
     // @ts-ignore
-    setTimeout(()=>{that.getMetrics();},1000);
+    setTimeout(() => { that.getMetrics(); }, 1000);
   }
   // @ts-ignore
-  queryMetrics(metric,item){
-    if (metric==='steps' || metric==='distance' ){
+  queryMetrics(metric, item) {
+    if (metric === 'steps' || metric === 'distance') {
       this.health.queryAggregated({
         startDate: new Date(new Date().getTime() - 3 * 24 * 60 * 60 * 1000), // three days ago
         endDate: new Date(), // now
         dataType: metric,
-        bucket:'day',
+        bucket: 'day',
         //limit: 1000
-      }).then(res=>{
-        item.nombre=res.length>0?(Math.round((parseFloat(res[res.length-1]?.value) + Number.EPSILON) * 100) / 100):'0';
-        console.log('res',res);
+      }).then(res => {
+        item.nombre = res.length > 0 ? (Math.round((parseFloat(res[res.length - 1]?.value) + Number.EPSILON) * 100) / 100) : '0';
+        console.log('res', res);
       })
         .catch(e => console.log('error3 ', e));
     }
-    else{
+    else {
       this.health.query({
         startDate: new Date(new Date().getTime() - 10 * 24 * 60 * 60 * 1000), // three days ago
         endDate: new Date(), // now
         dataType: metric,
         limit: 100
-      }).then(res=>{
-        item.nombre=res.length>0?(Math.round((parseFloat(res[res.length-1]?.value) + Number.EPSILON) * 100) / 100):'0';
-        console.log('res',res);})
-        .catch(e => console.log('error1 ',e));
+      }).then(res => {
+        item.nombre = res.length > 0 ? (Math.round((parseFloat(res[res.length - 1]?.value) + Number.EPSILON) * 100) / 100) : '0';
+        console.log('res', res);
+      })
+        .catch(e => console.log('error1 ', e));
     }
   }
-  checkPause(){
-    this.pause=true;
-    localStorage.setItem('pause',''+this.pause);
+  checkPause() {
+    this.pause = true;
+    localStorage.setItem('pause', '' + this.pause);
   }
 
- async publier(){
+  async publier() {
 
     const modal = await this.modalCtrl.create({
       component: DonneesPriveComponent,
@@ -186,17 +183,18 @@ export class DemarragePage implements OnInit {
     });
     return await modal.present();
   }
-displayRecap(){
-  this.stop();
-  this.router.navigate(['session-now/resultat']);
-}
+  displayRecap() {
+    this.stop();
+    localStorage.setItem('counter', JSON.stringify({ mn: this.mn, s: this.s }))
+    this.router.navigate(['session-now/resultat']);
+  }
 
   async showMessage(message, type) {
     const toast = await this.toastCtrl.create({
       message,
       duration: 4000,
       color: type,
-      position:'bottom'
+      position: 'bottom'
     });
     toast.present();
   }
@@ -218,22 +216,21 @@ displayRecap(){
     return await modal.present();
 
   }
-  openCamera(){
-    const options: CameraOptions = {
+  async openCamera() {
+    const image = await Camera.getPhoto({
       quality: 100,
-      destinationType: this.camera.DestinationType.FILE_URI,
-      encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE
-    };
-
-    this.camera.getPicture(options).then((imageData) => {
-      // imageData is either a base64 encoded string or a file URI
-      // If it's base64 (DATA_URL):
-      let base64Image = 'data:image/jpeg;base64,' + imageData;
-    }, (err) => {
-      // Handle error
+      allowEditing: false,
+      resultType: CameraResultType.DataUrl,
     });
+
+    // Here you get the image as result.
+    const theActualPicture = image.dataUrl;
+    this.base64 = theActualPicture;
+    console.log('image', this.base64);
+
+
   }
+  
   async reglage() {
     const modal = await this.modalCtrl.create({
       component: ReglagesPage,
@@ -250,61 +247,61 @@ displayRecap(){
   }
 
   /*La fonction update_chrono incrémente le nombre de millisecondes par 1 <==> 1*cadence = 100 */
-  updateChrono(){
-    this.ms+=1;
+  updateChrono() {
+    this.ms += 1;
     /*si ms=10 <==> ms*cadence = 1000ms <==> 1s alors on incrémente le nombre de secondes*/
-    if(this.ms===10){
-      this.ms=1;
-      this.s+=1;
+    if (this.ms === 10) {
+      this.ms = 1;
+      this.s += 1;
     }
     /*on teste si s=60 pour incrémenter le nombre de minute*/
-    if(this.s===60){
-      this.s=0;
-      this.mn+=1;
+    if (this.s === 60) {
+      this.s = 0;
+      this.mn += 1;
     }
-    if(this.mn===60){
-      this.mn=0;
-      this.h+=1;
+    if (this.mn === 60) {
+      this.mn = 0;
+      this.h += 1;
     }
   }
-   start() {
-     this.status='play';
-    this.t =setInterval(()=> {this.updateChrono(); },100);
-   // btn_start.disabled=true;
+  start() {
+    this.status = 'play';
+    this.t = setInterval(() => { this.updateChrono(); }, 100);
+    // btn_start.disabled=true;
   }
   stop() {
-    this.status='pause';
+    this.status = 'pause';
     clearInterval(this.t);
-   //btn_start.disabled=false;
+    //btn_start.disabled=false;
   }
 
-  async choix(item,index) {
+  async choix(item, index) {
     const modal = await this.modalCtrl.create({
       component: ListMetricsPage,
       cssClass: 'my-custom-activite-modal',
       componentProps: {
-        choix:item
+        choix: item
       }
     });
     modal.onDidDismiss().then((data: any) => {
-      if(data.data){
+      if (data.data) {
         let value = data.data;
-        for(let el of this.listElement){
-          if(el.name == value.name){
-            this.showMessage('Cette activité est déjà dans la liste','warning')
+        for (let el of this.listElement) {
+          if (el.name == value.name) {
+            this.showMessage('Cette activité est déjà dans la liste', 'warning')
             return;
           }
 
         }
-        for(let val of this.listChoix){
-          if(value.name == val.name){
+        for (let val of this.listChoix) {
+          if (value.name == val.name) {
             value = val;
-            this.listElement[index]=val;
-          }else{
-            this.listElement[index]=value;
+            this.listElement[index] = val;
+          } else {
+            this.listElement[index] = value;
           }
         }
-        localStorage.setItem('choix',JSON.stringify(this.listElement));
+        localStorage.setItem('choix', JSON.stringify(this.listElement));
       }
     });
     return await modal.present();

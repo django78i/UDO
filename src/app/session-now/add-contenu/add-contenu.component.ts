@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Camera,CameraOptions } from '@ionic-native/camera/ngx';
+import { Camera, CameraResultType} from '@capacitor/camera';
 import { ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
 
@@ -10,7 +10,8 @@ import { Router } from '@angular/router';
 })
 export class AddContenuComponent implements OnInit {
   isPicture:boolean = true;
-  constructor(private modalCtr:ModalController,private router:Router, private camera:Camera) { }
+  base64:any;
+  constructor(private modalCtr:ModalController,private router:Router) { }
 
   ngOnInit() {}
 
@@ -19,20 +20,18 @@ export class AddContenuComponent implements OnInit {
     await this.modalCtr.dismiss(closeModal);
   }
 
-  openCamera(){
-    const options: CameraOptions = {
+  async openCamera(){
+    const image = await Camera.getPhoto({
       quality: 100,
-      destinationType: this.camera.DestinationType.FILE_URI,
-      encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE
-    }
-    
-    this.camera.getPicture(options).then((imageData) => {
-     // imageData is either a base64 encoded string or a file URI
-     // If it's base64 (DATA_URL):
-     let base64Image = 'data:image/jpeg;base64,' + imageData;
-    }, (err) => {
-     // Handle error
+      allowEditing: false,
+      resultType: CameraResultType.DataUrl,
     });
+  
+    // Here you get the image as result.
+    const theActualPicture = image.dataUrl;
+    this.base64=theActualPicture;
+    console.log('image',this.base64);
+    
+  
   }
 }

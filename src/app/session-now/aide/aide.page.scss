@@ -1,11 +1,14 @@
 ion-header{
-    --ion-background-color: #F4F5FA;
-    ion-img{
-        width: 13.26px;
-        height: 13.26px;
-    }
+    --background: #F4F5FA;
+    
 }
 ion-content{
+    ion-toolbar{
+        ion-img{
+            width: 13.26px;
+            height: 13.26px;
+        }
+    }
     --ion-background-color: #F4F5FA;
     .bonHomme{
         ion-img{
@@ -26,7 +29,7 @@ ion-content{
         }
     }
     .info ion-label{
-        font-family: "PoppinsBold" !important;
+        font-family: "PoppinsBold";
         font-size: 24px;
         margin: auto;
         color: black;
@@ -37,7 +40,7 @@ ion-content{
         padding: 14px;
         margin-top: -10px;
         ion-label{
-            font-family: "PoppinsMedium" !important;
+            font-family: "PoppinsMedium";
             font-size: 12px;
             margin: auto;
             color: #373738;
@@ -50,7 +53,7 @@ ion-content{
         padding: 14px 30px;
         margin-top: -10px;
         ion-label{
-            font-family: "PoppinsMedium" !important;
+            font-family: "PoppinsMedium";
             font-size: 12px;
             margin: auto;
             color: #373738;

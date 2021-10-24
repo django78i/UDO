@@ -107,27 +107,39 @@ h4 {
   --scroll-bar-background: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.1) !important;
   --scroll-bar-background-active: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.5) !important;
 }
+ion-slides.aideSlide .swiper-pagination-bullets .swiper-pagination-bullet-active {
+  opacity: 1;
+  background: #19191cab !important;
+}
+ion-slides.preseanceSlide .swiper-pagination-bullets .swiper-pagination-bullet-active {
+  opacity: 1;
+  background: #19191cab !important;
+}
 ion-slides.aideSlide{
-height: 95%;
+  height: 92%;
 }
 ion-slides.preseanceSlide{
-height: 92%;
+  height: 92%;
 }
 .swiper-slide{
-display: block;
+  display: block;
 }
 .item-inner{
-border-style: none !important;
+  border-style: none !important;
 }
 
 .c-header .header-md::after{
   background-image: none !important;
 }
 .toggle-calm .toggle-inner{
-width: 16px;
-height: 16px;
-margin-left: 2px;
+  width: 16px;
+  height: 16px;
+  margin-left: 2px;
 }
 .my-custom-contenu-modal{
---background: #ffffff4f;
+  --background: #ffffff4f;
+}
+.toogle-inner{
+  width: 17px !important;
+  height: 17px !important;
 }
