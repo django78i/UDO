@@ -25,7 +25,8 @@ import { Camera } from '@ionic-native/camera/ngx';
 import {RoundProgressModule} from 'angular-svg-round-progressbar';
 import {PreseancePage} from './preseance/preseance.page';
 import {Health} from '@ionic-native/health/ngx';
-
+import { IonicGestureConfig } from '../services/ionic-gesture-config.service';
+import {HAMMER_GESTURE_CONFIG} from '@angular/platform-browser';
 
 @NgModule({
   imports: [
@@ -46,7 +47,9 @@ import {Health} from '@ionic-native/health/ngx';
   ],
   declarations: [SessionNowComponent,ActivitiesPage,ReglagesPage,ListMetricsPage],
   // entryComponents: [ActivitiesPage,ReglagesPage,ListMetricsPage],
-  providers: [Camera,{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },Health],
+  providers: [Camera,{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },Health
+  ,{provide: HAMMER_GESTURE_CONFIG, useClass: IonicGestureConfig}
+  ],
 
 })
 export class SessionNowPageModule {}

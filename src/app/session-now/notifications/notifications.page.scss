@@ -1,29 +1,29 @@
-ion-header{
-    --ion-background-color: #F4F5FA;
-    .close{
-        width: 16px;
-        height: 16px;
-    }
-    ion-title{
-        text-align: center;
-        color: #2A2A2C;
-        font-family: "PoppinsBold" !important;
-        font-size: 13px;
-    }
-    .c-head-label{
-        background: #FFFFFF;
-        color: #2A2A2C;
-        border-radius: 15px;
-        width: 50px;
-        height: 31px;
-        font-size: 14px;
-        font-family: "StaatlichesRegular";
-        padding: 11px 12px;
-    }
-}
+
 ion-content{
     --ion-background-color: #F4F5FA;
 
+    ion-toolbar{
+        .close{
+            width: 16px;
+            height: 16px;
+        }
+        ion-title{
+            text-align: center;
+            color: #2A2A2C;
+            font-family: "PoppinsBold";
+            font-size: 13px;
+        }
+        .c-head-label{
+            background: #FFFFFF;
+            color: #2A2A2C;
+            border-radius: 15px;
+            width: 50px;
+            height: 31px;
+            font-size: 11px;
+            font-family: "StaatlichesRegular" !important;
+            padding: 9px 16px;
+        }
+    }
     .c-row{
         margin-top: 45px;
     }
@@ -57,7 +57,7 @@ ion-content{
         font-size: 12px;
         padding-left: 8px;
         padding-top: 11px;
-        font-family: "StaatlichesRegular";
+        font-family: "StaatlichesRegular" !important;
         display: none;
     }
     .item-name{
@@ -96,5 +96,28 @@ ion-content{
         width: 55px;
         height: 53px;
         transform: matrix(0.94, -0.34, 0.34, 0.94, 0, 0);
+    }
+    .c-ion-fab{
+        width: 128px;
+        height: 55px;
+        background: #FFFFFF 0% 0% no-repeat padding-box;
+        box-shadow: 0px 13px 36px #00000029;
+        border-radius: 27px;
+        opacity: 1;
+        .c-fab{
+            display: flex;
+            padding:19px 0;
+            padding-left: 23px;
+        }
+        .textFab{
+            font-family: "PoppinsBold" !important;
+            letter-spacing: -0.16px;
+            color: #19191C; 
+            font-size: 16px; 
+        }
+        ion-img{
+            width: 14px;
+            margin-left: 34px;
+        }
     }
 }

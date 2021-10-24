@@ -11,6 +11,7 @@ import { ReglagesPage } from '../reglages/reglages.page';
 import { Router } from '@angular/router';
 import { Health } from '@ionic-native/health/ngx';
 import { Platform } from '@ionic/angular';
+import { DonneesPriveComponent } from '../donnees-prive/donnees-prive.component';
 
 
 
@@ -20,6 +21,7 @@ import { Platform } from '@ionic/angular';
   styleUrls: ['./demarrage.page.scss'],
 })
 export class DemarragePage implements OnInit {
+
   listElement: any = [];
    t: any;
    ms = 0;
@@ -27,7 +29,9 @@ export class DemarragePage implements OnInit {
    mn = 0;
    h = 0;
    status='play';
-//Source : www.exelib.net
+   activite: any;
+   pause = false;
+
   listChoix = [
     {
       img: 'assets/images/distance.svg',
@@ -69,6 +73,10 @@ export class DemarragePage implements OnInit {
   ) {}
 
   ngOnInit() {
+    let valPause = localStorage.getItem('pause');
+    if(valPause){
+      this.pause = true;
+    }
     this.start();
     this.checkPlatformReady();
 
@@ -102,10 +110,14 @@ export class DemarragePage implements OnInit {
         fieldname:'weight'
       },
     ];
+    let item = JSON.parse(localStorage.getItem('activite'));
+    if(item){
+      this.activite = item;
+    }
     let choix = localStorage.getItem('choix');
-    if (!choix) {
-      localStorage.setItem('choix', JSON.stringify(this.listChoix));
-    } else {
+    if(!choix){
+      localStorage.setItem('choix',JSON.stringify(this.listChoix));
+    }else{
       this.listElement = JSON.parse(localStorage.getItem('choix'));
     }
   }
@@ -127,12 +139,12 @@ export class DemarragePage implements OnInit {
   }
   getMetrics(){
     for (let item of this.listElement){
-     this.queryMetrics(item.fieldname,item);
+      this.queryMetrics(item.fieldname,item);
     }
     let that=this;
     // this.getMetrics();
     // @ts-ignore
-     setTimeout(()=>{that.getMetrics();},1000);
+    setTimeout(()=>{that.getMetrics();},1000);
   }
   // @ts-ignore
   queryMetrics(metric,item){
@@ -161,93 +173,82 @@ export class DemarragePage implements OnInit {
         .catch(e => console.log('error1 ',e));
     }
   }
-  async choix(item, index) {
+  checkPause(){
+    this.pause=true;
+    localStorage.setItem('pause',''+this.pause);
+  }
+
+ async publier(){
+
     const modal = await this.modalCtrl.create({
-      component: ListMetricsPage,
-      cssClass: 'my-custom-activite-modal',
-      componentProps: {
-        choix: item,
-      },
-    });
-    modal.onDidDismiss().then((data: any) => {
-      if (data.data) {
-        let value = data.data;
-        for (let el of this.listElement) {
-          if (el.name == value.name) {
-            this.showMessage(
-              'Cette activité est déjà dans la liste',
-              'warning'
-            );
-            return;
-          }
-        }
-        for (let val of this.listChoix) {
-          if (value.name == val.name) {
-            value = val;
-            this.listElement[index] = val;
-          } else {
-            this.listElement[index] = value;
-          }
-        }
-        localStorage.setItem('choix', JSON.stringify(this.listElement));
-      }
+      component: DonneesPriveComponent,
+      cssClass: 'my-custom-contenu-modal',
     });
     return await modal.present();
   }
+displayRecap(){
+  this.stop();
+  this.router.navigate(['session-now/resultat']);
+}
+
   async showMessage(message, type) {
     const toast = await this.toastCtrl.create({
       message,
       duration: 4000,
       color: type,
-      position: 'bottom',
+      position:'bottom'
     });
     toast.present();
   }
   information() {
-    this.router.navigate([['session-now/aide']]);
+    this.router.navigate(['session-now/help']);
   }
 
   async notification() {
     const modal = await this.modalCtrl.create({
       component: NotificationsPage,
       cssClass: 'my-custom-activite-modal',
-      componentProps: {},
+      componentProps: {
+
+      }
     });
-    modal.onDidDismiss().then((data: any) => {});
+    modal.onDidDismiss().then((data: any) => {
+
+    });
     return await modal.present();
+
   }
-  openCamera() {
+  openCamera(){
     const options: CameraOptions = {
       quality: 100,
       destinationType: this.camera.DestinationType.FILE_URI,
       encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE,
+      mediaType: this.camera.MediaType.PICTURE
     };
 
-    this.camera.getPicture(options).then(
-      (imageData) => {
-        // imageData is either a base64 encoded string or a file URI
-        // If it's base64 (DATA_URL):
-        let base64Image = 'data:image/jpeg;base64,' + imageData;
-      },
-      (err) => {
-        // Handle error
-      }
-    );
+    this.camera.getPicture(options).then((imageData) => {
+      // imageData is either a base64 encoded string or a file URI
+      // If it's base64 (DATA_URL):
+      let base64Image = 'data:image/jpeg;base64,' + imageData;
+    }, (err) => {
+      // Handle error
+    });
   }
   async reglage() {
     const modal = await this.modalCtrl.create({
       component: ReglagesPage,
       cssClass: 'my-custom-activite-modal',
-      componentProps: {},
+      componentProps: {
+
+      }
     });
-    modal.onDidDismiss().then((data: any) => {});
+    modal.onDidDismiss().then((data: any) => {
+
+    });
     return await modal.present();
+
   }
 
-  back() {
-    this.navController.navigateForward(['tabs/tab3']);
-  }
   /*La fonction update_chrono incrémente le nombre de millisecondes par 1 <==> 1*cadence = 100 */
   updateChrono(){
     this.ms+=1;
@@ -266,15 +267,48 @@ export class DemarragePage implements OnInit {
       this.h+=1;
     }
   }
-   start(){
+   start() {
      this.status='play';
     this.t =setInterval(()=> {this.updateChrono(); },100);
    // btn_start.disabled=true;
   }
-  stop(){
+  stop() {
     this.status='pause';
     clearInterval(this.t);
    //btn_start.disabled=false;
   }
-//Source : www.exelib.net
+
+  async choix(item,index) {
+    const modal = await this.modalCtrl.create({
+      component: ListMetricsPage,
+      cssClass: 'my-custom-activite-modal',
+      componentProps: {
+        choix:item
+      }
+    });
+    modal.onDidDismiss().then((data: any) => {
+      if(data.data){
+        let value = data.data;
+        for(let el of this.listElement){
+          if(el.name == value.name){
+            this.showMessage('Cette activité est déjà dans la liste','warning')
+            return;
+          }
+
+        }
+        for(let val of this.listChoix){
+          if(value.name == val.name){
+            value = val;
+            this.listElement[index]=val;
+          }else{
+            this.listElement[index]=value;
+          }
+        }
+        localStorage.setItem('choix',JSON.stringify(this.listElement));
+      }
+    });
+    return await modal.present();
+
+  }
 }
+

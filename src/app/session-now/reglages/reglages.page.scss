@@ -1,23 +1,23 @@
-ion-header{
-    --ion-background-color: #F4F5FA;
-    ion-title{
-        text-align: center;
-        color: #2A2A2C;
-        font-family: "PoppinsBold" !important;
-        font-size: 13px;
-        letter-spacing: -0.13px;
-    }
-    .backArrow{
-        width: 13px;
-        height: 13px;
-    }
-    .info{
-        width: 23px;
-        height: 23px;
-    }
-}
+
 ion-content{
     --ion-background-color: #F4F5FA;
+    ion-toolbar{
+        ion-title{
+            text-align: center;
+            color: #2A2A2C;
+            font-family: "PoppinsBold" !important;
+            font-size: 13px;
+            letter-spacing: -0.13px;
+        }
+        .backArrow{
+            width: 13px;
+            height: 13px;
+        }
+        .info{
+            width: 23px;
+            height: 23px;
+        }
+    }
     .show{
         display: block;
     }
@@ -153,7 +153,7 @@ ion-content{
     
     .regl-item{
         border-radius: 14px;
-        --ion-background-color: #FFFFFF;
+        --background: #FFFFFF;
         margin: 0px 14px;
         margin-bottom: 10px;
     }
@@ -185,7 +185,7 @@ ion-content{
         padding: 12px 0;
     }
     .detail{
-        --ion-background-color: #19191C;
+        --background: #19191C;
     }
     .c-ion-fab{
         width: 128px;
