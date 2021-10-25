@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { AidePage } from '../aide/aide.page';
 import { Router } from '@angular/router';
-import { ActivitiesPage } from '../activities/activities.page';
-
 @Component({
   selector: 'app-reglages',
   templateUrl: './reglages.page.html',

@@ -1,5 +1,5 @@
 <ion-content>
-  <ion-row  *ngIf="!base64" class="addMedia" (click)="openCamera()">
+  <ion-row  *ngIf="!base64" class="addMedia" (click)="addContenu()">
     <ion-img class="appareil" src="assets/images/photo2.svg"></ion-img>
     <div class="ajouter">
       Ajouter un média
@@ -9,7 +9,7 @@
     </div>
   </ion-row>
 
-  <ion-img class="base-image" *ngIf="base64" (click)="openCamera()" [src]="base64"></ion-img>
+  <ion-img class="base-image" *ngIf="base64" (click)="addContenu()" [src]="base64"></ion-img>
 
   <ion-row class="c-date">
     <span class="day">Aujourd'hui</span>

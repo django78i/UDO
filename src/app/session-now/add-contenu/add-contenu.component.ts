@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Camera, CameraResultType} from '@capacitor/camera';
+import { Camera, CameraResultType, CameraSource} from '@capacitor/camera';
 import { ModalController } from '@ionic/angular';
 
 @Component({
@@ -23,6 +23,22 @@ export class AddContenuComponent implements OnInit {
     const image = await Camera.getPhoto({
       quality: 100,
       allowEditing: false,
+      source:CameraSource.Camera,
+      resultType: CameraResultType.DataUrl,
+    });
+
+    // Here you get the image as result.
+    const theActualPicture = image.dataUrl;
+    this.base64=theActualPicture;
+    console.log('image',this.base64);
+
+
+  }
+  async openGallery(){
+    const image = await Camera.getPhoto({
+      quality: 100,
+      allowEditing: false,
+      source:CameraSource.Photos,
       resultType: CameraResultType.DataUrl,
     });
 

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AddContenuComponent } from '../add-contenu/add-contenu.component';
 import { ModalController, Platform } from '@ionic/angular';
-import { Camera, CameraResultType } from '@capacitor/camera';
 import { Router } from '@angular/router';
 import { DonneesPriveComponent } from '../donnees-prive/donnees-prive.component';
 import { Location } from '@angular/common';
@@ -82,18 +81,5 @@ export class ResultatPage implements OnInit {
 
   }
 
-  async openCamera() {
-    const image = await Camera.getPhoto({
-      quality: 100,
-      allowEditing: false,
-      resultType: CameraResultType.DataUrl,
-    });
-
-    // Here you get the image as result.
-    const theActualPicture = image.dataUrl;
-    this.base64 = theActualPicture;
-    console.log('image', this.base64);
-
-
-  }
+ 
 }
