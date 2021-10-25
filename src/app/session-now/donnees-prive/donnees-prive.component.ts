@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import {SessionNowService} from "../../services/session-now-service.service";
 
 @Component({
   selector: 'app-donnees-prive',
@@ -9,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class DonneesPriveComponent implements OnInit {
 
-  constructor(private modalCtr:ModalController,private router:Router) { }
+  constructor(private modalCtr:ModalController,private router:Router,private snService:SessionNowService) { }
 
   ngOnInit() {}
 
@@ -18,6 +19,12 @@ export class DonneesPriveComponent implements OnInit {
     await this.modalCtr.dismiss(closeModal);
   }
   publier(){
+    const sessionNow=JSON.parse(localStorage.getItem('sessionNow'));
+    console.log(sessionNow);
+    if(sessionNow){
+      this.snService.update(sessionNow,'session-now');
+    }
+
     this.close();
     this.router.navigate(['session-now/felicitation']);
   }
