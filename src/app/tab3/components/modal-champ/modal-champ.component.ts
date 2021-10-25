@@ -20,6 +20,7 @@ import {
 })
 export class ModalChampComponent implements OnInit, AfterViewInit {
   @Input() championnat: any;
+  @Input() user: any;
   segmentValue = 'resume';
   @ViewChild('dataPoints') dataPoints: ElementRef;
   // dataPoints: '100,50 200,50 270,150 150,250 30,150';

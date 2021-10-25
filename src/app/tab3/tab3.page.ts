@@ -42,6 +42,7 @@ export class Tab3Page implements OnInit, AfterContentChecked {
   bannData: any;
   affiche: BehaviorSubject<any> = new BehaviorSubject(null);
   user: any;
+  user$: Observable<any>;
   userInfo: any;
   constructor(
     private modalController: ModalController,
@@ -53,8 +54,8 @@ export class Tab3Page implements OnInit, AfterContentChecked {
   ) {}
 
   ngOnInit() {
-    const user = from(this.userService.getCurrentUser());
-    user
+    this.user$ = from(this.userService.getCurrentUser());
+    this.user$
       .pipe(
         tap((us) => {
           this.user = us;
