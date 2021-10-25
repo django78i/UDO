@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonSlides, ModalController } from '@ionic/angular';
 import { ReglagesPage } from '../reglages/reglages.page';
-import { Camera, CameraResultType } from '@capacitor/camera';
 import { Router } from '@angular/router';
 import { ActivitiesPage } from '../activities/activities.page';
+import { AddContenuComponent } from '../add-contenu/add-contenu.component';
 
 @Component({
   selector: 'app-preseance',
@@ -69,19 +69,17 @@ export class PreseancePage implements OnInit {
     this.router.navigate(['session-now/help']);
   }
 
-
-  async openCamera() {
-    const image = await Camera.getPhoto({
-      quality: 100,
-      allowEditing: false,
-      resultType: CameraResultType.DataUrl,
+  async addContenu() {
+    const modal = await this.modalCtrl.create({
+      component: AddContenuComponent,
+      cssClass: 'my-custom-contenu-modal',
     });
+    modal.onDidDismiss().then((data: any) => {
+      this.base64 =data.data;
+    });
+    return await modal.present();
 
-    // Here you get the image as result.
-    const theActualPicture = image.dataUrl;
-    this.base64 = theActualPicture;
   }
-
   start() {
     if (this.isActif) {
       let choice = JSON.parse(localStorage.getItem('reglages'));
