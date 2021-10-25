@@ -13,19 +13,26 @@
     </ion-button>
   </ion-toolbar>
   <ion-toolbar>
-    <ion-searchbar (ionChange)="filterFriends($event)" [(ngModel)]="filteredFriends"></ion-searchbar>
+    <ion-searchbar
+      (ionChange)="filterFriends($event)"
+      [(ngModel)]="filteredFriends"
+    ></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
 <section>
-  <ng-container *ngIf="friendsList$ | async as friends">
-    <ion-item lines="full" class="champColor" *ngFor="let friend of friendsList">
+  <ng-container *ngIf="friendsList$ | async as friends; else showNone">
+    <ion-item
+      lines="full"
+      class="champColor"
+      *ngFor="let friend of friends"
+    >
       <ion-avatar style="margin-right: 10px">
         <img [src]="friend.avatar" alt="" />
         <ion-badge>{{ friend.niveau }}</ion-badge>
       </ion-avatar>
       <ion-label>
-        <p class="sousTitre">{{ friend.name }}</p>
+        <p class="sousTitre">{{ friend.userName }}</p>
       </ion-label>
       <ion-checkbox
         (ionChange)="change($event)"
@@ -33,4 +40,5 @@
       ></ion-checkbox>
     </ion-item>
   </ng-container>
+  <ng-template #showNone> <p>Aucn amis</p></ng-template>
 </section>

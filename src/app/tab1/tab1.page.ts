@@ -13,10 +13,11 @@ import { SwiperComponent } from 'swiper/angular';
 import { MusicFeedService } from '../services/music-feed.service';
 import { tap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { from, Observable } from 'rxjs';
 import { NavController } from '@ionic/angular';
 import { MenuUserComponent } from '../components/menu-user/menu-user.component';
 import { ModalController, AnimationController } from '@ionic/angular';
+import { UserService } from '../services/user-service.service';
 
 @Component({
   selector: 'app-tab1',
@@ -68,17 +69,23 @@ export class Tab1Page implements OnInit, AfterContentChecked {
   mode = 'determinate';
   diameter = 70;
   color = 'dark';
-  soundMute = false;
-
+  soundMute = true;
+  user: any;
   constructor(
     public modalController: ModalController,
     public animationCtrl: AnimationController,
     public musService: MusicFeedService,
     public http: HttpClient,
-    public navCtl: NavController
+    public navCtl: NavController,
+    public userService: UserService
   ) {}
 
   ngOnInit() {
+    const user = from(this.userService.getCurrentUser());
+    user.pipe(tap((us) => console.log(us))).subscribe((us) => {
+      this.user = us;
+    });
+
     this.feed = this.http
       .get('../../assets/mocks/feed.json')
       .pipe(tap((r) => console.log(r)));
@@ -136,6 +143,9 @@ export class Tab1Page implements OnInit, AfterContentChecked {
 
     const modal = await this.modalController.create({
       component: MenuUserComponent,
+      componentProps: {
+        user: this.user,
+      },
       // enterAnimation,
       // leaveAnimation,
     });

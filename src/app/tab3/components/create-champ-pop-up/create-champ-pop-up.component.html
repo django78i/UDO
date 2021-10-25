@@ -192,7 +192,7 @@
               Activer la limite de participants maximum
             </p>
           </ion-label>
-          <ion-toggle slot="end" (ionChange)="change()"></ion-toggle>
+          <ion-toggle slot="end" (ionChange)="change($event)"></ion-toggle>
         </ion-item>
 
         <ion-item
@@ -231,7 +231,7 @@
             <p style="font-size: 10px">Sélectionnez les activités</p>
           </ion-label>
         </ion-item>
-        <ion-item
+        <!-- <ion-item
           detail
           lines="full"
           class="champColor"
@@ -250,7 +250,7 @@
               Consulter et gérer votre liste de contacts
             </p>
           </ion-label>
-        </ion-item>
+        </ion-item> -->
         <div style="display: flex; justify-content: center">
           <ion-button
             shape="round"
@@ -270,6 +270,10 @@
             (backAction)="backSlide($event)"
           ></app-activity-list>
           <app-friends-list
+            [createur]="createur"
+            [type]="private.type"
+            [range]="range"
+            [acitivities]="activitesList"
             *ngIf="sliderPage == 'amis'"
             (friendList)="chooseFriends($event)"
             (backAction)="backSlide($event)"

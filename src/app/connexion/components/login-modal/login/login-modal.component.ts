@@ -17,7 +17,7 @@ import {
 } from '@ionic/angular';
 import { BehaviorSubject, from } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { UserServiceService as UserService } from 'src/app/services/user-service.service';
+import { UserService as UserService } from 'src/app/services/user-service.service';
 
 @Component({
   selector: 'app-login-modal',
@@ -41,9 +41,9 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
     public zone: NgZone,
     public modalCtl: ModalController,
     public picker: PickerController,
-    public loadingController: LoadingController,
+    public userService: UserService,
     public navController: NavController,
-    public userService: UserService
+    public loadingController: LoadingController
   ) {}
 
   ngOnInit() {}
@@ -53,24 +53,62 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    console.log(
-      this.stepperComp?.selectionChange.subscribe((r) => {
-        this.stepperEvent = r;
-        console.log(r, this.pseudo);
-        if (r.previouslySelectedIndex == 1 && this.pseudo != '') {
-          console.log('augmente');
-          this.step += 0.25;
-        } else if (r.previouslySelectedIndex == 2 && this.sex != '') {
-          this.step += 0.25;
-        } else if (
-          r.previouslySelectedIndex == 3 &&
-          this.physicalParam.taille != 0 &&
-          this.physicalParam.poids != 0
-        ) {
-          this.step += 0.25;
-        }
-      })
-    );
+    const auth = getAuth();
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        const userDataBase = from(this.userService.findUser(user.uid));
+        userDataBase
+          .pipe(
+            tap((us) => {
+              this.findPreference(us.data())
+                ? this.redirect()
+                : this.stepperComp.next();
+            })
+          )
+          .subscribe((user) => {
+            this.user = user.data();
+            console.log(user.data());
+          });
+      }
+    });
+    this.stepperComp?.selectionChange.subscribe((r) => {
+      this.stepperEvent = r;
+      console.log(r, this.pseudo);
+      if (r.previouslySelectedIndex == 1 && this.pseudo != '') {
+        console.log('augmente');
+        this.step += 0.25;
+      } else if (r.previouslySelectedIndex == 2 && this.sex != '') {
+        this.step += 0.25;
+      } else if (
+        r.previouslySelectedIndex == 3 &&
+        this.physicalParam.taille != 0 &&
+        this.physicalParam.poids != 0
+      ) {
+        this.step += 0.25;
+      }
+    });
+    // console.log(
+    //   this.stepperComp?.selectionChange.subscribe((r) => {
+    //     this.stepperEvent = r;
+    //     console.log(r, this.pseudo);
+    //     if (r.previouslySelectedIndex == 1 && this.pseudo != '') {
+    //       console.log('augmente');
+    //       this.step += 0.25;
+    //     } else if (r.previouslySelectedIndex == 2 && this.sex != '') {
+    //       this.step += 0.25;
+    //     } else if (
+    //       r.previouslySelectedIndex == 3 &&
+    //       this.physicalParam.taille != 0 &&
+    //       this.physicalParam.poids != 0
+    //     ) {
+    //       this.step += 0.25;
+    //     }
+    //   })
+    // );
+  }
+
+  login() {
+    this.userService.connectGoogle();
   }
 
   async redirect(): Promise<void> {

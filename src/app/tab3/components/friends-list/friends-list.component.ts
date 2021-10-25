@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
+import { ChampionnatsService } from 'src/app/services/championnats.service';
+import { UserService } from 'src/app/services/user-service.service';
 
 @Component({
   selector: 'app-friends-list',
@@ -11,30 +13,28 @@ import { map, switchMap, tap } from 'rxjs/operators';
 export class FriendsListComponent implements OnInit {
   @Output() backAction: EventEmitter<any> = new EventEmitter();
   @Output() friendList: EventEmitter<any> = new EventEmitter();
-  friendsList$: Observable<any>;
+  friendsList$: Observable<any[]>;
   friendsList: any[] = [];
   friendsSelected: any[] = [];
   filterFriendsSubject$: BehaviorSubject<any> = new BehaviorSubject(null);
   filteredFriends: any;
   charge: any[] = [];
 
-  constructor(public http: HttpClient) {}
+  @Input() createur: any;
+  @Input() type: any;
+  @Input() range: any;
+  @Input() acitivities: any;
+
+  constructor(
+    public http: HttpClient,
+    public userService: UserService,
+    public champService: ChampionnatsService
+  ) {}
 
   ngOnInit() {
-    this.friendsList$ = combineLatest([
-      this.filterFriendsSubject$,
-      this.http.get<any[]>('../../assets/mocks/friendsList.json'),
-    ]).pipe(
-      switchMap(([friendsFilter, friends]) => {
-        this.friendsList = [];
-        const filterd = friends.filter((fr) =>
-          fr.name.toLowerCase().includes(friendsFilter)
-        );
-        return this.filteredFriends ? filterd : friends;
-      }),
-      tap((r) => {
-        this.friendsList.push(r);
-      })
+    console.log(this.range);
+    this.friendsList$ = this.champService.friendsListSubject$.pipe(
+      tap((r) => console.log(r))
     );
   }
 

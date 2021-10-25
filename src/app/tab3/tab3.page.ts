@@ -1,6 +1,7 @@
 import {
   AfterContentChecked,
   Component,
+  NgZone,
   OnInit,
   QueryList,
   ViewChildren,
@@ -15,7 +16,7 @@ import { HttpClient } from '@angular/common/http';
 import * as _ from 'lodash';
 import { CreateChampPopUpComponent } from './components/create-champ-pop-up/create-champ-pop-up.component';
 import { MenuUserComponent } from '../components/menu-user/menu-user.component';
-import { UserServiceService as UserService } from '../services/user-service.service';
+import { UserService as UserService } from '../services/user-service.service';
 import { ChampionnatsService } from '../services/championnats.service';
 
 @Component({
@@ -34,43 +35,48 @@ export class Tab3Page implements OnInit, AfterContentChecked {
   @ViewChildren('swiper') swiper: QueryList<SwiperComponent>;
   @ViewChildren('miniature') miniature: any;
   challenges: Observable<any>;
-  userChampionnats: Observable<any>;
+  userChampionnats$: Observable<any>;
+  userChampionnats: any;
   championnats: Observable<any>;
   championnatsNetwork: Observable<any>;
   bannData: any;
   affiche: BehaviorSubject<any> = new BehaviorSubject(null);
   user: any;
+  userInfo: any;
   constructor(
     private modalController: ModalController,
     public animationCtrl: AnimationController,
     public http: HttpClient,
     public userService: UserService,
-    public champService: ChampionnatsService
+    public champService: ChampionnatsService,
+    public zone: NgZone
   ) {}
 
   ngOnInit() {
     const user = from(this.userService.getCurrentUser());
-    user.pipe(tap((us) => console.log(us))).subscribe((us) => (this.user = us));
+    user
+      .pipe(
+        tap((us) => {
+          this.user = us;
+          console.log(us);
+          this.champService.getChampionnatsEnCours(this.user);
+          this.userChampionnats$ = this.champService.champEnCoursSubject$.pipe(
+            tap((r) => console.log(r))
+          );
+        })
+      )
+      .subscribe();
 
     this.challenges = this.http.get('../../assets/mocks/challenges.json').pipe(
       tap((r) => {
         this.bannData = r[0];
       })
     );
-    this.userChampionnats = this.http
-      .get('../../assets/mocks/userChamp.json')
-      .pipe(tap((r) => console.log(r)));
 
     this.champService.getChampionnats();
     this.championnats = this.champService.champSubject$.pipe(
       tap((r) => console.log(r))
     );
-    // this.http
-    //   .get('../../assets/mocks/championnats.json')
-    //   .pipe(
-    //     map((r) => _.filter(r, ['type', 'Friends&Familly'])),
-    //     tap((r) => console.log(r))
-    //   );
 
     this.championnatsNetwork = this.http
       .get('../../assets/mocks/championnats.json')
@@ -201,6 +207,7 @@ export class Tab3Page implements OnInit, AfterContentChecked {
       // leaveAnimation,
       cssClass: 'testModal',
       componentProps: {
+        user: this.user,
         championnat: ev,
       },
     });

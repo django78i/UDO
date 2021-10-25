@@ -4,19 +4,19 @@ import { RouteReuseStrategy } from '@angular/router';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { VideoPlayer } from '@ionic-native/video-player/ngx';
+import { AppLauncher } from '@ionic-native/app-launcher/ngx';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MusicFeedService } from './services/music-feed.service';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
-// import {CommonModule} from "@angular/common";
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
   imports: [
     BrowserModule,
-    // CommonModule,
     IonicModule.forRoot(),
     AppRoutingModule,
     BrowserAnimationsModule,
@@ -27,6 +27,8 @@ import { GooglePlus } from '@ionic-native/google-plus/ngx';
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    VideoPlayer,
+    AppLauncher,
     MusicFeedService,
     GooglePlus,
   ],

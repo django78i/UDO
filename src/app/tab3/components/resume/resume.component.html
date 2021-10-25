@@ -21,7 +21,7 @@
     <ion-title>
       <ion-item lines="none">
         <ion-label class="titre">
-          {{ champ.journee
+          {{ userInfo.journeeEnCours
           }}<span style="font-weight: 500; color: #c5c6ce">/</span
           ><span style="color: #c5c6ce">{{ champ.journeeTotale }}</span>
         </ion-label>
@@ -30,7 +30,7 @@
     </ion-title>
     <ion-item slot="end" lines="none">
       <ion-label class="titre">
-        {{ champ.bonus }}
+        {{ userInfo.bonus }}
       </ion-label>
       <ion-label class="sousTitre black"> Bonus </ion-label>
     </ion-item>
@@ -105,7 +105,7 @@
       <p class="detailTitre">Activer la limite de participants maximum</p>
     </ion-label>
     <ion-thumbnail class="labelRight" slot="end">
-      <ion-label>{{ champ.duree }}</ion-label>
+      <ion-label>{{ champ.dureeMax }}</ion-label>
       <!-- <img src="../../../../assets/icon/friends-white.svg" alt=""> -->
     </ion-thumbnail>
   </ion-toolbar>
@@ -118,7 +118,7 @@
       <p class="detailTitre">Minimum de séances par semaine</p>
     </ion-label>
     <ion-thumbnail slot="end" class="labelRight">
-      <ion-label>{{ champ.seanceSemaine }}</ion-label>
+      <ion-label>{{ champ.seanceByWeek }}</ion-label>
     </ion-thumbnail>
   </ion-toolbar>
 </section>

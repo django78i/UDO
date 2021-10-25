@@ -69,7 +69,7 @@ export class CreateChampPopUpComponent
     slidesPerView: 1,
     allowTouchMove: false,
   };
-  range: any = { lower: 40, upper: 60 };
+  range: any;
   loading = true;
   sliderPage: any;
   @ViewChildren('checkBanniere') checkBanniere: QueryList<IonCheckbox>;
@@ -138,9 +138,12 @@ export class CreateChampPopUpComponent
       : (this.seanceWeekCount = this.seanceWeekCount);
   }
 
-  change() {
+  change(ev) {
     this.maxPlayer = !this.maxPlayer;
     console.log(this.maxPlayer);
+    this.range = ev.detail.checked ? { lower: 40, upper: 60 } : undefined;
+
+    console.log(this.range);
   }
 
   getBan(ev) {
@@ -207,8 +210,8 @@ export class CreateChampPopUpComponent
       name: this.formChamp.get('name').value,
       dureeMax: this.weekCount,
       seanceByWeek: this.seanceWeekCount,
-      niveauMax: this.range.upper,
-      niveauMin: this.range.lower,
+      niveauMax: this.range?.upper,
+      niveauMin: this.range?.lower,
       activites: this.activitesList,
       createur: {
         name: this.user.userName,
@@ -216,19 +219,22 @@ export class CreateChampPopUpComponent
       },
       type: this.private.type,
       participants: this.friendsList,
-      nbParticipants: this.friendsList.length,
+      nbParticipants: this.friendsList?.length,
     };
     console.log(champ);
-    this.champService.createChampionnat(champ);
+    // this.champService.createChampionnat(champ);
     this.presentToast();
-    this.close();
+    this.champService.matchUser(this.range, champ.activites);
+
+    this.slideNext('amis');
+    // this.close();
   }
 
   async presentToast() {
     const toast = await this.toastController.create({
       message: 'Votre championnat a été créé.',
       duration: 2000,
-      cssClass : "toastMode"
+      cssClass: 'toastMode',
     });
     toast.present();
   }

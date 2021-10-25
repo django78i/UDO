@@ -121,14 +121,15 @@
     </ion-segment-button>
   </ion-segment>
   <div style="width: 100%; margin-top: 15px">
+    <!-- <ng-container *ngIf="userChampionnats"> -->
     <app-user-championnats-slide
-      [championnats]="champ"
-      *ngIf="userChampionnats|async as champ"
+      [championnats]="usChamp"
       (champ)="champModal($event)"
+      *ngIf="userChampionnats$|async as usChamp"
     >
     </app-user-championnats-slide>
+    <!-- </ng-container> -->
   </div>
-
   <ion-item
     button
     (click)="buttonClick()"

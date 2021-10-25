@@ -196,14 +196,14 @@ export class DemarragePage implements OnInit {
       let that = this;
       // this.getMetrics();
       // @ts-ignore
-      setTimeout(() => { that.getMetrics(); }, 1000);
+      // setTimeout(() => { that.getMetrics(); }, 1000);
     }
   }
   // @ts-ignore
   queryMetrics(metric, item) {
     if (metric === 'steps' || metric === 'distance') {
       this.health.queryAggregated({
-        startDate: new Date(new Date().getTime() - 3 * 24 * 60 * 60 * 1000), // three days ago
+        startDate: new Date(new Date().getTime() - 1 * 24 * 60 * 60 * 1000), // three days ago
         endDate: new Date(), // now
         dataType: metric,
         bucket: 'day',
@@ -216,7 +216,7 @@ export class DemarragePage implements OnInit {
     }
     else {
       this.health.query({
-        startDate: new Date(new Date().getTime() - 10 * 24 * 60 * 60 * 1000), // three days ago
+        startDate: new Date(new Date().getTime() - 1 * 24 * 60 * 60 * 1000), // three days ago
         endDate: new Date(), // now
         dataType: metric,
         limit: 100
@@ -226,6 +226,16 @@ export class DemarragePage implements OnInit {
       })
         .catch(e => console.log('error1 ', e));
     }
+    this.health.query({
+      startDate: new Date(new Date().getTime() - 1 * 24 * 60 * 60 * 1000), // three days ago
+      endDate: new Date(), // now
+      dataType: 'steps',
+      limit: 1000
+    }).then(res => {
+      item.nombre = res.length > 0 ? (Math.round((parseFloat(res[res.length - 1]?.value) + Number.EPSILON) * 100) / 100) : '0';
+      console.log('res', res);
+    })
+      .catch(e => console.log('error1 ', e));
   }
   checkPause() {
     this.pause = true;
@@ -388,9 +398,9 @@ export class SessionNowModel{
   photo: string;
   username: string;
   reactionNumber: number;
-  reactions: [any];
-  metrics: [
-    any
+  reactions= [];
+  metrics= [
+
   ];
   score: number;
   mode: string; // 'private or public'

@@ -6,7 +6,7 @@ import {
 } from '@angular/router';
 import { getAuth } from '@firebase/auth';
 import { Observable } from 'rxjs';
-import { UserServiceService } from './user-service.service';
+import { UserService } from './user-service.service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +14,7 @@ import { UserServiceService } from './user-service.service';
 export class RouteGuardService {
   constructor(
     private router: Router,
-    public userService: UserServiceService,
+    public userService: UserService,
     public zone: NgZone
   ) {}
 
