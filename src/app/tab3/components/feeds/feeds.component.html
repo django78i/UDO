@@ -2,8 +2,8 @@
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  <section class="contenu" *ngIf="feed.lenght; else showBlank">
-    <ion-item *ngFor="let item of feed | async" style="margin-bottom: 10px">
+  <section class="contenu" *ngIf="feed$|async as feed; else showBlank">
+    <ion-item *ngFor="let item of feed" style="margin-bottom: 10px">
       <ion-card style="box-shadow: none; width: 100%">
         <ion-card-header *ngIf="item.live == 'false'">
           <ion-toolbar class="postZone">

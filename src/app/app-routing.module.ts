@@ -15,6 +15,21 @@ const routes: Routes = [
       import('./connexion/connexion.module').then((m) => m.ConnexionPageModule),
   },
   {
+    path: 'login',
+    loadChildren: () =>
+      import(
+        './connexion/components/connexion-choice/connexion-choice.module'
+      ).then((m) => m.ConnexionModule),
+  },
+  {
+    path: 'onboarding',
+    loadChildren: () =>
+      import('./connexion/components/login-modal/login/login.module').then(
+        (m) => m.LoginModule
+      ),
+  },
+
+  {
     path: '',
     redirectTo: '',
     pathMatch: 'full',

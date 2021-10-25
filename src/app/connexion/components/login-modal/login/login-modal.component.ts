@@ -53,65 +53,63 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    const auth = getAuth();
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        const userDataBase = from(this.userService.findUser(user.uid));
-        userDataBase
-          .pipe(
-            tap((us) => {
-              this.findPreference(us.data())
-                ? this.redirect()
-                : this.stepperComp.next();
-            })
-          )
-          .subscribe((user) => {
-            this.user = user.data();
-            console.log(user.data());
-          });
-      }
-    });
+    // const auth = getAuth();
+    // auth.onAuthStateChanged((user) => {
+    //   if (user) {
+    //     const userDataBase = from(this.userService.findUser(user.uid));
+    //     userDataBase
+    //       .pipe(
+    //         tap((us) => {
+    //           this.findPreference(us.data())
+    //             ? this.redirect()
+    //             : this.stepperComp.next();
+    //         })
+    //       )
+    //       .subscribe((user) => {
+    //         this.user = user.data();
+    //         console.log(user.data());
+    //       });
+    //   }
+    // });
     this.stepperComp?.selectionChange.subscribe((r) => {
       this.stepperEvent = r;
       console.log(r, this.pseudo);
-      if (r.previouslySelectedIndex == 1 && this.pseudo != '') {
+      if (r.previouslySelectedIndex == 0 && this.pseudo != '') {
         console.log('augmente');
         this.step += 0.25;
-      } else if (r.previouslySelectedIndex == 2 && this.sex != '') {
+      } else if (r.previouslySelectedIndex == 1 && this.sex != '') {
         this.step += 0.25;
       } else if (
-        r.previouslySelectedIndex == 3 &&
+        r.previouslySelectedIndex == 2 &&
         this.physicalParam.taille != 0 &&
         this.physicalParam.poids != 0
       ) {
         this.step += 0.25;
       }
     });
-    // console.log(
-    //   this.stepperComp?.selectionChange.subscribe((r) => {
-    //     this.stepperEvent = r;
-    //     console.log(r, this.pseudo);
-    //     if (r.previouslySelectedIndex == 1 && this.pseudo != '') {
-    //       console.log('augmente');
-    //       this.step += 0.25;
-    //     } else if (r.previouslySelectedIndex == 2 && this.sex != '') {
-    //       this.step += 0.25;
-    //     } else if (
-    //       r.previouslySelectedIndex == 3 &&
-    //       this.physicalParam.taille != 0 &&
-    //       this.physicalParam.poids != 0
-    //     ) {
-    //       this.step += 0.25;
-    //     }
-    //   })
-    // );
   }
 
   login() {
     this.userService.connectGoogle();
   }
 
-  async redirect(): Promise<void> {
+  redirect() {
+    this.navController.navigateForward(['']);
+  }
+
+  uploadFile(event) {
+    console.log(event);
+  }
+
+  async saveOnBoarding() {
+    const user = await this.userService.getCurrentUser();
+    this.user = {
+      ...user,
+      sex: this.sex,
+      activitesPratiquees: this.activitesList,
+      userName: this.pseudo,
+      physique: this.physicalParam,
+    };
     const loading = await this.loadingController.create({
       message: 'Veuillez patienter...',
       duration: 2000,
@@ -119,22 +117,10 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
     await loading.present();
 
     const { role, data } = await loading.onDidDismiss();
-    console.log('Loading dismissed!');
 
-    this.navController.navigateForward(['']);
-  }
-
-  saveOnBoarding() {
-    this.user = {
-      ...this.user,
-      sex: this.sex,
-      activitesPratiquees: this.activitesList,
-      userName: this.pseudo,
-      physique: this.physicalParam,
-    };
-    console.log(this.user);
-    this.userService.updateUser(this.user);
-    this.redirect();
+    console.log(this.user, user);
+    // this.userService.updateUser(this.user);
+    // this.redirect();
   }
 
   findPreference(user): boolean {
