@@ -76,6 +76,7 @@ export class PreseancePage implements OnInit {
     });
     modal.onDidDismiss().then((data: any) => {
       this.base64 =data.data;
+      
     });
     return await modal.present();
 
