@@ -35,7 +35,7 @@
   <ion-fab class="c-ion-fab" (click)="close()" vertical="center" horizontal="center" slot="fixed">
     <!-- <ion-fab-button> -->
     <span class="c-fab">
-      <span class="textFab">10:55</span>
+      <span class="textFab">{{counter?.mn | number: '2.0-0'}}:{{counter?.s| number: '2.0-0'}}</span>
       <ion-img src="assets/images/smallArrow.svg"></ion-img>
     </span>
     <!-- </ion-fab-button> -->

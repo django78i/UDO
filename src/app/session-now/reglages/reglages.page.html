@@ -7,27 +7,6 @@
       <ion-img slot="end" class="info" (click)="information()" src="assets/images/feather-info.svg"> </ion-img>
     </ion-item>
   </ion-toolbar>
-  <ion-item class="regl-item" lines="none">
-    <span class="tapis-img0">
-      <ion-img slot="start" class="rotate" src="assets/images/verouillage.PNG"></ion-img>
-    </span>
-    <div class="reglage">
-      <ion-row class="name">
-        <ion-label>
-          Verrouilage de l'interface
-        </ion-label>
-      </ion-row>
-      <ion-row class="nombre">
-        <ion-label>
-          Evite les faux mouvements
-        </ion-label>
-      </ion-row>
-    </div>
-    <span class="toggle" slot="end">
-      <ion-toggle mode="ios" [checked]="listReglages.verrouillage" (ionChange)="checkReglage($event,'verrouillage')"  class="button iconChevron" toggle-class="toggle-calm"></ion-toggle>
-    </span>
-
-  </ion-item>
 
   <ion-item class="regl-item" lines="none">
     <span class="tapis-img2">
@@ -50,28 +29,7 @@
     </span>
 
   </ion-item>
-  <ion-item class="regl-item" lines="none">
-    <span class="tapis-img3">
-      <ion-img slot="start" class="carte" src="assets/images/map.svg"></ion-img>
-    </span>
-    <div class="reglage">
-      <ion-row class="name">
-        <ion-label>
-          Carte
-        </ion-label>
-      </ion-row>
-      <ion-row class="nombre">
-        <ion-label>
-          Afficher votre position GPS
-        </ion-label>
-      </ion-row>
-    </div>
-    <span class="arrow" slot="end">
-      <ion-img src="assets/images/deployRight.svg">
-      </ion-img>
-    </span>
 
-  </ion-item>
   <ion-item class="regl-item" lines="none">
     <span class="tapis-img4">
       <ion-img slot="start" class="rotate" src="assets/images/volume.svg"></ion-img>
@@ -93,6 +51,7 @@
     </span>
 
   </ion-item>
+
   <ion-item class="regl-item" lines="none">
     <span class="tapis-img5">
       <ion-img slot="start" class="tapis" src="assets/images/countdown.svg"></ion-img>
@@ -135,10 +94,12 @@
     </span>
 
   </ion-item>
-  <ion-fab class="c-ion-fab" (click)="close()" vertical="bottom" horizontal="center" slot="fixed">
+  <ion-fab class="c-ion-fab" (click)="close()" vertical="center" horizontal="center" slot="fixed">
     <!-- <ion-fab-button> -->
     <span class="c-fab">
-      <span class="textFab">10:55</span>
+      <span class="textFab">
+        <!-- {{counter?.mn | number: '2.0-0'}}:{{counter?.s| number: '2.0-0'}} -->
+      </span>
       <ion-img src="assets/images/smallArrow.svg"></ion-img>
     </span>
     <!-- </ion-fab-button> -->

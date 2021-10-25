@@ -284,6 +284,7 @@ export class DemarragePage implements OnInit {
   }
 
   async notification() {
+    localStorage.setItem('counter', JSON.stringify({ mn: this.mn, s: this.s }));
     const modal = await this.modalCtrl.create({
       component: NotificationsPage,
       cssClass: 'my-custom-activite-modal',
@@ -307,12 +308,12 @@ export class DemarragePage implements OnInit {
     // Here you get the image as result.
     const theActualPicture = image.dataUrl;
     this.base64 = theActualPicture;
-    console.log('image', this.base64);
 
 
   }
 
   async reglage() {
+    localStorage.setItem('counter', JSON.stringify({ mn: this.mn, s: this.s }));
     const modal = await this.modalCtrl.create({
       component: ReglagesPage,
       cssClass: 'my-custom-activite-modal',

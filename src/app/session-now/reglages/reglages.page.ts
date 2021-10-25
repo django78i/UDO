@@ -12,10 +12,15 @@ import { ActivitiesPage } from '../activities/activities.page';
 export class ReglagesPage implements OnInit {
   listReglages :any;
   value:any;
+  counter:any;
   children=[{image:"assets/images/icon1.PNG",name:"Power lifting"},{image:"assets/images/icon2.PNG",name:"Bench press"},{image:"assets/images/icon3.PNG",name:"Abdominaux"},{image:"assets/images/icon4.PNG",name:"Cordes"},{image:"assets/images/icon5.PNG",name:"Souplesse"},{image:"assets/images/icon6.PNG",name:"Vélo elliptique"}];
-  constructor(private modalCtr:ModalController,private router:Router) { }
+  constructor(private modalCtr:ModalController,private router:Router) {
+    this.counter = JSON.parse(localStorage.getItem('counter'));
+    console.log("counter",this.counter);
+    
+  }
   ngOnInit() {
-    this.listReglages={verrouillage:false,rotation:false,carte:false,son:false,compteRebour:false,modePrive:false};
+    this.listReglages={rotation:false,son:false,compteRebour:false,modePrive:false};
     let value = localStorage.getItem('reglages');
     if(value){
       this.listReglages = JSON.parse(value);
