@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { AddContenuComponent } from '../add-contenu/add-contenu.component';
-import {ModalController, Platform} from '@ionic/angular';
-import { Camera, CameraResultType } from '@capacitor/camera';
+import { ModalController, Platform } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { DonneesPriveComponent } from '../donnees-prive/donnees-prive.component';
 import { Location } from '@angular/common';
-import {SessionNowModel} from '../demarrage/demarrage.page';
+import { SessionNowModel } from '../demarrage/demarrage.page';
 
 @Component({
   selector: 'app-resultat',
@@ -26,18 +25,15 @@ export class ResultatPage implements OnInit {
     { img: 'assets/images/personn2.PNG', nombre: '10', name: 'Mélanie', comment: 'Lorem ipsum dolor sit atmet', date: 'Il y a 1 min.', icon: 'assets/images/ThumbsUp.png' },
   ];
   constructor(private modalCtrl: ModalController,
-              private router: Router,
-              private platform: Platform,
-              private _location: Location) {
+    private router: Router,
+    private platform: Platform,
+    private _location: Location) {
     this.platform.backButton.subscribeWithPriority(10, () => {
       console.log('Handler was called!');
       this._location.back();
     });
 
     this.counter = JSON.parse(localStorage.getItem('counter'));
-    setInterval(() => {
-      this.now = new Date().toString().split(' ')[4].slice(0, 5);
-    }, 1);
   }
 
   ngOnInit() {
@@ -46,10 +42,10 @@ export class ResultatPage implements OnInit {
 
     this.sessionNow = JSON.parse(localStorage.getItem('sessionNow'));
     if (this.sessionNow) {
-      this.sessionNow.reactionNumber=this.listNotif?.length;
+      this.sessionNow.reactionNumber = this.listNotif?.length;
       //if (this.isPicture)
-       // this.sessionNow.photo=this.
-     // this.activite = item;
+      // this.sessionNow.photo=this.
+      // this.activite = item;
     }
   }
 
@@ -67,7 +63,7 @@ export class ResultatPage implements OnInit {
       cssClass: 'my-custom-contenu-modal',
     });
     modal.onDidDismiss().then((data: any) => {
-
+      this.base64 =data.data;
     });
     return await modal.present();
 
@@ -85,18 +81,5 @@ export class ResultatPage implements OnInit {
 
   }
 
-  async openCamera() {
-    const image = await Camera.getPhoto({
-      quality: 100,
-      allowEditing: false,
-      resultType: CameraResultType.DataUrl,
-    });
-
-    // Here you get the image as result.
-    const theActualPicture = image.dataUrl;
-    this.base64 = theActualPicture;
-    console.log('image', this.base64);
-
-
-  }
+ 
 }

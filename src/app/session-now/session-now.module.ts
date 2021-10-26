@@ -28,6 +28,7 @@ import {Health} from '@ionic-native/health/ngx';
 import { IonicGestureConfig } from '../services/ionic-gesture-config.service';
 import {HAMMER_GESTURE_CONFIG} from '@angular/platform-browser';
 import {AppLauncher}  from '@ionic-native/app-launcher/ngx';
+import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 
 @NgModule({
   imports: [
@@ -45,10 +46,11 @@ import {AppLauncher}  from '@ionic-native/app-launcher/ngx';
     RoundProgressModule,
     IonicModule.forRoot(),
     NgCircleProgressModule.forRoot(),
+    
   ],
   declarations: [SessionNowComponent,ActivitiesPage,ReglagesPage,ListMetricsPage],
   // entryComponents: [ActivitiesPage,ReglagesPage,ListMetricsPage],
-  providers: [Camera,{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },Health,AppLauncher
+  providers: [Camera,ScreenOrientation,{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },Health,AppLauncher
   ,{provide: HAMMER_GESTURE_CONFIG, useClass: IonicGestureConfig}
   ],
 

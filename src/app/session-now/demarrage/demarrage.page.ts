@@ -2,13 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import {AlertController, ModalController, NavController, ToastController} from '@ionic/angular';
 import { ListMetricsPage } from '../list-metrics/list-metrics.page';
 import { NotificationsPage } from '../notifications/notifications.page';
-import { Camera, CameraResultType } from '@capacitor/camera';
 import { ReglagesPage } from '../reglages/reglages.page';
 import { Router } from '@angular/router';
 import { Health } from '@ionic-native/health/ngx';
 import { Platform } from '@ionic/angular';
 import { DonneesPriveComponent } from '../donnees-prive/donnees-prive.component';
 import {SessionNowService} from '../../services/session-now-service.service';
+import { AddContenuComponent } from '../add-contenu/add-contenu.component';
 
 
 
@@ -284,6 +284,7 @@ export class DemarragePage implements OnInit {
   }
 
   async notification() {
+    localStorage.setItem('counter', JSON.stringify({ mn: this.mn, s: this.s }));
     const modal = await this.modalCtrl.create({
       component: NotificationsPage,
       cssClass: 'my-custom-activite-modal',
@@ -297,22 +298,20 @@ export class DemarragePage implements OnInit {
     return await modal.present();
 
   }
-  async openCamera() {
-    const image = await Camera.getPhoto({
-      quality: 100,
-      allowEditing: false,
-      resultType: CameraResultType.DataUrl,
+  async addContenu() {
+    const modal = await this.modalCtrl.create({
+      component: AddContenuComponent,
+      cssClass: 'my-custom-contenu-modal',
     });
-
-    // Here you get the image as result.
-    const theActualPicture = image.dataUrl;
-    this.base64 = theActualPicture;
-    console.log('image', this.base64);
-
+    modal.onDidDismiss().then((data: any) => {
+      this.base64 =data.data;
+    });
+    return await modal.present();
 
   }
 
   async reglage() {
+    localStorage.setItem('counter', JSON.stringify({ mn: this.mn, s: this.s }));
     const modal = await this.modalCtrl.create({
       component: ReglagesPage,
       cssClass: 'my-custom-activite-modal',

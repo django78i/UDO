@@ -103,5 +103,4 @@
         <variable name="com.googleusercontent.apps.911285735248-p38u0egepsqdnjc0stbmepg11g1cf4bc" value="myreversedclientid" />
         <variable name="911285735248-p38u0egepsqdnjc0stbmepg11g1cf4bc.apps.googleusercontent.com" value="mywebapplicationclientid" />
     </plugin>
-
 </widget>
