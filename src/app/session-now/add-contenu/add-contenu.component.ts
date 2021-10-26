@@ -30,8 +30,7 @@ export class AddContenuComponent implements OnInit {
     // Here you get the image as result.
     const theActualPicture = image.dataUrl;
     this.base64=theActualPicture;
-    console.log('image',this.base64);
-
+    this.modalCtr.dismiss(this.base64);
 
   }
   async openGallery(){
