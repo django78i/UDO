@@ -55,15 +55,26 @@ export class ChampionnatsService {
     });
   }
 
-  async getChampionnats() {
-    const docRef = query(collection(this.db, 'championnats'));
+  async getChampionnats(user) {
+    const docRef = query(
+      collection(this.db, 'championnats'),
+      where('status', '==', 'en attente')
+    );
     const unsubscribe = onSnapshot(docRef, (querySnapshot) => {
       const champs = [];
       querySnapshot.forEach((doc) => {
-        console.log(doc);
-        champs.push(doc.data());
+        const document = doc.data();
+        const bool = document.participants.some(
+          (users: any) => users.uid == user.uid
+        );
+        if (bool) {
+          champs.push(doc.data());
+        }
+        this.champSubject$.next(champs);
+
+        // console.log(doc);
+        // champs.push(doc.data());
       });
-      this.champSubject$.next(champs);
       console.log('Current cities in CA: ', champs);
     });
   }

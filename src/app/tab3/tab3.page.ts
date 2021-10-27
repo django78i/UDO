@@ -1,5 +1,6 @@
 import {
   AfterContentChecked,
+  ChangeDetectorRef,
   Component,
   NgZone,
   OnInit,
@@ -50,7 +51,8 @@ export class Tab3Page implements OnInit, AfterContentChecked {
     public http: HttpClient,
     public userService: UserService,
     public champService: ChampionnatsService,
-    public zone: NgZone
+    public zone: NgZone,
+    private ref: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -64,6 +66,11 @@ export class Tab3Page implements OnInit, AfterContentChecked {
           this.userChampionnats$ = this.champService.champEnCoursSubject$.pipe(
             tap((r) => console.log(r))
           );
+
+          this.champService.getChampionnats(this.user);
+          this.championnats = this.champService.champSubject$.pipe(
+            tap((r) => console.log(r))
+          );
         })
       )
       .subscribe();
@@ -74,10 +81,10 @@ export class Tab3Page implements OnInit, AfterContentChecked {
       })
     );
 
-    this.champService.getChampionnats();
-    this.championnats = this.champService.champSubject$.pipe(
-      tap((r) => console.log(r))
-    );
+    // this.champService.getChampionnats();
+    // this.championnats = this.champService.champSubject$.pipe(
+    //   tap((r) => console.log(r))
+    // );
 
     this.championnatsNetwork = this.http
       .get('../../assets/mocks/championnats.json')
@@ -107,6 +114,8 @@ export class Tab3Page implements OnInit, AfterContentChecked {
     this.affiche.next(event);
     console.log(event);
     this.bannData = event;
+    this.ref.detectChanges();
+
     console.log(this.bannData);
   }
 

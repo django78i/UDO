@@ -2,9 +2,20 @@
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  <section class="contenu" *ngIf="feed$|async as feed; else showBlank">
-    <ion-item *ngFor="let item of feed" style="margin-bottom: 10px">
-      <ion-card style="box-shadow: none; width: 100%">
+  <section class="contenu" *ngIf="feed$ | async as feed; else showBlank">
+    <ion-item
+      *ngFor="let item of feed"
+      style="margin-bottom: 10px; --inner-padding-end: 0"
+    >
+      <ion-card
+        style="
+          box-shadow: none;
+          width: 100%;
+          --background: #f4f5fa00;
+          margin-right: 0;
+          margin-left: 0;
+        "
+      >
         <ion-card-header *ngIf="item.live == 'false'">
           <ion-toolbar class="postZone">
             <ion-grid>
@@ -112,26 +123,30 @@
           <div style="display: flex; justify-content: space-between">
             <img src="../../assets/icon/Icon feather-share-2.svg" alt="" />
             <img
+              (click)="presentPopover($event)"
               src="../../assets/icon/Icon material-add-circle-outline.svg"
               alt=""
             />
             <ion-chip outline>
-              <img src="../../assets/icon/Icon awesome-laugh-wink.svg" alt="" />
+              <div class="emot">
+                <img src="../../assets/emojis/Happy.png" alt="" />
+              </div>
               <ion-label *ngIf="item.reactions">{{
                 item.reactions.like
               }}</ion-label>
             </ion-chip>
             <ion-chip outline>
-              <img src="../../assets/icon/Icon feather-thumbs-up.svg" alt="" />
+              <div class="emot">
+                <img src="../../assets/emojis/Sleepy.png" alt="" />
+              </div>
               <ion-label *ngIf="item.reactions">{{
                 item.reactions.dislike
               }}</ion-label>
             </ion-chip>
             <ion-chip outline>
-              <img
-                src="../../assets/icon/Icon awesome-grin-tongue-wink.svg"
-                alt=""
-              />
+              <div class="emot">
+                <img src="../../assets/emojis/Sad.png" alt="" />
+              </div>
               <ion-label *ngIf="item.reactions">{{
                 item.reactions.shit
               }}</ion-label>
@@ -157,11 +172,6 @@
           compétition</ion-card-subtitle
         >
       </ion-card-header>
-      <io-card-content>
-        <ion-button shape="round" style="--background: black"
-          >Soyez le premier à publier
-        </ion-button>
-      </io-card-content>
     </ion-card>
   </ng-template>
 </ion-content>

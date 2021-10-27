@@ -74,55 +74,83 @@
     *ngIf="segmentValue === 'feed'"
     style="--border-width: 0 0 0.55px"
   >
-    <ion-avatar slot="start" style="margin-right: 15px">
-      <img src="assets/mocks/3.jpg" alt="" />
-      <ion-badge>{{ user.niveau }}</ion-badge>
-    </ion-avatar>
+    <div style="display: flex; flex-direction: column">
+      <ion-item lines="none">
+        <ion-avatar slot="start" style="margin-right: 15px">
+          <img src="assets/mocks/3.jpg" alt="" />
+          <ion-badge>{{ user.niveau }}</ion-badge>
+        </ion-avatar>
 
-    <ion-input
-      mode="ios"
-      inputmode="text"
-      clear-on-edit
-      placeholder="Publier un post"
-    ></ion-input>
-    <ion-button
-      slot="end"
-      style="
-        --border-radius: 50%;
-        --background: #0a122129;
-        --backdrop-opacity: 9%;
-      "
-    >
-      <img src="assets/icon/icons8-email-send.svg" alt="" />
-    </ion-button>
+        <ion-input
+          mode="ios"
+          inputmode="text"
+          clear-on-edit
+          placeholder="Publier un post"
+        ></ion-input>
+        <ion-button
+          slot="end"
+          style="
+            --border-radius: 50%;
+            --background: #0a122129;
+            --backdrop-opacity: 9%;
+            height: 30px;
+            width: 30px;
+          "
+        >
+          <img src="assets/icon/icons8-email-send.svg" alt="" />
+        </ion-button>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-icon
+          name="image-outline"
+          (click)="addPhoto()"
+          slot="start"
+        ></ion-icon>
+        <ion-icon name="happy-outline" slot="start"></ion-icon>
+      </ion-item>
+    </div>
   </ion-toolbar>
   <!-- </section> -->
 </ion-header>
 <ion-content>
-  <!-- <section style="padding: 0 15px"> -->
-  <!-- <ion-segment
-      (ionChange)="segmentChanged($event)"
-      [value]="segmentValue"
-      mode="ios"
-    >
-      <ion-segment-button value="resume">
-        <ion-label>Résumé</ion-label>
-      </ion-segment-button>
-      <ion-segment-button value="participants">
-        <ion-label>Participants</ion-label>
-      </ion-segment-button>
-      <ion-segment-button value="feed">
-        <ion-label>Feed</ion-label>
-      </ion-segment-button>
-    </ion-segment> -->
   <app-classement
     *ngIf="segmentValue == 'participants'"
     [champ]="championnat"
   ></app-classement>
-  <app-feeds *ngIf="segmentValue == 'feed'" [user]="user"></app-feeds>
+  <app-feeds
+    *ngIf="segmentValue == 'feed'"
+    [user]="user"
+    [championnat]="championnat"
+  ></app-feeds>
   <app-resume
     *ngIf="segmentValue == 'resume'"
     [champ]="championnat"
   ></app-resume>
-  <!-- </section> -->
+
+  <ion-fab
+    vertical="bottom"
+    horizontal="start"
+    slot="fixed"
+    style="--ion-safe-area-left: 40px"
+  >
+    <ion-button
+      shape="round"
+      *ngIf="
+        championnat.status == 'en attente' &&
+        championnat.createur.uid != user.uid
+      "
+      >Démarrer</ion-button
+    >
+    <ion-button shape="round" *ngIf="championnat.createur.uid == user.uid">{{
+      championnat.dateDemarrage | timeRelative
+    }}</ion-button>
+    <ion-button shape="round" *ngIf="championnat.status == 'en cours'"
+      >Séance Now</ion-button
+    >
+  </ion-fab>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="dark">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>

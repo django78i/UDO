@@ -24,7 +24,7 @@
           <img [src]="cl.avatar" alt="" />
           <ion-badge>{{ cl.niveau }}</ion-badge>
         </ion-avatar>
-        <ion-label *ngIf="champ.status == 'en cours'">
+        <ion-label>
           <h3
             style="
               font-size: 14px;
@@ -35,7 +35,10 @@
           >
             {{ cl.name }}
           </h3>
-          <p style="font-size: 12px; font-weight: 500; color: black">
+          <p
+            style="font-size: 12px; font-weight: 500; color: black"
+            *ngIf="champ.status == 'en cours'"
+          >
             J.<span style="font-weight: 600">{{ cl.journeeEnCours }}</span>
             <ion-icon
               name="ellipse"
@@ -60,7 +63,8 @@
       <ion-chip
         slot="end"
         *ngIf="champ.status == 'en attente'"
-        style="font-size: 10px; font-weight: 700; --background: #d7d8dd"
+        [ngClass]="{'green': cl.etat == 'prêt', 'good': cl.etat == 'en attente'}"
+        style="font-size: 10px; font-weight: 700; "
       >
         {{ cl.etat }}
       </ion-chip>

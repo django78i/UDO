@@ -23,21 +23,25 @@ ion-card.blank {
   flex-direction: column;
   align-items: center;
   margin-top: 50px;
-
 }
 .card-content {
   padding-left: 0px !important;
   padding-right: 0px !important;
 }
 
+.emot {
+  position: absolute;
+  left: 20px;
+}
+
 ion-chip {
   --color: #777981;
+  position: relative;
 }
 
 ion-item {
   --padding-start: 0;
 }
-
 
 .avTest {
   height: 27px;

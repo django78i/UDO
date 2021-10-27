@@ -53,12 +53,14 @@
         >
           <ion-avatar>
             <img
+              *ngIf="!picture"
               src="https://img.icons8.com/ios-filled/50/000000/gender-neutral-user.png"
             />
-            <!-- <ion-badge>
+            <img [src]="picture" *ngIf="picture" alt="" />
+            <ion-badge (click)="addPhoto()">
               <img src="assets/icon/pen.svg" alt="" />
-            </ion-badge> -->
-            <div class="photo" style="border: none">
+            </ion-badge>
+            <!-- <div class="photo" style="border: none">
               <label for="typeFile-input">
                 <img src="assets/icon/pen.svg" alt="" />
               </label>
@@ -68,7 +70,7 @@
                 (change)="uploadFile($event)"
                 id="typeFile-input"
               />
-            </div>
+            </div> -->
           </ion-avatar>
           <mat-form-field appearance="outline" style="width: 100%">
             <mat-label>Identifiant</mat-label>
@@ -90,6 +92,20 @@
         >
           <button
             mat-button
+            (click)="savePhoto()"
+            style="
+              padding-top: 15px;
+              padding-bottom: 15px;
+              background: #3e4add;
+              border-radius: 23px;
+              /* width: 100%; */
+              color: white;
+            "
+          >
+            suivant
+          </button>
+          <!-- <button
+            mat-button
             [disabled]="pseudo == ''"
             matStepperNext
             (selectionChange)="next($event)"
@@ -103,7 +119,7 @@
             "
           >
             Suivant
-          </button>
+          </button> -->
         </div>
       </section>
     </mat-step>

@@ -18,6 +18,14 @@ import {
 import { BehaviorSubject, from } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { UserService as UserService } from 'src/app/services/user-service.service';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+  uploadString,
+} from 'firebase/storage';
 
 @Component({
   selector: 'app-login-modal',
@@ -36,7 +44,8 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
   };
   user: any;
   stepperEvent: StepperSelectionEvent = new StepperSelectionEvent();
-
+  picture: any;
+  pictureURL: any;
   constructor(
     public zone: NgZone,
     public modalCtl: ModalController,
@@ -53,24 +62,6 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    // const auth = getAuth();
-    // auth.onAuthStateChanged((user) => {
-    //   if (user) {
-    //     const userDataBase = from(this.userService.findUser(user.uid));
-    //     userDataBase
-    //       .pipe(
-    //         tap((us) => {
-    //           this.findPreference(us.data())
-    //             ? this.redirect()
-    //             : this.stepperComp.next();
-    //         })
-    //       )
-    //       .subscribe((user) => {
-    //         this.user = user.data();
-    //         console.log(user.data());
-    //       });
-    //   }
-    // });
     this.stepperComp?.selectionChange.subscribe((r) => {
       this.stepperEvent = r;
       console.log(r, this.pseudo);
@@ -101,6 +92,45 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
     console.log(event);
   }
 
+  async addPhoto() {
+    console.log('add');
+    const image = await Camera.getPhoto({
+      quality: 100,
+      allowEditing: false,
+      source: CameraSource.Photos,
+      resultType: CameraResultType.DataUrl,
+    });
+
+    // Here you get the image as result.
+    const theActualPicture = image.dataUrl;
+    var imageUrl = image.webPath;
+    this.picture = theActualPicture;
+    console.log(this.picture, imageUrl);
+  }
+
+  savePhoto() {
+    console.log('save');
+    if (this.picture) {
+      const storage = getStorage();
+      const storageRef = ref(storage, `images/${new Date()}`);
+      const uploadTask = uploadString(storageRef, this.picture, 'data_url');
+      uploadTask.then(
+        (snapshot) => {
+          console.log('Uploaded a base64 string!');
+          getDownloadURL(snapshot.ref).then((downloadURL) => {
+            this.pictureURL = downloadURL;
+            console.log('File available at', downloadURL);
+          });
+        },
+        (error) => {
+          console.log(error);
+          // Handle unsuccessful uploads
+        }
+      );
+    }
+    this.stepperComp.next();
+  }
+
   async saveOnBoarding() {
     const user = await this.userService.getCurrentUser();
     this.user = {
@@ -109,6 +139,7 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
       activitesPratiquees: this.activitesList,
       userName: this.pseudo,
       physique: this.physicalParam,
+      avatar: this.pictureURL,
     };
     const loading = await this.loadingController.create({
       message: 'Veuillez patienter...',
@@ -119,8 +150,8 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
     const { role, data } = await loading.onDidDismiss();
 
     console.log(this.user, user);
-    // this.userService.updateUser(this.user);
-    // this.redirect();
+    this.userService.updateUser(this.user);
+    this.redirect();
   }
 
   findPreference(user): boolean {

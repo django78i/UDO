@@ -1,174 +1,695 @@
 [
   {
-    "name": "Aviron",
-    "icon": ""
+    "nom": "Sport aquatique",
+    "sousAcitivite": [
+      {
+        "nom": "Aviron",
+        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "metriques": {
+          "cardio": 2,
+          "explosivité": 1,
+          "souplesse": 1,
+          "muscle bas du corps": 2,
+          "muscle abdo/gainage": 2,
+          "muscle haut du corps": 3
+        }
+      },
+      {
+        "nom": "Kayak",
+        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "metriques": {
+          "cardio": 2,
+          "explosivité": 2,
+          "souplesse": 1,
+          "muscle bas du corps": 0,
+          "muscle abdo/gainage": 2,
+          "muscle haut du corps": 3
+        }
+      },
+      {
+        "nom": "Natation",
+        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "metriques": {
+          "cardio": 2,
+          "explosivité": 1,
+          "souplesse": 1,
+          "muscle bas du corps": 2,
+          "muscle abdo/gainage": 2,
+          "muscle haut du corps": 2
+        }
+      },
+      {
+        "nom": "Water polo",
+        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "metriques": {
+          "cardio": 2,
+          "explosivité": 2,
+          "souplesse": 1,
+          "muscle bas du corps": 2,
+          "muscle abdo/gainage": 2,
+          "muscle haut du corps": 2
+        }
+      }
+    ]
   },
   {
-    "name": "Badmintion sourd",
-    "icon": ""
+    "nom": "Sport de raquette",
+    "sousAcitivite": [
+      {
+        "nom": "Badminton",
+        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "metriques": {
+          "cardio": 3,
+          "explosivité": 2,
+          "souplesse": 1,
+          "muscle bas du corps": 2,
+          "muscle abdo/gainage": 1,
+          "muscle haut du corps": 1
+        }
+      },
+      {
+        "nom": "Tennis",
+        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "metriques": {
+          "cardio": 2,
+          "explosivité": 1,
+          "souplesse": 1,
+          "muscle bas du corps": 2,
+          "muscle abdo/gainage": 1,
+          "muscle haut du corps": 2
+        }
+      },
+      {
+        "nom": "Tennis de table",
+        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "metriques": {
+          "cardio": 2,
+          "explosivité": 2,
+          "souplesse": 1,
+          "muscle bas du corps": 1,
+          "muscle abdo/gainage": 1,
+          "muscle haut du corps": 2
+        }
+      }
+    ]
   },
   {
-    "name": "Badminton",
-    "icon": ""
+    "nom": "Voleyball",
+    "sousAcitivite": [
+      {
+        "nom": "Volleyball",
+        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "metriques": {
+          "cardio": 2,
+          "explosivité": 2,
+          "souplesse": 1,
+          "muscle bas du corps": 2,
+          "muscle abdo/gainage": 2,
+          "muscle haut du corps": 2
+        }
+      }
+    ]
   },
   {
-    "name": "Basket fauteuil",
-    "icon": ""
+    "nom": "Running",
+    "sousAcitivite": [
+      {
+        "nom": "Couse à pied",
+        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "metriques": {
+          "cardio": 2,
+          "explosivité": 1,
+          "souplesse": 1,
+          "muscle bas du corps": 3,
+          "muscle abdo/gainage": 1,
+          "muscle haut du corps": 1
+        }
+      },
+      {
+        "nom": "Marche",
+        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "metriques": {
+          "cardio": 1,
+          "explosivité": 0,
+          "souplesse": 0,
+          "muscle bas du corps": 2,
+          "muscle abdo/gainage": 1,
+          "muscle haut du corps": 1
+        }
+      }
+    ]
   },
   {
-    "name": "Basketball",
-    "icon": ""
+    "nom": "Sport de combat",
+    "sousAcitivite": [
+      {
+        "nom": "Boxe",
+        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "metriques": {
+          "cardio": 3,
+          "explosivité": 3,
+          "souplesse": 1,
+          "muscle bas du corps": 1,
+          "muscle abdo/gainage": 2,
+          "muscle haut du corps": 3
+        }
+      },
+      {
+        "nom": "Jui-jitsu",
+        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "metriques": {
+          "cardio": 2,
+          "explosivité": 2,
+          "souplesse": 1,
+          "muscle bas du corps": 2,
+          "muscle abdo/gainage": 2,
+          "muscle haut du corps": 3
+        }
+      },
+      {
+        "nom": "Judo",
+        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "metriques": {
+          "cardio": 2,
+          "explosivité": 2,
+          "souplesse": 1,
+          "muscle bas du corps": 1,
+          "muscle abdo/gainage": 1,
+          "muscle haut du corps": 3
+        }
+      },
+      {
+        "nom": "Karaté",
+        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "metriques": {
+          "cardio": 2,
+          "explosivité": 2,
+          "souplesse": 1,
+          "muscle bas du corps": 2,
+          "muscle abdo/gainage": 1,
+          "muscle haut du corps": 1
+        }
+      },
+      {
+        "nom": "TaeKwondo",
+        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "metriques": {
+          "cardio": 2,
+          "explosivité": 2,
+          "souplesse": 2,
+          "muscle bas du corps": 2,
+          "muscle abdo/gainage": 1,
+          "muscle haut du corps": 1
+        }
+      }
+    ]
   },
   {
-    "name": "Aviron",
-    "icon": ""
+    "nom": "Football",
+    "sousAcitivite": [
+      {
+        "nom": "Foot à 11",
+        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "metriques": {
+          "cardio": 2,
+          "explosivité": 2,
+          "souplesse": 1,
+          "muscle bas du corps": 3,
+          "muscle abdo/gainage": 1,
+          "muscle haut du corps": 1
+        }
+      },
+      {
+        "nom": "Foot à 5",
+        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "metriques": {
+          "cardio": 2,
+          "explosivité": 3,
+          "souplesse": 1,
+          "muscle bas du corps": 3,
+          "muscle abdo/gainage": 1,
+          "muscle haut du corps": 1
+        }
+      }
+    ]
   },
   {
-    "name": "Aviron",
-    "icon": ""
+    "nom": "Fitness",
+    "sousAcitivite": [
+      {
+        "nom": "Corde à sauter",
+        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "metriques": {
+          "cardio": 3,
+          "explosivité": 1,
+          "souplesse": 1,
+          "muscle bas du corps": 3,
+          "muscle abdo/gainage": 2,
+          "muscle haut du corps": 2
+        }
+      },
+      {
+        "nom": "Course sur tapis",
+        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "metriques": {
+          "cardio": 2,
+          "explosivité": 1,
+          "souplesse": 1,
+          "muscle bas du corps": 3,
+          "muscle abdo/gainage": 1,
+          "muscle haut du corps": 1
+        }
+      },
+      {
+        "nom": "Elliptique",
+        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "metriques": {
+          "cardio": 2,
+          "explosivité": 1,
+          "souplesse": 1,
+          "muscle bas du corps": 3,
+          "muscle abdo/gainage": 2,
+          "muscle haut du corps": 2
+        }
+      },
+      {
+        "nom": "Fractionné (HIIT)",
+        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "metriques": {
+          "cardio": 3,
+          "explosivité": 3,
+          "souplesse": 1,
+          "muscle bas du corps": 1,
+          "muscle abdo/gainage": 3,
+          "muscle haut du corps": 2
+        }
+      },
+      {
+        "nom": "Gainage",
+        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "metriques": {
+          "cardio": 1,
+          "explosivité": 1,
+          "souplesse": 1,
+          "muscle bas du corps": 1,
+          "muscle abdo/gainage": 3,
+          "muscle haut du corps": 2
+        }
+      },
+      {
+        "nom": "Pilates",
+        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "metriques": {
+          "cardio": 1,
+          "explosivité": 1,
+          "souplesse": 3,
+          "muscle bas du corps": 1,
+          "muscle abdo/gainage": 1,
+          "muscle haut du corps": 1
+        }
+      },
+      {
+        "nom": "Rameur",
+        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "metriques": {
+          "cardio": 2,
+          "explosivité": 1,
+          "souplesse": 1,
+          "muscle bas du corps": 2,
+          "muscle abdo/gainage": 2,
+          "muscle haut du corps": 3
+        }
+      },
+      {
+        "nom": "Récupération",
+        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "metriques": {
+          "cardio": 1,
+          "explosivité": 1,
+          "souplesse": 2,
+          "muscle bas du corps": 1,
+          "muscle abdo/gainage": 1,
+          "muscle haut du corps": 1
+        }
+      },
+      {
+        "nom": "Renforcement fonctionnel",
+        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "metriques": {
+          "cardio": 1,
+          "explosivité": 2,
+          "souplesse": 1,
+          "muscle bas du corps": 2,
+          "muscle abdo/gainage": 2,
+          "muscle haut du corps": 2
+        }
+      },
+      {
+        "nom": "Stepper",
+        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "metriques": {
+          "cardio": 2,
+          "explosivité": 2,
+          "souplesse": 1,
+          "muscle bas du corps": 3,
+          "muscle abdo/gainage": 1,
+          "muscle haut du corps": 1
+        }
+      },
+      {
+        "nom": "Vélo d'appartement",
+        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "metriques": {
+          "cardio": 2,
+          "explosivité": 1,
+          "souplesse": 1,
+          "muscle bas du corps": 3,
+          "muscle abdo/gainage": 2,
+          "muscle haut du corps": 1
+        }
+      }
+    ]
   },
   {
-    "name": "Aviron",
-    "icon": ""
+    "nom": "Divers",
+    "sousAcitivite": [
+      {
+        "nom": "Danse",
+        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "metriques": {
+          "cardio": 1,
+          "explosivité": 1,
+          "souplesse": 2,
+          "muscle bas du corps": 2,
+          "muscle abdo/gainage": 2,
+          "muscle haut du corps": 1
+        }
+      },
+      {
+        "nom": "Equitation",
+        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "metriques": {
+          "cardio": 1,
+          "explosivité": 1,
+          "souplesse": 1,
+          "muscle bas du corps": 2,
+          "muscle abdo/gainage": 1,
+          "muscle haut du corps": 1
+        }
+      },
+      {
+        "nom": "Escalade",
+        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "metriques": {
+          "cardio": 1,
+          "explosivité": 1,
+          "souplesse": 2,
+          "muscle bas du corps": 2,
+          "muscle abdo/gainage": 2,
+          "muscle haut du corps": 3
+        }
+      },
+      {
+        "nom": "Escrime",
+        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "metriques": {
+          "cardio": 3,
+          "explosivité": 3,
+          "souplesse": 2,
+          "muscle bas du corps": 2,
+          "muscle abdo/gainage": 1,
+          "muscle haut du corps": 2
+        }
+      },
+      {
+        "nom": "Golf",
+        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "metriques": {
+          "cardio": 1,
+          "explosivité": 1,
+          "souplesse": 1,
+          "muscle bas du corps": 1,
+          "muscle abdo/gainage": 1,
+          "muscle haut du corps": 2
+        }
+      },
+      {
+        "nom": "Randonnée",
+        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "metriques": {
+          "cardio": 1,
+          "explosivité": 0,
+          "souplesse": 0,
+          "muscle bas du corps": 2,
+          "muscle abdo/gainage": 1,
+          "muscle haut du corps": 2
+        }
+      },
+      {
+        "nom": "Taï chi",
+        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "metriques": {
+          "cardio": 1,
+          "explosivité": 1,
+          "souplesse": 3,
+          "muscle bas du corps": 1,
+          "muscle abdo/gainage": 1,
+          "muscle haut du corps": 1
+        }
+      },
+      {
+        "nom": "Yoga",
+        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "metriques": {
+          "cardio": 1,
+          "explosivité": 1,
+          "souplesse": 3,
+          "muscle bas du corps": 1,
+          "muscle abdo/gainage": 1,
+          "muscle haut du corps": 1
+        }
+      },
+      {
+        "nom": "Zumba",
+        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "metriques": {
+          "cardio": 2,
+          "explosivité": 1,
+          "souplesse": 1,
+          "muscle bas du corps": 2,
+          "muscle abdo/gainage": 1,
+          "muscle haut du corps": 2
+        }
+      }
+    ]
   },
   {
-    "name": "Aviron",
-    "icon": ""
-  },
-  {
-    "name": "Aviron",
-    "icon": ""
-  },
-  {
-    "name": "Aviron",
-    "icon": ""
-  },
-  {
-    "name": "Aviron",
-    "icon": ""
-  },
-  {
-    "name": "Aviron",
-    "icon": ""
-  },
-  {
-    "name": "Aviron",
-    "icon": ""
-  },
-  {
-    "name": "Aviron",
-    "icon": ""
-  },
-  {
-    "name": "Aviron",
-    "icon": ""
-  },
-  {
-    "name": "Aviron",
-    "icon": ""
-  },
-  {
-    "name": "Aviron",
-    "icon": ""
-  },
-  {
-    "name": "Aviron",
-    "icon": ""
-  },
-  {
-    "name": "Aviron",
-    "icon": ""
-  },
-  {
-    "name": "Aviron",
-    "icon": ""
-  },
-  {
-    "name": "Aviron",
-    "icon": ""
-  },
-  {
-    "name": "Aviron",
-    "icon": ""
-  },
-  {
-    "name": "Aviron",
-    "icon": ""
-  },
-  {
-    "name": "Aviron",
-    "icon": ""
-  },
-  {
-    "name": "Aviron",
-    "icon": ""
-  },
-  {
-    "name": "Aviron",
-    "icon": ""
-  },
-  {
-    "name": "Aviron",
-    "icon": ""
-  },
-  {
-    "name": "Aviron",
-    "icon": ""
-  },
-  {
-    "name": "Aviron",
-    "icon": ""
-  },
-  {
-    "name": "Aviron",
-    "icon": ""
-  },
-  {
-    "name": "Aviron",
-    "icon": ""
-  },
-  {
-    "name": "Aviron",
-    "icon": ""
-  },
-  {
-    "name": "Aviron",
-    "icon": ""
-  },
-  {
-    "name": "Aviron",
-    "icon": ""
-  },
-  {
-    "name": "Aviron",
-    "icon": ""
-  },
-  {
-    "name": "Aviron",
-    "icon": ""
-  },
-  {
-    "name": "Aviron",
-    "icon": ""
-  },
-  {
-    "name": "Aviron",
-    "icon": ""
-  },
-  {
-    "name": "Aviron",
-    "icon": ""
-  },
-  {
-    "name": "Aviron",
-    "icon": ""
-  },
-  {
-    "name": "Aviron",
-    "icon": ""
-  },
-  {
-    "name": "Aviron",
-    "icon": ""
+    "nom": "Handisport",
+    "sousAcitivite": [
+      {
+        "nom": "Badminton sourd",
+        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "metriques": {
+          "cardio": 2,
+          "explosivité": 2,
+          "souplesse": 1,
+          "muscle bas du corps": 2,
+          "muscle abdo/gainage": 2,
+          "muscle haut du corps": 2
+        }
+      },
+      {
+        "nom": "Basket fauteil",
+        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "metriques": {
+          "cardio": 3,
+          "explosivité": 2,
+          "souplesse": 1,
+          "muscle bas du corps": 0,
+          "muscle abdo/gainage": 1,
+          "muscle haut du corps": 3
+        }
+      },
+      {
+        "nom": "Boccia",
+        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "metriques": {
+          "cardio": 1,
+          "explosivité": 1,
+          "souplesse": 1,
+          "muscle bas du corps": 0,
+          "muscle abdo/gainage": 0,
+          "muscle haut du corps": 0
+        }
+      },
+      {
+        "nom": "Ceci-foot",
+        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "metriques": {
+          "cardio": 2,
+          "explosivité": 1,
+          "souplesse": 1,
+          "muscle bas du corps": 2,
+          "muscle abdo/gainage": 1,
+          "muscle haut du corps": 1
+        }
+      },
+      {
+        "nom": "Course en fauteuil",
+        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "metriques": {
+          "cardio": 3,
+          "explosivité": 2,
+          "souplesse": 1,
+          "muscle bas du corps": 0,
+          "muscle abdo/gainage": 1,
+          "muscle haut du corps": 3
+        }
+      },
+      {
+        "nom": "Fauteuil",
+        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "metriques": {
+          "cardio": 2,
+          "explosivité": 1,
+          "souplesse": 1,
+          "muscle bas du corps": 0,
+          "muscle abdo/gainage": 1,
+          "muscle haut du corps": 3
+        }
+      },
+      {
+        "nom": "Foot fauteuil électrique",
+        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "metriques": {
+          "cardio": 1,
+          "explosivité": 0,
+          "souplesse": 1,
+          "muscle bas du corps": 0,
+          "muscle abdo/gainage": 1,
+          "muscle haut du corps": 1
+        }
+      },
+      {
+        "nom": "Foot mal marchand",
+        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "metriques": {
+          "cardio": 1,
+          "explosivité": 1,
+          "souplesse": 1,
+          "muscle bas du corps": 1,
+          "muscle abdo/gainage": 1,
+          "muscle haut du corps": 1
+        }
+      },
+      {
+        "nom": "Foot sourd",
+        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "metriques": {
+          "cardio": 2,
+          "explosivité": 1,
+          "souplesse": 1,
+          "muscle bas du corps": 2,
+          "muscle abdo/gainage": 1,
+          "muscle haut du corps": 1
+        }
+      },
+      {
+        "nom": "Goalball",
+        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "metriques": {
+          "cardio": 1,
+          "explosivité": 1,
+          "souplesse": 1,
+          "muscle bas du corps": 2,
+          "muscle abdo/gainage": 1,
+          "muscle haut du corps": 2
+        }
+      },
+      {
+        "nom": "Handball sourd",
+        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "metriques": {
+          "cardio": 2,
+          "explosivité": 2,
+          "souplesse": 1,
+          "muscle bas du corps": 2,
+          "muscle abdo/gainage": 1,
+          "muscle haut du corps": 2
+        }
+      },
+      {
+        "nom": "Handbike",
+        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "metriques": {
+          "cardio": 2,
+          "explosivité": 2,
+          "souplesse": 1,
+          "muscle bas du corps": 0,
+          "muscle abdo/gainage": 1,
+          "muscle haut du corps": 3
+        }
+      },
+      {
+        "nom": "Rugby fauteuil",
+        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "metriques": {
+          "cardio": 3,
+          "explosivité": 2,
+          "souplesse": 1,
+          "muscle bas du corps": 0,
+          "muscle abdo/gainage": 1,
+          "muscle haut du corps": 3
+        }
+      },
+      {
+        "nom": "Tandem",
+        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "metriques": {
+          "cardio": 2,
+          "explosivité": 1,
+          "souplesse": 1,
+          "muscle bas du corps": 0,
+          "muscle abdo/gainage": 1,
+          "muscle haut du corps": 3
+        }
+      },
+      {
+        "nom": "Tennis de table fauteuil",
+        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "metriques": {
+          "cardio": 2,
+          "explosivité": 2,
+          "souplesse": 1,
+          "muscle bas du corps": 0,
+          "muscle abdo/gainage": 1,
+          "muscle haut du corps": 2
+        }
+      },
+      {
+        "nom": "Tennis en fauteuil",
+        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "metriques": {
+          "cardio": 2,
+          "explosivité": 2,
+          "souplesse": 1,
+          "muscle bas du corps": 0,
+          "muscle abdo/gainage": 1,
+          "muscle haut du corps": 2
+        }
+      },
+      {
+        "nom": "Vélo solo",
+        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "metriques": {
+          "cardio": 2,
+          "explosivité": 1,
+          "souplesse": 1,
+          "muscle bas du corps": 2,
+          "muscle abdo/gainage": 2,
+          "muscle haut du corps": 2
+        }
+      }
+    ]
   }
 ]
