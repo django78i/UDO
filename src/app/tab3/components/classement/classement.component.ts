@@ -14,8 +14,6 @@ export class ClassementComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log('bonjour');
-    console.log(this.champ)
     this.classement = _.orderBy(this.champ.participants, ['points'], ['desc']);
   }
 

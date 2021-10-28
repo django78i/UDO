@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header mode="ios">
   <ion-toolbar style="--border-width: 0 0 0 !important">
     <ion-button
       slot="start"
@@ -71,6 +71,7 @@
     </ion-segment-button>
   </ion-segment>
   <ion-toolbar
+    mode="ios"
     *ngIf="segmentValue === 'feed'"
     style="--border-width: 0 0 0.55px"
   >
@@ -137,13 +138,18 @@
       shape="round"
       *ngIf="
         championnat.status == 'en attente' &&
-        championnat.createur.uid != user.uid
+        championnat.createur.uid == user.uid
       "
       >Démarrer</ion-button
     >
-    <ion-button shape="round" *ngIf="championnat.createur.uid == user.uid">{{
-      championnat.dateDemarrage | timeRelative
-    }}</ion-button>
+    <ion-button
+      shape="round"
+      *ngIf="
+        championnat.createur.uid != user.uid &&
+        championnat.status == 'en attente'
+      "
+      >{{ championnat.dateDemarrage | timeRelative }}</ion-button
+    >
     <ion-button shape="round" *ngIf="championnat.status == 'en cours'"
       >Séance Now</ion-button
     >

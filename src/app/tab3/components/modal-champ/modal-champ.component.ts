@@ -28,14 +28,12 @@ export class ModalChampComponent implements OnInit, AfterViewInit {
 
   constructor(
     private modalCtrl: ModalController,
-    private navParams: NavParams,
+    private modalController: ModalController,
     private renderer: Renderer2,
     public animationCtrl: AnimationController
   ) {}
 
-  ngOnInit() {
-    console.log(this.championnat);
-  }
+  ngOnInit() {}
 
   ngAfterViewInit() {}
 
@@ -48,7 +46,6 @@ export class ModalChampComponent implements OnInit, AfterViewInit {
   }
 
   async addPhoto() {
-    console.log('add');
     const image = await Camera.getPhoto({
       quality: 100,
       allowEditing: false,
@@ -60,6 +57,5 @@ export class ModalChampComponent implements OnInit, AfterViewInit {
     const theActualPicture = image.dataUrl;
     var imageUrl = image.webPath;
     this.picture = theActualPicture;
-    console.log(this.picture, imageUrl);
   }
 }

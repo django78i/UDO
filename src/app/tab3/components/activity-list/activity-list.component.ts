@@ -4,10 +4,18 @@ import {
   ChangeDetectorRef,
   Component,
   EventEmitter,
+  OnDestroy,
   OnInit,
   Output,
 } from '@angular/core';
-import { BehaviorSubject, from, Observable, of, Subject } from 'rxjs';
+import {
+  BehaviorSubject,
+  from,
+  Observable,
+  of,
+  Subject,
+  Subscription,
+} from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
 @Component({
@@ -15,7 +23,7 @@ import { map, tap } from 'rxjs/operators';
   templateUrl: './activity-list.component.html',
   styleUrls: ['./activity-list.component.scss'],
 })
-export class ActivityListComponent implements OnInit {
+export class ActivityListComponent implements OnInit, OnDestroy {
   activites: any[] = [
     // {
     //   nom: 'Athlétisme',
@@ -72,18 +80,13 @@ export class ActivityListComponent implements OnInit {
   activities$: Observable<any>;
   activitesSub$: Subject<any[]> = new BehaviorSubject(null);
   choix: any[] = [];
+  subscription: Subscription;
   @Output() activitesEvent: EventEmitter<any> = new EventEmitter();
   @Output() backAction: EventEmitter<any> = new EventEmitter();
 
   constructor(public http: HttpClient, private ref: ChangeDetectorRef) {}
 
   ngOnInit() {
-    // this.activitesSub$.next(this.activites);
-    // this.activites$ = this.activitesSub$.pipe(
-    //   tap((activites) => {
-    //     console.log(activites);
-    //   })
-    // );
     this.activities$ = this.http
       .get<any[]>('../../../assets/mocks/activitiesList.json')
       .pipe(
@@ -103,13 +106,14 @@ export class ActivityListComponent implements OnInit {
               ...ac,
               sousAcitivite: ssActTable,
               all: false,
-              // active: true,
             });
           });
           return activiteFil;
         })
       );
-    this.activities$.subscribe((act) => (this.activites = act));
+    this.subscription = this.activities$.subscribe(
+      (act) => (this.activites = act)
+    );
   }
 
   back() {
@@ -123,20 +127,14 @@ export class ActivityListComponent implements OnInit {
     this.ref.detectChanges();
   }
 
-  all(event) {
-    console.log(event);
-  }
-
   selectAll(index) {
-    let indexChoisi;
     this.activites[index].sousAcitivite.forEach((act) => {
       act.isChecked = !this.activites[index].all;
     });
     this.ref.detectChanges();
   }
 
-  change(event, i, j, categ) {
-    console.log(event, this.activites[i].sousAcitivite[j].isChecked, categ);
+  change(categ) {
     if (categ.isChecked == true) {
       this.choix.push(categ.nom);
     } else {
@@ -145,7 +143,10 @@ export class ActivityListComponent implements OnInit {
         ? this.choix.splice(indCategorieInTable, 1)
         : '';
     }
-    console.log(this.choix);
     this.activitesEvent.emit(this.choix);
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }

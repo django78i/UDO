@@ -2,7 +2,7 @@
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  <section class="contenu" *ngIf="feed$ | async as feed; else showBlank">
+  <section class="contenu" *ngIf="feed; else showBlank">
     <ion-item
       *ngFor="let item of feed"
       style="margin-bottom: 10px; --inner-padding-end: 0"
@@ -16,7 +16,10 @@
           margin-left: 0;
         "
       >
-        <ion-card-header *ngIf="item.live == 'false'">
+        <ion-card-header
+          *ngIf="item.isLive == false"
+          (click)="openDetail(item)"
+        >
           <ion-toolbar class="postZone">
             <ion-grid>
               <ion-row>
@@ -28,25 +31,11 @@
                       />
                     </ion-avatar>
                     <ion-label>
-                      <p>{{ item.name }}</p>
+                      <p>{{ item.user.name }}</p>
                       <div style="display: flex; gap: 5px; align-items: center">
-                        <img
-                          src="../../assets/icon/testIconCateg.svg"
-                          alt=""
-                          *ngIf="item.type == 'Natation'"
-                        />
-                        <img
-                          src="../../assets/icon/icons8-soccer-player-50.svg"
-                          alt=""
-                          *ngIf="item.type == 'Football'"
-                        />
-                        <img
-                          src="../../assets/icon/icons8-handicapped-50.svg"
-                          alt=""
-                          *ngIf="item.type == 'Handisport'"
-                        />
+                        <img src="../../assets/icon/testIconCateg.svg" alt="" />
                         <p style="font-size: 10px; font-weight: 900">
-                          {{ item.type }}
+                          {{ item.activity }}
                         </p>
                         <ion-note style="font-size: 10px"
                           >Il y'a 5 min</ion-note
@@ -82,14 +71,14 @@
             <ion-skeleton-text></ion-skeleton-text>
           </div>
         </ion-card-header>
-        <ion-card-header *ngIf="item.live == 'true'">
+        <ion-card-header *ngIf="item.isLive == true" (click)="openDetail(item)">
           <ion-item lines="none" class="liveZone">
             <ion-avatar style="margin-right: 10px" slot="start">
               <img src="../../assets/mocks/ToyFaces_Colored_BG_56@2x.png" />
             </ion-avatar>
             <ion-label>
               <p>
-                {{ item.name }}
+                {{ item.user.name }}
                 <ion-icon
                   name="ellipse"
                   style="font-size: 6px; margin-right: 5px"
@@ -97,22 +86,10 @@
                 <ion-note style="font-size: 10px">Il y'a 5 min</ion-note>
               </p>
               <div style="display: flex; gap: 5px; align-items: center">
-                <img
-                  src="../../assets/icon/testIconCateg.svg"
-                  alt=""
-                  *ngIf="item.type == 'Natation'"
-                />
-                <img
-                  src="../../assets/icon/icons8-soccer-player-50.svg"
-                  alt=""
-                  *ngIf="item.type == 'Football'"
-                />
-                <img
-                  src="../../assets/icon/icons8-handicapped-50.svg"
-                  alt=""
-                  *ngIf="item.type == 'Handisport'"
-                />
-                <p style="font-size: 10px; font-weight: 900">{{ item.type }}</p>
+                <img src="../../assets/icon/testIconCateg.svg" alt="" />
+                <p style="font-size: 10px; font-weight: 900">
+                  {{ item.activity }}
+                </p>
                 <ion-icon name="ellipse" style="font-size: 6px"></ion-icon>
                 <p class="liveIndicator">LIVE</p>
               </div>
@@ -174,4 +151,11 @@
       </ion-card-header>
     </ion-card>
   </ng-template>
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more data..."
+    >
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>

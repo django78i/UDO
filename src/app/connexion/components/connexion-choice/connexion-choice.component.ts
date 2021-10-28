@@ -16,7 +16,6 @@ import {
   styleUrls: ['./connexion-choice.component.scss'],
 })
 export class ConnexionChoiceComponent implements OnInit {
-  formUser: FormGroup;
   hide = true;
   seg = "s'inscrire";
   @Output() log: EventEmitter<[]> = new EventEmitter();
@@ -50,18 +49,6 @@ export class ConnexionChoiceComponent implements OnInit {
     });
   }
 
-  // findPreference(user): boolean {
-  //   console.log(user);
-  //   return user?.userName ? true : false;
-  // }
-
-  // initForm() {
-  //   this.formUser = this.fb.group({
-  //     mail: [''],
-  //     password: [''],
-  //   });
-  // }
-
   login() {
     this.userService.connectGoogle();
   }
@@ -74,34 +61,21 @@ export class ConnexionChoiceComponent implements OnInit {
     await loading.present();
 
     const { role, data } = await loading.onDidDismiss();
-    console.log('Loading dismissed!');
-    // this.zone.run(() => {
       user.userName
         ? this.navController.navigateForward([''])
         : this.navController.navigateForward('onboarding');
-        // this.close();
-
-    // });
   }
 
   connexion() {
-    console.log(this.email, this.mdPasse);
     const formValue = {
       mail: this.email,
       password: this.mdPasse,
     };
-    console.log(this.seg);
     this.seg == "s'inscrire"
       ? this.userService.createUser(formValue)
       : this.userService.log(formValue);
   }
 
-  get password() {
-    return this.formUser.get('password');
-  }
-  get mail() {
-    return this.formUser.get('mail');
-  }
 
   logout() {
     this.userService.logout();
@@ -109,7 +83,6 @@ export class ConnexionChoiceComponent implements OnInit {
 
   segmentChanged(event) {
     this.seg = event.detail.value;
-    console.log(event);
   }
 
   close() {

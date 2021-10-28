@@ -1,21 +1,18 @@
 import { Injectable } from '@angular/core';
 import {
+  addDoc,
   collection,
   doc,
-  DocumentData,
-  DocumentSnapshot,
-  getDoc,
   getDocs,
   getFirestore,
   onSnapshot,
-  Query,
+  orderBy,
   query,
   setDoc,
-  updateDoc,
   where,
 } from 'firebase/firestore';
-import { BehaviorSubject, from, Observable } from 'rxjs';
-import { filter, map, tap } from 'rxjs/operators';
+import { BehaviorSubject, from, Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -25,6 +22,8 @@ export class ChampionnatsService {
   champEnCoursSubject$: BehaviorSubject<any> = new BehaviorSubject(null);
   friendsListSubject$: BehaviorSubject<any> = new BehaviorSubject(null);
   db = getFirestore();
+  messagesSubject$: Subject<any> = new Subject();
+
   constructor() {}
 
   async createChampionnat(champ) {
@@ -38,7 +37,6 @@ export class ChampionnatsService {
       collection(this.db, 'championnats'),
       where('status', '==', 'en cours')
     );
-    console.log(user);
     const unsubscribe = onSnapshot(docRef, (querySnapshot) => {
       const champs = [];
       querySnapshot.forEach((doc) => {
@@ -51,7 +49,6 @@ export class ChampionnatsService {
         }
         this.champEnCoursSubject$.next(champs);
       });
-      console.log(champs);
     });
   }
 
@@ -71,11 +68,7 @@ export class ChampionnatsService {
           champs.push(doc.data());
         }
         this.champSubject$.next(champs);
-
-        // console.log(doc);
-        // champs.push(doc.data());
       });
-      console.log('Current cities in CA: ', champs);
     });
   }
 
@@ -89,12 +82,10 @@ export class ChampionnatsService {
       //return id of format 'aaaaaaaa'-'aaaa'-'aaaa'-'aaaa'-'aaaaaaaaaaaa'
       return s4() + s4() + s4() + s4() + s4() + s4() + s4() + s4();
     };
-    console.log(guid());
     return guid();
   }
 
   matchUser(niveau?, acitivities?: any[]) {
-    console.log(niveau, acitivities);
     const userRef = collection(this.db, 'users');
     const querySnapshot =
       niveau != undefined
@@ -102,8 +93,8 @@ export class ChampionnatsService {
             getDocs(
               query(
                 userRef,
-                where('niveau', '<=', niveau.upper)
-                // where('niveau', '>=', niveau.lower)
+                where('niveau', '<=', niveau.upper),
+                where('niveau', '>=', niveau.lower)
               )
             )
           )
@@ -122,7 +113,6 @@ export class ChampionnatsService {
           });
           let tableUser = [];
           userFilter.forEach((r) => {
-            console.log(r.data());
             tableUser.push(r.data());
           });
           this.friendsListSubject$.next(tableUser.length ? tableUser : null);
@@ -130,5 +120,31 @@ export class ChampionnatsService {
         })
       )
       .subscribe();
+  }
+
+  async sendMessage(msg, postUid) {
+    console.log(msg, postUid);
+    await addDoc(collection(this.db, `session-now/${postUid}/messages`), msg);
+  }
+
+  async getMessage(postUid) {
+    console.log('mess');
+
+    const docRef = query(
+      collection(this.db, 'session-now', postUid, 'messages'),
+      orderBy('date', 'desc')
+    );
+    const unsubscribe = onSnapshot(docRef, (querySnapshot) => {
+      const champs = [];
+      console.log(champs);
+      console.log(querySnapshot.docs.length);
+      querySnapshot.docs.length
+        ? querySnapshot.forEach((doc) => {
+            champs.push(doc.data());
+            console.log(doc.data());
+            this.messagesSubject$.next(champs);
+          })
+        : this.messagesSubject$.next(null);
+    });
   }
 }

@@ -21,12 +21,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     PhysicsComponent,
     GenderComponent,
   ],
-  // exports: [
-  //   LoginModalComponent,
-  //   AccordeonComponent,
-  //   PhysicsComponent,
-  //   GenderComponent,
-  // ],
   imports: [
     CommonModule,
     MatButtonModule,

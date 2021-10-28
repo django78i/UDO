@@ -7,13 +7,14 @@ import {
   ElementRef,
   AfterContentChecked,
   OnInit,
+  OnDestroy,
 } from '@angular/core';
 import { SwiperOptions } from 'swiper';
 import { SwiperComponent } from 'swiper/angular';
 import { MusicFeedService } from '../services/music-feed.service';
 import { tap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { from, Observable } from 'rxjs';
+import { from, Observable, Subscription } from 'rxjs';
 import { NavController } from '@ionic/angular';
 import { MenuUserComponent } from '../components/menu-user/menu-user.component';
 import { ModalController, AnimationController } from '@ionic/angular';
@@ -24,7 +25,7 @@ import { UserService } from '../services/user-service.service';
   templateUrl: 'tab1.page.html',
   styleUrls: ['tab1.page.scss'],
 })
-export class Tab1Page implements OnInit, AfterContentChecked {
+export class Tab1Page implements OnInit, AfterContentChecked, OnDestroy {
   // feed = data;
   feed: Observable<any>;
   challenges: Observable<any>;
@@ -71,6 +72,7 @@ export class Tab1Page implements OnInit, AfterContentChecked {
   color = 'dark';
   soundMute = true;
   user: any;
+  subscription: Subscription;
   constructor(
     public modalController: ModalController,
     public animationCtrl: AnimationController,
@@ -82,24 +84,15 @@ export class Tab1Page implements OnInit, AfterContentChecked {
 
   ngOnInit() {
     const user = from(this.userService.getCurrentUser());
-    user.pipe(tap((us) => console.log(us))).subscribe((us) => {
+    this.subscription = user.subscribe((us) => {
       this.user = us;
     });
 
-    this.feed = this.http
-      .get('../../assets/mocks/feed.json')
-      .pipe(tap((r) => console.log(r)));
-
-    this.challenges = this.http
-      .get('../../assets/mocks/challenges.json')
-      .pipe(tap((r) => console.log(r)));
-    // this.challenges.subscribe()
-
+    this.feed = this.http.get('../../assets/mocks/feed.json');
     this.musService.currentPlay$
       .pipe(
         tap((r) => {
           if (r == false && this.currentPlaying != null) {
-            console.log(r);
             this.currentPlaying.pause();
             this.currentPlaying = null;
           }
@@ -118,36 +111,11 @@ export class Tab1Page implements OnInit, AfterContentChecked {
   }
 
   async showMenu() {
-    const enterAnimation = (baseEl: any) => {
-      const backdropAnimation = this.animationCtrl
-        .create()
-        .addElement(baseEl.querySelector('ion-backdrop')!)
-        .fromTo('opacity', '0.0', '0');
-
-      const wrapperAnimation = this.animationCtrl
-        .create()
-        .addElement(baseEl.querySelector('.modal-wrapper')!)
-        .fromTo('transform', 'translateX(-300px)', 'translateX(0px)');
-
-      return this.animationCtrl
-        .create()
-        .addElement(baseEl)
-        .easing('ease-out')
-        .duration(500)
-        .addAnimation([backdropAnimation, wrapperAnimation]);
-    };
-
-    const leaveAnimation = (baseEl: any) => {
-      return enterAnimation(baseEl).direction('reverse');
-    };
-
     const modal = await this.modalController.create({
       component: MenuUserComponent,
       componentProps: {
         user: this.user,
       },
-      // enterAnimation,
-      // leaveAnimation,
     });
     return await modal.present();
   }
@@ -155,7 +123,6 @@ export class Tab1Page implements OnInit, AfterContentChecked {
   sound() {
     this.soundMute = !this.soundMute;
     this.currentPlaying.muted = this.soundMute;
-    console.log(this.currentPlaying.muted);
   }
 
   didScroll() {
@@ -189,11 +156,15 @@ export class Tab1Page implements OnInit, AfterContentChecked {
       // Start autoplay if it's in the view
       if (inView) {
         this.currentPlaying = nativeElement;
-        this.currentPlaying.muted = false;
+        this.currentPlaying.muted = true;
         this.currentPlaying.play();
         return;
       }
     });
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   // https://stackoverflow.com/questions/27427023/html5-video-fullscreen-onclick

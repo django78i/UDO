@@ -31,6 +31,8 @@ export class Tab3Page implements OnInit, AfterContentChecked {
     spaceBetween: 20,
   };
 
+  temporaire= [1, 2, 3];
+
   segmentValue: string = 'championnats';
 
   @ViewChildren('swiper') swiper: QueryList<SwiperComponent>;
@@ -45,6 +47,7 @@ export class Tab3Page implements OnInit, AfterContentChecked {
   user: any;
   user$: Observable<any>;
   userInfo: any;
+
   constructor(
     private modalController: ModalController,
     public animationCtrl: AnimationController,
@@ -61,15 +64,12 @@ export class Tab3Page implements OnInit, AfterContentChecked {
       .pipe(
         tap((us) => {
           this.user = us;
-          console.log(us);
           this.champService.getChampionnatsEnCours(this.user);
-          this.userChampionnats$ = this.champService.champEnCoursSubject$.pipe(
-            tap((r) => console.log(r))
-          );
+          this.userChampionnats$ = this.champService.champEnCoursSubject$
 
           this.champService.getChampionnats(this.user);
           this.championnats = this.champService.champSubject$.pipe(
-            tap((r) => console.log(r))
+            tap((r) => this.ref.detectChanges())
           );
         })
       )
@@ -81,20 +81,17 @@ export class Tab3Page implements OnInit, AfterContentChecked {
       })
     );
 
-    // this.champService.getChampionnats();
-    // this.championnats = this.champService.champSubject$.pipe(
-    //   tap((r) => console.log(r))
-    // );
-
     this.championnatsNetwork = this.http
       .get('../../assets/mocks/championnats.json')
-      .pipe(
-        map((r) => _.filter(r, ['type', 'Network'])),
-        tap((r) => console.log(r))
-      );
+      .pipe(map((r) => _.filter(r, ['type', 'Network'])));
   }
 
-  ngAfterContentChecked(): void {}
+  ngAfterContentChecked(): void {
+    if (this.swiper) {
+      this.swiper.map((swip) => swip.updateSwiper({}));
+    }
+
+  }
 
   async buttonClick() {
     const modal = await this.modalController.create({
@@ -106,17 +103,10 @@ export class Tab3Page implements OnInit, AfterContentChecked {
     return await modal.present();
   }
 
-  navigate() {
-    window.location.href = 'http://localhost:8100';
-  }
-
   challChoice(event) {
     this.affiche.next(event);
-    console.log(event);
     this.bannData = event;
     this.ref.detectChanges();
-
-    console.log(this.bannData);
   }
 
   champModal(event) {
@@ -152,69 +142,13 @@ export class Tab3Page implements OnInit, AfterContentChecked {
       componentProps: {
         user: this.user,
       },
-
-      // enterAnimation,
-      // leaveAnimation,
     });
     return await modal.present();
   }
 
   async launchDetail(ev) {
-    //   console.log(ev);
-    //   console.log(index);
-    //   console.log(ev.target.getBoundingClientRect());
-    //   const yPos = ev.target.getBoundingClientRect().y;
-    //   const xPos = ev.target.getBoundingClientRect().x;
-    //   const enterAnimation = (baseEl: any) => {
-    //     const backdropAnimation = this.animationCtrl.create()
-    //       .addElement(baseEl.querySelector('ion-backdrop'))
-    //       .fromTo('opacity', '0', '0');
-
-    //     const wrapperAnimation = this.animationCtrl.create()
-    //       .addElement(baseEl.querySelector('.modal-wrapper'))
-    //       .easing('cubic-bezier(0.36,0.66,0.04,1)')
-    //       .beforeStyles({ 'opacity': 0, 'transform': 'scale(0)' })
-    //       .fromTo('translateX', '0%', '0%')
-    //       .keyframes([
-    //         { offset: 0, opacity: '0', transform: 'scale(1)' },
-    //         { offset: 1, opacity: '1', transform: 'scale(1)' }
-    //       ]);
-
-    //     // const slide = slideNum == "slide1" ? document.querySelectorAll('slideDiv') : document.querySelectorAll('.slide2');
-    //     const slide = document.querySelectorAll('.slideDiv1');
-    //     console.log(slide);
-    //     console.log(slide[index]);
-    //     const miniature = this.animationCtrl.create()
-    //       .addElement(slide[index])
-    //       .easing('linear')
-    //       // .fromTo('opacity', '0', '0')
-    //       .keyframes([
-    //         { offset: 0, opacity: '1' },
-    //         { offset: 0.5, opacity: '0' },
-    //         { offset: 1, opacity: '0' }
-    //       ])
-    //       .duration(850);
-
-    //   return this.animationCtrl.create()
-    //     .addElement(baseEl)
-    //     // .easing('linear')
-    //     .duration(2000)
-    //     .beforeAddClass('show-modal')
-    //     .addAnimation([
-    //       backdropAnimation,
-    //       wrapperAnimation,
-    //       miniature
-    //     ])
-    // }
-
-    // const leaveAnimation = (baseEl: any) => {
-    //   return enterAnimation(baseEl).direction('reverse');
-    // }
-
     const modal = await this.modalController.create({
       component: ModalChampComponent,
-      // enterAnimation,
-      // leaveAnimation,
       cssClass: 'testModal',
       componentProps: {
         user: this.user,

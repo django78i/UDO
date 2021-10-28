@@ -41,23 +41,19 @@ export class PhysicsComponent implements OnInit, AfterContentChecked {
   }
 
   changeTaille(event) {
-    console.log(event.activeIndex);
     this.taille.emit({ taille: event.activeIndex });
   }
 
   changePoids(event) {
-    console.log(event.activeIndex);
     this.poids.emit({ poids: event.activeIndex });
   }
 
   ngAfterContentChecked() {
     if (this.swiper) {
       this.swiper.updateSwiper({});
-      // this.swiper.setIndex(50);
     }
     if (this.swiper2) {
       this.swiper2.updateSwiper({});
-      // this.swiper2.setIndex(120);
     }
   }
 }

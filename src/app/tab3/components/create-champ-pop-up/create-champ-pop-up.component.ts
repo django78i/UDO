@@ -113,7 +113,6 @@ export class CreateChampPopUpComponent
 
   add() {
     this.weekCount += 1;
-    console.log(this.weekCount);
   }
 
   sub() {
@@ -124,7 +123,6 @@ export class CreateChampPopUpComponent
 
   addSeanceWeek() {
     this.seanceWeekCount += 1;
-    console.log(this.seanceWeekCount);
   }
 
   privacy() {
@@ -140,10 +138,7 @@ export class CreateChampPopUpComponent
 
   change(ev) {
     this.maxPlayer = !this.maxPlayer;
-    console.log(this.maxPlayer);
     this.range = ev.detail.checked ? { lower: 40, upper: 60 } : undefined;
-
-    console.log(this.range);
   }
 
   getBan(ev) {
@@ -165,10 +160,8 @@ export class CreateChampPopUpComponent
   }
 
   focused(ev, index) {
-    console.log(ev);
     const elemStyle = document.querySelectorAll('.checkZone');
     elemStyle.forEach((elem, i) => {
-      console.log(elem);
       index === i
         ? elem.classList.add('check')
         : elem.classList.remove('check');
@@ -179,14 +172,11 @@ export class CreateChampPopUpComponent
         ban.checked = false;
       }
     });
-    console.log(this.checkBanniere, index);
     this.checkBanniere.get(index).checked.valueOf();
-    console.log(this.checkBanniere.get(index));
     this.ban = ev;
   }
 
   eventActivite(event) {
-    console.log('ici', event);
     this.activitesList = event;
   }
 
@@ -194,9 +184,6 @@ export class CreateChampPopUpComponent
     this.swiper.swiperRef.slidePrev();
   }
 
-  afffich(ev) {
-    console.log(ev);
-  }
 
   chooseFriends(event) {
     this.friendsList = event;
@@ -221,13 +208,10 @@ export class CreateChampPopUpComponent
       participants: this.friendsList,
       nbParticipants: this.friendsList?.length,
     };
-    console.log(champ);
-    // this.champService.createChampionnat(champ);
     this.presentToast();
     this.champService.matchUser(this.range, champ.activites);
 
     this.slideNext('amis');
-    // this.close();
   }
 
   async presentToast() {
