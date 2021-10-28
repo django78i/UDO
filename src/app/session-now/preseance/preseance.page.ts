@@ -4,6 +4,8 @@ import { ReglagesPage } from '../reglages/reglages.page';
 import { Router } from '@angular/router';
 import { ActivitiesPage } from '../activities/activities.page';
 import { AddContenuComponent } from '../add-contenu/add-contenu.component';
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+import moment from 'moment';
 
 @Component({
   selector: 'app-preseance',
@@ -22,7 +24,9 @@ export class PreseancePage implements OnInit {
   max = 100;
   isActif: boolean = false;
   activite = { name: 'Sélectionnez une activité', image: 'assets/images/questionmark.svg', padding2: '34px 40px;', width2: '25px' }
-  constructor(private modalCtrl: ModalController, private router: Router) { }
+  constructor(private modalCtrl : ModalController,
+     private router : Router,
+     private localNotifications : LocalNotifications) { }
 
   ngOnInit() {
     let item = localStorage.getItem('activite');
@@ -30,6 +34,13 @@ export class PreseancePage implements OnInit {
       this.activite = JSON.parse(item);
       this.isActif = true;
     }
+    this.localNotifications.schedule({
+      id: 1,
+      text: 'Session now publié',
+      data: { secret: 'secret' },
+      icon : "assets/icon/udoIcon.svg",
+      vibrate:true,
+    });
   }
   async choisirActivite() {
     const modal = await this.modalCtrl.create({

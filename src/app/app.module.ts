@@ -15,6 +15,7 @@ import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 import { AngularFireModule } from '@angular/fire/compat';
 import { environment } from '../environments/environment.prod';
+import { LocalNotifications} from '@ionic-native/local-notifications/ngx'
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -27,7 +28,7 @@ import { environment } from '../environments/environment.prod';
     ReactiveFormsModule,
     FormsModule,
     MatFormFieldModule,
-    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFireModule.initializeApp(environment.firebaseConfig)
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
@@ -36,6 +37,7 @@ import { environment } from '../environments/environment.prod';
     MusicFeedService,
     GooglePlus,
     ScreenOrientation,
+    LocalNotifications,
   ],
   bootstrap: [AppComponent],
 })
