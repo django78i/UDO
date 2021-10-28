@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
 import { ActivitiesPage } from '../activities/activities.page';
 import { AddContenuComponent } from '../add-contenu/add-contenu.component';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
-import moment from 'moment';
 
 @Component({
   selector: 'app-preseance',

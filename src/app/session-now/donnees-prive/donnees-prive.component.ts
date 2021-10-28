@@ -31,7 +31,7 @@ export class DonneesPriveComponent implements OnInit {
     if(sessionNow){
       this.snService.update(sessionNow,'session-now');
     }
-
+    localStorage.removeItem('image');
     this.close();
     this.router.navigate(['session-now/felicitation']);
   }
