@@ -85,21 +85,27 @@ export class DemarragePage implements OnInit {
     this.getSessionNow();
   }
 
- async getSessionNow() {
+  async getSessionNow() {
 
-   this.interval= setInterval(() => {
+    this.interval = setInterval(() => {
       let sessionNow = JSON.parse(localStorage.getItem('sessionNow'));
       if (sessionNow) {
-        this.snService.find(sessionNow.uid, 'session-now').then((resp:any)=>{
+        this.snService.find(sessionNow.uid, 'session-now').then((resp: any) => {
           let value = resp._document.data.value.mapValue.fields;
-          this.reactions = value.reactions.arrayValue.values.length;
-          console.log('value',value);
+          if (value.reactions.arrayValue) {
+            this.reactions = value.reactions.arrayValue.values.length;
+            this.sessionNow.reactions = value.reactions.arrayValue.values;
+            localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
+          }else{
+            this.reactions = 0;
+          }
+          console.log('value', value);
           // if(this.router.url !='/session-now/demarrage'){
           //   clearInterval(this.interval);
           // }
           this.sessionNow.reactions = value.reactions.arrayValue.values;
           localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
-          
+
         })
 
       }

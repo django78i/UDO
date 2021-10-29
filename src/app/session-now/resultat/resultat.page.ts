@@ -71,6 +71,7 @@ export class ResultatPage implements OnInit {
       //     this.dateSession = 'il ya ' + currentDate + ' minutes';
       //   }
       // }
+      if(list.length!=0){
       for (let val of list) {
         let currentValue;
         let date = moment(val.mapValue.fields.date.stringValue).diff(moment(), 'minutes');
@@ -100,8 +101,7 @@ export class ResultatPage implements OnInit {
         }
         this.listReactions.push(value);
 
-      }
-      console.log("reactions", this.listReactions);
+      }}
 
     }
   }

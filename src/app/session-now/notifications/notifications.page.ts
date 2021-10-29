@@ -17,34 +17,35 @@ export class NotificationsPage implements OnInit {
     if (sessionNow) {
       this.reaction = sessionNow.reactions.length;
       let list = sessionNow.reactions;
-
-      for(let val of list){
-        let currentValue;
-        let date =moment(val.mapValue.fields.date.stringValue).diff(moment(), 'minutes');
-        if(date>60){
-          date = moment(val.mapValue.fields.date.stringValue).diff(moment(), 'hours');
-          if(date>60){
-            date = moment(val.mapValue.fields.date.stringValue).diff(moment(), 'days');
-            currentValue = 'il ya ' + date + ' jours';
-          }else{
-            currentValue = 'il ya ' + date + ' heures';
+      if (this.reaction > 0) {
+        for (let val of list) {
+          let currentValue;
+          let date = moment(val.mapValue.fields.date.stringValue).diff(moment(), 'minutes');
+          if (date > 60) {
+            date = moment(val.mapValue.fields.date.stringValue).diff(moment(), 'hours');
+            if (date > 60) {
+              date = moment(val.mapValue.fields.date.stringValue).diff(moment(), 'days');
+              currentValue = 'il ya ' + date + ' jours';
+            } else {
+              currentValue = 'il ya ' + date + ' heures';
+            }
+          } else {
+            currentValue = 'il ya ' + date + ' minutes';
           }
-        }else{
-          currentValue = 'il ya ' + date + ' minutes';
-        }
-        let value={
-        icon: "assets/images/"+val.mapValue.fields.reactionType.stringValue,
-        commentaire:val.mapValue.fields.commentaire.stringValue,
-        username:val.mapValue.fields.username.stringValue,
-        img:'assets/images/personn.png',
-        date:currentValue
-        
-      }
-      this.listReactions.push(value);
+          let value = {
+            icon: "assets/images/" + val.mapValue.fields.reactionType.stringValue,
+            commentaire: val.mapValue.fields.commentaire.stringValue,
+            username: val.mapValue.fields.username.stringValue,
+            img: 'assets/images/personn.png',
+            date: currentValue
 
+          }
+          this.listReactions.push(value);
+
+        }
       }
-      console.log("reactions",this.listReactions);
-      
+      console.log("reactions", this.listReactions);
+
     }
   }
 
