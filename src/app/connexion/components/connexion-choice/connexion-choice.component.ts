@@ -37,14 +37,16 @@ export class ConnexionChoiceComponent implements OnInit {
     const auth = getAuth();
     auth.onAuthStateChanged((user) => {
       if (user) {
-        const userDataBase = from(this.userService.findUser(user.uid));
-        userDataBase
-          .pipe(
-            tap((us) => {
-              this.redirect(us.data());
-            })
-          )
-          .subscribe();
+        setTimeout(() => {
+          const userDataBase = from(this.userService.findUser(user.uid));
+          userDataBase
+            .pipe(
+              tap((us) => {
+                this.redirect(us.data());
+              })
+            )
+            .subscribe();
+        }, 1000);
       }
     });
   }
@@ -61,9 +63,9 @@ export class ConnexionChoiceComponent implements OnInit {
     await loading.present();
 
     const { role, data } = await loading.onDidDismiss();
-      user.userName
-        ? this.navController.navigateForward([''])
-        : this.navController.navigateForward('onboarding');
+    user.userName
+      ? this.navController.navigateForward([''])
+      : this.navController.navigateForward('onboarding');
   }
 
   connexion() {
@@ -75,7 +77,6 @@ export class ConnexionChoiceComponent implements OnInit {
       ? this.userService.createUser(formValue)
       : this.userService.log(formValue);
   }
-
 
   logout() {
     this.userService.logout();

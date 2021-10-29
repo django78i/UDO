@@ -11,6 +11,20 @@ import { EmojisComponent } from 'src/app/components/emojis/emojis.component';
 import { MusicFeedService } from 'src/app/services/music-feed.service';
 import { DetailPostComponent } from '../detail-post/detail-post.component';
 
+interface Reaction {
+  icon: string;
+  nom: string;
+  nombre: number;
+  users: Users[];
+}
+
+interface Users {
+  avatar: string;
+  date: Date;
+  name: string;
+  uid: string;
+}
+
 @Component({
   selector: 'app-feeds',
   templateUrl: './feeds.component.html',
@@ -24,6 +38,8 @@ export class FeedsComponent implements OnInit, OnDestroy {
   @Input() championnat: any;
   subscription: Subscription;
   subscription2: Subscription;
+  reaction: any;
+
   constructor(
     public musService: MusicFeedService,
     public http: HttpClient,
@@ -34,10 +50,14 @@ export class FeedsComponent implements OnInit, OnDestroy {
   ) {}
 
   async ngOnInit() {
+    console.log(this.user);
     this.feed$ = from(this.mService.feedQuery());
     this.subscription = this.feed$.subscribe((f) => {
       this.lastVisible = f.last;
-      f.table.forEach((fee) => this.feed.push(fee));
+      f.table.forEach((fee) => {
+        this.feed.push(fee);
+        console.log(this.feed);
+      });
     });
   }
 
@@ -47,16 +67,67 @@ export class FeedsComponent implements OnInit, OnDestroy {
     }, 2000);
   }
 
-  async presentPopover(ev: any) {
-    const popover = await this.popoverController.create({
+  async presentPopover(i: number, feedLik) {
+    const modal = await this.modalController.create({
       component: EmojisComponent,
-      cssClass: 'my-custom-class',
-      event: ev,
-      translucent: true,
+      cssClass: 'modalEmojis',
     });
-    await popover.present();
+    modal.onDidDismiss().then((data) => {
+      this.reaction = data.data;
+      const react: Reaction[] = feedLik.reactions;
+      let isEmojiIsToUser;
 
-    const { role } = await popover.onDidDismiss();
+      //l'émoji existe déjà
+      const isEmojiExist = react.findIndex((f) => f.nom == this.reaction.nom);
+
+      //le user a déjà envoyé cet émoji
+      if (isEmojiExist != -1) {
+        isEmojiIsToUser = react[isEmojiExist].users.findIndex(
+          (user) => user.uid == this.user.uid
+        );
+      }
+      let indice;
+      let userAlreadyLike;
+      react.map((react, index) => {
+        //l'utiisateur a déjà un like actif
+        const ind = react.users.findIndex((us) => us.uid == this.user.uid);
+        if (ind != -1) {
+          indice = index;
+          userAlreadyLike = ind;
+        }
+      });
+
+      if (isEmojiIsToUser != -1 && isEmojiIsToUser) {
+        return;
+      } else if (isEmojiExist != -1 && isEmojiExist) {
+        this.feed[i].reactions[isEmojiExist].nombre += 1;
+        this.feed[i].reactions[isEmojiExist].users.push({
+          uid: this.user.uid,
+          name: this.user.userName,
+          date: new Date(),
+          avatar: this.user.avatar,
+        });
+      } else  {
+        this.feed[i].reactions.push({
+          ...this.reaction,
+          nombre : 1,
+          users: [
+            {
+              uid: this.user.uid,
+              name: this.user.userName,
+              date: new Date(),
+              avatar: this.user.avatar,
+            },
+          ],
+        });
+      }
+      if (userAlreadyLike != -1) {
+        this.feed[i].reactions[indice].nombre -= 1;
+        this.feed[i].reactions[indice].users.splice(userAlreadyLike, 1);
+      }
+      this.musService.updatePost(this.feed[i]);
+    });
+    return await modal.present();
   }
 
   async loadData(event) {

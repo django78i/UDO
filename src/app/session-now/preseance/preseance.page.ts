@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { IonSlides, ModalController } from '@ionic/angular';
+import { IonSlides, ModalController, NavController } from '@ionic/angular';
 import { ReglagesPage } from '../reglages/reglages.page';
 import { Router } from '@angular/router';
 import { ActivitiesPage } from '../activities/activities.page';
@@ -22,7 +22,7 @@ export class PreseancePage implements OnInit {
   max = 100;
   isActif: boolean = false;
   activite = { name: 'Sélectionnez une activité', image: 'assets/images/questionmark.svg', padding2: '34px 40px;', width2: '25px' }
-  constructor(private modalCtrl: ModalController, private router: Router) { }
+  constructor(private modalCtrl: ModalController, private router: Router, public navCtl:  NavController) { }
 
   ngOnInit() {
     let item = localStorage.getItem('activite');
@@ -106,6 +106,6 @@ export class PreseancePage implements OnInit {
 
   }
   retour() {
-    window.history.back();
+    this.navCtl.navigateBack('tabs/tab1');
   }
 }

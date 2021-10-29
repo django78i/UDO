@@ -35,16 +35,16 @@
 
     <ion-card-content>
       <div style="display: flex">
-        <ng-container
-          *ngFor="let champ of championnat.participants; let i = index"
-        >
+        <ng-container *ngFor="let champ of participantsList; let i = index">
           <ion-avatar style="--i : {{ i }}; --mess : {{ champ.niveau }} ">
             <img [src]="champ.avatar" alt="" />
             <ion-badge>{{ user.niveau }}</ion-badge>
           </ion-avatar>
         </ng-container>
         <div class="champCarousel">
-          <p style="font-size: 20px">{{ championnat.nbParticipants }}</p>
+          <p style="font-size: 20px">
+            {{ championnat.nbParticipants - participantsList.length }}
+          </p>
         </div>
       </div>
       <div class="iconPhoto">
@@ -113,7 +113,7 @@
   </ion-toolbar>
   <!-- </section> -->
 </ion-header>
-<ion-content>
+<ion-content >
   <app-classement
     *ngIf="segmentValue == 'participants'"
     [champ]="championnat"
@@ -132,7 +132,7 @@
     vertical="bottom"
     horizontal="start"
     slot="fixed"
-    style="--ion-safe-area-left: 40px"
+    style="--ion-safe-area-left: 40px; width: 60% !important"
   >
     <ion-button
       shape="round"
@@ -150,7 +150,10 @@
       "
       >{{ championnat.dateDemarrage | timeRelative }}</ion-button
     >
-    <ion-button shape="round" *ngIf="championnat.status == 'en cours'"
+    <ion-button
+      expand="block"
+      *ngIf="championnat.status == 'en cours'"
+      class="buttonNextSlide"
       >Séance Now</ion-button
     >
   </ion-fab>

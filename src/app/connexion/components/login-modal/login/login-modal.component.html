@@ -1,12 +1,5 @@
-<ion-content>
+<ion-header style="padding: 20px; background: #f7f7fa">
   <section style="background: #f7f7fa; margin: 0 15px; margin-bottom: 10px">
-    <ion-toolbar style="margin-bottom: 20px">
-      <ion-icon
-        name="arrow-back-outline"
-        slot="start"
-        (click)="close()"
-      ></ion-icon>
-    </ion-toolbar>
     <ion-label>{{ step * 100 }}%</ion-label>
 
     <ion-progress-bar
@@ -14,26 +7,16 @@
         border-radius: 10px;
         height: 6px;
         --progress-background: #3e4add;
-        --background: #dfdfe8;
+        --background: #ffffff;
       "
       [value]="step"
     ></ion-progress-bar>
   </section>
-  <mat-horizontal-stepper
-    #stepper
-    style="height: calc(100% - 100px)"
-    #stepperComp
-  >
-    <!-- <mat-step [editable]="isEditable" style="height: 100% !important">
-      <ng-template matStepLabel>Fill out your name</ng-template>
-      <app-connexion-choice (log)="login()"></app-connexion-choice>
-    </mat-step> -->
-    <mat-step
-      [editable]="isEditable"
-      style="height: 100% !important; position: relative"
-    >
-      <ng-template matStepLabel>Fill out your name</ng-template>
-      <section style="height: 100%">
+</ion-header>
+<ion-content>
+  <ion-slides pager="false" [options]="slideOpts" #slider>
+    <ion-slide>
+      <section class="sectionZone">
         <ion-label>
           <h3 style="text-align: center">Choisissez un pseudo</h3>
           <p>
@@ -54,119 +37,40 @@
           <ion-avatar>
             <img
               *ngIf="!picture"
+              style="width: 100% !important"
               src="https://img.icons8.com/ios-filled/50/000000/gender-neutral-user.png"
             />
             <img [src]="picture" *ngIf="picture" alt="" />
             <ion-badge (click)="addPhoto()">
               <img src="assets/icon/pen.svg" alt="" />
             </ion-badge>
-            <!-- <div class="photo" style="border: none">
-              <label for="typeFile-input">
-                <img src="assets/icon/pen.svg" alt="" />
-              </label>
-              <input
-                #takeInput
-                type="file"
-                (change)="uploadFile($event)"
-                id="typeFile-input"
-              />
-            </div> -->
           </ion-avatar>
-          <mat-form-field appearance="outline" style="width: 100%">
-            <mat-label>Identifiant</mat-label>
-            <input matInput class="form-control" [(ngModel)]="pseudo" />
-            <mat-hint align="start" *ngIf="pseudo == ''"
-              >Cette donnée est obligatoire</mat-hint
-            >
-          </mat-form-field>
+          <ion-item lines="none">
+            <ion-label position="floating">Identifiant</ion-label>
+            <ion-input (ionChange)="changeInput($event)"> </ion-input>
+          </ion-item>
         </div>
-        <div
-          style="
-            position: absolute;
-            bottom: 15px;
-            width: 91%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-          "
-        >
-          <button
-            mat-button
-            (click)="savePhoto()"
-            style="
-              padding-top: 15px;
-              padding-bottom: 15px;
-              background: #3e4add;
-              border-radius: 23px;
-              /* width: 100%; */
-              color: white;
-            "
-          >
-            suivant
-          </button>
-          <!-- <button
-            mat-button
-            [disabled]="pseudo == ''"
-            matStepperNext
-            (selectionChange)="next($event)"
-            style="
-              padding-top: 15px;
-              padding-bottom: 15px;
-              background: #3e4add;
-              border-radius: 23px;
-              /* width: 100%; */
-              color: white;
-            "
-          >
-            Suivant
-          </button> -->
-        </div>
+        <ion-button (click)="savePhoto()" class="buttonNextSlide">
+          suivant
+        </ion-button>
       </section>
-    </mat-step>
-    <mat-step
-      [editable]="isEditable"
-      style="height: 100% !important; position: relative"
-    >
-      <ng-template matStepLabel>Fill out your name</ng-template>
-      <ion-label>
-        <h3 style="text-align: center">Choisissez un pseudo</h3>
-        <p>
-          In publishing and graphic design, Lorem ipsum is a placeholder text
-          commonly used.
-        </p>
-      </ion-label>
-      <app-gender (choix)="choiceSex($event)"></app-gender>
-      <div
-        style="
-          position: absolute;
-          bottom: 15px;
-          width: 91%;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-        "
-      >
-        <button
-          mat-button
-          matStepperNext
-          style="
-            padding-top: 15px;
-            padding-bottom: 15px;
-            background: #3e4add;
-            border-radius: 23px;
-            /* width: 100%; */
-            color: white;
-          "
-        >
-          Suivant
-        </button>
-      </div>
-    </mat-step>
-    <mat-step
-      [editable]="isEditable"
-      style="height: 100% !important; position: relative"
-    >
-      <ng-template matStepLabel>Fill out your name</ng-template>
+    </ion-slide>
+    <ion-slide>
+      <section class="sectionZone">
+        <ion-label>
+          <h3 style="text-align: center">Choisissez un pseudo</h3>
+          <p>
+            In publishing and graphic design, Lorem ipsum is a placeholder text
+            commonly used.
+          </p>
+        </ion-label>
+        <app-gender (choix)="choiceSex($event)"></app-gender>
+        <ion-button (click)="genderSlide()" class="buttonNextSlide">
+          suivant
+        </ion-button>
+      </section>
+    </ion-slide>
+    <ion-slide>
       <ion-label>
         <h3 style="text-align: center">Choisissez un pseudo</h3>
         <p>
@@ -178,73 +82,9 @@
         (taille)="physicParam($event)"
         (poids)="physicParam($event)"
       ></app-physics>
-      <div
-        style="
-          position: absolute;
-          bottom: 15px;
-          width: 91%;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-        "
-      >
-        <button
-          mat-button
-          matStepperNext
-          style="
-            padding-top: 15px;
-            padding-bottom: 15px;
-            background: #3e4add;
-            border-radius: 23px;
-            /* width: 100%; */
-            color: white;
-          "
-        >
-          Suivant
-        </button>
-      </div>
-    </mat-step>
-    <mat-step
-      [editable]="isEditable"
-      style="height: 100% !important; position: relative"
-    >
-      <ng-template matStepLabel>Fill out your name</ng-template>
-      <ion-label>
-        <h3 style="text-align: center">Choisissez un pseudo</h3>
-        <p>
-          In publishing and graphic design, Lorem ipsum is a placeholder text
-          commonly used.
-        </p>
-      </ion-label>
-      <section style="height: 400px; overflow: auto">
-        <app-accordeon (activitesEvent)="eventActivite($event)"></app-accordeon>
-      </section>
-
-      <div
-        style="
-          position: absolute;
-          bottom: 15px;
-          width: 91%;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-        "
-      >
-        <button
-          mat-button
-          (click)="validate()"
-          style="
-            padding-top: 15px;
-            padding-bottom: 15px;
-            background: #3e4add;
-            border-radius: 23px;
-            /* width: 100%; */
-            color: white;
-          "
-        >
-          Suivant
-        </button>
-      </div>
-    </mat-step>
-  </mat-horizontal-stepper>
+      <ion-button (click)="physicSlide()" class="buttonNextSlide">
+        suivant
+      </ion-button>
+    </ion-slide>
+  </ion-slides>
 </ion-content>

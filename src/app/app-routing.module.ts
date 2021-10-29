@@ -7,7 +7,7 @@ import { SeanceExterneFinalPageModule } from './seance-externe-final/seance-exte
 const routes: Routes = [
   {
     path: '',
-    // canActivate: [RouteGuardService],
+    canActivate: [RouteGuardService],
     loadChildren: () =>
       import('./tabs/tabs.module').then((m) => m.TabsPageModule),
   },

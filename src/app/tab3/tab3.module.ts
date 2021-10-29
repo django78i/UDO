@@ -27,6 +27,7 @@ import { AccordeonComponent } from '../components/accordeon/accordeon.component'
 import { EmojisComponent } from '../components/emojis/emojis.component';
 import { DetailPostComponent } from './components/detail-post/detail-post.component';
 import { MessagesComponent } from './components/messages/messages.component';
+import { TimeFeedPipe } from '../pipe/time-feed.pipe';
 
 @NgModule({
   imports: [
@@ -46,6 +47,7 @@ import { MessagesComponent } from './components/messages/messages.component';
     ModalChampComponent,
     SliderChallengeComponent,
     TimeRelativePipe,
+    TimeFeedPipe,
     SliderChampionnatComponent,
     UserChampionnatsSlideComponent,
     SliderNetworkComponent,

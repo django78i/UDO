@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import { MatStepper } from '@angular/material/stepper';
 import {
+  IonSlides,
   LoadingController,
   ModalController,
   NavController,
@@ -30,7 +31,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./login-modal.component.scss'],
 })
 export class LoginModalComponent implements OnInit, AfterViewInit, OnDestroy {
-  @ViewChild('stepperComp') stepperComp: MatStepper;
+  @ViewChild('slider') sliderComp: IonSlides;
   pseudo: string = '';
   step: number = 0;
   sex: string = '';
@@ -44,6 +45,11 @@ export class LoginModalComponent implements OnInit, AfterViewInit, OnDestroy {
   picture: any;
   pictureURL: any;
   subscription: Subscription;
+
+  slideOpts = {
+    speed: 400,
+  };
+
   constructor(
     public zone: NgZone,
     public modalCtl: ModalController,
@@ -60,20 +66,7 @@ export class LoginModalComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    this.subscription = this.stepperComp?.selectionChange.subscribe((r) => {
-      this.stepperEvent = r;
-      if (r.previouslySelectedIndex == 0 && this.pseudo != '') {
-        this.step += 0.25;
-      } else if (r.previouslySelectedIndex == 1 && this.sex != '') {
-        this.step += 0.25;
-      } else if (
-        r.previouslySelectedIndex == 2 &&
-        this.physicalParam.taille != 0 &&
-        this.physicalParam.poids != 0
-      ) {
-        this.step += 0.25;
-      }
-    });
+    this.sliderComp.lockSwipeToNext(true);
   }
 
   login() {
@@ -98,6 +91,10 @@ export class LoginModalComponent implements OnInit, AfterViewInit, OnDestroy {
     this.picture = theActualPicture;
   }
 
+  changeInput(event) {
+    this.pseudo = event.detail.value;
+  }
+
   savePhoto() {
     if (this.picture) {
       const storage = getStorage();
@@ -114,7 +111,30 @@ export class LoginModalComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       );
     }
-    this.stepperComp.next();
+    if (this.pseudo != '') {
+      this.step += 0.25;
+      this.slideNext();
+    }
+  }
+
+  genderSlide() {
+    if (this.physicalParam.taille !== 0 && this.physicalParam.poids !== 0) {
+      this.step += 0.25;
+      this.slideNext();
+    }
+  }
+
+  physicSlide() {
+    if (this.physicalParam.taille !== 0 && this.physicalParam.poids !== 0) {
+      this.step += 0.25;
+      this.slideNext();
+    }
+  }
+
+  slideNext() {
+    this.sliderComp.lockSwipes(false);
+    this.sliderComp.slideNext();
+    this.sliderComp.lockSwipes(true);
   }
 
   async saveOnBoarding() {

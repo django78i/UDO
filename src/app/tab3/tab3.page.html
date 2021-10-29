@@ -102,7 +102,7 @@
     </div>
   </div>
   <ng-template #banTemplate>
-    <ion-card style="height: 250px; width: 93%;border-radius: 30px ;">
+    <ion-card style="height: 250px; width: 93%; border-radius: 30px">
       <ion-thumbnail style="height: 100%; width: 100%">
         <ion-skeleton-text animated></ion-skeleton-text>
       </ion-thumbnail>
@@ -142,9 +142,9 @@
 
     <!-- <ng-container *ngIf="userChampionnats"> -->
     <app-user-championnats-slide
-      [championnats]="usChamp"
+      [championnats]="userChampionnats"
       (champ)="champModal($event)"
-      *ngIf="userChampionnats$|async as usChamp; else tempChamp"
+      *ngIf="userChampionnats && !loaderUserChamp; else tempChamp"
     >
     </app-user-championnats-slide>
 
@@ -174,8 +174,8 @@
   <div style="width: 100%">
     <app-slider-championnat
       (champ)="launchDetail($event)"
-      [championnats]="champ"
-      *ngIf="championnats|async as champ; else tempChamp"
+      [championnats]="championnatsList"
+      *ngIf="championnatsList && !loaderChamp; else tempChamp"
     ></app-slider-championnat>
   </div>
   <div style="width: 100%; margin-bottom: 100px; margin-top: 15px">
@@ -317,5 +317,4 @@
       </ng-template>
     </swiper>
   </ng-template>
-
 </ion-content>

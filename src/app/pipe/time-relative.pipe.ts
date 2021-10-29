@@ -8,6 +8,7 @@ import { Timestamp } from 'rxjs';
 export class TimeRelativePipe implements PipeTransform {
   transform(value: any): any {
     moment.locale('fr');
+    console.log(value)
     const time = moment(value.toDate()).fromNow();
     // const newTime = time.split(' ');
     // newTime.splice(0, 1);

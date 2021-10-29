@@ -7,14 +7,13 @@ import * as _ from 'lodash';
   styleUrls: ['./classement.component.scss'],
 })
 export class ClassementComponent implements OnInit {
-
   @Input() champ: any;
   classement: any[];
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
+    console.log(this.champ);
     this.classement = _.orderBy(this.champ.participants, ['points'], ['desc']);
   }
-
 }

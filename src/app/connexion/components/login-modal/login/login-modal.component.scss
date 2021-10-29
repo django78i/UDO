@@ -114,3 +114,37 @@ ion-avatar {
 #typeFile-input {
   display: none;
 }
+
+.sectionZone {
+  height: 100%;
+  padding: 0 15px;
+  position: relative;
+}
+
+.buttonNextSlide {
+  position: absolute;
+  bottom: 10px;
+  width: 80%;
+  height: 80px;
+  transform: translateX(-50%);
+  border-radius: 20px;
+}
+
+ion-slides {
+  height: 100%;
+}
+
+:host ::ng-deep {
+  .label-floating {
+    transform: translate3d(0, 33px, 0);
+    padding-left: 10px;
+  }
+}
+
+ion-input {
+  border: 1px solid black;
+  border-radius: 12px;
+  --padding-start: 15px !important;
+  border: 1px solid black;
+  border-radius: 12px;
+}

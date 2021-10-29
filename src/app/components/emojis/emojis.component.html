@@ -1,8 +1,27 @@
-<section style="display: flex; flex-wrap: wrap">
-  <img
-    [src]="emoji.icon"
-    alt=""
-    *ngFor="let emoji of emojisList$ | async"
-    style="width: 50px"
-  />
-</section>
+<ion-header style="--padding-start: 14px">
+  <ion-toolbar>
+    <ion-icon name="close-outline" slot="start"></ion-icon>
+    <ion-title>Encouragements</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content style="--background: white">
+  <section style="display: flex; flex-wrap: wrap">
+    <img
+      (click)="choice(emoji)"
+      [src]="emoji.icon"
+      alt=""
+      *ngFor="let emoji of emojisList$ | async"
+      style="width: 50px"
+    />
+  </section>
+</ion-content>
+<ion-footer>
+  <ion-toolbar>
+    <ion-title *ngIf="emoji">
+      {{ emoji.nom }}
+    </ion-title>
+  </ion-toolbar>
+  <ion-button (click)="send(emoji)" class="buttonNextSlide" expand="block">
+    suivant
+  </ion-button>
+</ion-footer>

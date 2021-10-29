@@ -8,7 +8,7 @@ import {
   ViewChildren,
 } from '@angular/core';
 import { AnimationController, ModalController } from '@ionic/angular';
-import { BehaviorSubject, from, Observable } from 'rxjs';
+import { BehaviorSubject, from, Observable, Subscription } from 'rxjs';
 import { SwiperOptions } from 'swiper';
 import { SwiperComponent } from 'swiper/angular';
 import { ModalChampComponent } from './components/modal-champ/modal-champ.component';
@@ -31,7 +31,7 @@ export class Tab3Page implements OnInit, AfterContentChecked {
     spaceBetween: 20,
   };
 
-  temporaire= [1, 2, 3];
+  temporaire = [1, 2, 3];
 
   segmentValue: string = 'championnats';
 
@@ -39,14 +39,21 @@ export class Tab3Page implements OnInit, AfterContentChecked {
   @ViewChildren('miniature') miniature: any;
   challenges: Observable<any>;
   userChampionnats$: Observable<any>;
-  userChampionnats: any;
+  userChampionnats: any[] = [];
   championnats: Observable<any>;
+  championnatsList: any[] = [];
   championnatsNetwork: Observable<any>;
   bannData: any;
   affiche: BehaviorSubject<any> = new BehaviorSubject(null);
   user: any;
   user$: Observable<any>;
   userInfo: any;
+
+  userChampSubscription: Subscription;
+  championnatSubscription: Subscription;
+
+  loaderUserChamp: boolean;
+  loaderChamp: boolean;
 
   constructor(
     private modalController: ModalController,
@@ -60,20 +67,28 @@ export class Tab3Page implements OnInit, AfterContentChecked {
 
   ngOnInit() {
     this.user$ = from(this.userService.getCurrentUser());
-    this.user$
-      .pipe(
-        tap((us) => {
-          this.user = us;
-          this.champService.getChampionnatsEnCours(this.user);
-          this.userChampionnats$ = this.champService.champEnCoursSubject$
+    this.user$.subscribe((user) => {
+      this.user = user;
+      //Championnats en cours
+      this.champService.getChampionnatsEnCours(this.user);
+      this.loaderUserChamp = true;
+      this.userChampSubscription =
+        this.champService.champEnCoursSubject$.subscribe((champ) => {
+          this.loaderUserChamp = false;
+          this.userChampionnats = champ;
 
-          this.champService.getChampionnats(this.user);
-          this.championnats = this.champService.champSubject$.pipe(
-            tap((r) => this.ref.detectChanges())
-          );
-        })
-      )
-      .subscribe();
+        });
+      //Championnats en attente
+      this.champService.getChampionnats(this.user);
+      this.loaderChamp = true;
+      this.championnatSubscription = this.champService.champSubject$
+        .subscribe((champ) => {
+          this.loaderChamp = false;
+          this.championnatsList = champ ;
+          this.ref.detectChanges();
+        });
+
+    });
 
     this.challenges = this.http.get('../../assets/mocks/challenges.json').pipe(
       tap((r) => {
@@ -90,7 +105,6 @@ export class Tab3Page implements OnInit, AfterContentChecked {
     if (this.swiper) {
       this.swiper.map((swip) => swip.updateSwiper({}));
     }
-
   }
 
   async buttonClick() {

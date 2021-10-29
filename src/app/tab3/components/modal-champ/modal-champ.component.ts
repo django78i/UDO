@@ -25,15 +25,16 @@ export class ModalChampComponent implements OnInit, AfterViewInit {
   segmentValue = 'resume';
   @ViewChild('dataPoints') dataPoints: ElementRef;
   picture: any;
-
+  participantsList: any[];
   constructor(
     private modalCtrl: ModalController,
-    private modalController: ModalController,
-    private renderer: Renderer2,
     public animationCtrl: AnimationController
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log(this.user);
+    this.participantsList = this.championnat.participants.slice(0,4);
+  }
 
   ngAfterViewInit() {}
 
@@ -55,7 +56,6 @@ export class ModalChampComponent implements OnInit, AfterViewInit {
 
     // Here you get the image as result.
     const theActualPicture = image.dataUrl;
-    var imageUrl = image.webPath;
     this.picture = theActualPicture;
   }
 }

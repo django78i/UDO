@@ -63,83 +63,108 @@ h4 {
   --color: white;
 }
 @font-face {
-  font-family: 'PoppinsBold';
+  font-family: "PoppinsBold";
   src: url("../src/assets/font/Poppins-Bold.ttf");
   /* src: url("../fonts/GellixBlack.otf") format("embedded-opentype"), url("../fonts/GilroyBold.woff2") format("woff2"), url("../fonts/GilroyBold.woff") format("woff"), url("../fonts/GilroyBold.ttf") format("truetype"), url("../fonts/GilroyBold.svg#GilroyBold") format("svg");
 */
 }
 
 @font-face {
-  font-family: 'PoppinsSemiBold';
+  font-family: "PoppinsSemiBold";
   src: url("../src/assets/font/Poppins-SemiBold.ttf");
   /* src: url("../fonts/GellixBlack.otf") format("embedded-opentype"), url("../fonts/GilroyBold.woff2") format("woff2"), url("../fonts/GilroyBold.woff") format("woff"), url("../fonts/GilroyBold.ttf") format("truetype"), url("../fonts/GilroyBold.svg#GilroyBold") format("svg");
 */
 }
 
 @font-face {
-  font-family: 'PoppinsMedium';
+  font-family: "PoppinsMedium";
   src: url("../src/assets/font/Poppins-Medium.ttf");
   /* src: url("../fonts/GellixBlack.otf") format("embedded-opentype"), url("../fonts/GilroyBold.woff2") format("woff2"), url("../fonts/GilroyBold.woff") format("woff"), url("../fonts/GilroyBold.ttf") format("truetype"), url("../fonts/GilroyBold.svg#GilroyBold") format("svg");
 */
 }
 
 @font-face {
-  font-family: 'AllRoundGothicBold';
+  font-family: "AllRoundGothicBold";
   src: url("../src/assets/font/Round_Bold.ttf");
   /* src: url("../fonts/GellixBlack.otf") format("embedded-opentype"), url("../fonts/GilroyBold.woff2") format("woff2"), url("../fonts/GilroyBold.woff") format("woff"), url("../fonts/GilroyBold.ttf") format("truetype"), url("../fonts/GilroyBold.svg#GilroyBold") format("svg");
 */
 }
 
 @font-face {
-  font-family: 'StaatlichesRegular';
+  font-family: "StaatlichesRegular";
   src: url("../src/assets/font/Staatliches-Regular.ttf");
   /* src: url("../fonts/GellixBlack.otf") format("embedded-opentype"), url("../fonts/GilroyBold.woff2") format("woff2"), url("../fonts/GilroyBold.woff") format("woff"), url("../fonts/GilroyBold.ttf") format("truetype"), url("../fonts/GilroyBold.svg#GilroyBold") format("svg");
 */
 }
-.swiper-container-horizontal>.swiper-pagination-bullets{
+.swiper-container-horizontal > .swiper-pagination-bullets {
   bottom: 0;
 }
 .slides-md {
   --bullet-background: var(--ion-color-step-200, #19191cab) !important;
-  --bullet-background-active: var(--ion-color-primary-contrast,#19191cab) !important;
-  --progress-bar-background: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.25) !important;
-  --progress-bar-background-active: var(--ion-color-primary-contrast, #19191cab) !important;
-  --scroll-bar-background: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.1) !important;
-  --scroll-bar-background-active: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.5) !important;
+  --bullet-background-active: var(
+    --ion-color-primary-contrast,
+    #19191cab
+  ) !important;
+  --progress-bar-background: rgba(
+    var(--ion-text-color-rgb, 0, 0, 0),
+    0.25
+  ) !important;
+  --progress-bar-background-active: var(
+    --ion-color-primary-contrast,
+    #19191cab
+  ) !important;
+  --scroll-bar-background: rgba(
+    var(--ion-text-color-rgb, 0, 0, 0),
+    0.1
+  ) !important;
+  --scroll-bar-background-active: rgba(
+    var(--ion-text-color-rgb, 0, 0, 0),
+    0.5
+  ) !important;
 }
-ion-slides.aideSlide .swiper-pagination-bullets .swiper-pagination-bullet-active {
+ion-slides.aideSlide
+  .swiper-pagination-bullets
+  .swiper-pagination-bullet-active {
   opacity: 1;
   background: #19191cab !important;
 }
-ion-slides.preseanceSlide .swiper-pagination-bullets .swiper-pagination-bullet-active {
+ion-slides.preseanceSlide
+  .swiper-pagination-bullets
+  .swiper-pagination-bullet-active {
   opacity: 1;
   background: #19191cab !important;
 }
-ion-slides.aideSlide{
+ion-slides.aideSlide {
   height: 92%;
 }
-ion-slides.preseanceSlide{
+ion-slides.preseanceSlide {
   height: 92%;
 }
-.swiper-slide{
+.swiper-slide {
   display: block;
 }
-.item-inner{
+.item-inner {
   border-style: none !important;
 }
 
-.c-header .header-md::after{
+.c-header .header-md::after {
   background-image: none !important;
 }
-.toggle-calm .toggle-inner{
+.toggle-calm .toggle-inner {
   width: 16px;
   height: 16px;
   margin-left: 2px;
 }
-.my-custom-contenu-modal{
+.my-custom-contenu-modal {
   --background: #ffffff4f;
 }
-.toogle-inner{
+.toogle-inner {
   width: 17px !important;
   height: 17px !important;
+}
+
+.modalEmojis .modal-wrapper{
+  height: 500px;
+  width: 90%;
+  border-radius: 20px;
 }

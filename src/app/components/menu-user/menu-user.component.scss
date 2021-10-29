@@ -17,3 +17,25 @@ ion-progress-bar::part(progress) {
     border-radius: 11px;
   }
 }
+
+ion-avatar {
+  position: relative;
+  height: 72px;
+  width: 72px;
+  ion-badge {
+    font-size: 10px;
+    position: absolute;
+    min-width: 26px;
+    min-height: 26px;
+    --padding-top: 8px;
+    --padding-end: 0;
+    --padding-bottom: 8px;
+    --padding-start: 0;
+    --background: white;
+    --color: black;
+    right: -11px;
+    bottom: 0;
+    border-radius: 50%;
+    box-shadow: 0px 3px 8px #1e1c2715;
+  }
+}

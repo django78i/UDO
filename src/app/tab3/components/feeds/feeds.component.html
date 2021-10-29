@@ -4,7 +4,7 @@
   </ion-refresher>
   <section class="contenu" *ngIf="feed; else showBlank">
     <ion-item
-      *ngFor="let item of feed"
+      *ngFor="let item of feed; let i = index"
       style="margin-bottom: 10px; --inner-padding-end: 0"
     >
       <ion-card
@@ -83,7 +83,9 @@
                   name="ellipse"
                   style="font-size: 6px; margin-right: 5px"
                 ></ion-icon>
-                <ion-note style="font-size: 10px">Il y'a 5 min</ion-note>
+                <ion-note style="font-size: 10px">{{
+                  item.startDate | timeFeed
+                }}</ion-note>
               </p>
               <div style="display: flex; gap: 5px; align-items: center">
                 <img src="../../assets/icon/testIconCateg.svg" alt="" />
@@ -97,47 +99,29 @@
           </ion-item>
         </ion-card-header>
         <ion-card-content style="padding: 0">
-          <div style="display: flex; justify-content: space-between">
+          <div style="display: flex; gap: 10px; margin-top: 5px;">
             <img src="../../assets/icon/Icon feather-share-2.svg" alt="" />
             <img
-              (click)="presentPopover($event)"
+              (click)="presentPopover(i, item)"
               src="../../assets/icon/Icon material-add-circle-outline.svg"
               alt=""
             />
-            <ion-chip outline>
-              <div class="emot">
-                <img src="../../assets/emojis/Happy.png" alt="" />
+            <div style=" overflow-x: auto">
+              <div style="display: inline-flex ;">
+                <ion-chip outline *ngFor="let rect of item.reactions">
+                  <ion-avatar>
+                    <img [src]="rect.icon" alt="" />
+                  </ion-avatar>
+                  <ion-label>{{ rect.nombre }}</ion-label>
+                </ion-chip>
               </div>
-              <ion-label *ngIf="item.reactions">{{
-                item.reactions.like
-              }}</ion-label>
-            </ion-chip>
-            <ion-chip outline>
-              <div class="emot">
-                <img src="../../assets/emojis/Sleepy.png" alt="" />
-              </div>
-              <ion-label *ngIf="item.reactions">{{
-                item.reactions.dislike
-              }}</ion-label>
-            </ion-chip>
-            <ion-chip outline>
-              <div class="emot">
-                <img src="../../assets/emojis/Sad.png" alt="" />
-              </div>
-              <ion-label *ngIf="item.reactions">{{
-                item.reactions.shit
-              }}</ion-label>
-            </ion-chip>
+            </div>
           </div>
         </ion-card-content>
       </ion-card>
     </ion-item>
   </section>
   <ng-template #showBlank>
-    <!-- <ion-thumbnail> -->
-    <!-- <img src="assets/mocks/Groupe 3959.png" alt="" />
-    </ion-thumbnail> -->
-    <!-- </ng-template> -->
     <ion-card class="blank">
       <img src="assets/mocks/Groupe 3959.png" alt="" />
       <ion-card-header>

@@ -52,8 +52,8 @@ export class MusicFeedService {
 
     // Query the first page of docs
     const first = query(
-      collection(db, 'session-now'),
-      orderBy('startDate'),
+      collection(db, 'post-session-now'),
+      orderBy('startDate', 'asc'),
       limit(15)
     );
     const documentSnapshots = await getDocs(first);
@@ -83,8 +83,8 @@ export class MusicFeedService {
     // Construct a new query starting at this document,
     // get the next 25 cities.
     const next = query(
-      collection(db, 'session-now'),
-      orderBy('startDate'),
+      collection(db, 'post-session-now'),
+      orderBy('startDate', 'asc'),
       startAfter(last),
       limit(18)
     );
@@ -100,5 +100,13 @@ export class MusicFeedService {
       });
     });
     return table;
+  }
+
+  async updatePost(post) {
+    const db = getFirestore();
+    const postRef = doc(db, 'post-session-now', post.uid);
+    await updateDoc(postRef, {
+      reactions: post.reactions,
+    });
   }
 }
