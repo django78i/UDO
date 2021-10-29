@@ -64,6 +64,8 @@ export class DemarragePage implements OnInit {
   sessionNow = new SessionNowModel();
   listSettings = [];
   user: any;
+  reactions = 0;
+  interval;
   constructor(
     private modalCtrl: ModalController,
     private router: Router,
@@ -80,6 +82,28 @@ export class DemarragePage implements OnInit {
       this.presentAlertConfirm();
     });
     this.user = JSON.parse(localStorage.getItem('user'));
+    this.getSessionNow();
+  }
+
+ async getSessionNow() {
+
+   this.interval= setInterval(() => {
+      let sessionNow = JSON.parse(localStorage.getItem('sessionNow'));
+      if (sessionNow) {
+        this.snService.find(sessionNow.uid, 'session-now').then((resp:any)=>{
+          let value = resp._document.data.value.mapValue.fields;
+          this.reactions = value.reactions.arrayValue.values.length;
+          console.log('value',value);
+          // if(this.router.url !='/session-now/demarrage'){
+          //   clearInterval(this.interval);
+          // }
+          this.sessionNow.reactions = value.reactions.arrayValue.values;
+          localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
+          
+        })
+
+      }
+    }, 10000);
   }
   async presentAlertConfirm() {
     this.stop();
@@ -170,27 +194,27 @@ export class DemarragePage implements OnInit {
       this.sessionNow.mode = 'public';
     }
     this.sessionNow.isLive = true;
-    this.snService.create(this.sessionNow, 'session-now')
-      .then(res => {
-        this.sessionNow.uid = res;
-        localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
-        this.sessionNow.photo = this.image ? this.image.picture : '';
-        this.sessionNow.username = this.user ? this.user.userName : '';
-        this.sessionNow.userId = this.user ? this.user.uid : '';
-        let sessionNow = { ...this.sessionNow };
-        sessionNow['type'] = 'session-now';
+    this.sessionNow.uid = "ef8f7e570c5f3be4f726ce612224a350";
+    // this.snService.create(this.sessionNow, 'session-now')
+    //   .then(res => {
+    //     this.sessionNow.uid = res;
+    //     localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
+    //     this.sessionNow.photo = this.image ? this.image.picture : '';
+    //     this.sessionNow.username = this.user ? this.user.userName : '';
+    //     this.sessionNow.userId = this.user ? this.user.uid : '';
+    //     let sessionNow = { ...this.sessionNow };
+    //     sessionNow['type'] = 'session-now';
 
-        this.snService.create(sessionNow, 'post-session-now')
-          .then(resPost => {
-            console.log("je suis la");
-            // this.sessionNow.uid = res;
-            // localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
-            // localStorage.setItem('posted',''+true);
-          })
+    //     this.snService.create(sessionNow, 'post-session-now')
+    //       .then(resPost => {
+    //         console.log("je suis la");
+    //         // this.sessionNow.uid = res;
+    //         // localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
+    //       })
 
 
-      })
-      .catch(err => console.error(err));
+    //   })
+    //   .catch(err => console.error(err));
     // localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
   }
   async checkPlatformReady() {

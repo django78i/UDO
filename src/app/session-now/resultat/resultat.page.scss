@@ -249,12 +249,12 @@ ion-content{
     }
     .icon-end{
         position: relative;
-        right: 5px;
-        top: -20px;
+        right: -15px;
+        bottom: -20px;
         z-index: 9999999999;
         width: 55px;
         height: 53px;
-        transform: matrix(0.94, -0.34, 0.34, 0.94, 0, 0);
+        margin-left: 0;
     }
 }
 .c-ion-fab{
