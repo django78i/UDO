@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import {SessionNowService} from "../../services/session-now-service.service";
-import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 
 @Component({
   selector: 'app-donnees-prive',
@@ -14,8 +13,7 @@ export class DonneesPriveComponent implements OnInit {
 
   constructor(private modalCtr:ModalController,
     private router:Router,
-    private snService:SessionNowService,
-    private localNotifications: LocalNotifications) { 
+    private snService:SessionNowService) { 
     this.image = JSON.parse(localStorage.getItem('image'));
   }
 

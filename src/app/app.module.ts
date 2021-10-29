@@ -15,7 +15,6 @@ import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 import { AngularFireModule } from '@angular/fire/compat';
 import { environment } from '../environments/environment.prod';
-import { LocalNotifications} from '@ionic-native/local-notifications/ngx'
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -37,7 +36,6 @@ import { LocalNotifications} from '@ionic-native/local-notifications/ngx'
     MusicFeedService,
     GooglePlus,
     ScreenOrientation,
-    LocalNotifications,
   ],
   bootstrap: [AppComponent],
 })
