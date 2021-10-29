@@ -49,7 +49,6 @@ export class UserChampionnatsSlideComponent implements OnInit {
   }
 
   choice(champ) {
-    console.log(champ);
     this.champ.emit(champ);
   }
 }

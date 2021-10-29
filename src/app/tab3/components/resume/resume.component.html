@@ -1,4 +1,4 @@
-<section>
+<section *ngIf="champ.status == 'en cours'">
   <div class="iconTitle">
     <img
       src="../../../../assets/icon/dot.svg"
@@ -71,7 +71,7 @@
     <ion-label>{{ act.name }}</ion-label>
   </ion-chip>
 </section>
-<section>
+<section style="padding-bottom: 58px">
   <div class="iconTitle">
     <img
       src="../../../../assets/icon/dot.svg"
@@ -90,7 +90,7 @@
     </ion-thumbnail>
     <ion-label>
       <p class="sousTitre black">Confidentialité</p>
-      <p class="detailTitre">Mode actuel :</p>
+      <p class="detailTitre">Mode actuel : {{champ.type}}</p>
     </ion-label>
     <ion-thumbnail slot="end" class="friends">
       <img src="../../../../assets/icon/friends-white.svg" alt="" />

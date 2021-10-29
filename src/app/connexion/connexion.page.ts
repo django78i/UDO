@@ -8,6 +8,7 @@ import {
 import { ModalController, NavController } from '@ionic/angular';
 import { SwiperOptions } from 'swiper';
 import { SwiperComponent } from 'swiper/angular';
+import { ConnexionChoiceComponent } from './components/connexion-choice/connexion-choice.component';
 import { LoginModalComponent } from './components/login-modal/login/login-modal.component';
 
 @Component({
@@ -60,6 +61,13 @@ export class ConnexionPage implements OnInit, AfterContentChecked {
   }
 
   openConnect() {
-    this.navController.navigateForward('connexion/login');
+    this.navController.navigateForward('login');
   }
+
+  // async openConnect() {
+  //   const modal = await this.modalController.create({
+  //     component: ConnexionChoiceComponent,
+  //   });
+  //   return await modal.present();
+  // }
 }
