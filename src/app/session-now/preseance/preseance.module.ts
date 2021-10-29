@@ -14,6 +14,9 @@ import {RouteReuseStrategy} from '@angular/router';
 import {ActivitiesPage} from '../activities/activities.page';
 import {ListMetricsPage} from '../list-metrics/list-metrics.page';
 import {Health} from '@ionic-native/health/ngx';
+import { ReglagesPage } from '../reglages/reglages.page';
+import { AngularFireModule } from '@angular/fire/compat';
+import { environment } from '../../../environments/environment.prod';
 
 @NgModule({
   imports: [
@@ -22,7 +25,8 @@ import {Health} from '@ionic-native/health/ngx';
     IonicModule,
     PreseancePageRoutingModule,
     NgCircleProgressModule.forRoot(),
-    RoundProgressModule
+    RoundProgressModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
   ],
   declarations: [PreseancePage,ActivitiesPage,ListMetricsPage],
   providers: [Camera,{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },Health],

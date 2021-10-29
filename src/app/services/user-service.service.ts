@@ -88,6 +88,7 @@ export class UserService {
     const user = await this.auth.currentUser;
     const userDataBase = await this.findUser(user.uid);
     console.log(userDataBase.data());
+    localStorage.setItem('user',JSON.stringify(userDataBase.data()));
     return userDataBase.data();
   }
 

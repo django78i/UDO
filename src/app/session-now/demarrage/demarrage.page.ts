@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {AlertController, ModalController, NavController, ToastController} from '@ionic/angular';
+import { AlertController, ModalController, NavController, ToastController } from '@ionic/angular';
 import { ListMetricsPage } from '../list-metrics/list-metrics.page';
 import { NotificationsPage } from '../notifications/notifications.page';
 import { ReglagesPage } from '../reglages/reglages.page';
@@ -7,8 +7,9 @@ import { Router } from '@angular/router';
 import { Health } from '@ionic-native/health/ngx';
 import { Platform } from '@ionic/angular';
 import { DonneesPriveComponent } from '../donnees-prive/donnees-prive.component';
-import {SessionNowService} from '../../services/session-now-service.service';
+import { SessionNowService } from '../../services/session-now-service.service';
 import { AddContenuComponent } from '../add-contenu/add-contenu.component';
+import moment from 'moment';
 
 
 
@@ -29,7 +30,7 @@ export class DemarragePage implements OnInit {
   status = 'play';
   activite: any;
   pause = false;
-
+  image: any;
   listChoix = [
     {
       img: 'assets/images/distance.svg',
@@ -60,8 +61,9 @@ export class DemarragePage implements OnInit {
       fieldname: 'weight'
     },
   ];
-  sessionNow= new SessionNowModel();
-  listSettings=[];
+  sessionNow = new SessionNowModel();
+  listSettings = [];
+  user: any;
   constructor(
     private modalCtrl: ModalController,
     private router: Router,
@@ -72,17 +74,18 @@ export class DemarragePage implements OnInit {
     private snService: SessionNowService,
     public alertController: AlertController
   ) {
-
+    this.image = JSON.parse(localStorage.getItem('image'));
     this.platform.backButton.subscribeWithPriority(10, () => {
       console.log('Handler was called!');
-       this.presentAlertConfirm();
+      this.presentAlertConfirm();
     });
+    this.user = JSON.parse(localStorage.getItem('user'));
   }
   async presentAlertConfirm() {
     this.stop();
     const alert = await this.alertController.create({
       header: 'Confirmation',
-      mode:'ios',
+      mode: 'ios',
       message: 'Voulez vous vraiment arreter cette seance now',
       buttons: [
         {
@@ -105,7 +108,7 @@ export class DemarragePage implements OnInit {
   }
   ngOnInit() {
     const stSettings = localStorage.getItem('reglages');
-    if(stSettings){
+    if (stSettings) {
       this.listSettings = JSON.parse(stSettings);
     }
     let valPause = localStorage.getItem('pause');
@@ -155,22 +158,40 @@ export class DemarragePage implements OnInit {
     } else {
       this.listElement = JSON.parse(localStorage.getItem('choix'));
     }
-    this.sessionNow.startDate=new Date().toISOString().split('T')[0] +' '+new Date().toISOString().split('T')[1].split('.')[0];
-    this.sessionNow.activity=this.activite?.name;
-    if(this.listSettings!==null && this.listSettings!==undefined && this.listSettings.length!==0){
-      if(!this.listSettings['modePrive']){
-        this.sessionNow.mode='privée';
-      }else{
-        this.sessionNow.mode='public';
+    this.sessionNow.startDate = new Date().toISOString().split('T')[0] + ' ' + new Date().toISOString().split('T')[1].split('.')[0];
+    this.sessionNow.activity = this.activite?.name;
+    if (this.listSettings !== null && this.listSettings !== undefined && this.listSettings.length !== 0) {
+      if (!this.listSettings['modePrive']) {
+        this.sessionNow.mode = 'privée';
+      } else {
+        this.sessionNow.mode = 'public';
       }
-    }else{
-      this.sessionNow.mode='public';
+    } else {
+      this.sessionNow.mode = 'public';
     }
-    this.sessionNow.isLive=true;
-    this.snService.create(this.sessionNow,'session-now')
-      .then(res=>{this.sessionNow.uid=res;})
-      .catch(err=>console.error(err));
-    localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
+    this.sessionNow.isLive = true;
+    this.snService.create(this.sessionNow, 'session-now')
+      .then(res => {
+        this.sessionNow.uid = res;
+        localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
+        this.sessionNow.photo = this.image ? this.image.picture : '';
+        this.sessionNow.username = this.user ? this.user.userName : '';
+        this.sessionNow.userId = this.user ? this.user.uid : '';
+        let sessionNow = { ...this.sessionNow };
+        sessionNow['type'] = 'session-now';
+
+        this.snService.create(sessionNow, 'post-session-now')
+          .then(resPost => {
+            console.log("je suis la");
+            // this.sessionNow.uid = res;
+            // localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
+            // localStorage.setItem('posted',''+true);
+          })
+
+
+      })
+      .catch(err => console.error(err));
+    // localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
   }
   async checkPlatformReady() {
     const ready = !!await this.platform.ready();
@@ -189,7 +210,7 @@ export class DemarragePage implements OnInit {
 
   }
   getMetrics() {
-    if(this.status==='play'){
+    if (this.status === 'play') {
       for (let item of this.listElement) {
         this.queryMetrics(item.fieldname, item);
       }
@@ -252,18 +273,18 @@ export class DemarragePage implements OnInit {
   }
   displayRecap() {
     this.stop();
-    let listMetricAuhorised=['steps','distance','height','weight'];
-    this.sessionNow.isLive=false;
-    this.sessionNow.duration=this.mn+':'+this.s;
-    for (let metric of this.listElement){
-      for(let metricAutorised of listMetricAuhorised){
-        if(metric.fieldname===metricAutorised){
+    let listMetricAuhorised = ['steps', 'distance', 'height', 'weight'];
+    this.sessionNow.isLive = false;
+    this.sessionNow.duration = this.mn + ':' + this.s;
+    for (let metric of this.listElement) {
+      for (let metricAutorised of listMetricAuhorised) {
+        if (metric.fieldname === metricAutorised) {
           this.sessionNow.metrics.push(metric);
         }
       }
     }
 
-    this.sessionNow.endDate=new Date().toISOString().split('T')[0] +' '+new Date().toISOString().split('T')[1].split('.')[0];
+    this.sessionNow.endDate = new Date().toISOString().split('T')[0] + ' ' + new Date().toISOString().split('T')[1].split('.')[0];
     localStorage.setItem('counter', JSON.stringify({ mn: this.mn, s: this.s }));
     localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
 
@@ -304,7 +325,7 @@ export class DemarragePage implements OnInit {
       cssClass: 'my-custom-contenu-modal',
     });
     modal.onDidDismiss().then((data: any) => {
-      this.base64 =data.data;
+      this.base64 = data.data;
     });
     return await modal.present();
 
@@ -388,7 +409,7 @@ export class DemarragePage implements OnInit {
 
   }
 }
-export class SessionNowModel{
+export class SessionNowModel {
   uid: string;
   startDate: string;
   endDate: string;
@@ -397,18 +418,18 @@ export class SessionNowModel{
   photo: string;
   username: string;
   reactionNumber: number;
-  reactions= [];
-  metrics= [
+  reactions = [];
+  metrics = [
 
   ];
   score: number;
   mode: string; // 'private or public'
-  championant: string ; // nulllable true
-  isLive: boolean ; // true or false
+  championant: string; // nulllable true
+  isLive: boolean; // true or false
   duration: string;
   comment: string;
 }
-export class PostModel{
+export class PostModel {
   postedAt: string;
   postedBy: string;
   sessionUUID: string;

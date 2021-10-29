@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AlertController, Platform } from '@ionic/angular';
+import { AlertController, Platform, LoadingController, ToastController } from '@ionic/angular';
 import firebase from 'firebase/app';
 // import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import {
@@ -25,10 +25,13 @@ import { GooglePlus } from '@ionic-native/google-plus/ngx';
   providedIn: 'root',
 })
 export class SessionNowService {
+  loader: HTMLIonLoadingElement;
   constructor(
     private googlePlus: GooglePlus,
     public platform: Platform, // private googlePlus: GooglePlus,
-    public alertController: AlertController
+    public alertController: AlertController,
+    private loadingCtrl: LoadingController,
+    private toastCtrl: ToastController
   ) {}
 
 
@@ -69,5 +72,32 @@ export class SessionNowService {
     await updateDoc(doc(db, collectionName, document.uid), document);
   }
 
+  
+  async show(message,color) {
+    const toast = this.toastCtrl.create({
+      message: message,
+      duration: 3000,
+      position: 'top',
+      color:color
+    });
+    toast.then((toastData) => {
+      toastData.present();
+    });
+  }
+  async presentLoading() {
+    this.loader = await this.loadingCtrl.create({
+      spinner: 'bubbles',
+      animated: true,
+      mode: 'ios',
+      showBackdrop: true,
+      message: ""
+    }).then();
+    this.loader.present();
+  }
 
+  async dissmissLoading() {
+    if (this.loader) {
+    await this.loader.dismiss();
+    }
+  }
 }
