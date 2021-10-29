@@ -1,0 +1,85 @@
+
+ion-content{
+
+    --ion-background-color: #F4F5FA;
+    ion-toolbar{
+        .img-retour{
+            width: 13px;
+            height: 13px;
+        }
+        .img-search{
+            width: 19px;
+            height: 19px;
+        }
+    }
+    .show{
+        display: block;
+        margin-top: 12px;
+    }
+    .noShow{
+        display: none;
+    }
+    .myHiddenTec{
+        display: none;
+    }
+    .span-img{
+        background-color: #2a2a2c17;
+        width: 48px;
+        height: 47px;
+        border-radius: 14px;
+        padding: 16px 16px;
+    }
+    .imgChevron{
+        width: 15px;
+        height: 15px;
+    }
+    .c-item{
+        border-top: 1px solid #8080801c;
+        padding: 12px 0px 12px 10px;
+        .item-inner{
+             border-style:none !important;
+        }
+    }
+    .name{
+        color: #2A2A2C;
+        font-family: "PoppinsSemiBold" !important;
+        font-size: 14px;
+    }
+    .item-name{
+        color: #2A2A2C;
+        font-family: "PoppinsSemiBold" !important;
+        font-size: 14px; 
+        margin-left: 12px;
+        margin-top: 15px;
+    }
+    .nombre{
+        color: #2A2A2C;
+        opacity: 51%;
+        font-size: 10px;
+        margin-top: 3px;
+    }
+    .child-item{
+        border-top: 1px solid #8080801c;
+        padding: 12px 0 !important;
+    }
+    .span-child-img{
+        width: 49px;
+        height: 49px;
+        border: 1px solid #2a2a2c36;
+        border-radius: 50%;
+        // padding: 11px 10px;
+    }
+    .rond{
+        width: 27px;
+        height: 27px;
+        border-radius: 14px;
+        opacity: 0.3;
+        margin-right: 10px;
+        ion-radio{
+            margin-top: 1px;
+            margin-left: 1px;
+            width: 27px;
+            height: 27px;
+        }
+    }
+}

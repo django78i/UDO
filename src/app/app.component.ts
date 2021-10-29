@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 import * as firebase from 'firebase/app';
 
 @Component({
@@ -7,7 +8,7 @@ import * as firebase from 'firebase/app';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  constructor() {
+  constructor(private screenOrientation:ScreenOrientation) {
     const config = {
       apiKey: 'AIzaSyCHrlvzztARn_AUL9yiVTTEtGSMdgO_XRw',
       authDomain: 'udonew-cc142.firebaseapp.com',
@@ -18,5 +19,25 @@ export class AppComponent {
       measurementId: 'G-KK1ZNG7DR0',
     };
     firebase.initializeApp(config);
+    let value = localStorage.getItem('reglages');
+    if (value) {
+      let listReglages = JSON.parse(value);
+      if (listReglages.son) {
+        this.setLandscape();
+      } else {
+        this.setPortrait();
+      }
+
+    }
+  }
+
+  setLandscape() {
+    // set to landscape
+    this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE);
+  }
+
+  setPortrait() {
+    // set to portrait
+    this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
   }
 }

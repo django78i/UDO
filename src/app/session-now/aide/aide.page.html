@@ -1,0 +1,56 @@
+
+<ion-content>
+  <ion-toolbar>
+    <ion-item lines="none">
+      <ion-img slot="start" (click)="close()" src="assets/images/close.svg"> </ion-img>
+    </ion-item>
+  </ion-toolbar>
+  <ion-slides [options]="slideOptsOne" pager="true" class="aideSlide">
+    <ion-slide>
+      <ion-row class="bonHomme">
+        <ion-img src="assets/images/img1.png"></ion-img>
+      </ion-row>
+      <ion-row class="info">
+        <ion-label>
+          Informations utiles
+        </ion-label>
+      </ion-row>
+      <ion-row class="desc">
+        <ion-label>
+          Quelques astuces et conseils pour une utilisation recommandée de UDO™. Partagez les avec vos proches !
+        </ion-label>
+      </ion-row>
+    </ion-slide>
+    <ion-slide>
+      <ion-row class="bonHomme2">
+        <ion-img src="assets/images/img2.png"></ion-img>
+      </ion-row>
+      <ion-row class="info">
+        <ion-label>
+          Précision accrue
+        </ion-label>
+      </ion-row>
+      <ion-row class="desc2">
+        <ion-label>
+          Le capteur de mouvement du téléphone enregistre vos données d’activité. Pour une précision accrue, veuillez attacher le téléphone au bras
+        </ion-label>
+      </ion-row>
+    </ion-slide>
+   
+    <ion-slide>
+      <ion-row class="bonHomme3">
+        <ion-img src="assets/images/img3.png"></ion-img>
+      </ion-row>
+      <ion-row class="info">
+        <ion-label>
+          Données privées
+        </ion-label>
+      </ion-row>
+      <ion-row class="desc">
+        <ion-label>
+          Vos données concernant votre santé, ne seront jamais diffusées ou stockées sur nos serveurs. La protection de votre vie privée est essentielle pour les équipes de UDO™
+        </ion-label>
+      </ion-row>
+    </ion-slide>
+  </ion-slides>
+</ion-content>

@@ -1,0 +1,47 @@
+ion-content{
+    --ion-background-color: #F4F5FA;
+    position: relative;
+   ion-grid{
+    display: grid !important;
+    height: 100%;
+    width: 100%;
+    align-items: center !important;
+    justify-items: center !important;
+   }
+   .progress{
+        position: relative;
+        
+    }
+    round-progress{
+        position: relative;
+        width: 235px !important;
+        height: 235px !important;
+    }
+    .percentageValue {
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        margin-left: 88px;
+        -ms-transform: translateY(-50%);
+        transform: translateY(-50%);
+        font-size: 120px;
+        font-weight: 600;
+        color: black;
+        font-family: "StaatlichesRegular" !important;
+        text-align: center;
+    }
+    .c-row{
+        position: absolute; 
+        left: 40%;
+        bottom: 100px;
+        .value{
+            position: relative; 
+            left: -40%;
+            color: #2A2A2C;
+            opacity: 50%;
+            font-size: 11px;
+            font-family: "PoppinsMedium" !important;
+            text-align: center;
+        }
+    }
+}

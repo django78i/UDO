@@ -62,3 +62,84 @@ h4 {
   --background: black;
   --color: white;
 }
+@font-face {
+  font-family: 'PoppinsBold';
+  src: url("../src/assets/font/Poppins-Bold.ttf");
+  /* src: url("../fonts/GellixBlack.otf") format("embedded-opentype"), url("../fonts/GilroyBold.woff2") format("woff2"), url("../fonts/GilroyBold.woff") format("woff"), url("../fonts/GilroyBold.ttf") format("truetype"), url("../fonts/GilroyBold.svg#GilroyBold") format("svg");
+*/
+}
+
+@font-face {
+  font-family: 'PoppinsSemiBold';
+  src: url("../src/assets/font/Poppins-SemiBold.ttf");
+  /* src: url("../fonts/GellixBlack.otf") format("embedded-opentype"), url("../fonts/GilroyBold.woff2") format("woff2"), url("../fonts/GilroyBold.woff") format("woff"), url("../fonts/GilroyBold.ttf") format("truetype"), url("../fonts/GilroyBold.svg#GilroyBold") format("svg");
+*/
+}
+
+@font-face {
+  font-family: 'PoppinsMedium';
+  src: url("../src/assets/font/Poppins-Medium.ttf");
+  /* src: url("../fonts/GellixBlack.otf") format("embedded-opentype"), url("../fonts/GilroyBold.woff2") format("woff2"), url("../fonts/GilroyBold.woff") format("woff"), url("../fonts/GilroyBold.ttf") format("truetype"), url("../fonts/GilroyBold.svg#GilroyBold") format("svg");
+*/
+}
+
+@font-face {
+  font-family: 'AllRoundGothicBold';
+  src: url("../src/assets/font/Round_Bold.ttf");
+  /* src: url("../fonts/GellixBlack.otf") format("embedded-opentype"), url("../fonts/GilroyBold.woff2") format("woff2"), url("../fonts/GilroyBold.woff") format("woff"), url("../fonts/GilroyBold.ttf") format("truetype"), url("../fonts/GilroyBold.svg#GilroyBold") format("svg");
+*/
+}
+
+@font-face {
+  font-family: 'StaatlichesRegular';
+  src: url("../src/assets/font/Staatliches-Regular.ttf");
+  /* src: url("../fonts/GellixBlack.otf") format("embedded-opentype"), url("../fonts/GilroyBold.woff2") format("woff2"), url("../fonts/GilroyBold.woff") format("woff"), url("../fonts/GilroyBold.ttf") format("truetype"), url("../fonts/GilroyBold.svg#GilroyBold") format("svg");
+*/
+}
+.swiper-container-horizontal>.swiper-pagination-bullets{
+  bottom: 0;
+}
+.slides-md {
+  --bullet-background: var(--ion-color-step-200, #19191cab) !important;
+  --bullet-background-active: var(--ion-color-primary-contrast,#19191cab) !important;
+  --progress-bar-background: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.25) !important;
+  --progress-bar-background-active: var(--ion-color-primary-contrast, #19191cab) !important;
+  --scroll-bar-background: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.1) !important;
+  --scroll-bar-background-active: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.5) !important;
+}
+ion-slides.aideSlide .swiper-pagination-bullets .swiper-pagination-bullet-active {
+  opacity: 1;
+  background: #19191cab !important;
+}
+ion-slides.preseanceSlide .swiper-pagination-bullets .swiper-pagination-bullet-active {
+  opacity: 1;
+  background: #19191cab !important;
+}
+ion-slides.aideSlide{
+  height: 92%;
+}
+ion-slides.preseanceSlide{
+  height: 92%;
+}
+.swiper-slide{
+  display: block;
+}
+.item-inner{
+  border-style: none !important;
+}
+
+.c-header .header-md::after{
+  background-image: none !important;
+}
+.toggle-calm .toggle-inner{
+  width: 16px;
+  height: 16px;
+  margin-left: 2px;
+}
+.my-custom-contenu-modal{
+  --background: #ffffff4f;
+}
+.toogle-inner{
+  width: 17px !important;
+  height: 17px !important;
+}

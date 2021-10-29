@@ -5,12 +5,14 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { VideoPlayer } from '@ionic-native/video-player/ngx';
+import { AppLauncher } from '@ionic-native/app-launcher/ngx';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MusicFeedService } from './services/music-feed.service';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
+import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -22,13 +24,15 @@ import { GooglePlus } from '@ionic-native/google-plus/ngx';
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
-    MatFormFieldModule,
+    MatFormFieldModule
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     VideoPlayer,
+    AppLauncher,
     MusicFeedService,
     GooglePlus,
+    ScreenOrientation
   ],
   bootstrap: [AppComponent],
 })

@@ -1,0 +1,26 @@
+<ion-content>
+  <ion-row>
+    <ion-img class="c-img" src="assets/logo/logo_strava.png"></ion-img>
+  </ion-row>
+  <ion-row>
+    <span class="name">Strava</span>
+  </ion-row>
+  <ion-row>
+    <span class="sub-title">Séance externe</span>
+  </ion-row>
+  <ion-row>
+    <round-progress class="c-progres" current="80" [max]="100" [color]="'#363853'" [background]="'#EAEBEF'"
+      [radius]="80" [stroke]="10">
+    </round-progress>
+  </ion-row>
+  <ion-row>
+    <span class="connexion">
+      Connexion en cours
+    </span>
+  </ion-row>
+  <ion-fab class="c-ion-fab"  vertical="bottom" slot="fixed">
+    <!-- <ion-fab-button> -->
+    <span>Arreter</span>
+    <!-- </ion-fab-button> -->
+  </ion-fab>
+</ion-content>

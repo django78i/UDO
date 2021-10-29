@@ -9,6 +9,7 @@ import { Tab1PageRoutingModule } from './tab1-routing.module';
 import { SwiperModule } from 'swiper/angular';
 import { TimeRelativePipe } from '../pipe/time-relative.pipe';
 import { SliderChallengeComponent } from '../components/slider-challenge/slider-challenge.component';
+import {ExternalSessionNowComponent} from "../session-now/external-session-now/external-session-now.component";
 
 @NgModule({
   imports: [
@@ -23,7 +24,8 @@ import { SliderChallengeComponent } from '../components/slider-challenge/slider-
   declarations: [
     Tab1Page,
     TimeRelativePipe,
-    SliderChallengeComponent
+    SliderChallengeComponent,
+    ExternalSessionNowComponent
   ]
 })
 export class Tab1PageModule { }

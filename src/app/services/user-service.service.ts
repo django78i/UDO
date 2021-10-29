@@ -113,6 +113,8 @@ export class UserService {
               this.createUserDataBase(user);
             }
           });
+        } else {
+         // this.presentAlert('rien');
         }
       });
     } catch (err) {

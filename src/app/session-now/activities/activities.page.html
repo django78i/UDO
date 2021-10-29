@@ -1,0 +1,50 @@
+<ion-content>
+  <ion-toolbar>
+    <ion-item lines="none">
+      <ion-img slot="start" class="img-retour" (click)="close()" src="assets/images/backArrow.svg"> </ion-img>
+      <ion-title>
+        Activités
+      </ion-title>
+      <ion-img slot="end" class="img-search" src="assets/images/search.svg"> </ion-img>
+    </ion-item>
+  </ion-toolbar>
+  <div *ngFor="let p of listActivites" class="c-item">
+    <ion-item lines="none" >
+      <div slot="start" class="activite">
+        <ion-row class="name">
+          <ion-label [id]="p.id+'name'">
+            {{p?.name}}
+          </ion-label>
+        </ion-row>
+        <ion-row class="nombre">
+          <ion-label>
+            {{p?.nombres}} activités
+          </ion-label>
+        </ion-row>
+      </div>
+
+      <span class="span-img" slot="end" >
+      <ion-img  class="imgChevron" [id]="p.id" src="assets/images/plus.svg" (click)="iconWork(p.id+'' )">
+      </ion-img>
+
+      <ion-img  [id]="p.id+'icon2'" class="myHiddenTec imgChevron" src="assets/images/moins.svg"
+        (click)="revIconWork(p.id+'')"></ion-img>
+      </span>
+    </ion-item>
+
+    <div class="detail" [ngClass]="{'show':p.id+'icon2' == value ,'noShow':p.id+'icon2' != value}">
+      <ion-item (click)="checkActivite(item)" *ngFor="let item of p.children" class="child-item" lines="none">
+        <ion-row slot="start" >
+          <span class="span-child-img" [ngStyle]="{'padding' : item.padding ? item.padding : '0'}">
+            <ion-img class="child-img" [ngStyle]="{'width': item.width ? item.width : item.width,'height' : item.height ? item.height : item.height}" [src]="item.image"></ion-img>
+          </span>
+         
+          <ion-label class="item-name"> {{item.name}} </ion-label>
+        </ion-row>
+        <span class="rond" slot="end">
+          <ion-radio  name="p.nombres" id="p.nombres"></ion-radio>
+        </span>
+      </ion-item>
+    </div>
+  </div>
+</ion-content>

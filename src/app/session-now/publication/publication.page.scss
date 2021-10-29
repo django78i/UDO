@@ -1,0 +1,138 @@
+ion-content{
+    --ion-background-color: #F4F5FA;
+    .rond{
+        width: 107px;
+        height: 107px;
+        border: 3px solid #EAEBEF;
+        border-radius: 50%;
+        margin: 20px auto;
+        padding: 11px;
+        ion-img{
+            width:85px;
+        }
+    }
+    .fantastique{
+        letter-spacing: -0.75px;
+        color: #000000;
+        font-size: 25px;
+        font-family: "PoppinsSemiBold" !important;
+        text-align: center;
+        margin: auto;
+        margin-bottom: 20px;
+    }
+    .progress{
+        ion-progress-bar.one{
+           --background: #EAEBEF 0% 0% no-repeat padding-box;
+            width: 90%;
+            height: 35px;
+            margin: auto;
+            border-radius: 20px;
+        }
+        ion-progress-bar.two{
+            --background: #3E4ADD 0% 0% no-repeat padding-box;
+            width: 45%;
+            height: 35px;
+            margin: auto;
+            border-radius: 20px;
+            margin-top: -34px;
+         }
+         ion-progress-bar.three{
+            --background: #2B2D2F 0% 0% no-repeat padding-box;
+            width: 57%;
+            height: 35px;
+            margin: auto;
+            border-radius: 20px;
+            margin-top: -35px;
+            margin-left: 18px;
+            
+         }
+         .rond-progress{
+            width: 28px;
+            height: 28px;
+            background: #F5F7FD 0% 0% no-repeat padding-box;
+            box-shadow: 0px 4px 26px #1415174E;
+            border-radius: 50%;
+            position: absolute;
+            left: 24px;
+            margin-top: 5px;
+            padding: 0px 5px;
+            .valeur{
+                letter-spacing: 0px;
+                color: #18181C;
+                font-family: "PoppinsBold" !important;
+                font-size: 12px;
+            }
+        }
+         
+    }
+   
+    .xp{
+        position: absolute;
+        right: 34px;
+        letter-spacing: -0.12px;
+        color: #040405;
+        opacity: 0.35;
+        font-size: 12px;
+        font-family: "PoppinsSemiBold" !important;
+        margin-top: 10px;
+    }
+    .c-row{
+        margin-top: 65px;
+        .c-col{
+            round-progress{
+                margin: auto;
+            }
+            .val-progess{
+                top: 33px;
+                position: absolute;
+                .val{
+                    font-family: "StaatlichesRegular" !important;
+                    font-size: 31px;
+                    color: #040405;
+                    margin-left: 35px;
+                    margin-top: -3px;
+                }
+                .val2{
+                    font-family: "StaatlichesRegular" !important;
+                    font-size: 31px;
+                    color: #040405;
+                    margin-left: 35px;
+                    margin-top: -3px;
+                }
+                .val-xp{
+                    font-family: "PoppinsSemiBold" !important;
+                    font-size: 12px;
+                    color: #040405;
+                    margin-top: -3px;
+                    margin-left: 52px;
+                }
+            }
+            .c-name{
+                .name{
+                    letter-spacing: 0px;
+                    color: #000000;
+                    font-size: 14px;
+                    font-family: "PoppinsSemiBold" !important;
+                    margin: auto;
+                    margin-top: 10px;
+                }
+            }
+        }
+    }
+    .c-ion-fab{
+        background: #3E4ADD 0% 0% no-repeat padding-box;
+        border-radius: 33px;
+        width: 88%;
+        margin: 0 20px;
+        height: 89px;
+        text-align: center;
+        padding-top: 30px;
+        margin-bottom: 20px;
+        span{
+            letter-spacing: 0px;
+            color: #FFFFFF;
+            font-size: 18px;
+            font-family: "PoppinsSemiBold" !important;
+        }
+    }
+}
