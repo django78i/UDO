@@ -43,10 +43,8 @@ import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
     ReactiveFormsModule,
     MatInputModule,
     MatIconModule,
-    RoundProgressModule,
     IonicModule.forRoot(),
-    NgCircleProgressModule.forRoot(),
-    
+    NgCircleProgressModule.forRoot()
   ],
   declarations: [SessionNowComponent,ActivitiesPage,ReglagesPage,ListMetricsPage],
   // entryComponents: [ActivitiesPage,ReglagesPage,ListMetricsPage],

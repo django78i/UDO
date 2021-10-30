@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TabsPage } from './tabs.page';
 import {ExternalSessionNowComponent} from "../session-now/external-session-now/external-session-now.component";
+import {ExternalSessionNowLoaderPage} from "../session-now/external-session-now/external-session-now-loader/external-session-now-loader.page";
 
 const routes: Routes = [
   {
@@ -31,6 +32,10 @@ const routes: Routes = [
     path: '',
     redirectTo: '/tabs/tab1',
     pathMatch: 'full'
+  }
+  ,{
+    path: 'session-now/external-session-now-loader',
+    component: ExternalSessionNowLoaderPage
   }
 ];
 

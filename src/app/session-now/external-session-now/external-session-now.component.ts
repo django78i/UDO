@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ModalController, Platform} from '@ionic/angular';
 import { AppLauncher, AppLauncherOptions } from '@ionic-native/app-launcher/ngx';
+import {Router} from '@angular/router';
 
 
 
@@ -10,12 +11,13 @@ import { AppLauncher, AppLauncherOptions } from '@ionic-native/app-launcher/ngx'
   styleUrls: ['./external-session-now.component.scss'],
 })
 export class ExternalSessionNowComponent implements OnInit {
-  isPicture: boolean = true;
+  isPicture = true;
   listExtenalApp=[];
 
   constructor(private modalCtr: ModalController,
               private platform: Platform,
-              private appLauncher: AppLauncher
+              private appLauncher: AppLauncher,
+              private router: Router
 
              ) { }
 
@@ -73,7 +75,7 @@ console.log(this.platform.platforms());
   }
 
   async close() {
-    const closeModal: string = 'Modal Closed';
+    const closeModal = 'Modal Closed';
     await this.modalCtr.dismiss(closeModal);
   }
 
@@ -93,5 +95,14 @@ console.log(this.platform.platforms());
     this.appLauncher.launch(options)
       .then((launch: boolean)=>{console.log(appName +' is open'); })
       .catch((error: any) => console.error('Error when trying to open '+appName));
+  }
+
+  gotoLoaderPage( app: any ){
+    this.router.navigate(['session-now/external-session-now-loader'],{queryParams:{
+        appName:app.name,
+        appImg:app.img,
+        appId:app.appId
+    }});
+    this.close();
   }
 }

@@ -9,10 +9,10 @@ import { Tab1PageRoutingModule } from './tab1-routing.module';
 import { SwiperModule } from 'swiper/angular';
 import { TimeRelativePipe } from '../pipe/time-relative.pipe';
 import { SliderChallengeComponent } from '../components/slider-challenge/slider-challenge.component';
-import {ExternalSessionNowComponent} from "../session-now/external-session-now/external-session-now.component";
 
 @NgModule({
   imports: [
+
     IonicModule,
     CommonModule,
     FormsModule,
@@ -25,7 +25,6 @@ import {ExternalSessionNowComponent} from "../session-now/external-session-now/e
     Tab1Page,
     TimeRelativePipe,
     SliderChallengeComponent,
-    ExternalSessionNowComponent
   ]
 })
 export class Tab1PageModule { }

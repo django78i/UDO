@@ -155,7 +155,7 @@ export class DemarragePage implements OnInit {
     } else {
       this.listElement = JSON.parse(localStorage.getItem('choix'));
     }
-    this.sessionNow.startDate=new Date().toISOString().split('T')[0] +' '+new Date().toISOString().split('T')[1].split('.')[0];
+    this.sessionNow.startDate=new Date().toISOString();
     this.sessionNow.activity=this.activite?.name;
     if(this.listSettings!==null && this.listSettings!==undefined && this.listSettings.length!==0){
       if(!this.listSettings['modePrive']){
@@ -196,7 +196,7 @@ export class DemarragePage implements OnInit {
       let that = this;
       // this.getMetrics();
       // @ts-ignore
-      // setTimeout(() => { that.getMetrics(); }, 1000);
+       setTimeout(() => { that.getMetrics(); }, 1000);
     }
   }
   // @ts-ignore
