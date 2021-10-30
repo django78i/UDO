@@ -25,14 +25,15 @@ export class ResultatPage implements OnInit {
     { img: 'assets/images/personn2.PNG', nombre: '10', name: 'Mélanie', comment: 'Lorem ipsum dolor sit atmet', date: 'Il y a 1 min.', icon: 'assets/images/ThumbsUp.png' },
   ];
   constructor(private modalCtrl: ModalController,
-    private router: Router,
     private platform: Platform,
     private _location: Location) {
     this.platform.backButton.subscribeWithPriority(10, () => {
       console.log('Handler was called!');
       this._location.back();
     });
-
+    if(localStorage.getItem('picture')){
+      this.base64 = localStorage.getItem('picture');
+    }
     this.counter = JSON.parse(localStorage.getItem('counter'));
   }
 

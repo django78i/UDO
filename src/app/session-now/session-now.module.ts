@@ -29,6 +29,8 @@ import { IonicGestureConfig } from '../services/ionic-gesture-config.service';
 import {HAMMER_GESTURE_CONFIG} from '@angular/platform-browser';
 import {AppLauncher}  from '@ionic-native/app-launcher/ngx';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
+import { AngularFireModule } from '@angular/fire/compat';
+import { environment } from '../../environments/environment.prod';
 
 @NgModule({
   imports: [
@@ -43,14 +45,18 @@ import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
     ReactiveFormsModule,
     MatInputModule,
     MatIconModule,
+    RoundProgressModule,
     IonicModule.forRoot(),
-    NgCircleProgressModule.forRoot()
+    NgCircleProgressModule.forRoot(),
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+
   ],
   declarations: [SessionNowComponent,ActivitiesPage,ReglagesPage,ListMetricsPage],
   // entryComponents: [ActivitiesPage,ReglagesPage,ListMetricsPage],
   providers: [Camera,ScreenOrientation,{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },Health,AppLauncher
   ,{provide: HAMMER_GESTURE_CONFIG, useClass: IonicGestureConfig}
   ],
+  exports:[ReglagesPage]
 
 })
 export class SessionNowPageModule {}

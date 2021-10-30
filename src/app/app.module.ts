@@ -13,6 +13,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
+import { AngularFireModule } from '@angular/fire/compat';
+import { environment } from '../environments/environment.prod';
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -24,7 +26,8 @@ import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
@@ -32,7 +35,7 @@ import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
     AppLauncher,
     MusicFeedService,
     GooglePlus,
-    ScreenOrientation
+    ScreenOrientation,
   ],
   bootstrap: [AppComponent],
 })

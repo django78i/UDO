@@ -9,6 +9,7 @@ import { Platform } from '@ionic/angular';
 import { DonneesPriveComponent } from '../donnees-prive/donnees-prive.component';
 import {SessionNowService} from '../../services/session-now-service.service';
 import { AddContenuComponent } from '../add-contenu/add-contenu.component';
+import moment from 'moment';
 
 
 
@@ -29,7 +30,7 @@ export class DemarragePage implements OnInit {
   status = 'play';
   activite: any;
   pause = false;
-
+  image: any;
   listChoix = [
     {
       img: 'assets/images/distance.svg',
@@ -60,8 +61,9 @@ export class DemarragePage implements OnInit {
       fieldname: 'weight'
     },
   ];
-  sessionNow= new SessionNowModel();
-  listSettings=[];
+  sessionNow = new SessionNowModel();
+  listSettings = [];
+  user: any;
   constructor(
     private modalCtrl: ModalController,
     private router: Router,
@@ -72,17 +74,18 @@ export class DemarragePage implements OnInit {
     private snService: SessionNowService,
     public alertController: AlertController
   ) {
-
+    this.image = JSON.parse(localStorage.getItem('image'));
     this.platform.backButton.subscribeWithPriority(10, () => {
       console.log('Handler was called!');
-       this.presentAlertConfirm();
+      this.presentAlertConfirm();
     });
+    this.user = JSON.parse(localStorage.getItem('user'));
   }
   async presentAlertConfirm() {
     this.stop();
     const alert = await this.alertController.create({
       header: 'Confirmation',
-      mode:'ios',
+      mode: 'ios',
       message: 'Voulez vous vraiment arreter cette seance now',
       buttons: [
         {
@@ -163,14 +166,32 @@ export class DemarragePage implements OnInit {
       }else{
         this.sessionNow.mode='public';
       }
-    }else{
-      this.sessionNow.mode='public';
+    } else {
+      this.sessionNow.mode = 'public';
     }
-    this.sessionNow.isLive=true;
-    this.snService.create(this.sessionNow,'session-now')
-      .then(res=>{this.sessionNow.uid=res;})
-      .catch(err=>console.error(err));
-    localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
+    this.sessionNow.isLive = true;
+    this.snService.create(this.sessionNow, 'session-now')
+      .then(res => {
+        this.sessionNow.uid = res;
+        localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
+        this.sessionNow.photo = this.image ? this.image.picture : '';
+        this.sessionNow.username = this.user ? this.user.userName : '';
+        this.sessionNow.userId = this.user ? this.user.uid : '';
+        let sessionNow = { ...this.sessionNow };
+        sessionNow['type'] = 'session-now';
+
+        this.snService.create(sessionNow, 'post-session-now')
+          .then(resPost => {
+            console.log("je suis la");
+            // this.sessionNow.uid = res;
+            // localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
+            // localStorage.setItem('posted',''+true);
+          })
+
+
+      })
+      .catch(err => console.error(err));
+    // localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
   }
   async checkPlatformReady() {
     const ready = !!await this.platform.ready();
@@ -189,7 +210,7 @@ export class DemarragePage implements OnInit {
 
   }
   getMetrics() {
-    if(this.status==='play'){
+    if (this.status === 'play') {
       for (let item of this.listElement) {
         this.queryMetrics(item.fieldname, item);
       }
