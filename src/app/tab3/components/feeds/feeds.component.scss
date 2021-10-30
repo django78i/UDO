@@ -6,20 +6,37 @@ video {
   border-radius: 20px;
 }
 
+.contenu {
+  height: calc(100 vh - 100 px) !important;
+  padding-bottom: 58px;
+}
+
 ion-card-header {
   padding: 0;
 }
 
-ion-card {
+ion-card.blank {
   --background: #2b2b2b00;
+  margin: 0;
+  box-shadow: none !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 50px;
 }
 .card-content {
   padding-left: 0px !important;
   padding-right: 0px !important;
 }
 
+.emot {
+  position: absolute;
+  left: 20px;
+}
+
 ion-chip {
   --color: #777981;
+  position: relative;
 }
 
 ion-item {

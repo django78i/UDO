@@ -14,7 +14,7 @@ import { Camera } from '@ionic-native/camera/ngx';
     CommonModule,
     FormsModule,
     IonicModule,
-    ResultatPageRoutingModule
+    ResultatPageRoutingModule,
   ],
   declarations: [ResultatPage],
   providers: [Camera],

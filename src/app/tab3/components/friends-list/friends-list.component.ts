@@ -32,19 +32,11 @@ export class FriendsListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    console.log(this.range);
-    this.friendsList$ = this.champService.friendsListSubject$.pipe(
-      tap((r) => console.log(r))
-    );
+    this.friendsList$ = this.champService.friendsListSubject$
   }
 
   back() {
-    console.log('back');
     this.backAction.emit(true);
-  }
-
-  change(event) {
-    console.log(event);
   }
 
   selectFriend(friend) {
@@ -53,15 +45,11 @@ export class FriendsListComponent implements OnInit {
     ind != -1
       ? this.friendsSelected.splice(ind, 1)
       : this.friendsSelected.push(friend);
-    console.log(this.friendsSelected);
     this.friendList.emit(this.friendsSelected);
   }
 
-  sendInvitation() {
-    console.log(this.friendsSelected);
-  }
 
-  filterFriends(event) {
+  filterFriends() {
     this.filterFriendsSubject$.next(this.filteredFriends);
   }
 }

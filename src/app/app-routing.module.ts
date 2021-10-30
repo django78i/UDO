@@ -22,6 +22,21 @@ const routes: Routes = [
       import('./session-now/session-now-routing.module').then((m) => m.SessionNowPageRoutingModule),
   },
   {
+    path: 'login',
+    loadChildren: () =>
+      import(
+        './connexion/components/connexion-choice/connexion-choice.module'
+      ).then((m) => m.ConnexionModule),
+  },
+  {
+    path: 'onboarding',
+    loadChildren: () =>
+      import('./connexion/components/login-modal/login/login.module').then(
+        (m) => m.LoginModule
+      ),
+  },
+
+  {
     path: '',
     redirectTo: '',
     pathMatch: 'full',

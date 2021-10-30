@@ -1,0 +1,30 @@
+[
+  {
+    "nom": "angel",
+    "icon": "../assets/emojis/Angel.png"
+  },
+  {
+    "nom": "blush",
+    "icon": "../assets/emojis/Blush.png"
+  },
+  {
+    "nom": "callMe",
+    "icon": "../assets/emojis/CallMe.png"
+  },
+  {
+    "nom": "cheeky",
+    "icon": "../assets/emojis/Cheeky.png"
+  },
+  {
+    "nom": "claps",
+    "icon": "../assets/emojis/Claps.png"
+  },
+  {
+    "nom": "festive",
+    "icon": "../assets/emojis/Festive.png"
+  },
+  {
+    "nom": "happy",
+    "icon": "../assets/emojis/Happy.png"
+  }
+]

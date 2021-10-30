@@ -1,0 +1,38 @@
+<ion-content style="--padding-top: 20px">
+  <ng-container *ngIf="messagesList; else showBlank">
+    <ion-card
+      *ngFor="let message of messagesList"
+      style="--background: #f7f7fa; box-shadow: none; margin: 24px 15px"
+    >
+      <ion-card-header style="padding-left: 0">
+        <ion-item lines="none">
+          <ion-avatar slot="start" (click)="openProfil(message.sender)">
+            <img [src]="message.sender.avatar" alt="" />
+            <ion-badge>{{ message.sender.niveau }}</ion-badge>
+          </ion-avatar>
+          <ion-label>
+            <p>{{ message.sender.userName }}</p>
+            <p>{{ message.date | timeRelative }}</p>
+          </ion-label>
+        </ion-item>
+      </ion-card-header>
+      <ion-card-content style="padding-left: 73px">
+        <p>{{ message.text }}</p>
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
+  <ng-template #showBlank>
+    <ion-card class="blank">
+      <img src="assets/mocks/Groupe 3959.png" alt="" />
+      <ion-card-header>
+        <ion-card-title style="text-align: center"
+          >Aucun post pour le moment</ion-card-title
+        >
+        <ion-card-subtitle style="text-align: center"
+          >Vous pourrez suivre ici l’activité de tous les participants de cette
+          compétition</ion-card-subtitle
+        >
+      </ion-card-header>
+    </ion-card>
+  </ng-template>
+</ion-content>

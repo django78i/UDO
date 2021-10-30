@@ -70,23 +70,16 @@ export class AccordeonComponent implements OnInit {
 
   ngOnInit() {
     this.activitesSub$.next(this.activites);
-    this.activites$ = this.activitesSub$.pipe(
-      tap((activites) => {
-        console.log(activites);
-      })
-    );
+    this.activites$ = this.activitesSub$
   }
 
   activate(index) {
-    console.log(this.activites[index].active);
     this.activites[index].active
       ? (this.activites[index].active = !this.activites[index].active)
       : (this.activites[index].active = true);
-    console.log(this.activites[index].active);
   }
 
   all(event) {
-    console.log(event);
   }
 
   selectAll(index) {
@@ -98,7 +91,6 @@ export class AccordeonComponent implements OnInit {
   }
 
   change(event, i, j, categ) {
-    console.log(event, this.activites[i].ssActivites[j].isChecked, categ);
     if (categ.isChecked == true) {
       this.choix.push(categ.nom);
     } else {
@@ -107,7 +99,6 @@ export class AccordeonComponent implements OnInit {
         ? this.choix.splice(indCategorieInTable, 1)
         : '';
     }
-    console.log(this.choix);
     this.activitesEvent.emit(this.choix);
   }
 }

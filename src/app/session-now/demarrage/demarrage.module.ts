@@ -29,7 +29,7 @@ import 'firebase/storage';
     AngularFireStorageModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
   ],
-  declarations: [DemarragePage,AidePage],
+  declarations: [DemarragePage,AidePage,ReglagesPage],
   providers: [Camera,{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },Health
  ,{provide: HAMMER_GESTURE_CONFIG, useClass: IonicGestureConfig} ],
 

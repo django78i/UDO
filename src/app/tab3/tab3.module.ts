@@ -24,6 +24,9 @@ import { PopOverComponentComponent } from './components/pop-over-component/pop-o
 import { ActivityListComponent } from './components/activity-list/activity-list.component';
 import { FriendsListComponent } from './components/friends-list/friends-list.component';
 import { AccordeonComponent } from '../components/accordeon/accordeon.component';
+import { EmojisComponent } from '../components/emojis/emojis.component';
+import { DetailPostComponent } from './components/detail-post/detail-post.component';
+import { MessagesComponent } from './components/messages/messages.component';
 
 @NgModule({
   imports: [
@@ -54,6 +57,9 @@ import { AccordeonComponent } from '../components/accordeon/accordeon.component'
     ActivityListComponent,
     FriendsListComponent,
     AccordeonComponent,
+    EmojisComponent,
+    DetailPostComponent,
+    MessagesComponent,
   ],
 })
 export class Tab3PageModule {}
