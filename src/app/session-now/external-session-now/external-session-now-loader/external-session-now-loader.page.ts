@@ -38,7 +38,7 @@ export class ExternalSessionNowLoaderPage implements OnInit {
         appName:this.app.name,
         isLive:true,
       };
-      localStorage.setItem('externalSessionNow', JSON.stringify(this.sessionNow));
+      localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
       that.status='Connecté' ;
       this.openExternalApp(this.app.appId,this.app.appName) ;
       },3000);
@@ -68,11 +68,11 @@ export class ExternalSessionNowLoaderPage implements OnInit {
    * @param appName
    */
   launchExternalApp(options,appName){
-    this.sessionNow= JSON.parse(localStorage.getItem('externalSessionNow')) ;
-    this.snService.create(this.sessionNow,'external-session-now')
+    this.sessionNow= JSON.parse(localStorage.getItem('sessionNow')) ;
+    this.snService.create(this.sessionNow,'session-now')
       .then(res=>{
         this.sessionNow.uid=res;
-        localStorage.setItem('externalSessionNow', JSON.stringify(this.sessionNow)) ;
+        localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow)) ;
       })
       .catch(err=>console.error(err)) ;
 
@@ -112,10 +112,11 @@ export class ExternalSessionNowLoaderPage implements OnInit {
 
 
   displayRecap() {
-    this.sessionNow = JSON.parse(localStorage.getItem('externalSessionNow'));
+    this.sessionNow = JSON.parse(localStorage.getItem('sessionNow'));
     const listMetricAuhorised=['steps','distance','height','weight','calories'];
     this.sessionNow.endDate=new Date().toISOString();
-    const diff=this.dateDiff(this.sessionNow.startDate,this.sessionNow.endDate);
+    const diff=this.dateDiff(new Date(this.sessionNow.startDate),new Date(this.sessionNow.endDate));
+   // console.log(this.sessionNow);
     this.mn=diff.min;
     this.s=diff.sec;
     this.sessionNow.isLive=false;
@@ -129,7 +130,7 @@ export class ExternalSessionNowLoaderPage implements OnInit {
       }
     }
     localStorage.setItem('counter', JSON.stringify({ mn: this.mn, s: this.s }));
-    localStorage.setItem('externalSessionNow', JSON.stringify(this.sessionNow));
+    localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
     this.router.navigate(['session-now/resultat']);
   }
   queryMetrics(metric, item) {
@@ -158,16 +159,6 @@ export class ExternalSessionNowLoaderPage implements OnInit {
       })
         .catch(e => console.log('error1 ', e));
     }
-    this.health.query({
-      startDate: new Date(new Date().getTime() - 1 * 24 * 60 * 60 * 1000), // three days ago
-      endDate: new Date(), // now
-      dataType: 'steps',
-      limit: 1000
-    }).then(res => {
-      item.nombre = res.length > 0 ? (Math.round((parseFloat(res[res.length - 1]?.value) + Number.EPSILON) * 100) / 100) : '0';
-      console.log('res', res);
-    })
-      .catch(e => console.log('error1 ', e));
   }
 
    dateDiff(date1, date2){

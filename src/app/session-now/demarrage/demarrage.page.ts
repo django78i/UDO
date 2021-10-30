@@ -34,31 +34,31 @@ export class DemarragePage implements OnInit {
   listChoix = [
     {
       img: 'assets/images/distance.svg',
-      nombre: '1.78',
+      nombre: '0',
       name: 'Distance',
       exposant: 'KM',
       fieldname: 'distance'
     },
     {
       img: 'assets/images/pas.svg',
-      nombre: '2617',
+      nombre: '0',
       name: 'Nombre de pas',
       exposant: '',
       fieldname: 'steps'
     },
     {
       img: 'assets/images/coeur.svg',
-      nombre: '135',
+      nombre: '0',
       name: 'BPM',
       exposant: '',
-      fieldname: 'height'
+      fieldname: 'heart_rate'
     },
     {
       img: 'assets/images/calorie.svg',
-      nombre: '250',
+      nombre: '0',
       name: 'Calories',
       exposant: 'CAL',
-      fieldname: 'weight'
+      fieldname: 'calories'
     },
   ];
   sessionNow = new SessionNowModel();
@@ -93,20 +93,15 @@ export class DemarragePage implements OnInit {
         this.snService.find(sessionNow.uid, 'session-now').then((resp: any) => {
           let value = resp._document.data.value.mapValue.fields;
           if (value.reactions.arrayValue) {
-            this.reactions = value.reactions.arrayValue.values.length;
+            this.reactions = value.reactions.arrayValue.values?.length;
             this.sessionNow.reactions = value.reactions.arrayValue.values;
-            localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
+           // localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
           }else{
             this.reactions = 0;
           }
-          console.log('value', value);
-          // if(this.router.url !='/session-now/demarrage'){
-          //   clearInterval(this.interval);
-          // }
           this.sessionNow.reactions = value.reactions.arrayValue.values;
           localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
-
-        })
+        });
 
       }
     }, 10000);
@@ -151,31 +146,31 @@ export class DemarragePage implements OnInit {
     this.listElement = [
       {
         img: 'assets/images/distance.svg',
-        nombre: '1.78',
+        nombre: '0',
         name: 'Distance',
         exposant: 'KM',
         fieldname: 'distance'
       },
       {
         img: 'assets/images/pas.svg',
-        nombre: '2617',
+        nombre: '0',
         name: 'Nombre de pas',
         exposant: '',
         fieldname: 'steps'
       },
       {
         img: 'assets/images/coeur.svg',
-        nombre: '135',
+        nombre: '0',
         name: 'BPM',
         exposant: '',
-        fieldname: 'height'
+        fieldname: 'heart_rate'
       },
       {
         img: 'assets/images/calorie.svg',
-        nombre: '250',
+        nombre: '0',
         name: 'Calories',
         exposant: 'CAL',
-        fieldname: 'weight'
+        fieldname: 'calories'
       },
     ];
     let item = JSON.parse(localStorage.getItem('activite'));
@@ -252,22 +247,29 @@ export class DemarragePage implements OnInit {
   }
   // @ts-ignore
   queryMetrics(metric, item) {
+    console.log(new Date(this.sessionNow.startDate));
     if (metric === 'steps' || metric === 'distance') {
       this.health.queryAggregated({
-        startDate: new Date(new Date().getTime() - 1 * 24 * 60 * 60 * 1000), // three days ago
+        startDate: new Date(this.sessionNow.startDate), // three days ago
         endDate: new Date(), // now
         dataType: metric,
-        bucket: 'day',
+        bucket: 'hour',
         //limit: 1000
       }).then(res => {
+
         item.nombre = res.length > 0 ? (Math.round((parseFloat(res[res.length - 1]?.value) + Number.EPSILON) * 100) / 100) : '0';
+        if(metric === 'distance'){
+          if(item.nombre!==0 && item.nombre!==undefined && item.nombre!==''){
+            item.nombre= Math.round(item.nombre / 100) / 10;
+          }
+        }
         console.log('res', res);
       })
         .catch(e => console.log('error3 ', e));
     }
     else {
       this.health.query({
-        startDate: new Date(new Date().getTime() - 1 * 24 * 60 * 60 * 1000), // three days ago
+        startDate: new Date(this.sessionNow.startDate), // three days ago
         endDate: new Date(), // now
         dataType: metric,
         limit: 100
@@ -277,16 +279,7 @@ export class DemarragePage implements OnInit {
       })
         .catch(e => console.log('error1 ', e));
     }
-    this.health.query({
-      startDate: new Date(new Date().getTime() - 1 * 24 * 60 * 60 * 1000), // three days ago
-      endDate: new Date(), // now
-      dataType: 'steps',
-      limit: 1000
-    }).then(res => {
-      item.nombre = res.length > 0 ? (Math.round((parseFloat(res[res.length - 1]?.value) + Number.EPSILON) * 100) / 100) : '0';
-      console.log('res', res);
-    })
-      .catch(e => console.log('error1 ', e));
+
   }
   checkPause() {
     this.pause = true;
