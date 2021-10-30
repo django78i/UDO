@@ -87,7 +87,7 @@ export class AddContenuComponent implements OnInit {
             if (!this.sessionNow) {
               this.close();
               this.sessionNowService.dissmissLoading();
-              this.sessionNowService.show('Image créée avec succès', 'success');
+              this.sessionNowService.show('Image chargée avec succès', 'success');
             } else {
               let postModel: PostModel = {
                 postedAt: moment().format('DD/MM/YYYY'),

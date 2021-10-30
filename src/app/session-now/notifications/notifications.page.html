@@ -4,11 +4,11 @@
     <ion-item lines="none">
       <ion-img slot="start" class="close" (click)="close()" src="assets/images/close.svg"> </ion-img>
       <ion-title>Encouragements</ion-title>
-      <span class="c-head-label" slot="end"> 1307</span>
+      <span class="c-head-label" slot="end"> {{reaction}} </span>
     </ion-item>
   </ion-toolbar>
   <ion-row class="c-row">
-    <ion-item lines="none" class="c-item" *ngFor="let item of listNotif">
+    <ion-item lines="none" class="c-item" *ngFor="let item of listReactions">
       <ion-row slot="start" class="c-row-first">
         <ion-img [src]="item?.img" class="img-personn"></ion-img>
         <span class="nombre"> {{item?.nombre}}</span>
@@ -16,7 +16,7 @@
       <ion-grid class="c-grid">
         <ion-row>
           <ion-item lines="none" class="item-name">
-            <span class="name"> {{item?.name}} </span>
+            <span class="name"> {{item?.username}} </span>
             <!-- <span class="point" ></span> -->
             <span slot="end" class="date"> {{item?.date}} </span>
           </ion-item>
@@ -24,7 +24,7 @@
 
         <ion-row class="comment">
           <span>
-            {{item?.comment}}
+            {{item?.commentaire}}
           </span>
         </ion-row>
       </ion-grid>

@@ -1,0 +1,8 @@
+<section style="display: flex; flex-wrap: wrap">
+  <img
+    [src]="emoji.icon"
+    alt=""
+    *ngFor="let emoji of emojisList$ | async"
+    style="width: 50px"
+  />
+</section>

@@ -22,7 +22,8 @@ export class PreseancePage implements OnInit {
   max = 100;
   isActif: boolean = false;
   activite = { name: 'Sélectionnez une activité', image: 'assets/images/questionmark.svg', padding2: '34px 40px;', width2: '25px' }
-  constructor(private modalCtrl: ModalController, private router: Router) { }
+  constructor(private modalCtrl : ModalController,
+     private router : Router) { }
 
   ngOnInit() {
     let item = localStorage.getItem('activite');

@@ -105,7 +105,6 @@ export class UserProfilComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.createGraph();
     this.position = this.createStats();
-    console.log(this.position);
   }
 
   ngAfterViewInit() {
@@ -131,7 +130,6 @@ export class UserProfilComponent implements OnInit, AfterViewInit {
     let table: any[] = [];
     this.stats.map((stat, i) => {
       const ratio = stat.stat / this.max;
-      console.log(ratio, this.doneesIniitial[i].vecteur.x * ratio);
       const position = {
         x: 130 - this.doneesIniitial[i].vecteur.x * ratio,
         y: 130 - this.doneesIniitial[i].vecteur.y * ratio,
@@ -157,12 +155,9 @@ export class UserProfilComponent implements OnInit, AfterViewInit {
           x: 130 - ratioVecteur.x,
           y: 130 - ratioVecteur.y,
         };
-        console.log(ratioVecteur, svgPos);
         return svgPos;
       });
-      console.log(format);
       this.donneeFormat.push(format);
     });
-    console.log(this.donneeFormat);
   }
 }

@@ -64,6 +64,8 @@ export class DemarragePage implements OnInit {
   sessionNow = new SessionNowModel();
   listSettings = [];
   user: any;
+  reactions = 0;
+  interval;
   constructor(
     private modalCtrl: ModalController,
     private router: Router,
@@ -80,6 +82,34 @@ export class DemarragePage implements OnInit {
       this.presentAlertConfirm();
     });
     this.user = JSON.parse(localStorage.getItem('user'));
+    this.getSessionNow();
+  }
+
+  async getSessionNow() {
+
+    this.interval = setInterval(() => {
+      let sessionNow = JSON.parse(localStorage.getItem('sessionNow'));
+      if (sessionNow) {
+        this.snService.find(sessionNow.uid, 'session-now').then((resp: any) => {
+          let value = resp._document.data.value.mapValue.fields;
+          if (value.reactions.arrayValue) {
+            this.reactions = value.reactions.arrayValue.values.length;
+            this.sessionNow.reactions = value.reactions.arrayValue.values;
+            localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
+          }else{
+            this.reactions = 0;
+          }
+          console.log('value', value);
+          // if(this.router.url !='/session-now/demarrage'){
+          //   clearInterval(this.interval);
+          // }
+          this.sessionNow.reactions = value.reactions.arrayValue.values;
+          localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
+
+        })
+
+      }
+    }, 10000);
   }
   async presentAlertConfirm() {
     this.stop();
@@ -170,6 +200,7 @@ export class DemarragePage implements OnInit {
       this.sessionNow.mode = 'public';
     }
     this.sessionNow.isLive = true;
+    // this.sessionNow.uid = "ef8f7e570c5f3be4f726ce612224a350";
     this.snService.create(this.sessionNow, 'session-now')
       .then(res => {
         this.sessionNow.uid = res;
@@ -185,13 +216,12 @@ export class DemarragePage implements OnInit {
             console.log("je suis la");
             // this.sessionNow.uid = res;
             // localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
-            // localStorage.setItem('posted',''+true);
           })
 
 
       })
       .catch(err => console.error(err));
-    // localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
+    localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
   }
   async checkPlatformReady() {
     const ready = !!await this.platform.ready();

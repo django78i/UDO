@@ -27,7 +27,7 @@ import { environment } from '../environments/environment.prod';
     ReactiveFormsModule,
     FormsModule,
     MatFormFieldModule,
-    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFireModule.initializeApp(environment.firebaseConfig)
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },

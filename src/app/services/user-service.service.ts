@@ -34,19 +34,15 @@ export class UserService {
   ) {}
 
   connectGoogle() {
-    console.log('check');
     if (this.platform.is('android')) {
-      console.log('androZone');
       this.googleSignIn();
     } else {
-      console.log('NotandroZone');
       this.logUserWithGoogle();
     }
   }
 
   async createUserDataBase(user) {
-    console.log(user);
-    const newUSer = {
+   const newUSer = {
       uid: user.uid,
       mail: user.email,
     };
@@ -58,16 +54,13 @@ export class UserService {
     const provider = new GoogleAuthProvider();
     signInWithPopup(this.auth, provider)
       .then((result) => {
-        console.log(result);
         // This gives you a Google Access Token. You can use it to access the Google API.
         const credential = GoogleAuthProvider.credentialFromResult(result);
         const token = credential.accessToken;
         // The signed-in user info.
         const user = result.user;
-        console.log(user);
         this.findUser(user.uid).then((userDatabase) => {
           if (!userDatabase.data()) {
-            console.log('notfind');
             this.createUserDataBase(user);
           }
         });
@@ -93,9 +86,7 @@ export class UserService {
   }
 
   async findUser(userUid): Promise<DocumentSnapshot<DocumentData>> {
-    console.log(userUid);
     const user = await getDoc(doc(this.db, 'users', userUid));
-    console.log('UserFind', JSON.stringify(user.data()));
     return user;
   }
 
@@ -104,7 +95,6 @@ export class UserService {
   }
 
   async googleSignIn() {
-    console.log('entree');
     const auth = getAuth();
     try {
       const gplUser = await this.googlePlus.login({
@@ -117,15 +107,11 @@ export class UserService {
         GoogleAuthProvider.credential(gplUser.idToken)
       );
 
-      // console.log('userGoogle',auth);
-      console.log('userGoogle', gplUser.idToken);
 
       await auth.onAuthStateChanged((user) => {
         if (user) {
           this.findUser(user.uid).then((userDatabase) => {
-            // console.log('userDatabase', userDatabase);
             if (!userDatabase.data()) {
-              console.log('userDatabase', userDatabase);
               this.createUserDataBase(user);
             }
           });
@@ -134,12 +120,10 @@ export class UserService {
         }
       });
     } catch (err) {
-      console.log(err);
     }
   }
 
   log(info: any) {
-    console.log(info);
     const auth = getAuth();
     signInWithEmailAndPassword(auth, info.mail, info.password)
       .then((userCredential) => {
@@ -155,14 +139,12 @@ export class UserService {
   }
 
   createUser(info) {
-    console.log(info);
     const auth = getAuth();
     createUserWithEmailAndPassword(auth, info.mail, info.password)
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
         this.createUserDataBase(user);
-        console.log(user);
       })
       .catch((error) => {
         const errorCode = error.code;

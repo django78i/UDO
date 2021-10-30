@@ -14,6 +14,5 @@ export class ResumeComponent implements OnInit {
     this.userInfo = this.champ.participants.find(
       (part) => part.uid == this.champ.createur.uid
     );
-    console.log(this.champ);
   }
 }

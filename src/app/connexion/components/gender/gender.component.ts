@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   Component,
   ElementRef,
   OnInit,
@@ -14,7 +13,7 @@ import {
   templateUrl: './gender.component.html',
   styleUrls: ['./gender.component.scss'],
 })
-export class GenderComponent implements OnInit, AfterViewInit {
+export class GenderComponent implements OnInit {
   icons = ['femme', 'homme', 'multi', 'autres'];
 
   @Output() choix: EventEmitter<string> = new EventEmitter();
@@ -26,9 +25,6 @@ export class GenderComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {}
 
-  ngAfterViewInit() {
-    console.log(this.sex);
-  }
 
   choice(index) {
     this.sex.forEach((r, i) => {

@@ -8,10 +8,15 @@ const routes: Routes = [
   {
     path: '',
     component: ConnexionPage,
-  },
-  {
-    path: 'login',
-    component: LoginModalComponent,
+    // children: [
+    //   {
+    //     path: 'onboarding',
+    //     loadChildren: () =>
+    //       import('./components/login-modal/login/login.module').then(
+    //         (m) => m.LoginModule
+    //       ),
+    //   },
+    // ],
   },
 ];
 

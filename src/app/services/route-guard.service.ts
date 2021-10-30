@@ -23,13 +23,11 @@ export class RouteGuardService {
     state: RouterStateSnapshot
   ): boolean | Observable<boolean> | Promise<boolean> {
     const auth = getAuth();
-    console.log('ici');
     return new Promise((resolve, reject) => {
       auth.onAuthStateChanged((user) => {
         if (user) {
           resolve(true);
         } else {
-          console.log('User is not logged in');
           this.zone.run(() => {
             this.router.navigate(['connexion']);
           });
