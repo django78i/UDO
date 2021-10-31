@@ -86,6 +86,9 @@ export class DemarragePage implements OnInit {
     this.getSessionNow();
   }
 
+  /**
+   * cette fonction permet de recuperer la seance now en cours
+   */
   async getSessionNow() {
 
     this.interval = setInterval(() => {
@@ -104,13 +107,17 @@ export class DemarragePage implements OnInit {
             this.reactions = 0;
             this.sessionNow.reactions = [];
           }
-          
+
           localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
         });
 
       }
     }, 10000);
   }
+
+  /**
+   * cette alert permet de confirmer la sortie de l'application
+   */
   async presentAlertConfirm() {
     this.stop();
     const alert = await this.alertController.create({
@@ -213,14 +220,20 @@ export class DemarragePage implements OnInit {
 
         this.snService.create(sessionNow, 'post-session-now')
           .then(resPost => {
+            console.log("je suis la");
             // this.sessionNow.uid = res;
             // localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
-          })
+          });
 
 
-      }).catch(err => console.error(err));
+      })
+      .catch(err => console.error(err));
     localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
   }
+
+  /**
+   * cette fonction permet de verififer si la plateforme est disponible pour le health
+   */
   async checkPlatformReady() {
     const ready = !!await this.platform.ready();
     if (ready) {
@@ -237,6 +250,10 @@ export class DemarragePage implements OnInit {
     }
 
   }
+
+  /**
+   * cette fonction permet de parcourir et recuperer les metric a afficher sur la page
+   */
   getMetrics() {
     if (this.status === 'play') {
       for (let item of this.listElement) {
@@ -248,38 +265,55 @@ export class DemarragePage implements OnInit {
        setTimeout(() => { that.getMetrics(); }, 1000);
     }
   }
+
+  /**
+   * ce callback est appelé pour procéder le resultat obtenu apres la recuperation de la metric de p
+   * @param res
+   * @param item
+   */
+  processMetricResult(res,item){
+    if(item.fieldname ==='speed' ){
+      const distance=      res.length > 0 ? res[res.length - 1]?.value: 0;
+      if(distance!==0){
+        const speed=this.calculSpeed(distance,((this.mn*60)+this.s));
+        item.nombre= (Math.round((parseFloat(speed.km.toString()) + Number.EPSILON) * 100) / 100);
+      }
+    }
+    else{
+      item.nombre = res.length > 0 ? (Math.round((parseFloat(res[res.length - 1]?.value) + Number.EPSILON) * 100) / 100) : '0';
+    }
+    if(item.fieldname === 'distance'){
+      if(item.nombre!==0 && item.nombre!==undefined && item.nombre!==''){
+        item.nombre= Math.round(item.nombre / 100) / 10;
+      }
+    }
+    console.log('res', res);
+  }
+
+  /**
+   * cette fonction permet d'afficher les metrics
+   * @param metric
+   * @param item
+   */
   // @ts-ignore
   queryMetrics(metric, item) {
+    let option = {
+      startDate: new Date(this.sessionNow.startDate), // three days ago
+      endDate: new Date(), // now
+      dataType: metric
+    };
     console.log(new Date(this.sessionNow.startDate));
-    if (metric === 'steps' || metric === 'distance') {
-      this.health.queryAggregated({
-        startDate: new Date(this.sessionNow.startDate), // three days ago
-        endDate: new Date(), // now
-        dataType: metric,
-        bucket: 'hour',
-        //limit: 1000
-      }).then(res => {
-
-        item.nombre = res.length > 0 ? (Math.round((parseFloat(res[res.length - 1]?.value) + Number.EPSILON) * 100) / 100) : '0';
-        if(metric === 'distance'){
-          if(item.nombre!==0 && item.nombre!==undefined && item.nombre!==''){
-            item.nombre= Math.round(item.nombre / 100) / 10;
-          }
-        }
-        console.log('res', res);
-      })
+    if (metric === 'steps' || metric === 'distance' || metric==='speed') {
+      if( metric==='speed') {
+        option.dataType = 'distance';
+      }
+      option['bucket']='hour';
+      this.health.queryAggregated(option).then(res => this.processMetricResult(res,item) )
         .catch(e => console.log('error3 ', e));
     }
     else {
-      this.health.query({
-        startDate: new Date(this.sessionNow.startDate), // three days ago
-        endDate: new Date(), // now
-        dataType: metric,
-        limit: 100
-      }).then(res => {
-        item.nombre = res.length > 0 ? (Math.round((parseFloat(res[res.length - 1]?.value) + Number.EPSILON) * 100) / 100) : '0';
-        console.log('res', res);
-      })
+      option['limit']=100;
+      this.health.query(option).then(res =>this.processMetricResult(res,item))
         .catch(e => console.log('error1 ', e));
     }
 
@@ -290,13 +324,16 @@ export class DemarragePage implements OnInit {
   }
 
   async publier() {
-
     const modal = await this.modalCtrl.create({
       component: DonneesPriveComponent,
       cssClass: 'my-custom-contenu-modal',
     });
     return await modal.present();
   }
+
+  /**
+   * cette fonction permet d'afficher la page de recapitulatif
+   */
   displayRecap() {
     this.stop();
     const listMetricAuhorised=['steps','distance','calories','activity','height','weight'];
@@ -313,9 +350,13 @@ export class DemarragePage implements OnInit {
     this.sessionNow.endDate=new Date().toISOString().split('T')[0] +' '+new Date().toISOString().split('T')[1].split('.')[0];
     localStorage.setItem('counter', JSON.stringify({ mn: this.mn, s: this.s }));
     localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
-
+    // redirection vers le composant qui affiche le recapitulatif
     this.router.navigate(['session-now/resultat']);
   }
+
+  /**
+   * cette fonction permet d'ouvrir la camera
+   */
   async openCamera() {
     const image = await Camera.getPhoto({
       quality: 100,
@@ -324,6 +365,7 @@ export class DemarragePage implements OnInit {
       resultType: CameraResultType.DataUrl,
     });
 
+
     // Here you get the image as result.
     const theActualPicture = image.dataUrl;
     localStorage.setItem('picture', theActualPicture);
@@ -331,6 +373,11 @@ export class DemarragePage implements OnInit {
     // this.modalCtr.dismiss(this.base64Image);
 
   }
+  /**
+   * cette fonction permet d'afficher un toast message
+   * @param message
+   * @param type
+   */
   async showMessage(message, type) {
     const toast = await this.toastCtrl.create({
       message,
@@ -340,10 +387,17 @@ export class DemarragePage implements OnInit {
     });
     toast.present();
   }
+
+  /**
+   * cette methode permet de naviguer vers le comosant aide
+   */
   information() {
     this.router.navigate(['session-now/help']);
   }
 
+  /**
+   * cette fonction permet d'afficher une nouvelles notifications
+   */
   async showNotification() {
     const modal = await this.modalCtrl.create({
       component: ShowNotificationComponent,
@@ -360,6 +414,9 @@ export class DemarragePage implements OnInit {
     return await modal.present();
 
   }
+  /**
+   * Cette methode permet d'ouvrir le modal des notification
+   */
   async notification() {
     localStorage.setItem('counter', JSON.stringify({ mn: this.mn, s: this.s }));
     const modal = await this.modalCtrl.create({
@@ -376,6 +433,9 @@ export class DemarragePage implements OnInit {
 
   }
 
+  /**
+   * Cette methode permet d'ouvrir le modal de selection des photos
+   */
   async addContenu() {
     const modal = await this.modalCtrl.create({
       component: AddContenuComponent,
@@ -388,6 +448,9 @@ export class DemarragePage implements OnInit {
 
   }
 
+  /**
+   * Cette methode asynchrone permet d'ouvrir sous forme de modal le composant reglage
+   */
   async reglage() {
     localStorage.setItem('counter', JSON.stringify({ mn: this.mn, s: this.s }));
     const modal = await this.modalCtrl.create({
@@ -404,7 +467,10 @@ export class DemarragePage implements OnInit {
 
   }
 
-  /*La fonction update_chrono incrémente le nombre de millisecondes par 1 <==> 1*cadence = 100 */
+  /**
+   * La fonction update_chrono incrémente le nombre de millisecondes
+   * par 1 <==> 1*cadence = 100
+   * */
   updateChrono() {
     this.ms += 1;
     /*si ms=10 <==> ms*cadence = 1000ms <==> 1s alors on incrémente le nombre de secondes*/
@@ -422,30 +488,44 @@ export class DemarragePage implements OnInit {
       this.h += 1;
     }
   }
+
+  /**
+   * cette methode permet de démarrer le chrono
+   */
   start() {
     this.status = 'play';
     this.t = setInterval(() => { this.updateChrono(); }, 100);
     // btn_start.disabled=true;
   }
+  /**
+   * cette methode permet d'arreter  le chrono
+   */
   stop() {
     this.status = 'pause';
     clearInterval(this.t);
     //btn_start.disabled=false;
   }
 
+  /**
+   * cette methode synchrone permet d'ouvrir sous forme de modal le composant listMetric
+   * @param item
+   * @param index
+   */
   async choix(item, index) {
     const modal = await this.modalCtrl.create({
       component: ListMetricsPage,
       cssClass: 'my-custom-activite-modal',
       componentProps: {
-        choix: item
+        choix: item,
+        min:this.mn,
+        sec:this.s
       }
     });
     modal.onDidDismiss().then((data: any) => {
       if (data.data) {
         let value = data.data;
         for (let el of this.listElement) {
-          if (el.name == value.name) {
+          if (el.name === value.name) {
             this.showMessage('Cette activité est déjà dans la liste', 'warning')
             return;
           }
@@ -464,6 +544,18 @@ export class DemarragePage implements OnInit {
     });
     return await modal.present();
 
+  }
+
+  /**
+   * Cette méthode permet de calculer la vitesse
+   * @param distanceMeter
+   * @param timeSeconds
+   */
+  calculSpeed(distanceMeter,timeSeconds){
+    return {
+      m:distanceMeter/timeSeconds ,
+      km:(distanceMeter/timeSeconds)*3.6
+    };
   }
 }
 export class SessionNowModel{
