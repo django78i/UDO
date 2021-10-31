@@ -192,4 +192,8 @@ export class Tab1Page implements OnInit, AfterContentChecked, OnDestroy {
   nav() {
     this.navCtl.navigateForward('/tabs/tab3');
   }
+
+  chatPage() {
+    this.navCtl.navigateForward(['chat']);
+  }
 }

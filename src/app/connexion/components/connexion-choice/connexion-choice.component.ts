@@ -56,6 +56,7 @@ export class ConnexionChoiceComponent implements OnInit {
   }
 
   async redirect(user): Promise<void> {
+    console.log(user)
     const loading = await this.loadingController.create({
       message: 'Veuillez patienter...',
       duration: 2000,

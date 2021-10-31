@@ -1,23 +1,24 @@
-<ion-content [fullscreen]="true">
-  <ion-toolbar style="padding: 5px 15px; --background: #f7f7fa" mode="ios">
-    <ion-avatar slot="start" style="position: relative" (click)="showMenu()">
-      <img src="../../assets/mocks/ToyFaces_Colored_BG_56@2x.png" />
-      <div class="avTest"></div>
+<ion-header mode="ios">
+  <ion-toolbar
+    style="padding: 5px 15px; --border-width: 0; --background: #f7f7fa"
+    mode="ios"
+  >
+    <ion-avatar slot="start" class="big" (click)="showMenu()" *ngIf="user">
+      <img [src]="user.avatar" alt="" />
+      <ion-badge>{{ user.niveau }}</ion-badge>
     </ion-avatar>
     <ion-title>
       <img src="../../assets/icon/udoIcon.svg" alt="" />
     </ion-title>
     <ion-buttons slot="end">
-      <ion-button>
-        <img
-          src="../../assets/icon/gift.svg"
-          alt=""
-          style="margin-right: 10px"
-        />
+      <ion-button (click)="chatPage()">
         <img src="../../assets/icon/chat.svg" alt="" />
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
   <div
     class="banniere"
     *ngIf="challenges|async as chall; else banTemplate"

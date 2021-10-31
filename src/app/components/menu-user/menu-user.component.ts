@@ -24,8 +24,8 @@ export class MenuUserComponent implements OnInit {
       component: UserProfilComponent,
       componentProps: {
         user: this.user,
+        currentUser: this.user,
       },
-
     });
     return await modal.present();
   }

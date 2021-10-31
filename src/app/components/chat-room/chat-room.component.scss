@@ -1,0 +1,73 @@
+ion-avatar {
+  height: 50px;
+  width: 50px;
+  border: 5px solid white;
+  background: #ddd7d7;
+  position: relative;
+  ion-badge {
+    font-size: 18px;
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    --background: white;
+    --color: black;
+    right: -11px;
+    bottom: 0;
+    border-radius: 50%;
+    box-shadow: 0px 3px 8px #1e1c2715;
+    img {
+      border-radius: 50%;
+      //   background: grey;
+      padding: 10px;
+    }
+  }
+}
+
+.inputZone {
+  --background: #d8d9db;
+  --border-radius: 22px;
+  --padding-start: 2px;
+  --padding-top: 1px;
+  --padding-bottom: 1px;
+}
+
+.userBox {
+  max-width: 60%;
+  font-size: 12px;
+  padding: 9px;
+  background-color: white;
+  color: black;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.contactBox {
+  background-color: #25262b;
+  color: white;
+}
+
+.right {
+  justify-content: flex-end;
+}
+.left {
+  justify-content: flex-start;
+}
+
+section {
+  margin-top: 15px;
+}
+
+ion-content {
+  --padding-start: 15px;
+  --padding-end: 15px;
+}
+
+.leftBadge {
+  align-items: flex-start;
+}
+.rightBadge {
+  align-items: flex-end;
+}

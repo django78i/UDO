@@ -39,3 +39,20 @@ ion-avatar {
     box-shadow: 0px 3px 8px #1e1c2715;
   }
 }
+
+.typeLogo {
+  height: 50px;
+  width: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  border: 1px solid #707070;
+  margin-right: 10px;
+  img {
+    width: 50%;
+  }
+  &.sombre {
+    background-color: #2b2d2f ;
+  }
+}

@@ -1,0 +1,86 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-button
+      slot="start"
+      (click)="close()"
+      style="--background: transparent; --background-activated: transparent"
+    >
+      <img
+        src="assets/mocks/Icon feather-arrow-left.svg"
+        style="padding: 0"
+        alt=""
+      />
+    </ion-button>
+
+    <ion-avatar slot="start" style="--background: grey; margin-right: 10px">
+      <img [src]="contact.avatar" alt="" *ngIf="contact.avatar" />
+      <img
+        src="https://img.icons8.com/ios-filled/50/000000/gender-neutral-user.png"
+        *ngIf="!contact.avatar"
+        alt=""
+      />
+      <ion-badge>{{ contact.niveau }}</ion-badge>
+    </ion-avatar>
+    <ion-label>
+      <p>{{ contact.userName }}</p>
+    </ion-label>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ng-container *ngIf="message$ | async as messages; else blank">
+    <section
+      *ngFor="let msg of messages"
+      style="display: flex"
+      [ngClass]="{
+        left: msg.senderId != user.uid,
+        right: msg.senderId == user.uid
+      }"
+    >
+      <div
+        [ngClass]="{
+          leftBadge: msg.senderId != user.uid,
+          rightBadge: msg.senderId == user.uid
+        }"
+        style="display: flex; flex-direction: column; gap: 5px; width: 100%"
+      >
+        <p style="font-size: 10px; margin: 0">
+          {{ msg.date.toDate() | date: "dd/MM h:mm" }}
+        </p>
+        <div *ngIf="msg.senderId == user.uid" class="userBox">
+          {{ msg.text }}
+        </div>
+        <div *ngIf="msg.senderId != user.uid" class="userBox contactBox">
+          {{ msg.text }}
+        </div>
+      </div>
+    </section>
+  </ng-container>
+  <ng-template #blank>
+    <h2>Aucun msg</h2>
+  </ng-template>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-item slot="start" lines="none" class="inputZone">
+      <ion-icon
+        name="image-outline"
+        style="padding: 8px; border-radius: 50%; background-color: white; margin-right: 5px;"
+      ></ion-icon>
+      <ion-input (ionChange)="getText($event)" #inputMsg placeholder="tapez un message" ></ion-input>
+    </ion-item>
+    <ion-button
+      slot="end"
+      style="
+        --border-radius: 50%;
+        --background: #0a122129;
+        --backdrop-opacity: 9%;
+        /* height: 30px;
+        width: 30px; */
+      "
+    >
+      <img src="assets/icon/icons8-email-send.svg" alt="" />
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

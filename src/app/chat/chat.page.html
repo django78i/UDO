@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-button
+      slot="start"
+      (click)="back()"
+      style="--background: transparent; --background-activated: transparent"
+    >
+      <img src="assets/mocks/Icon feather-arrow-left.svg" alt="" />
+    </ion-button>
+
+    <ion-title>chat</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+  <ng-container *ngIf="rooms$|async as rooms">
+    <ion-item
+      lines="full"
+      *ngFor="let room of roomTable"
+      (click)="openChat(room)"
+    >
+      <ion-avatar slot="start">
+        <img [src]="room.users[0].avatar" alt="" />
+        <ion-badge>{{ room.users[0].niveau }}</ion-badge>
+      </ion-avatar>
+      <ion-label>
+        <p class="sousTitre black">{{room.users[0].userName}}</p>
+        <p>{{room.lastMsg}}</p>
+      </ion-label>
+      <ion-label style="font-size: 12px"
+        >{{room.timestamp|timeRelative}}</ion-label
+      >
+    </ion-item>
+  </ng-container>
+</ion-list>
+</ion-content>

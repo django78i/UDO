@@ -1,6 +1,7 @@
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
 import {
   AfterViewInit,
+  ChangeDetectorRef,
   Component,
   NgZone,
   OnDestroy,
@@ -24,13 +25,14 @@ import {
   uploadString,
 } from 'firebase/storage';
 import { Subscription } from 'rxjs';
+import { $ } from 'protractor';
 
 @Component({
   selector: 'app-login-modal',
   templateUrl: './login-modal.component.html',
   styleUrls: ['./login-modal.component.scss'],
 })
-export class LoginModalComponent implements OnInit, AfterViewInit, OnDestroy {
+export class LoginModalComponent implements OnInit, AfterViewInit {
   @ViewChild('slider') sliderComp: IonSlides;
   pseudo: string = '';
   step: number = 0;
@@ -49,14 +51,15 @@ export class LoginModalComponent implements OnInit, AfterViewInit, OnDestroy {
   slideOpts = {
     speed: 400,
   };
-
+  activeIndex: number = 0;
   constructor(
     public zone: NgZone,
     public modalCtl: ModalController,
     public picker: PickerController,
     public userService: UserService,
     public navController: NavController,
-    public loadingController: LoadingController
+    public loadingController: LoadingController,
+    public ref: ChangeDetectorRef
   ) {}
 
   ngOnInit() {}
@@ -65,8 +68,16 @@ export class LoginModalComponent implements OnInit, AfterViewInit, OnDestroy {
     this.modalCtl.dismiss();
   }
 
-  ngAfterViewInit() {
+  async change(event) {
+    this.activeIndex = await this.sliderComp.getActiveIndex();
+    console.log(this.activeIndex);
+  }
+
+  async ngAfterViewInit() {
     this.sliderComp.lockSwipeToNext(true);
+    console.log(this.sliderComp.getActiveIndex());
+    this.activeIndex = await this.sliderComp.getActiveIndex();
+    console.log(this.activeIndex);
   }
 
   login() {
@@ -113,6 +124,7 @@ export class LoginModalComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     if (this.pseudo != '') {
       this.step += 0.25;
+      this.ref.detectChanges();
       this.slideNext();
     }
   }
@@ -120,6 +132,7 @@ export class LoginModalComponent implements OnInit, AfterViewInit, OnDestroy {
   genderSlide() {
     if (this.physicalParam.taille !== 0 && this.physicalParam.poids !== 0) {
       this.step += 0.25;
+      this.ref.detectChanges();
       this.slideNext();
     }
   }
@@ -127,6 +140,7 @@ export class LoginModalComponent implements OnInit, AfterViewInit, OnDestroy {
   physicSlide() {
     if (this.physicalParam.taille !== 0 && this.physicalParam.poids !== 0) {
       this.step += 0.25;
+      this.ref.detectChanges();
       this.slideNext();
     }
   }
@@ -145,17 +159,21 @@ export class LoginModalComponent implements OnInit, AfterViewInit, OnDestroy {
       activitesPratiquees: this.activitesList,
       userName: this.pseudo,
       physique: this.physicalParam,
-      avatar: this.pictureURL,
+      niveau: 0,
+      friends: [],
+      avatar: this.pictureURL
+        ? this.pictureURL
+        : 'https://img.icons8.com/ios-filled/50/000000/gender-neutral-user.png',
     };
     const loading = await this.loadingController.create({
       message: 'Veuillez patienter...',
       duration: 2000,
     });
     await loading.present();
+    this.userService.updateUser(this.user);
 
     const { role, data } = await loading.onDidDismiss();
 
-    this.userService.updateUser(this.user);
     this.redirect();
   }
 
@@ -176,17 +194,16 @@ export class LoginModalComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   eventActivite(event) {
+    console.log(event);
     this.activitesList = event;
+    console.log(this.activitesList);
   }
 
   validate() {
     if (this.activitesList) {
       this.step += 0.25;
+      this.ref.detectChanges();
     }
     this.saveOnBoarding();
-  }
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
   }
 }

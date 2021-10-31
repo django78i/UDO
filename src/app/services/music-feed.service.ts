@@ -15,9 +15,11 @@ import {
   limit,
   orderBy,
   startAfter,
+  where,
 } from 'firebase/firestore';
 import { UserService } from './user-service.service';
 import { map } from 'rxjs/operators';
+import { ChampionnatsService } from './championnats.service';
 
 @Injectable({
   providedIn: 'root',
@@ -25,7 +27,11 @@ import { map } from 'rxjs/operators';
 export class MusicFeedService {
   currentPlay$: Subject<boolean> = new Subject();
   lastVisible: any;
-  constructor(public router: Router, public userService: UserService) {}
+  constructor(
+    public router: Router,
+    public userService: UserService,
+    public championnatService: ChampionnatsService
+  ) {}
 
   async getFeed() {
     const table = [];
@@ -45,7 +51,8 @@ export class MusicFeedService {
     return table;
   }
 
-  async feedQuery() {
+  async feedQuery(champUid) {
+    console.log('là')
     const table = [];
 
     const db = getFirestore();
@@ -53,7 +60,8 @@ export class MusicFeedService {
     // Query the first page of docs
     const first = query(
       collection(db, 'post-session-now'),
-      orderBy('startDate', 'asc'),
+      where('championnat', '==', champUid),
+      orderBy('startDate', 'desc'),
       limit(15)
     );
     const documentSnapshots = await getDocs(first);
@@ -77,14 +85,15 @@ export class MusicFeedService {
     return { table: table, last: this.lastVisible };
   }
 
-  async addQuery(last) {
+  async addQuery(last, champUid) {
     const db = getFirestore();
     const table = [];
     // Construct a new query starting at this document,
     // get the next 25 cities.
     const next = query(
       collection(db, 'post-session-now'),
-      orderBy('startDate', 'asc'),
+      where('championnat', '==', champUid),
+      orderBy('startDate', 'desc'),
       startAfter(last),
       limit(18)
     );
@@ -108,5 +117,16 @@ export class MusicFeedService {
     await updateDoc(postRef, {
       reactions: post.reactions,
     });
+  }
+
+  async sendPost(post) {
+    console.log(post);
+    const db = getFirestore();
+    const indice = this.championnatService.createId();
+    const postModel = {
+      ...post,
+      uid: indice,
+    };
+    await setDoc(doc(db, 'post-session-now', indice), postModel);
   }
 }

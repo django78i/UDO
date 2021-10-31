@@ -8,7 +8,21 @@ import {
   ViewChild,
   ViewChildren,
 } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { NavigationExtras } from '@angular/router';
+import { ModalController, NavController } from '@ionic/angular';
+import { ChatService } from 'src/app/services/chat.service';
+import { UserService } from 'src/app/services/user-service.service';
+import { ChatRoomComponent } from '../chat-room/chat-room.component';
+
+interface User {
+  activitesPratiquees: any[];
+  avatar: string;
+  friends: any[];
+  niveau: number;
+  sex: string;
+  uid: string;
+  userName: string;
+}
 
 @Component({
   selector: 'app-user-profil',
@@ -98,13 +112,26 @@ export class UserProfilComponent implements OnInit, AfterViewInit {
   seg: string = 'résumé';
   statTable = [];
   position: string;
-  @Input() user: any;
+  @Input() user: User;
+  @Input() currentUser: User;
 
-  constructor(public modalController: ModalController) {}
+  friendBool: boolean;
+
+  constructor(
+    public modalController: ModalController,
+    public userService: UserService,
+    public navController: NavController,
+    public chatService: ChatService
+  ) {}
 
   ngOnInit() {
     this.createGraph();
     this.position = this.createStats();
+    console.log(this.currentUser);
+    this.friendBool = this.currentUser.friends?.some(
+      (friend) => friend.uid == this.user.uid
+    );
+    console.log(this.friendBool);
   }
 
   ngAfterViewInit() {
@@ -122,8 +149,8 @@ export class UserProfilComponent implements OnInit, AfterViewInit {
     this.stat.nativeElement.setAttribute('points', this.position);
   }
 
-  close() {
-    this.modalController.dismiss();
+  close(data?) {
+    this.modalController.dismiss(data);
   }
 
   createStats() {
@@ -159,5 +186,37 @@ export class UserProfilComponent implements OnInit, AfterViewInit {
       });
       this.donneeFormat.push(format);
     });
+  }
+
+  addFriend() {
+    this.userService.addFriend(this.user, this.currentUser);
+    this.friendBool = true;
+  }
+
+  removeFriend() {
+    this.userService.removeFriend(this.user, this.currentUser);
+    this.friendBool = false;
+  }
+
+  controlRoom(): Promise<any[]> {
+    return this.chatService.findRoom(this.currentUser.uid, this.user.uid);
+  }
+
+  async chat() {
+    const check = await this.controlRoom();
+    const roomId = check.length
+      ? ''
+      : await this.chatService.createRoom(this.currentUser, this.user);
+
+    console.log(roomId);
+    const modal = await this.modalController.create({
+      component: ChatRoomComponent,
+      componentProps: {
+        user: this.currentUser,
+        contact: this.user,
+        id: roomId,
+      },
+    });
+    return await modal.present();
   }
 }

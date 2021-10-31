@@ -37,20 +37,18 @@
         align-items: center;
       "
     >
-      <ion-avatar
-        style="height: 100px; width: 100px; border: 5px solid white"
-        [ngClass]="{ greyBlank: !user.avatar }"
-      >
+      <ion-avatar>
         <img
           src="https://img.icons8.com/ios-filled/50/000000/gender-neutral-user.png"
           alt=""
           *ngIf="!user.avatar"
         />
         <img [src]="user.avatar" *ngIf="user.avatar" alt="" />
+        <ion-badge>{{ user.niveau }}</ion-badge>
       </ion-avatar>
       <h3>{{ user.userName }}</h3>
       <div style="display: flex; gap: 10px; align-items: center">
-        <p>248 amis</p>
+        <p>{{ user.friends.length }} amis</p>
         <ion-chip>
           <ion-label style="font-size: 10px">Avancé</ion-label>
         </ion-chip>
@@ -289,4 +287,20 @@
       </ion-row>
     </ion-grid>
   </section>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button>
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button color="primary" (click)="addFriend()" *ngIf="!friendBool">
+        <img src="assets/icon/friends-white.svg" alt=""  />
+      </ion-fab-button>
+      <ion-fab-button color="warning" (click)="removeFriend()" *ngIf="friendBool">
+        <img src="assets/icon/friends-white.svg" alt=""  />
+      </ion-fab-button>
+      <ion-fab-button color="success" (click)="chat()">
+        <img src="assets/icon/chat_white.svg" alt="" />
+      </ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
 </ion-content>

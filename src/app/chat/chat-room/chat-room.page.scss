@@ -1,0 +1,28 @@
+ion-avatar {
+  height: 50px;
+  width: 50px;
+  border: 5px solid white;
+  background: #ddd7d7;
+  position: relative;
+  ion-badge {
+    font-size: 18px;
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    --background: white;
+    --color: black;
+    right: -11px;
+    bottom: 0;
+    border-radius: 50%;
+    box-shadow: 0px 3px 8px #1e1c2715;
+  }
+}
+
+img {
+  border-radius: 50%;
+  background: grey;
+  padding: 10px;
+}

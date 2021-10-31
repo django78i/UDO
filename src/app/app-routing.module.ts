@@ -56,7 +56,11 @@ const routes: Routes = [
       import('./seance-externe-final/seance-externe-final.module').then(
         (m) => m.SeanceExterneFinalPageModule
       ),
+  },  {
+    path: 'chat',
+    loadChildren: () => import('./chat/chat.module').then( m => m.ChatPageModule)
   },
+
 ];
 @NgModule({
   imports: [

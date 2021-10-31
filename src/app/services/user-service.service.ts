@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import { AlertController, Platform } from '@ionic/angular';
-import firebase from 'firebase/app';
-// import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import {
   doc,
   DocumentData,
@@ -42,7 +40,7 @@ export class UserService {
   }
 
   async createUserDataBase(user) {
-   const newUSer = {
+    const newUSer = {
       uid: user.uid,
       mail: user.email,
     };
@@ -105,7 +103,6 @@ export class UserService {
         GoogleAuthProvider.credential(gplUser.idToken)
       );
 
-
       await auth.onAuthStateChanged((user) => {
         if (user) {
           this.findUser(user.uid).then((userDatabase) => {
@@ -114,11 +111,10 @@ export class UserService {
             }
           });
         } else {
-         // this.presentAlert('rien');
+          // this.presentAlert('rien');
         }
       });
-    } catch (err) {
-    }
+    } catch (err) {}
   }
 
   log(info: any) {
@@ -150,7 +146,34 @@ export class UserService {
         // ..
       });
   }
+  async removeFriend(friend, user) {
+    const userTemp = user;
+    const ind = userTemp.friends.findIndex((us) => us.uid == friend.uid);
+    ind != -1 ? userTemp.friends.splice(ind, 1) : '';
+    await updateDoc(doc(this.db, 'users', userTemp.uid), userTemp);
+  }
 
+  async addFriend(friend, user) {
+    var fr = friend;
+    const us = user;
+    us.friends
+      ? us.friends.push({
+          name: fr.userName,
+          uid: fr.uid,
+          avatar: fr.avatar? fr.avatar : '',
+          niveau: fr.niveau,
+        })
+      : (us.friends = [
+          {
+            name: fr.userName,
+            uid: fr.uid,
+            avatar: fr.avatar,
+            niveau: fr.niveau,
+          },
+        ]);
+    console.log(us);
+    await updateDoc(doc(this.db, 'users', us.uid), us);
+  }
   logout() {
     this.auth.signOut();
   }

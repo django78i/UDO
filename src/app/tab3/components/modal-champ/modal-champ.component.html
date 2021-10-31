@@ -43,15 +43,9 @@
         </ng-container>
         <div class="champCarousel">
           <p style="font-size: 20px">
-            {{ championnat.nbParticipants - participantsList.length }}
+            + {{ championnat.nbParticipants - participantsList.length }}
           </p>
         </div>
-      </div>
-      <div class="iconPhoto">
-        <ion-icon
-          name="camera"
-          style="color: rgb(0, 0, 0); font-size: 25px"
-        ></ion-icon>
       </div>
     </ion-card-content>
   </ion-card>
@@ -70,50 +64,8 @@
       <ion-label>Feed</ion-label>
     </ion-segment-button>
   </ion-segment>
-  <ion-toolbar
-    mode="ios"
-    *ngIf="segmentValue === 'feed'"
-    style="--border-width: 0 0 0.55px"
-  >
-    <div style="display: flex; flex-direction: column">
-      <ion-item lines="none">
-        <ion-avatar slot="start" style="margin-right: 15px">
-          <img src="assets/mocks/3.jpg" alt="" />
-          <ion-badge>{{ user.niveau }}</ion-badge>
-        </ion-avatar>
-
-        <ion-input
-          mode="ios"
-          inputmode="text"
-          clear-on-edit
-          placeholder="Publier un post"
-        ></ion-input>
-        <ion-button
-          slot="end"
-          style="
-            --border-radius: 50%;
-            --background: #0a122129;
-            --backdrop-opacity: 9%;
-            height: 30px;
-            width: 30px;
-          "
-        >
-          <img src="assets/icon/icons8-email-send.svg" alt="" />
-        </ion-button>
-      </ion-item>
-      <ion-item lines="none">
-        <ion-icon
-          name="image-outline"
-          (click)="addPhoto()"
-          slot="start"
-        ></ion-icon>
-        <ion-icon name="happy-outline" slot="start"></ion-icon>
-      </ion-item>
-    </div>
-  </ion-toolbar>
-  <!-- </section> -->
 </ion-header>
-<ion-content >
+<ion-content scrollY="false">
   <app-classement
     *ngIf="segmentValue == 'participants'"
     [champ]="championnat"

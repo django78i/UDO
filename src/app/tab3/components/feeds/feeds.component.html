@@ -1,3 +1,64 @@
+<ion-header>
+  <ion-toolbar
+    mode="ios"
+    style="
+      --border-width: 0 0 0.55px;
+      --padding-start: 15px;
+      --padding-end: 15px;
+    "
+  >
+    <div style="display: flex; flex-direction: column">
+      <ion-item lines="none">
+        <ion-avatar slot="start" style="margin-right: 15px">
+          <img src="assets/mocks/3.jpg" alt="" />
+          <ion-badge>{{ user.niveau }}</ion-badge>
+        </ion-avatar>
+
+        <ion-input
+          #inputFeed
+          (ionChange)="inputRead($event)"
+          mode="ios"
+          inputmode="text"
+          clear-on-edit
+          placeholder="Publier un post"
+        ></ion-input>
+        <ion-button
+          slot="end"
+          style="
+            --border-radius: 50%;
+            --background: #0a122129;
+            --backdrop-opacity: 9%;
+            height: 30px;
+            width: 30px;
+          "
+        >
+          <img
+            (click)="send()"
+            src="assets/icon/icons8-email-send.svg"
+            alt=""
+          />
+        </ion-button>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-icon
+          *ngIf="!picture"
+          name="image-outline"
+          (click)="addPhoto()"
+          slot="start"
+        ></ion-icon>
+        <div style="position: relative" *ngIf="picture">
+          <img [src]="picture" alt="" class="photoJoin" />
+          <img
+            src="assets/icon/closeIconPhoto.svg"
+            class="iconPhotoJoin"
+            alt=""
+            (click)="deletePhoto()"
+          />
+        </div>
+      </ion-item>
+    </div>
+  </ion-toolbar>
+</ion-header>
 <ion-content>
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
@@ -31,15 +92,15 @@
                       />
                     </ion-avatar>
                     <ion-label>
-                      <p>{{ item.user.name }}</p>
+                      <p>{{ item.username }}</p>
                       <div style="display: flex; gap: 5px; align-items: center">
                         <img src="../../assets/icon/testIconCateg.svg" alt="" />
                         <p style="font-size: 10px; font-weight: 900">
                           {{ item.activity }}
                         </p>
-                        <ion-note style="font-size: 10px"
-                          >Il y'a 5 min</ion-note
-                        >
+                        <ion-note style="font-size: 10px">{{
+                          item.startDate | timeRelative
+                        }}</ion-note>
                       </div>
                     </ion-label>
                   </ion-item>
@@ -54,9 +115,9 @@
               </ion-row>
             </ion-grid>
           </ion-toolbar>
-          <p style="padding-left: 20px; margin: 0">{{ item.title }}</p>
-          <div *ngIf="item.src" class="postPhoto">
-            <ion-skeleton-text></ion-skeleton-text>
+          <p style="padding-left: 20px; margin: 0">{{ item.text }}</p>
+          <div *ngIf="item.photo" class="postPhoto">
+            <img [src]="item.photo" alt="" style="height: 100%; width: 100%" />
             <!-- <video
             #player
             playsinline
@@ -66,9 +127,6 @@
           >
             <source [src]="item.src" type="video/mp4" />
           </video> -->
-          </div>
-          <div *ngIf="!item.src" class="postPhoto">
-            <ion-skeleton-text></ion-skeleton-text>
           </div>
         </ion-card-header>
         <ion-card-header *ngIf="item.isLive == true" (click)="openDetail(item)">
@@ -99,21 +157,23 @@
           </ion-item>
         </ion-card-header>
         <ion-card-content style="padding: 0">
-          <div style="display: flex; gap: 10px; margin-top: 5px;">
+          <div style="display: flex; gap: 10px; margin-top: 5px">
             <img src="../../assets/icon/Icon feather-share-2.svg" alt="" />
             <img
               (click)="presentPopover(i, item)"
               src="../../assets/icon/Icon material-add-circle-outline.svg"
               alt=""
             />
-            <div style=" overflow-x: auto">
-              <div style="display: inline-flex ;">
-                <ion-chip outline *ngFor="let rect of item.reactions">
-                  <ion-avatar>
-                    <img [src]="rect.icon" alt="" />
-                  </ion-avatar>
-                  <ion-label>{{ rect.nombre }}</ion-label>
-                </ion-chip>
+            <div style="overflow-x: auto">
+              <div style="display: inline-flex">
+                <ng-container *ngFor="let rect of item.reactions">
+                  <ion-chip outline *ngIf="rect.nombre != 0">
+                    <ion-avatar>
+                      <img [src]="rect.icon" alt="" />
+                    </ion-avatar>
+                    <ion-label>{{ rect.nombre }}</ion-label>
+                  </ion-chip>
+                </ng-container>
               </div>
             </div>
           </div>
@@ -142,4 +202,5 @@
     >
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
+  <div style="height: 200px; width: 100%"></div>
 </ion-content>

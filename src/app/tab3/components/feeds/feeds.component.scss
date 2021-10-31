@@ -6,11 +6,11 @@ video {
   border-radius: 20px;
 }
 
-.contenu {
-  height: 100%;
-  padding-bottom: 100px;
-  overflow-y: auto;
-}
+// .contenu {
+//   // height: 100%;
+//   // padding-bottom: 100px;
+//   // overflow-y: auto;
+// }
 
 ion-card-header {
   padding: 0;
@@ -108,7 +108,7 @@ ion-grid {
 }
 
 .postPhoto {
-  height: 200px;
+  height: 250px;
   width: 100%;
   border-radius: 20px;
 
@@ -121,6 +121,11 @@ ion-grid {
   ion-grid {
     --ion-grid-padding: 0px;
   }
+}
+
+ion-content {
+  --padding-start: 15px;
+  --padding-end: 15px;
 }
 
 ion-card-content {
@@ -173,4 +178,13 @@ swiper ion-card {
     font-size: 9px;
     font-weight: 700;
   }
+}
+
+.photoJoin {
+  height: 50px;
+}
+.iconPhotoJoin {
+  position: absolute;
+  top: 0;
+  right: -8px;
 }

@@ -19,6 +19,7 @@ import { ChampionnatsService } from 'src/app/services/championnats.service';
 export class MessagesComponent implements OnInit, OnDestroy {
   message: any;
   @Input() post: any;
+  @Input() user: any;
   messagesList: any;
   subscription: Subscription;
   constructor(
@@ -38,11 +39,18 @@ export class MessagesComponent implements OnInit, OnDestroy {
   }
 
   async openProfil(sender) {
+    console.log(sender);
     const modal = await this.modalController.create({
       component: UserProfilComponent,
       componentProps: {
         user: sender,
+        currentUser: this.user,
       },
+    });
+    modal.onDidDismiss().then((data) => {
+      if (data.data == 'encore') {
+        this.modalController.dismiss();
+      }
     });
     return await modal.present();
   }

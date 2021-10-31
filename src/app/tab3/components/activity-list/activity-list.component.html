@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header *ngIf="header">
   <ion-toolbar>
     <ion-button
       slot="start"
@@ -10,7 +10,7 @@
     <ion-title>Liste des Activités</ion-title>
   </ion-toolbar>
 </ion-header>
-<section style="coverflow: auto">
+<section style="overflow: auto; height: 100%">
   <ng-container *ngIf="activites.length">
     <ng-container *ngFor="let act of activites; let i = index">
       <ion-item
@@ -22,9 +22,7 @@
       >
         <ion-label>
           <p class="sousTitre black">{{ act.nom }}</p>
-          <p style="font-size: 10px">
-            {{ act.sousAcitivite.length }} Activtés
-          </p>
+          <p style="font-size: 10px">{{ act.sousAcitivite.length }} Activtés</p>
         </ion-label>
       </ion-item>
       <ng-container>
@@ -43,7 +41,7 @@
             <ion-item lines="none" [ngClass]="{ small: !act.active }">
               <ion-checkbox
                 [(ngModel)]="sous.isChecked"
-                (ionChange)="change($event, i, j, sous)"
+                (click)="change(sous)"
               ></ion-checkbox>
               <ion-label>{{ sous.nom }}</ion-label>
             </ion-item>

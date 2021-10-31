@@ -28,6 +28,7 @@ import { EmojisComponent } from '../components/emojis/emojis.component';
 import { DetailPostComponent } from './components/detail-post/detail-post.component';
 import { MessagesComponent } from './components/messages/messages.component';
 import { TimeFeedPipe } from '../pipe/time-feed.pipe';
+import { ChatRoomComponent } from '../components/chat-room/chat-room.component';
 
 @NgModule({
   imports: [
@@ -44,6 +45,7 @@ import { TimeFeedPipe } from '../pipe/time-feed.pipe';
   ],
   declarations: [
     Tab3Page,
+    ChatRoomComponent,
     ModalChampComponent,
     SliderChallengeComponent,
     TimeRelativePipe,

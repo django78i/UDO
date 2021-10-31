@@ -1,6 +1,11 @@
 <ion-header style="padding: 20px; background: #f7f7fa">
   <section style="background: #f7f7fa; margin: 0 15px; margin-bottom: 10px">
-    <ion-label>{{ step * 100 }}%</ion-label>
+    <ion-item lines="none">
+      <ion-label slot="start">{{ step * 100 }}%</ion-label>
+      <ion-label slot="end" style="margin: 0; font-size: 12px"
+        >{{ activeIndex + 1 }}/4 STEPS</ion-label
+      >
+    </ion-item>
 
     <ion-progress-bar
       style="
@@ -14,7 +19,12 @@
   </section>
 </ion-header>
 <ion-content>
-  <ion-slides pager="false" [options]="slideOpts" #slider>
+  <ion-slides
+    pager="false"
+    [options]="slideOpts"
+    (ionSlideDidChange)="change($event)"
+    #slider
+  >
     <ion-slide>
       <section class="sectionZone">
         <ion-label>
@@ -50,9 +60,17 @@
             <ion-input (ionChange)="changeInput($event)"> </ion-input>
           </ion-item>
         </div>
-        <ion-button (click)="savePhoto()" class="buttonNextSlide">
-          suivant
-        </ion-button>
+        <ion-fab
+          horizontal="start"
+          vertical="bottom"
+          slot="fixed"
+          style="width: 95%"
+          (click)="savePhoto()"
+        >
+          <ion-button expand="block" class="buttonNextSlide">
+            suivant
+          </ion-button>
+        </ion-fab>
       </section>
     </ion-slide>
     <ion-slide>
@@ -65,9 +83,17 @@
           </p>
         </ion-label>
         <app-gender (choix)="choiceSex($event)"></app-gender>
-        <ion-button (click)="genderSlide()" class="buttonNextSlide">
-          suivant
-        </ion-button>
+        <ion-fab
+          horizontal="start"
+          vertical="bottom"
+          slot="fixed"
+          style="width: 95%"
+          (click)="genderSlide()"
+        >
+          <ion-button expand="block" class="buttonNextSlide">
+            suivant
+          </ion-button>
+        </ion-fab>
       </section>
     </ion-slide>
     <ion-slide>
@@ -82,9 +108,34 @@
         (taille)="physicParam($event)"
         (poids)="physicParam($event)"
       ></app-physics>
-      <ion-button (click)="physicSlide()" class="buttonNextSlide">
-        suivant
-      </ion-button>
+      <ion-fab
+        horizontal="start"
+        vertical="bottom"
+        slot="fixed"
+        style="width: 95%"
+        (click)="physicSlide()"
+      >
+        <ion-button expand="block" class="buttonNextSlide">
+          suivant
+        </ion-button>
+      </ion-fab>
+    </ion-slide>
+    <ion-slide>
+      <app-activity-list
+        [header]="false"
+        (activitesEvent)="eventActivite($event)"
+      ></app-activity-list>
+      <ion-fab
+        horizontal="start"
+        vertical="bottom"
+        slot="fixed"
+        style="width: 95%"
+        (click)="validate()"
+      >
+        <ion-button expand="block" class="buttonNextSlide">
+          suivant
+        </ion-button>
+      </ion-fab>
     </ion-slide>
   </ion-slides>
 </ion-content>

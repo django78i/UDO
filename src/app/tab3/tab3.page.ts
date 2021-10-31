@@ -7,7 +7,11 @@ import {
   QueryList,
   ViewChildren,
 } from '@angular/core';
-import { AnimationController, ModalController } from '@ionic/angular';
+import {
+  AnimationController,
+  ModalController,
+  NavController,
+} from '@ionic/angular';
 import { BehaviorSubject, from, Observable, Subscription } from 'rxjs';
 import { SwiperOptions } from 'swiper';
 import { SwiperComponent } from 'swiper/angular';
@@ -19,6 +23,7 @@ import { CreateChampPopUpComponent } from './components/create-champ-pop-up/crea
 import { MenuUserComponent } from '../components/menu-user/menu-user.component';
 import { UserService as UserService } from '../services/user-service.service';
 import { ChampionnatsService } from '../services/championnats.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tab3',
@@ -62,7 +67,10 @@ export class Tab3Page implements OnInit, AfterContentChecked {
     public userService: UserService,
     public champService: ChampionnatsService,
     public zone: NgZone,
-    private ref: ChangeDetectorRef
+    private ref: ChangeDetectorRef,
+    public navController: NavController,
+    public router: Router,
+    public navCtl : NavController
   ) {}
 
   ngOnInit() {
@@ -76,18 +84,17 @@ export class Tab3Page implements OnInit, AfterContentChecked {
         this.champService.champEnCoursSubject$.subscribe((champ) => {
           this.loaderUserChamp = false;
           this.userChampionnats = champ;
-
         });
       //Championnats en attente
       this.champService.getChampionnats(this.user);
       this.loaderChamp = true;
-      this.championnatSubscription = this.champService.champSubject$
-        .subscribe((champ) => {
+      this.championnatSubscription = this.champService.champSubject$.subscribe(
+        (champ) => {
           this.loaderChamp = false;
-          this.championnatsList = champ ;
+          this.championnatsList = champ;
           this.ref.detectChanges();
-        });
-
+        }
+      );
     });
 
     this.challenges = this.http.get('../../assets/mocks/challenges.json').pipe(
@@ -170,5 +177,9 @@ export class Tab3Page implements OnInit, AfterContentChecked {
       },
     });
     return await modal.present();
+  }
+
+  chatPage() {
+    this.navCtl.navigateForward(['chat']);
   }
 }

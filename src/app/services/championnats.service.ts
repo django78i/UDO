@@ -124,14 +124,14 @@ export class ChampionnatsService {
 
   async sendMessage(msg, postUid) {
     console.log(msg, postUid);
-    await addDoc(collection(this.db, `session-now/${postUid}/messages`), msg);
+    await addDoc(collection(this.db, `post-session-now/${postUid}/messages`), msg);
   }
 
   async getMessage(postUid) {
     console.log('mess');
 
     const docRef = query(
-      collection(this.db, 'session-now', postUid, 'messages'),
+      collection(this.db, 'post-session-now', postUid, 'messages'),
       orderBy('date', 'desc')
     );
     const unsubscribe = onSnapshot(docRef, (querySnapshot) => {

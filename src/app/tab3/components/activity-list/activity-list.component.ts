@@ -7,6 +7,7 @@ import {
   OnDestroy,
   OnInit,
   Output,
+  Input,
 } from '@angular/core';
 import {
   BehaviorSubject,
@@ -24,65 +25,14 @@ import { map, tap } from 'rxjs/operators';
   styleUrls: ['./activity-list.component.scss'],
 })
 export class ActivityListComponent implements OnInit, OnDestroy {
-  activites: any[] = [
-    // {
-    //   nom: 'Athlétisme',
-    //   nbActivites: 40,
-    //   ssActivites: [
-    //     { isChecked: false, nom: 'Saut en hauteur' },
-    //     { isChecked: false, nom: '100m' },
-    //     { isChecked: false, nom: '200m' },
-    //     { isChecked: false, nom: 'Saut en longueur' },
-    //   ],
-    //   all: false,
-    // },
-    // {
-    //   nom: 'Natation',
-    //   nbActivites: 12,
-    //   ssActivites: [
-    //     { isChecked: false, nom: 'libre' },
-    //     { isChecked: false, nom: '4 x 100m' },
-    //     { isChecked: false, nom: 'crawl' },
-    //   ],
-    //   all: false,
-    // },
-    // {
-    //   nom: 'Handisport',
-    //   nbActivites: 12,
-    //   ssActivites: [
-    //     { isChecked: false, nom: 'libre' },
-    //     { isChecked: false, nom: '4 x 100m' },
-    //     { isChecked: false, nom: 'crawl' },
-    //   ],
-    //   all: false,
-    // },
-    // {
-    //   nom: 'Football',
-    //   nbActivites: 12,
-    //   ssActivites: [
-    //     { isChecked: false, nom: 'libre' },
-    //     { isChecked: false, nom: '4 x 100m' },
-    //     { isChecked: false, nom: 'crawl' },
-    //   ],
-    //   all: false,
-    // },
-    // {
-    //   nom: 'BasketBall',
-    //   nbActivites: 12,
-    //   ssActivites: [
-    //     { isChecked: false, nom: 'libre' },
-    //     { isChecked: false, nom: '4 x 100m' },
-    //     { isChecked: false, nom: 'crawl' },
-    //   ],
-    //   all: false,
-    // },
-  ];
+  activites: any[] = [];
   activities$: Observable<any>;
   activitesSub$: Subject<any[]> = new BehaviorSubject(null);
   choix: any[] = [];
   subscription: Subscription;
   @Output() activitesEvent: EventEmitter<any> = new EventEmitter();
   @Output() backAction: EventEmitter<any> = new EventEmitter();
+  @Input() header: boolean;
 
   constructor(public http: HttpClient, private ref: ChangeDetectorRef) {}
 
@@ -135,7 +85,9 @@ export class ActivityListComponent implements OnInit, OnDestroy {
   }
 
   change(categ) {
-    if (categ.isChecked == true) {
+    console.log(categ);
+    if (!categ.isChecked) {
+      console.log('on push')
       this.choix.push(categ.nom);
     } else {
       const indCategorieInTable = this.choix.findIndex((r) => r == categ.nom);
@@ -143,6 +95,7 @@ export class ActivityListComponent implements OnInit, OnDestroy {
         ? this.choix.splice(indCategorieInTable, 1)
         : '';
     }
+    console.log(this.choix);
     this.activitesEvent.emit(this.choix);
   }
 
