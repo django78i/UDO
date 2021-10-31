@@ -10,6 +10,7 @@ import moment from 'moment';
 })
 export class ListMetricsPage implements OnInit {
   currentChoix ={name:'Réactions',nombre:'1307',active:false};
+  sessionNow: any;
   listChoix = [
   // {name:'Durée',fieldname:'duree', img:'assets/images/timer.svg',secondeImg:'assets/images/timer_w.svg', nombre:'1307',color:'#3CAFEB',active:false,padding:'13px 15px',width:'25px',height:'29px'},
   {name:'Distance',fieldname:'distance',img:'assets/images/distance2.svg' ,secondeImg:'assets/images/distance_w.svg',color:'#3CAFEB', nombre:'1307',active:false,padding:'15px 15px',width:'25px',height:'23px'},
@@ -25,6 +26,7 @@ export class ListMetricsPage implements OnInit {
     private health: Health,) { }
 
   ngOnInit() {
+     this.sessionNow = JSON.parse(localStorage.getItem('sessionNow'));
     const value = this.navParams.data.choix;
     for(let val of this.listChoix){
       if(val.name === value.name){
@@ -38,10 +40,10 @@ export class ListMetricsPage implements OnInit {
   queryMetrics(metric, item) {
     if (metric === 'steps' || metric === 'distance') {
       this.health.queryAggregated({
-        startDate: new Date(new Date().getTime() - 1 * 24 * 60 * 60 * 1000), // three days ago
+        startDate: new Date(this.sessionNow.startDate), // three days ago
         endDate: new Date(), // now
         dataType: metric,
-        bucket: 'day',
+        bucket: 'hour',
         //limit: 1000
       }).then(res => {
         item.nombre = res.length > 0 ? (Math.round((parseFloat(res[res.length - 1]?.value) + Number.EPSILON) * 100) / 100) : '0';
@@ -51,7 +53,7 @@ export class ListMetricsPage implements OnInit {
     }
     else {
       this.health.query({
-        startDate: new Date(new Date().getTime() - 1 * 24 * 60 * 60 * 1000), // three days ago
+        startDate: new Date(this.sessionNow.startDate), // three days ago
         endDate: new Date(), // now
         dataType: metric,
         limit: 100
@@ -63,7 +65,7 @@ export class ListMetricsPage implements OnInit {
     }
 
     this.health.query({
-      startDate: new Date(new Date().getTime() - 1 * 24 * 60 * 60 * 1000), // three days ago
+      startDate: new Date(new Date(this.sessionNow.startDate).getTime()-10*60*60*1000) ,
       endDate: new Date(), // now
       dataType: 'activity',
       limit: 100

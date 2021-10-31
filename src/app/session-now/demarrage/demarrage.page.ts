@@ -296,11 +296,11 @@ export class DemarragePage implements OnInit {
   }
   displayRecap() {
     this.stop();
-    let listMetricAuhorised=['steps','distance','height','weight'];
+    const listMetricAuhorised=['steps','distance','calories','activity','height','weight'];
     this.sessionNow.isLive=false;
     this.sessionNow.duration=this.mn+':'+this.s;
     for (let metric of this.listElement){
-      for(let metricAutorised of listMetricAuhorised){
+      for(const metricAutorised of listMetricAuhorised){
         if(metric.fieldname===metricAutorised){
           this.sessionNow.metrics.push(metric);
         }

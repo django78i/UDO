@@ -39,74 +39,11 @@ export class ResultatPage implements OnInit {
     }
     this.counter = JSON.parse(localStorage.getItem('counter'));
     let sessionNow = JSON.parse(localStorage.getItem('sessionNow'));
-    if (sessionNow) {
-      let list = sessionNow.reactions;
-      let currentSeconds,currentMinutes,currentHeures;
-      currentSeconds = moment().diff(sessionNow.startDate, 'seconds');
-      currentMinutes = moment().diff(sessionNow.startDate, 'minutes');
-      currentHeures = moment().diff(sessionNow.startDate, 'hours');
-      if(currentSeconds>60){
-        if(currentMinutes>60){
-          this.dateSession = 'il ya ' + currentHeures + ' heures';
-        }else{
-          this.dateSession = 'il ya ' + currentMinutes + ' minutes';
-        }
-      }else{
-        this.dateSession = 'il ya ' + currentSeconds + ' secondes';
-      }
-      // if (currentDate > 60) {
-      //   currentDate = moment().diff(sessionNow.startDate, 'hours');
-      //   if (currentDate > 60) {
-      //     currentDate = moment().diff(sessionNow.startDate, 'days');
-      //     this.dateSession = 'il ya ' + currentDate + ' jours';
-      //   } else {
-      //     this.dateSession = 'il ya ' + currentDate + ' heures';
-      //   }
-      // } else {
-      //   if (currentDate < 60) {
-      //     currentDate = moment().diff(sessionNow.startDate, 'seconds');
-      //     this.dateSession = 'il ya ' + currentDate + ' secondes';
-      //   }
-      //   else {
-      //     this.dateSession = 'il ya ' + currentDate + ' minutes';
-      //   }
-      // }
-      if(list.length!=0){
-      for (let val of list) {
-        let currentValue;
-        let date = moment(val.mapValue.fields.date.stringValue).diff(moment(), 'minutes');
-        if (date > 60) {
-          date = moment(val.mapValue.fields.date.stringValue).diff(moment(), 'hours');
-          if (date > 60) {
-            date = moment(val.mapValue.fields.date.stringValue).diff(moment(), 'days');
-            currentValue = 'il ya ' + date + ' jours';
-          } else {
-            currentValue = 'il ya ' + date + ' heures';
-          }
-        } else {
-          if (date < 60) {
-            currentValue = 'il ya ' + date + ' secondes';
-          }
-          else {
-            currentValue = 'il ya ' + date + ' minutes';
-          }
-        }
-        let value = {
-          icon: "assets/images/" + val.mapValue.fields.reactionType.stringValue,
-          commentaire: val.mapValue.fields.commentaire.stringValue,
-          username: val.mapValue.fields.username.stringValue,
-          img: 'assets/images/personn.png',
-          date: currentValue
 
-        }
-        this.listReactions.push(value);
-
-      }}
-
-    }
   }
 
   ngOnInit() {
+    this.listNotif=[];
     this.activite = JSON.parse(localStorage.getItem('activite'));
     this.listElement = JSON.parse(localStorage.getItem('choix'));
 
@@ -116,6 +53,54 @@ export class ResultatPage implements OnInit {
       //if (this.isPicture)
       // this.sessionNow.photo=this.
       // this.activite = item;
+      if (this.sessionNow) {
+        let list = this.sessionNow.reactions;
+        let currentSeconds,currentMinutes,currentHeures;
+        currentSeconds = moment().diff(this.sessionNow.startDate, 'seconds');
+        currentMinutes = moment().diff(this.sessionNow.startDate, 'minutes');
+        currentHeures = moment().diff(this.sessionNow.startDate, 'hours');
+        if(currentSeconds>60){
+          if(currentMinutes>60){
+            this.dateSession = 'il ya ' + currentHeures + ' heures';
+          }else{
+            this.dateSession = 'il ya ' + currentMinutes + ' minutes';
+          }
+        }else{
+          this.dateSession = 'il ya ' + currentSeconds + ' secondes';
+        }
+
+        if(list && list?.length !== 0){
+          for (let val of list) {
+            let currentValue;
+            let date = moment(val.mapValue.fields.date.stringValue).diff(moment(), 'minutes');
+            if (date > 60) {
+              date = moment(val.mapValue.fields.date.stringValue).diff(moment(), 'hours');
+              if (date > 60) {
+                date = moment(val.mapValue.fields.date.stringValue).diff(moment(), 'days');
+                currentValue = 'il ya ' + date + ' jours';
+              } else {
+                currentValue = 'il ya ' + date + ' heures';
+              }
+            } else {
+              if (date < 60) {
+                currentValue = 'il ya ' + date + ' secondes';
+              }
+              else {
+                currentValue = 'il ya ' + date + ' minutes';
+              }
+            }
+            let value = {
+              icon: 'assets/images/' + val.mapValue.fields.reactionType.stringValue,
+              commentaire: val.mapValue.fields.commentaire.stringValue,
+              username: val.mapValue.fields.username.stringValue,
+              img: 'assets/images/personn.png',
+              date: currentValue
+            };
+            this.listReactions.push(value);
+
+          }}
+
+      }
     }
   }
 
