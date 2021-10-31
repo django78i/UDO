@@ -34,7 +34,7 @@ export class DemarragePage implements OnInit {
   image: any;
   listChoix = [
     {
-      img: 'assets/images/distance.svg',
+      img: 'assets/images/distance_m.svg',
       nombre: '0',
       name: 'Distance',
       exposant: 'KM',
@@ -48,14 +48,14 @@ export class DemarragePage implements OnInit {
       fieldname: 'steps'
     },
     {
-      img: 'assets/images/coeur.svg',
+      img: 'assets/images/heart_m.svg',
       nombre: '0',
       name: 'BPM',
       exposant: '',
       fieldname: 'heart_rate'
     },
     {
-      img: 'assets/images/calorie.svg',
+      img: 'assets/images/calories_m.svg',
       nombre: '0',
       name: 'Calories',
       exposant: 'CAL',
@@ -157,7 +157,7 @@ export class DemarragePage implements OnInit {
 
     this.listElement = [
       {
-        img: 'assets/images/distance.svg',
+        img: 'assets/images/distance_m.svg',
         nombre: '0',
         name: 'Distance',
         exposant: 'KM',
@@ -171,14 +171,14 @@ export class DemarragePage implements OnInit {
         fieldname: 'steps'
       },
       {
-        img: 'assets/images/coeur.svg',
+        img: 'assets/images/heart_m.svg',
         nombre: '0',
         name: 'BPM',
         exposant: '',
         fieldname: 'heart_rate'
       },
       {
-        img: 'assets/images/calorie.svg',
+        img: 'assets/images/calories_m.svg',
         nombre: '0',
         name: 'Calories',
         exposant: 'CAL',

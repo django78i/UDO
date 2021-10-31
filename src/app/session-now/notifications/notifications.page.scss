@@ -62,7 +62,7 @@ ion-content{
         display: none;
     }
     .item-name{
-        --ion-background-color: transparent; 
+        --ion-background-color: transparent;
         margin-left: -18px;
         width: 100%;
     }
@@ -113,8 +113,8 @@ ion-content{
         .textFab{
             font-family: "PoppinsBold" !important;
             letter-spacing: -0.16px;
-            color: #19191C; 
-            font-size: 16px; 
+            color: #19191C;
+            font-size: 16px;
         }
         ion-img{
             width: 14px;
@@ -130,17 +130,17 @@ ion-content{
     }
     .message{
         font-family: "PoppinsSemiBold" !important;
-        font-size: 23px;
         color: #000000;
         margin: auto;
         margin-top: 75px;
         text-align: center;
-
+        font-size: 18px;
+        font-weight: 600;
     }
     .c-text{
         color: #707070;
         font-family: "PoppinsMedium" !important;
-        font-size: 18px;
+        font-size: 15px;
         margin: auto;
         margin-top: 10px;
         text-align: center;
