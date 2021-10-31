@@ -43,8 +43,9 @@ export class NotificationsPage implements OnInit {
           this.listReactions.push(value);
 
         }
+      }else{
+        this.listReactions= [];
       }
-      console.log("reactions", this.listReactions);
 
     }
   }

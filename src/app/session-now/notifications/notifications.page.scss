@@ -10,7 +10,7 @@ ion-content{
         ion-title{
             text-align: center;
             color: #2A2A2C;
-            font-family: "PoppinsBold";
+            font-family: "PoppinsBold" !important;
             font-size: 13px;
         }
         .c-head-label{
@@ -100,6 +100,7 @@ ion-content{
     .c-ion-fab{
         width: 128px;
         height: 55px;
+        margin-bottom: 20px;
         background: #FFFFFF 0% 0% no-repeat padding-box;
         box-shadow: 0px 13px 36px #00000029;
         border-radius: 27px;
@@ -119,5 +120,29 @@ ion-content{
             width: 14px;
             margin-left: 34px;
         }
+    }
+
+    .img-empty{
+        width: 220px;
+        margin-top: 146px!important;
+        margin: auto;
+
+    }
+    .message{
+        font-family: "PoppinsSemiBold" !important;
+        font-size: 23px;
+        color: #000000;
+        margin: auto;
+        margin-top: 75px;
+        text-align: center;
+
+    }
+    .c-text{
+        color: #707070;
+        font-family: "PoppinsMedium" !important;
+        font-size: 18px;
+        margin: auto;
+        margin-top: 10px;
+        text-align: center;
     }
 }
