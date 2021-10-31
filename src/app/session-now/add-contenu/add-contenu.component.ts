@@ -20,11 +20,15 @@ export class AddContenuComponent implements OnInit {
   sessionNow: any;
   postModel: PostModel;
   user;
+  activite;
+  comment = "";
   constructor(private modalCtr: ModalController,
     private storage: AngularFireStorage,
     private sessionNowService: SessionNowService) {
     this.sessionNow = JSON.parse(localStorage.getItem('sessionNow'));
     this.user = JSON.parse(localStorage.getItem('user'));
+    this.base64Image = localStorage.getItem('picture');
+    this.activite = JSON.parse(localStorage.getItem('activite'));
   }
 
   ngOnInit() { }
@@ -33,38 +37,16 @@ export class AddContenuComponent implements OnInit {
     const closeModal = 'Modal Closed';
     await this.modalCtr.dismiss(closeModal);
   }
-
-  async openCamera() {
-    const image = await Camera.getPhoto({
-      quality: 100,
-      allowEditing: false,
-      source: CameraSource.Camera,
-      resultType: CameraResultType.DataUrl,
-    });
-
-    // Here you get the image as result.
-    const theActualPicture = image.dataUrl;
-    this.base64Image = theActualPicture;
-    localStorage.setItem('picture', this.base64Image);
-    this.upload();
-    // this.modalCtr.dismiss(this.base64Image);
-
-  }
-
-  async openGallery() {
-    const image = await Camera.getPhoto({
-      quality: 100,
-      allowEditing: false,
-      source: CameraSource.Photos,
-      resultType: CameraResultType.DataUrl,
-    });
-
-    // Here you get the image as result.
-    const theActualPicture = image.dataUrl;
-    this.base64Image = theActualPicture;
-    this.upload();
-    // this.modalCtr.dismiss(this.base64Image);
-
+  publier() {
+    if (this.sessionNow) {
+      this.upload();
+      localStorage.setItem('addPicture',""+true);
+      
+    } else {
+      localStorage.setItem('comment',this.comment);
+      localStorage.setItem('addPicture',""+false);
+      this.sessionNowService.show('Image chargée avec succès', 'success');
+    }
   }
 
   upload(): void {
@@ -94,8 +76,9 @@ export class AddContenuComponent implements OnInit {
                 postedBy: this.user ? this.user.userName : '',
                 sessionUUID: this.sessionNow.uid,
                 picture: this.base64Image,
-                type:'picture'
+                type: 'picture',
               }
+              postModel['comment']=this.comment;
               this.sessionNowService.create(postModel, 'post-session-now')
                 .then(resPicture => {
                   this.close();
@@ -117,8 +100,6 @@ export class AddContenuComponent implements OnInit {
       });
   }
 
-
-
   base64ToImage(dataURI) {
     const fileDate = dataURI.split(',');
     // const mime = fileDate[0].match(/:(.*?);/)[1];
@@ -137,5 +118,5 @@ export class PostModel {
   postedBy: string;
   sessionUUID: string;
   picture: string;
-  type:string;
+  type: string;
 }

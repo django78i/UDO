@@ -9,7 +9,8 @@ import { Platform } from '@ionic/angular';
 import { DonneesPriveComponent } from '../donnees-prive/donnees-prive.component';
 import {SessionNowService} from '../../services/session-now-service.service';
 import { AddContenuComponent } from '../add-contenu/add-contenu.component';
-import moment from 'moment';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { ShowNotificationComponent } from '../show-notification/show-notification.component';
 
 
 
@@ -85,6 +86,9 @@ export class DemarragePage implements OnInit {
     this.getSessionNow();
   }
 
+  /**
+   * cette fonction permet de recuperer la seance now en cours
+   */
   async getSessionNow() {
 
     this.interval = setInterval(() => {
@@ -92,20 +96,28 @@ export class DemarragePage implements OnInit {
       if (sessionNow) {
         this.snService.find(sessionNow.uid, 'session-now').then((resp: any) => {
           let value = resp._document.data.value.mapValue.fields;
-          if (value.reactions.arrayValue) {
+          if (value.reactions.arrayValue.values) {
             this.reactions = value.reactions.arrayValue.values?.length;
             this.sessionNow.reactions = value.reactions.arrayValue.values;
-           // localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
+            if(this.sessionNow.reactions.length!= sessionNow.reactions.length && this.reactions!=0){
+              this.showNotification();
+            }
+            // localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
           }else{
             this.reactions = 0;
+            this.sessionNow.reactions = [];
           }
-          this.sessionNow.reactions = value.reactions.arrayValue.values;
+
           localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
         });
 
       }
     }, 10000);
   }
+
+  /**
+   * cette alert permet de confirmer la sortie de l'application
+   */
   async presentAlertConfirm() {
     this.stop();
     const alert = await this.alertController.create({
@@ -145,18 +157,18 @@ export class DemarragePage implements OnInit {
 
     this.listElement = [
       {
-        img: 'assets/images/pas.svg',
-        nombre: '0',
-        name: 'Nombre de pas',
-        exposant: '',
-        fieldname: 'steps'
-      },
-      {
         img: 'assets/images/distance.svg',
         nombre: '0',
         name: 'Distance',
         exposant: 'KM',
         fieldname: 'distance'
+      },
+      {
+        img: 'assets/images/pas.svg',
+        nombre: '0',
+        name: 'Nombre de pas',
+        exposant: '',
+        fieldname: 'steps'
       },
       {
         img: 'assets/images/coeur.svg',
@@ -218,6 +230,10 @@ export class DemarragePage implements OnInit {
       .catch(err => console.error(err));
     localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
   }
+
+  /**
+   * cette fonction permet de verififer si la plateforme est disponible pour le health
+   */
   async checkPlatformReady() {
     const ready = !!await this.platform.ready();
     if (ready) {
@@ -234,6 +250,10 @@ export class DemarragePage implements OnInit {
     }
 
   }
+
+  /**
+   * cette fonction permet de parcourir et recuperer les metric a afficher sur la page
+   */
   getMetrics() {
     if (this.status === 'play') {
       for (let item of this.listElement) {
@@ -246,6 +266,11 @@ export class DemarragePage implements OnInit {
     }
   }
 
+  /**
+   * ce callback est appelé pour procéder le resultat obtenu apres la recuperation de la metric de p
+   * @param res
+   * @param item
+   */
   processMetricResult(res,item){
     if(item.fieldname ==='speed' ){
       const distance=      res.length > 0 ? res[res.length - 1]?.value: 0;
@@ -264,6 +289,12 @@ export class DemarragePage implements OnInit {
     }
     console.log('res', res);
   }
+
+  /**
+   * cette fonction permet d'afficher les metrics
+   * @param metric
+   * @param item
+   */
   // @ts-ignore
   queryMetrics(metric, item) {
     let option = {
@@ -299,6 +330,10 @@ export class DemarragePage implements OnInit {
     });
     return await modal.present();
   }
+
+  /**
+   * cette fonction permet d'afficher la page de recapitulatif
+   */
   displayRecap() {
     this.stop();
     const listMetricAuhorised=['steps','distance','calories','activity','height','weight'];
@@ -311,6 +346,7 @@ export class DemarragePage implements OnInit {
         }
       }
     }
+
     this.sessionNow.endDate=new Date().toISOString().split('T')[0] +' '+new Date().toISOString().split('T')[1].split('.')[0];
     localStorage.setItem('counter', JSON.stringify({ mn: this.mn, s: this.s }));
     localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
@@ -318,6 +354,25 @@ export class DemarragePage implements OnInit {
     this.router.navigate(['session-now/resultat']);
   }
 
+  /**
+   * cette fonction permet d'ouvrir la camera
+   */
+  async openCamera() {
+    const image = await Camera.getPhoto({
+      quality: 100,
+      allowEditing: false,
+      source: CameraSource.Camera,
+      resultType: CameraResultType.DataUrl,
+    });
+
+
+    // Here you get the image as result.
+    const theActualPicture = image.dataUrl;
+    localStorage.setItem('picture', theActualPicture);
+    this.addContenu();
+    // this.modalCtr.dismiss(this.base64Image);
+
+  }
   /**
    * cette fonction permet d'afficher un toast message
    * @param message
@@ -339,6 +394,26 @@ export class DemarragePage implements OnInit {
   information() {
     this.router.navigate(['session-now/help']);
   }
+
+  /**
+   * cette fonction permet d'afficher une nouvelles notifications
+   */
+  async showNotification() {
+    const modal = await this.modalCtrl.create({
+      component: ShowNotificationComponent,
+      cssClass: 'my-custom-show-notification-modal',
+      componentProps: {
+        data:{
+          data:this.sessionNow.reactions[0]
+        }
+      }
+    });
+    modal.onDidDismiss().then((data: any) => {
+
+    });
+    return await modal.present();
+
+  }
   /**
    * Cette methode permet d'ouvrir le modal des notification
    */
@@ -352,8 +427,10 @@ export class DemarragePage implements OnInit {
       }
     });
     modal.onDidDismiss().then((data: any) => {
+
     });
     return await modal.present();
+
   }
 
   /**

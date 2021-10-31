@@ -75,7 +75,10 @@
   <ion-row class="c-row">
     <ion-item lines="none" class="c-item" *ngFor="let item of listReactions">
       <ion-row slot="start" class="c-row-first">
-        <ion-img [src]="item?.img" class="img-personn"></ion-img>
+        <ion-avatar>
+          <ion-img [src]="item?.img" class="img-personn"></ion-img>
+        </ion-avatar>
+        
         <ion-label class="nombre"> {{item?.nombre}}</ion-label>
       </ion-row>
       <ion-grid class="c-grid">

@@ -10,7 +10,10 @@
   <ion-row class="c-row" *ngIf="listReactions.length !=0 ">
     <ion-item lines="none" class="c-item" *ngFor="let item of listReactions">
       <ion-row slot="start" class="c-row-first">
-        <ion-img [src]="item?.img" class="img-personn"></ion-img>
+        <ion-avatar>
+          <ion-img [src]="item?.img" class="img-personn"></ion-img>
+        </ion-avatar>
+        
         <span class="nombre"> {{item?.nombre}}</span>
       </ion-row>
       <ion-grid class="c-grid">

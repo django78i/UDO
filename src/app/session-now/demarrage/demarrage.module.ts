@@ -19,6 +19,7 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { environment } from '../../../environments/environment.prod';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import 'firebase/storage';
+import { ShowNotificationComponent } from '../show-notification/show-notification.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -29,7 +30,7 @@ import 'firebase/storage';
     AngularFireStorageModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
   ],
-  declarations: [DemarragePage,AidePage,ReglagesPage],
+  declarations: [DemarragePage,AidePage,ReglagesPage,ShowNotificationComponent],
   providers: [Camera,{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },Health
  ,{provide: HAMMER_GESTURE_CONFIG, useClass: IonicGestureConfig} ],
 

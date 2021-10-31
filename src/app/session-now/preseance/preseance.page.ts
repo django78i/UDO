@@ -4,6 +4,7 @@ import { ReglagesPage } from '../reglages/reglages.page';
 import { Router } from '@angular/router';
 import { ActivitiesPage } from '../activities/activities.page';
 import { AddContenuComponent } from '../add-contenu/add-contenu.component';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 
 @Component({
   selector: 'app-preseance',
@@ -76,10 +77,24 @@ export class PreseancePage implements OnInit {
       cssClass: 'my-custom-contenu-modal',
     });
     modal.onDidDismiss().then((data: any) => {
-      this.base64 =data.data;
       
     });
     return await modal.present();
+
+  }
+  async openCamera() {
+    const image = await Camera.getPhoto({
+      quality: 100,
+      allowEditing: false,
+      source: CameraSource.Camera,
+      resultType: CameraResultType.DataUrl,
+    });
+
+    // Here you get the image as result.
+    const theActualPicture = image.dataUrl;
+    localStorage.setItem('picture', theActualPicture);
+    this.addContenu();
+    // this.modalCtr.dismiss(this.base64Image);
 
   }
   start() {
