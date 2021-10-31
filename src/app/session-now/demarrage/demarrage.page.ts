@@ -96,7 +96,7 @@ export class DemarragePage implements OnInit {
           if (value.reactions.arrayValue.values) {
             this.reactions = value.reactions.arrayValue.values?.length;
             this.sessionNow.reactions = value.reactions.arrayValue.values;
-            if(this.sessionNow.reactions.length!= sessionNow.reactions.length){
+            if(this.sessionNow.reactions.length!= sessionNow.reactions.length && this.reactions!=0){
               this.showNotification();
             }
             // localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
