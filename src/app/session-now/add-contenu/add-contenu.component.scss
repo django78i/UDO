@@ -1,76 +1,83 @@
+
 ion-content{
-    top: auto;
-    position: absolute;
-    z-index: 20001;
-    height: 238px;
-    bottom: 0 !important;
-    --background: transparent !important;
-    overflow: hidden;
-    .element{
-        background: #FFFFFF 0% 0% no-repeat padding-box;
-        box-shadow: 0px -17px 46px #0000001A;
-        border-radius: 24px 24px 0px 0px;
-        
-    }
-    .c-row{
-        margin-top: 17px;
-        margin-left: 17px;
-        .name{
+    --ion-background-color: #F4F5FA;
+
+    ion-toolbar{
+        .close{
+            width: 22px;
+            height: 22px;
+        }
+        ion-title{
             text-align: center;
-            font-size: 18px;
-            font-family: "PoppinsSemiBold" !important;
+            color: #2A2A2C;
+            font-family: "PoppinsBold" !important;
+            font-size: 13px;
+        }
+    }
+    .c-img{
+        border-radius: 29px;
+            height: 224px;
+            width: 85%;
+            margin: auto;
+            margin-top: 45px;
+    }
+    .activite{
+        margin-top: 50px;
+        .rond{
+            width: 38px;
+            height: 38px;
+            background: #FFFFFF;
+            border-radius: 50%;
+            margin-left: 30px;
+            padding: 10px 12px;
+            ion-img{
+                width: 14px;
+                height: 15px;
+            }
+        }
+        .nameActivity{
             letter-spacing: -0.18px;
             color: #000000;
-            margin: auto;
+            font-size: 18px;
+            font-family: "PoppinsSemiBold" !important;
+            margin-left: 15px;
+            margin-top: 6px;
+
         }
     }
-    .c-item{
-        margin-top: 17px;
-        .cc-item{
-            width: 100%;
+    .message{
+        margin: 0 20px;
+        ion-textarea{
+            border-bottom: 2px solid #70707045;
+            height: 45px;
+            margin-left: 12px;
+        }
+        .crayon{
+            margin-left: -30px;
+            margin-top: 14px;
+        }
+        .sc-ion-textarea-md-h{
+            letter-spacing: -0.14px !important;
+            color: #26272B !important;
+            opacity: 0.58 !important;
+            font-size: 14px !important;
+            font-family: "PoppinsMedium" !important;
             --padding-start: 0px;
         }
-        .rond{
-            padding: 17px;
-            margin: 13px 0;
-            width: 55px;
-            height: 55px;
-            background: #EAEBF2 0% 0% no-repeat padding-box;
-            border-radius: 17px;
-            margin-left: 20px;
-            margin-right: 14px;
-            .imgLast{
-                width: 26px;
-                height: 20px;
-            }
-        }
-        .rond2{
-            padding: 18px 16px;
-            margin: 13px 0;
-            width: 55px;
-            height: 55px;
-            background: #EAEBF2 0% 0% no-repeat padding-box;
-            border-radius: 17px;
-            margin-left: 20px;
-            margin-right: 14px;
-            .imgLast{
-                width: 26px;
-                height: 20px;
-            }
-        }
-        .title{
-            letter-spacing: -0.14px;
-            color: #000000;
-            font-size: 14px;
+    }
+    .c-ion-fab{
+        background: #3E4ADD 0% 0% no-repeat padding-box;
+        border-radius: 33px;
+        width: 88%;
+        margin: 0 20px;
+        height: 89px;
+        text-align: center;
+        padding-top: 30px;
+        span{
+            letter-spacing: 0px;
+            color: #FFFFFF;
+            font-size: 18px;
             font-family: "PoppinsSemiBold" !important;
         }
-        .desc{
-            letter-spacing: 0px;
-            color: #14213A;
-            opacity: 0.5;
-            font-size: 12px;
-            font-family: "PoppinsMedium" !important;
-        }
-
     }
 }

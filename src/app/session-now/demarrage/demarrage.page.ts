@@ -9,7 +9,7 @@ import { Platform } from '@ionic/angular';
 import { DonneesPriveComponent } from '../donnees-prive/donnees-prive.component';
 import {SessionNowService} from '../../services/session-now-service.service';
 import { AddContenuComponent } from '../add-contenu/add-contenu.component';
-import moment from 'moment';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { ShowNotificationComponent } from '../show-notification/show-notification.component';
 
 
@@ -213,14 +213,12 @@ export class DemarragePage implements OnInit {
 
         this.snService.create(sessionNow, 'post-session-now')
           .then(resPost => {
-            console.log("je suis la");
             // this.sessionNow.uid = res;
             // localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
           })
 
 
-      })
-      .catch(err => console.error(err));
+      }).catch(err => console.error(err));
     localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
   }
   async checkPlatformReady() {
@@ -318,7 +316,21 @@ export class DemarragePage implements OnInit {
 
     this.router.navigate(['session-now/resultat']);
   }
+  async openCamera() {
+    const image = await Camera.getPhoto({
+      quality: 100,
+      allowEditing: false,
+      source: CameraSource.Camera,
+      resultType: CameraResultType.DataUrl,
+    });
 
+    // Here you get the image as result.
+    const theActualPicture = image.dataUrl;
+    localStorage.setItem('picture', theActualPicture);
+    this.addContenu();
+    // this.modalCtr.dismiss(this.base64Image);
+
+  }
   async showMessage(message, type) {
     const toast = await this.toastCtrl.create({
       message,
