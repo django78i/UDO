@@ -145,18 +145,18 @@ export class DemarragePage implements OnInit {
 
     this.listElement = [
       {
-        img: 'assets/images/distance.svg',
-        nombre: '0',
-        name: 'Distance',
-        exposant: 'KM',
-        fieldname: 'distance'
-      },
-      {
         img: 'assets/images/pas.svg',
         nombre: '0',
         name: 'Nombre de pas',
         exposant: '',
         fieldname: 'steps'
+      },
+      {
+        img: 'assets/images/distance.svg',
+        nombre: '0',
+        name: 'Distance',
+        exposant: 'KM',
+        fieldname: 'distance'
       },
       {
         img: 'assets/images/coeur.svg',
@@ -211,7 +211,7 @@ export class DemarragePage implements OnInit {
             console.log("je suis la");
             // this.sessionNow.uid = res;
             // localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
-          })
+          });
 
 
       })
@@ -287,7 +287,6 @@ export class DemarragePage implements OnInit {
   }
 
   async publier() {
-
     const modal = await this.modalCtrl.create({
       component: DonneesPriveComponent,
       cssClass: 'my-custom-contenu-modal',
@@ -306,14 +305,18 @@ export class DemarragePage implements OnInit {
         }
       }
     }
-
     this.sessionNow.endDate=new Date().toISOString().split('T')[0] +' '+new Date().toISOString().split('T')[1].split('.')[0];
     localStorage.setItem('counter', JSON.stringify({ mn: this.mn, s: this.s }));
     localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
-
+    // redirection vers le composant qui affiche le recapitulatif
     this.router.navigate(['session-now/resultat']);
   }
 
+  /**
+   * cette fonction permet d'afficher un toast message
+   * @param message
+   * @param type
+   */
   async showMessage(message, type) {
     const toast = await this.toastCtrl.create({
       message,
@@ -323,10 +326,16 @@ export class DemarragePage implements OnInit {
     });
     toast.present();
   }
+
+  /**
+   * cette methode permet de naviguer vers le comosant aide
+   */
   information() {
     this.router.navigate(['session-now/help']);
   }
-
+  /**
+   * Cette methode permet d'ouvrir le modal des notification
+   */
   async notification() {
     localStorage.setItem('counter', JSON.stringify({ mn: this.mn, s: this.s }));
     const modal = await this.modalCtrl.create({
@@ -337,11 +346,13 @@ export class DemarragePage implements OnInit {
       }
     });
     modal.onDidDismiss().then((data: any) => {
-
     });
     return await modal.present();
-
   }
+
+  /**
+   * Cette methode permet d'ouvrir le modal de selection des photos
+   */
   async addContenu() {
     const modal = await this.modalCtrl.create({
       component: AddContenuComponent,
@@ -354,6 +365,9 @@ export class DemarragePage implements OnInit {
 
   }
 
+  /**
+   * Cette methode asynchrone permet d'ouvrir sous forme de modal le composant reglage
+   */
   async reglage() {
     localStorage.setItem('counter', JSON.stringify({ mn: this.mn, s: this.s }));
     const modal = await this.modalCtrl.create({
@@ -370,7 +384,10 @@ export class DemarragePage implements OnInit {
 
   }
 
-  /*La fonction update_chrono incrémente le nombre de millisecondes par 1 <==> 1*cadence = 100 */
+  /**
+   * La fonction update_chrono incrémente le nombre de millisecondes
+   * par 1 <==> 1*cadence = 100
+   * */
   updateChrono() {
     this.ms += 1;
     /*si ms=10 <==> ms*cadence = 1000ms <==> 1s alors on incrémente le nombre de secondes*/
@@ -388,30 +405,44 @@ export class DemarragePage implements OnInit {
       this.h += 1;
     }
   }
+
+  /**
+   * cette methode permet de démarrer le chrono
+   */
   start() {
     this.status = 'play';
     this.t = setInterval(() => { this.updateChrono(); }, 100);
     // btn_start.disabled=true;
   }
+  /**
+   * cette methode permet d'arreter  le chrono
+   */
   stop() {
     this.status = 'pause';
     clearInterval(this.t);
     //btn_start.disabled=false;
   }
 
+  /**
+   * cette methode synchrone permet d'ouvrir sous forme de modal le composant listMetric
+   * @param item
+   * @param index
+   */
   async choix(item, index) {
     const modal = await this.modalCtrl.create({
       component: ListMetricsPage,
       cssClass: 'my-custom-activite-modal',
       componentProps: {
-        choix: item
+        choix: item,
+        min:this.mn,
+        sec:this.s
       }
     });
     modal.onDidDismiss().then((data: any) => {
       if (data.data) {
         let value = data.data;
         for (let el of this.listElement) {
-          if (el.name == value.name) {
+          if (el.name === value.name) {
             this.showMessage('Cette activité est déjà dans la liste', 'warning')
             return;
           }
@@ -430,6 +461,18 @@ export class DemarragePage implements OnInit {
     });
     return await modal.present();
 
+  }
+
+  /**
+   * Cette méthode permet de calculer la vitesse
+   * @param distanceMeter
+   * @param timeSeconds
+   */
+  calculSpeed(distanceMeter,timeSeconds){
+    return {
+      m:distanceMeter/timeSeconds ,
+      km:(distanceMeter/timeSeconds)*3.6
+    };
   }
 }
 export class SessionNowModel{
