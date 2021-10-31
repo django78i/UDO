@@ -10,6 +10,7 @@ import { DonneesPriveComponent } from '../donnees-prive/donnees-prive.component'
 import {SessionNowService} from '../../services/session-now-service.service';
 import { AddContenuComponent } from '../add-contenu/add-contenu.component';
 import moment from 'moment';
+import { ShowNotificationComponent } from '../show-notification/show-notification.component';
 
 
 
@@ -92,14 +93,18 @@ export class DemarragePage implements OnInit {
       if (sessionNow) {
         this.snService.find(sessionNow.uid, 'session-now').then((resp: any) => {
           let value = resp._document.data.value.mapValue.fields;
-          if (value.reactions.arrayValue) {
+          if (value.reactions.arrayValue.values) {
             this.reactions = value.reactions.arrayValue.values?.length;
             this.sessionNow.reactions = value.reactions.arrayValue.values;
-           // localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
+            if(this.sessionNow.reactions.length!= sessionNow.reactions.length){
+              this.showNotification();
+            }
+            // localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
           }else{
             this.reactions = 0;
+            this.sessionNow.reactions = [];
           }
-          this.sessionNow.reactions = value.reactions.arrayValue.values;
+          
           localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
         });
 
@@ -327,6 +332,22 @@ export class DemarragePage implements OnInit {
     this.router.navigate(['session-now/help']);
   }
 
+  async showNotification() {
+    const modal = await this.modalCtrl.create({
+      component: ShowNotificationComponent,
+      cssClass: 'my-custom-show-notification-modal',
+      componentProps: {
+        data:{
+          data:this.sessionNow.reactions[0]
+        }
+      }
+    });
+    modal.onDidDismiss().then((data: any) => {
+
+    });
+    return await modal.present();
+
+  }
   async notification() {
     localStorage.setItem('counter', JSON.stringify({ mn: this.mn, s: this.s }));
     const modal = await this.modalCtrl.create({
@@ -342,6 +363,7 @@ export class DemarragePage implements OnInit {
     return await modal.present();
 
   }
+
   async addContenu() {
     const modal = await this.modalCtrl.create({
       component: AddContenuComponent,
