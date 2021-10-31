@@ -245,38 +245,44 @@ export class DemarragePage implements OnInit {
        setTimeout(() => { that.getMetrics(); }, 1000);
     }
   }
+
+  processMetricResult(res,item){
+    if(item.fieldname ==='speed' ){
+      const distance=      res.length > 0 ? res[res.length - 1]?.value: 0;
+      if(distance!==0){
+        const speed=this.calculSpeed(distance,((this.mn*60)+this.s));
+        item.nombre= (Math.round((parseFloat(speed.km.toString()) + Number.EPSILON) * 100) / 100);
+      }
+    }
+    else{
+      item.nombre = res.length > 0 ? (Math.round((parseFloat(res[res.length - 1]?.value) + Number.EPSILON) * 100) / 100) : '0';
+    }
+    if(item.fieldname === 'distance'){
+      if(item.nombre!==0 && item.nombre!==undefined && item.nombre!==''){
+        item.nombre= Math.round(item.nombre / 100) / 10;
+      }
+    }
+    console.log('res', res);
+  }
   // @ts-ignore
   queryMetrics(metric, item) {
+    let option = {
+      startDate: new Date(this.sessionNow.startDate), // three days ago
+      endDate: new Date(), // now
+      dataType: metric
+    };
     console.log(new Date(this.sessionNow.startDate));
-    if (metric === 'steps' || metric === 'distance') {
-      this.health.queryAggregated({
-        startDate: new Date(this.sessionNow.startDate), // three days ago
-        endDate: new Date(), // now
-        dataType: metric,
-        bucket: 'hour',
-        //limit: 1000
-      }).then(res => {
-
-        item.nombre = res.length > 0 ? (Math.round((parseFloat(res[res.length - 1]?.value) + Number.EPSILON) * 100) / 100) : '0';
-        if(metric === 'distance'){
-          if(item.nombre!==0 && item.nombre!==undefined && item.nombre!==''){
-            item.nombre= Math.round(item.nombre / 100) / 10;
-          }
-        }
-        console.log('res', res);
-      })
+    if (metric === 'steps' || metric === 'distance' || metric==='speed') {
+      if( metric==='speed') {
+        option.dataType = 'distance';
+      }
+      option['bucket']='hour';
+      this.health.queryAggregated(option).then(res => this.processMetricResult(res,item) )
         .catch(e => console.log('error3 ', e));
     }
     else {
-      this.health.query({
-        startDate: new Date(this.sessionNow.startDate), // three days ago
-        endDate: new Date(), // now
-        dataType: metric,
-        limit: 100
-      }).then(res => {
-        item.nombre = res.length > 0 ? (Math.round((parseFloat(res[res.length - 1]?.value) + Number.EPSILON) * 100) / 100) : '0';
-        console.log('res', res);
-      })
+      option['limit']=100;
+      this.health.query(option).then(res =>this.processMetricResult(res,item))
         .catch(e => console.log('error1 ', e));
     }
 
