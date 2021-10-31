@@ -3,7 +3,7 @@ import { IonSlides, ModalController } from '@ionic/angular';
 import { ReglagesPage } from '../reglages/reglages.page';
 import { Router } from '@angular/router';
 import { ActivitiesPage } from '../activities/activities.page';
-import { AddContenuComponent } from '../add-contenu/add-contenu.component';
+import { AddPostContenuComponent } from '../add-post-contenu/add-post-contenu.component';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 
 @Component({
@@ -73,21 +73,23 @@ export class PreseancePage implements OnInit {
 
   async addContenu() {
     const modal = await this.modalCtrl.create({
-      component: AddContenuComponent,
+      component: AddPostContenuComponent,
       cssClass: 'my-custom-contenu-modal',
     });
     modal.onDidDismiss().then((data: any) => {
-      
+
     });
     return await modal.present();
 
   }
   async openCamera() {
     const image = await Camera.getPhoto({
-      quality: 100,
+      quality: 50,
       allowEditing: false,
       source: CameraSource.Camera,
       resultType: CameraResultType.DataUrl,
+    //  saveToGallery: true
+
     });
 
     // Here you get the image as result.

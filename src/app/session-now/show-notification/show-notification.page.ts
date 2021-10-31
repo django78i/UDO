@@ -4,14 +4,14 @@ import moment from 'moment';
 
 @Component({
   selector: 'app-show-notification',
-  templateUrl: './show-notification.component.html',
-  styleUrls: ['./show-notification.component.scss'],
+  templateUrl: './show-notification.page.html',
+  styleUrls: ['./show-notification.page.scss'],
 })
-export class ShowNotificationComponent implements OnInit {
+export class ShowNotificationPage implements OnInit {
 
   item ;
-  constructor(private modalCtr:ModalController, private navParams: NavParams,) {
-    
+  constructor(private modalCtr: ModalController, private navParams: NavParams,) {
+
     let val =  this.navParams.data.data;
     let currentDate= val.mapValue.fields.date.stringValue;
     let currentValue;
@@ -34,7 +34,7 @@ export class ShowNotificationComponent implements OnInit {
       username: val.mapValue.fields.username.stringValue,
       img: 'assets/images/personn.png',
       date: currentValue
-  
+
     }
   setTimeout(() => {
     this.close();

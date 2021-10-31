@@ -6,8 +6,7 @@ import {
   NavController,
 } from '@ionic/angular';
 import { MenuUserComponent } from '../components/menu-user/menu-user.component';
-import {AddContenuComponent} from "../session-now/add-contenu/add-contenu.component";
-import {ExternalSessionNowComponent} from "../session-now/external-session-now/external-session-now.component";
+import {ExternalSessionNowComponent} from '../session-now/external-session-now/external-session-now.component';
 
 @Component({
   selector: 'app-tabs',

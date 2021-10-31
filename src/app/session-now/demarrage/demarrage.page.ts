@@ -8,9 +8,9 @@ import { Health } from '@ionic-native/health/ngx';
 import { Platform } from '@ionic/angular';
 import { DonneesPriveComponent } from '../donnees-prive/donnees-prive.component';
 import {SessionNowService} from '../../services/session-now-service.service';
-import { AddContenuComponent } from '../add-contenu/add-contenu.component';
+import { AddPostContenuComponent } from '../add-post-contenu/add-post-contenu.component';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
-import { ShowNotificationComponent } from '../show-notification/show-notification.component';
+import { ShowNotificationPage } from '../show-notification/show-notification.page';
 
 
 
@@ -359,7 +359,7 @@ export class DemarragePage implements OnInit {
    */
   async openCamera() {
     const image = await Camera.getPhoto({
-      quality: 100,
+      quality: 50,
       allowEditing: false,
       source: CameraSource.Camera,
       resultType: CameraResultType.DataUrl,
@@ -400,7 +400,7 @@ export class DemarragePage implements OnInit {
    */
   async showNotification() {
     const modal = await this.modalCtrl.create({
-      component: ShowNotificationComponent,
+      component: ShowNotificationPage,
       cssClass: 'my-custom-show-notification-modal',
       componentProps: {
         data:{
@@ -438,7 +438,7 @@ export class DemarragePage implements OnInit {
    */
   async addContenu() {
     const modal = await this.modalCtrl.create({
-      component: AddContenuComponent,
+      component: AddPostContenuComponent,
       cssClass: 'my-custom-contenu-modal',
     });
     modal.onDidDismiss().then((data: any) => {

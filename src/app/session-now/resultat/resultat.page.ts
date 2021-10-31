@@ -121,7 +121,7 @@ export class ResultatPage implements OnInit {
       }
       else if(localStorage.getItem('picture')){
         this.upload();
-      }  
+      }
     // } else {
     //   this.addContenu();
     // }

@@ -1,25 +1,28 @@
 <ion-content>
-  <ion-toolbar>
-    <ion-img slot="start" (click)="close()" class="close" src="assets/images/closeGray.svg"></ion-img>
-    <ion-title class="name">POSTER UN MEDIA</ion-title>
-  </ion-toolbar>
-  <ion-row>
-    <img [src]="base64Image" class="c-img" />
-  </ion-row>
-  <ion-row class="activite">
-    <span class="rond">
-      <ion-img [src]="activite.image"></ion-img>
-    </span>
-    <span class="nameActivity">{{activite.name}}</span>
-  </ion-row>
-  <ion-row class="message">
-    <ion-textarea [(ngModel)]="comment" class="c-textarea" placeholder="Comment c’est passé votre séance ?">
-    </ion-textarea>
-    <ion-img class="crayon" src="assets/images/crayon.PNG"></ion-img>
-  </ion-row>
-  <ion-fab class="c-ion-fab" (click)="publier()" vertical="bottom" slot="fixed">
-    <!-- <ion-fab-button> -->
-    <span>Publier</span>
-    <!-- </ion-fab-button> -->
-  </ion-fab>
+  <ion-grid class="element">
+    <ion-row class="c-row">
+      <ion-img (click)="close()" class="c-image" src="assets/images/closeGray.svg"></ion-img>
+      <span class="name">Ajouter du contenu</span>
+    </ion-row>
+    <ion-row class="c-item">
+      <ion-item class="cc-item" (click)="openCamera()">
+     <span class="rond">
+       <ion-img class="imgFirst" src="assets/images/photo.svg"></ion-img>
+     </span>
+        <ion-grid>
+          <ion-row class="title">Ouvrir l’appareil photo</ion-row>
+          <ion-row class="desc">Prendre des photos et des vidéos</ion-row>
+        </ion-grid>
+      </ion-item>
+      <ion-item class="cc-item" lines="none" (click)="openGallery()">
+     <span class="rond2">
+       <ion-img class="imgLast" src="assets/images/media.svg"></ion-img>
+     </span>
+        <ion-grid>
+          <ion-row class="title">Média</ion-row>
+          <ion-row class="desc">Partager des photos et des vidéos</ion-row>
+        </ion-grid>
+      </ion-item>
+    </ion-row>
+  </ion-grid>
 </ion-content>

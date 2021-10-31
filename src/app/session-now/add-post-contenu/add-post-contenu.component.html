@@ -1,0 +1,25 @@
+<ion-content>
+  <ion-toolbar>
+    <ion-img slot="start" (click)="close()" class="close" src="assets/images/closeGray.svg"></ion-img>
+    <ion-title class="name">POSTER UN MEDIA</ion-title>
+  </ion-toolbar>
+  <ion-row>
+    <img [src]="base64Image" class="c-img" />
+  </ion-row>
+  <ion-row class="activite">
+    <span class="rond">
+      <ion-img [src]="activite.image"></ion-img>
+    </span>
+    <span class="nameActivity">{{activite.name}}</span>
+  </ion-row>
+  <ion-row class="message">
+    <ion-textarea [(ngModel)]="comment" class="c-textarea" placeholder="Comment c’est passé votre séance ?">
+    </ion-textarea>
+    <ion-img class="crayon" src="assets/images/crayon.PNG"></ion-img>
+  </ion-row>
+  <ion-fab class="c-ion-fab" (click)="publier()" vertical="bottom" slot="fixed">
+    <!-- <ion-fab-button> -->
+    <span>Publier</span>
+    <!-- </ion-fab-button> -->
+  </ion-fab>
+</ion-content>
