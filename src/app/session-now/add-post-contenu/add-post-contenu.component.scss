@@ -80,4 +80,18 @@ ion-content{
             font-family: "PoppinsSemiBold" !important;
         }
     }
+  .publier-bt{
+    background: #3E4ADD 0% 0% no-repeat padding-box !important;
+    border-radius: 33px;
+    width: 88%;
+    margin: 0 20px;
+    height: 89px;
+    text-align: center;
+    span{
+      letter-spacing: 0px;
+      color: #FFFFFF;
+      font-size: 18px;
+      font-family: "PoppinsSemiBold" !important;
+    }
+  }
 }

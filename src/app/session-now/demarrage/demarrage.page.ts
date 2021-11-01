@@ -239,9 +239,9 @@ export class DemarragePage implements OnInit {
     if (ready) {
       // Use plugin functions here
       this.health.requestAuthorization([
-        'distance', 'nutrition',  //read and write permissions
+        'distance', 'nutrition','activity',  //read and write permissions
         {
-          read: ['steps', 'height', 'weight'],//read only permission
+          read: ['steps', 'height', 'weight','heart_rate','calories'],//read only permission
           write: ['height', 'weight']  //write only permission
         }
       ])

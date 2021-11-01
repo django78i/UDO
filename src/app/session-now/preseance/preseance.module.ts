@@ -17,6 +17,8 @@ import {Health} from '@ionic-native/health/ngx';
 import { ReglagesPage } from '../reglages/reglages.page';
 import { AngularFireModule } from '@angular/fire/compat';
 import { environment } from '../../../environments/environment.prod';
+import {Keyboard} from '@ionic-native/keyboard/ngx';
+
 
 @NgModule({
   imports: [
@@ -29,7 +31,7 @@ import { environment } from '../../../environments/environment.prod';
     AngularFireModule.initializeApp(environment.firebaseConfig),
   ],
   declarations: [PreseancePage,ActivitiesPage,ListMetricsPage],
-  providers: [Camera,{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },Health],
+  providers: [Camera,Keyboard,{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },Health],
 
 })
 export class PreseancePageModule {}

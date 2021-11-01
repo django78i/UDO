@@ -17,9 +17,14 @@
     </ion-textarea>
     <ion-img class="crayon" src="assets/images/crayon.PNG"></ion-img>
   </ion-row>
-  <ion-fab class="c-ion-fab" (click)="publier()" vertical="bottom" slot="fixed">
+  <ion-fab [hidden]="isVisible" class="c-ion-fab" (click)="publier()" vertical="bottom" slot="fixed">
     <!-- <ion-fab-button> -->
     <span>Publier</span>
     <!-- </ion-fab-button> -->
   </ion-fab>
+  <ion-row   [hidden]="!isVisible">
+    <ion-button class="publier-bt" (click)="publier()">
+      <span>Publier</span>
+    </ion-button>
+  </ion-row>
 </ion-content>

@@ -20,6 +20,7 @@ import { environment } from '../../../environments/environment.prod';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import 'firebase/storage';
 import { ShowNotificationPage } from '../show-notification/show-notification.page';
+import {Keyboard} from '@ionic-native/keyboard/ngx';
 @NgModule({
   imports: [
     CommonModule,
@@ -31,7 +32,7 @@ import { ShowNotificationPage } from '../show-notification/show-notification.pag
     AngularFireModule.initializeApp(environment.firebaseConfig),
   ],
   declarations: [DemarragePage,AidePage,ReglagesPage,ShowNotificationPage],
-  providers: [Camera,{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },Health
+  providers: [Camera,Keyboard,{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },Health
  ,{provide: HAMMER_GESTURE_CONFIG, useClass: IonicGestureConfig} ],
 
 })

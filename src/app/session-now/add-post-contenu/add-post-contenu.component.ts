@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
-import { ModalController } from '@ionic/angular';
+import {ModalController, Platform} from '@ionic/angular';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { SessionNowService } from '../../services/session-now-service.service';
 import moment from 'moment';
+import { Keyboard }  from '@ionic-native/keyboard/ngx';
+
 
 @Component({
   selector: 'app-add-post-contenu',
@@ -22,13 +24,25 @@ export class AddPostContenuComponent implements OnInit {
   user;
   activite;
   comment = "";
-  constructor(private modalCtr: ModalController,
+  isVisible=false;
+  constructor(private platform: Platform, private modalCtr: ModalController,
+              private keyboard: Keyboard,
     private storage: AngularFireStorage,
     private sessionNowService: SessionNowService) {
     this.sessionNow = JSON.parse(localStorage.getItem('sessionNow'));
     this.user = JSON.parse(localStorage.getItem('user'));
     this.base64Image = localStorage.getItem('picture');
     this.activite = JSON.parse(localStorage.getItem('activite'));
+    this.platform.keyboardDidShow.subscribe(ev => {
+      const { keyboardHeight } = ev;
+      this.isVisible=true;
+      // Do something with the keyboard height such as translating an input above the keyboard.
+    });
+
+    this.platform.keyboardDidHide.subscribe(() => {
+      // Move input back to original location
+      this.isVisible=false;
+    });
   }
 
   ngOnInit() { }
