@@ -3,7 +3,7 @@ import { UserService } from 'src/app/services/user-service.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { getAuth } from '@firebase/auth';
 import { tap } from 'rxjs/operators';
-import { from } from 'rxjs';
+import { BehaviorSubject, from } from 'rxjs';
 import {
   LoadingController,
   ModalController,
@@ -22,6 +22,8 @@ export class ConnexionChoiceComponent implements OnInit {
   mdPasse: string = '';
   email: string = '';
   user: any;
+  errorSub: BehaviorSubject<string> = new BehaviorSubject(null);
+
 
   constructor(
     public userService: UserService,
@@ -33,7 +35,7 @@ export class ConnexionChoiceComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // this.initForm();
+    this.errorSub = this.userService.errorSubject$;
     const auth = getAuth();
     auth.onAuthStateChanged((user) => {
       if (user) {

@@ -18,6 +18,7 @@ import {
   signInWithPopup,
 } from 'firebase/auth';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -25,6 +26,8 @@ import { GooglePlus } from '@ionic-native/google-plus/ngx';
 export class UserService {
   db = getFirestore();
   auth = getAuth();
+  errorSubject$: BehaviorSubject<string> = new BehaviorSubject(null);
+
   constructor(
     private googlePlus: GooglePlus,
     public platform: Platform, // private googlePlus: GooglePlus,
@@ -78,6 +81,7 @@ export class UserService {
   async getCurrentUser(): Promise<DocumentData> {
     const user = await this.auth.currentUser;
     const userDataBase = await this.findUser(user.uid);
+    localStorage.setItem('user', JSON.stringify(userDataBase.data()));
     return userDataBase.data();
   }
 
@@ -126,6 +130,7 @@ export class UserService {
         // ...
       })
       .catch((error) => {
+        this.sendError(error);
         const errorCode = error.code;
         const errorMessage = error.message;
         // ..
@@ -141,6 +146,7 @@ export class UserService {
         this.createUserDataBase(user);
       })
       .catch((error) => {
+        this.sendError(error);
         const errorCode = error.code;
         const errorMessage = error.message;
         // ..
@@ -151,6 +157,19 @@ export class UserService {
     const ind = userTemp.friends.findIndex((us) => us.uid == friend.uid);
     ind != -1 ? userTemp.friends.splice(ind, 1) : '';
     await updateDoc(doc(this.db, 'users', userTemp.uid), userTemp);
+  }
+
+
+  sendError(error) {
+    if (JSON.stringify(error).includes('auth/email-already-in-use')) {
+      this.errorSubject$.next('cette email existe déjà');
+    } else if (JSON.stringify(error).includes('auth/invalid-email')) {
+      this.errorSubject$.next('Format mail invalide');
+    } else if (JSON.stringify(error).includes('auth/wrong-password')) {
+      this.errorSubject$.next('Mot de passe incorrect');
+    } else if (JSON.stringify(error).includes('auth/user-not-found')) {
+      this.errorSubject$.next('Identifiant inconnu');
+    }
   }
 
   async addFriend(friend, user) {

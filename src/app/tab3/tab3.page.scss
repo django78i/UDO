@@ -39,7 +39,11 @@ ion-item.template {
 
 .iconTitle {
   padding-left: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
+
 swiper {
   padding-left: 15px;
   padding-right: 10px;

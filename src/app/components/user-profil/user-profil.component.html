@@ -43,7 +43,7 @@
           alt=""
           *ngIf="!user.avatar"
         />
-        <img [src]="user.avatar" *ngIf="user.avatar" alt="" />
+        <img [src]="user?.avatar" *ngIf="user.avatar" alt="" />
         <ion-badge>{{ user.niveau }}</ion-badge>
       </ion-avatar>
       <h3>{{ user.userName }}</h3>

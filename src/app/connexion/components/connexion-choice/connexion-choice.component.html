@@ -32,6 +32,7 @@
         <ion-icon [name]="hide ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
       </mat-icon>
     </mat-form-field>
+    <p *ngIf="errorSub | async as error" style="color: red">{{ error }}</p>
   </div>
   <button
     (click)="connexion()"
@@ -46,12 +47,11 @@
   >
     Connexion
   </button>
-  <button mat-button matStepperNext>Next</button>
 
   <div
     style="
-      position: absolute;
-      bottom: 5px;
+      position: relative;
+      margin-top: 20px;
       width: 92%;
       display: flex;
       flex-direction: column;

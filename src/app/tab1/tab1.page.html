@@ -60,7 +60,12 @@
       class="sliderFilter"
     >
       <ng-template swiperSlide *ngFor="let filter of filters">
-        <ion-item style="width: auto" lines="none" class="chipFilter">
+        <ion-item
+          (click)="clickFilter(filter.name)"
+          style="width: auto"
+          lines="none"
+          class="chipFilter"
+        >
           <img [src]="filter.icon" style="margin-right: 5px" />
           <ion-label style="font-size: 14px; font-weight: 900"
             >{{filter.name}}</ion-label
@@ -229,5 +234,5 @@
     >
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
-  <div style="height: 200px; width: 100%"></div>
+  <div style="height: 0; width: 100%"></div>
 </ion-content>

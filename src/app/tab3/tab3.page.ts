@@ -47,7 +47,9 @@ export class Tab3Page implements OnInit, AfterContentChecked {
   userChampionnats: any[] = [];
   championnats: Observable<any>;
   championnatsList: any[] = [];
-  championnatsNetwork: Observable<any>;
+  championnatsNetwork: any[] = [];
+
+  // championnatsNetwork: Observable<any>;
   bannData: any;
   affiche: BehaviorSubject<any> = new BehaviorSubject(null);
   user: any;
@@ -56,9 +58,11 @@ export class Tab3Page implements OnInit, AfterContentChecked {
 
   userChampSubscription: Subscription;
   championnatSubscription: Subscription;
+  championnatNetWorkSubscription: Subscription;
 
   loaderUserChamp: boolean;
   loaderChamp: boolean;
+  loaderNetwork: boolean;
 
   constructor(
     private modalController: ModalController,
@@ -95,6 +99,13 @@ export class Tab3Page implements OnInit, AfterContentChecked {
           this.ref.detectChanges();
         }
       );
+      this.champService.getChampionnatNetwork(this.user);
+      this.loaderNetwork = true;
+      this.championnatNetWorkSubscription =
+        this.champService.champNetWork$.subscribe((champ) => {
+          this.loaderNetwork = false;
+          this.championnatsNetwork = champ;
+        });
     });
 
     this.challenges = this.http.get('../../assets/mocks/challenges.json').pipe(
@@ -103,9 +114,9 @@ export class Tab3Page implements OnInit, AfterContentChecked {
       })
     );
 
-    this.championnatsNetwork = this.http
-      .get('../../assets/mocks/championnats.json')
-      .pipe(map((r) => _.filter(r, ['type', 'Network'])));
+    //   this.championnatsNetwork = this.http
+    //     .get('../../assets/mocks/championnats.json')
+    //     .pipe(map((r) => _.filter(r, ['type', 'Network'])));
   }
 
   ngAfterContentChecked(): void {

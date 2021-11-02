@@ -79,11 +79,20 @@
     </ion-item>
     <ion-item lines="full" style="--background: #f4f5fa">
       <ion-icon
+        *ngIf="!picture"
         name="image-outline"
         (click)="addPhoto()"
         slot="start"
       ></ion-icon>
-      <ion-icon name="happy-outline" slot="start"></ion-icon>
+      <div style="position: relative" *ngIf="picture">
+        <img [src]="picture" alt="" class="photoJoin" />
+        <img
+          src="assets/icon/closeIconPhoto.svg"
+          class="iconPhotoJoin"
+          alt=""
+          (click)="deletePhoto()"
+        />
+      </div>
     </ion-item>
   </div>
 </ion-header>

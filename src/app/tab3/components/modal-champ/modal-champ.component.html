@@ -102,10 +102,19 @@
       class="buttonNextSlide"
       (click)="participer()"
       *ngIf="
-        championnat.status == 'en attente' 
-        && userEncours.etat == 'en attente'
+        championnat.status == 'en attente' && userEncours.etat == 'en attente'
       "
       >Participer</ion-button
+    >
+    <ion-button
+      expand="block"
+      class="buttonNextSlide"
+      *ngIf="
+        championnat.status == 'en attente' &&
+        userEncours.etat == 'prêt' &&
+        championnat.createur.uid != user.uid
+      "
+      >{{ championnat.dateDemarrage | timeRelative }}</ion-button
     >
     <ion-button
       expand="block"

@@ -21,6 +21,7 @@ import { map } from 'rxjs/operators';
 export class ChampionnatsService {
   champSubject$: BehaviorSubject<any> = new BehaviorSubject(null);
   champEnCoursSubject$: BehaviorSubject<any> = new BehaviorSubject(null);
+  champNetWork$: BehaviorSubject<any> = new BehaviorSubject(null);
   friendsListSubject$: BehaviorSubject<any> = new BehaviorSubject(null);
   db = getFirestore();
   messagesSubject$: Subject<any> = new Subject();
@@ -49,6 +50,21 @@ export class ChampionnatsService {
           champs.push(doc.data());
         }
         this.champEnCoursSubject$.next(champs);
+      });
+    });
+  }
+
+
+  getChampionnatNetwork(user) {
+    const docRef = query(
+      collection(this.db, 'championnats'),
+      where('type', '==', 'network')
+    );
+    const unsubscribe = onSnapshot(docRef, (querySnapshot) => {
+      const champs = [];
+      querySnapshot.forEach((doc) => {
+        const document = doc.data();
+        this.champNetWork$.next(document);
       });
     });
   }
