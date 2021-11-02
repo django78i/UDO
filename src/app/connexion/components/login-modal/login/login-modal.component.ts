@@ -82,9 +82,9 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
     console.log(this.activeIndex);
   }
 
-  login() {
-    this.userService.connectGoogle();
-  }
+  // login() {
+  //   this.userService.connectGoogle();
+  // }
 
   redirect() {
     this.navController.navigateForward(['']);

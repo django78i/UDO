@@ -11,7 +11,6 @@ import { MusicFeedService } from './services/music-feed.service';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 import { AngularFireModule } from '@angular/fire/compat';
 import { environment } from '../environments/environment.prod';
@@ -41,7 +40,6 @@ import { TimeChampPipe } from './pipe/time-champ.pipe';
     VideoPlayer,
     AppLauncher,
     MusicFeedService,
-    GooglePlus,
     ScreenOrientation,
     VideoCapturePlus,
     VideoEditor,

@@ -50,11 +50,12 @@ export class ConnexionChoiceComponent implements OnInit {
         }, 1000);
       }
     });
+    this.errorSub = this.userService.errorSubject$;
   }
 
-  login() {
-    this.userService.connectGoogle();
-  }
+  // login() {
+  //   this.userService.connectGoogle();
+  // }
 
   async redirect(user): Promise<void> {
     console.log(user);

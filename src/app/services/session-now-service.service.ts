@@ -1,11 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  AlertController,
-  Platform,
-  LoadingController,
-  ToastController,
-} from '@ionic/angular';
-import firebase from 'firebase/app';
+import { AlertController, Platform, LoadingController, ToastController } from '@ionic/angular';
 // import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import {
   collection,
@@ -22,13 +16,7 @@ import {
 } from 'firebase/firestore';
 import {
   getAuth,
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  signInWithCredential,
-  GoogleAuthProvider,
-  signInWithPopup,
 } from 'firebase/auth';
-import { GooglePlus } from '@ionic-native/google-plus/ngx';
 
 @Injectable({
   providedIn: 'root',
@@ -36,7 +24,6 @@ import { GooglePlus } from '@ionic-native/google-plus/ngx';
 export class SessionNowService {
   loader: HTMLIonLoadingElement;
   constructor(
-    private googlePlus: GooglePlus,
     public platform: Platform, // private googlePlus: GooglePlus,
     public alertController: AlertController,
     private loadingCtrl: LoadingController,
