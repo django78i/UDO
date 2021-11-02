@@ -3,7 +3,7 @@ import { UserService } from 'src/app/services/user-service.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { getAuth } from '@firebase/auth';
 import { tap } from 'rxjs/operators';
-import { from } from 'rxjs';
+import { BehaviorSubject, from } from 'rxjs';
 import {
   LoadingController,
   ModalController,
@@ -22,6 +22,7 @@ export class ConnexionChoiceComponent implements OnInit {
   mdPasse: string = '';
   email: string = '';
   user: any;
+  errorSub: BehaviorSubject<string> = new BehaviorSubject(null);
 
   constructor(
     public userService: UserService,
@@ -49,14 +50,15 @@ export class ConnexionChoiceComponent implements OnInit {
         }, 1000);
       }
     });
+    this.errorSub = this.userService.errorSubject$;
   }
 
-  login() {
-    this.userService.connectGoogle();
-  }
+  // login() {
+  //   this.userService.connectGoogle();
+  // }
 
   async redirect(user): Promise<void> {
-    console.log(user)
+    console.log(user);
     const loading = await this.loadingController.create({
       message: 'Veuillez patienter...',
       duration: 2000,

@@ -17,7 +17,7 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
 } from 'firebase/auth';
-import { GooglePlus } from '@ionic-native/google-plus/ngx';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -25,19 +25,11 @@ import { GooglePlus } from '@ionic-native/google-plus/ngx';
 export class UserService {
   db = getFirestore();
   auth = getAuth();
+  errorSubject$: BehaviorSubject<string> = new BehaviorSubject(null);
   constructor(
-    private googlePlus: GooglePlus,
     public platform: Platform, // private googlePlus: GooglePlus,
     public alertController: AlertController
   ) {}
-
-  connectGoogle() {
-    if (this.platform.is('android')) {
-      this.googleSignIn();
-    } else {
-      this.logUserWithGoogle();
-    }
-  }
 
   async createUserDataBase(user) {
     const newUSer = {
@@ -91,34 +83,8 @@ export class UserService {
     await updateDoc(doc(this.db, 'users', user.uid), user);
   }
 
-  async googleSignIn() {
-    const auth = getAuth();
-    try {
-      const gplUser = await this.googlePlus.login({
-        webClientId:
-          '911285735248-p38u0egepsqdnjc0stbmepg11g1cf4bc.apps.googleusercontent.com',
-      });
-
-      await signInWithCredential(
-        auth,
-        GoogleAuthProvider.credential(gplUser.idToken)
-      );
-
-      await auth.onAuthStateChanged((user) => {
-        if (user) {
-          this.findUser(user.uid).then((userDatabase) => {
-            if (!userDatabase.data()) {
-              this.createUserDataBase(user);
-            }
-          });
-        } else {
-          // this.presentAlert('rien');
-        }
-      });
-    } catch (err) {}
-  }
-
   log(info: any) {
+    console.log('log');
     const auth = getAuth();
     signInWithEmailAndPassword(auth, info.mail, info.password)
       .then((userCredential) => {
@@ -127,6 +93,8 @@ export class UserService {
         // ...
       })
       .catch((error) => {
+        console.log(error);
+        this.sendError(error);
         const errorCode = error.code;
         const errorMessage = error.message;
         // ..
@@ -142,11 +110,26 @@ export class UserService {
         this.createUserDataBase(user);
       })
       .catch((error) => {
+        console.log(error);
+        this.sendError(error);
         const errorCode = error.code;
         const errorMessage = error.message;
         // ..
       });
   }
+
+  sendError(error) {
+    if (JSON.stringify(error).includes('auth/email-already-in-use')) {
+      this.errorSubject$.next('cette email existe déjà');
+    } else if (JSON.stringify(error).includes('auth/invalid-email')) {
+      this.errorSubject$.next('Format mail invalide');
+    } else if (JSON.stringify(error).includes('auth/wrong-password')) {
+      this.errorSubject$.next('Mot de passe incorrect');
+    } else if (JSON.stringify(error).includes('auth/user-not-found')) {
+      this.errorSubject$.next('Identifiant inconnu');
+    }
+  }
+
   async removeFriend(friend, user) {
     const userTemp = user;
     const ind = userTemp.friends.findIndex((us) => us.uid == friend.uid);

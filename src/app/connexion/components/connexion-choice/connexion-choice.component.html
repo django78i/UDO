@@ -32,6 +32,7 @@
         <ion-icon [name]="hide ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
       </mat-icon>
     </mat-form-field>
+    <p *ngIf="errorSub | async as error" style="color: red">{{ error }}</p>
   </div>
   <button
     (click)="connexion()"
@@ -46,9 +47,9 @@
   >
     Connexion
   </button>
-  <button mat-button matStepperNext>Next</button>
+  <!-- <button mat-button matStepperNext>Next</button> -->
 
-  <div
+  <!-- <div
     style="
       position: relative;
       margin-top: 20px;
@@ -87,5 +88,5 @@
       <ion-icon name="logo-instagram" slot="start"></ion-icon>Se connecter avec
       Instagram</ion-button
     >
-  </div>
+  </div> -->
 </ion-content>
