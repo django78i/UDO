@@ -153,6 +153,33 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
 
   async saveOnBoarding() {
     const user = await this.userService.getCurrentUser();
+    const table: any[] = [
+      {
+        name: 'corps haut',
+        value: 0,
+      },
+      {
+        name: 'corps bas',
+        value: 0,
+      },
+      {
+        name: 'souplesse',
+        value: 0,
+      },
+      {
+        name: 'explosivité',
+        value: 0,
+      },
+      {
+        name: 'cardio',
+        value: 0,
+      },
+      {
+        name: 'gainage',
+        value: 0,
+      },
+    ];
+
     this.user = {
       ...user,
       sex: this.sex,
@@ -160,6 +187,7 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
       userName: this.pseudo,
       physique: this.physicalParam,
       niveau: 0,
+      metrics: table,
       friends: [],
       avatar: this.pictureURL
         ? this.pictureURL

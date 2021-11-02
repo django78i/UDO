@@ -37,22 +37,23 @@ export class MusicFeedService {
     const table = [];
     const user = await this.userService.getCurrentUser();
     const db = getFirestore();
-    const feedList = await getDocs(collection(db, 'session-now'));
-    feedList.forEach((f) => {
-      table.push({
-        ...f.data(),
-        user: {
-          avatar: '../../assets/mocks/2.jpg',
-          name: 'julio',
-        },
-        createurUid: 'YYXXOwgQgpN1shkyYXdTzyyUgmI3',
-      });
+    const first = query(
+      collection(db, 'post-session-now'),
+      orderBy('startDate', 'desc')
+    );
+
+    const documentSnapshots = await getDocs(first);
+
+    documentSnapshots.forEach((f) => {
+      table.push(f.data());
     });
-    return table;
+    const lastVisible: any =
+      documentSnapshots.docs[documentSnapshots.docs.length - 1];
+    return { table: table, last: lastVisible };
   }
 
   async feedQuery(champUid) {
-    console.log('là')
+    console.log('là');
     const table = [];
 
     const db = getFirestore();
@@ -67,15 +68,7 @@ export class MusicFeedService {
     const documentSnapshots = await getDocs(first);
     documentSnapshots.forEach((f) => {
       // this.lastVisible = f.data().key;
-      table.push({
-        ...f.data(),
-        user: {
-          avatar: '../../assets/mocks/2.jpg',
-          name: 'julio',
-        },
-        championnat: 'e46c71c5bbe5aac6c708c2a91ea94661',
-        createurUid: 'YYXXOwgQgpN1shkyYXdTzyyUgmI3',
-      });
+      table.push(f.data());
     });
 
     // Get the last visible document
@@ -85,30 +78,33 @@ export class MusicFeedService {
     return { table: table, last: this.lastVisible };
   }
 
-  async addQuery(last, champUid) {
+  async addQuery(last, champUid?, code?) {
     const db = getFirestore();
     const table = [];
     // Construct a new query starting at this document,
     // get the next 25 cities.
-    const next = query(
-      collection(db, 'post-session-now'),
-      where('championnat', '==', champUid),
-      orderBy('startDate', 'desc'),
-      startAfter(last),
-      limit(18)
-    );
+    const next = code
+      ? query(
+          collection(db, 'post-session-now'),
+          where('championnat', '==', champUid),
+          orderBy('startDate', 'desc'),
+          startAfter(last),
+          limit(18)
+        )
+      : query(
+          collection(db, 'post-session-now'),
+          orderBy('startDate', 'desc'),
+          startAfter(last),
+          limit(18)
+        );
     const documentSnapshots = await getDocs(next);
     documentSnapshots.forEach((f) => {
-      table.push({
-        ...f.data(),
-        user: {
-          avatar: '../../assets/mocks/2.jpg',
-          name: 'julio',
-        },
-        createurUid: 'YYXXOwgQgpN1shkyYXdTzyyUgmI3',
-      });
+      table.push(f.data());
     });
-    return table;
+    this.lastVisible =
+      documentSnapshots.docs[documentSnapshots.docs.length - 1];
+
+    return { table: table, last: this.lastVisible };
   }
 
   async updatePost(post) {

@@ -19,18 +19,18 @@
           (click)="launchExternalApp()"
           style="top: -30px"
         >
-          <ion-fab-button>
-            <ion-icon name="logo-youtube"></ion-icon>
+          <ion-fab-button style="--background: white">
+            <img src="assets/icon/seanceNowExterne.svg" alt="" />
           </ion-fab-button>
         </ion-fab-list>
         <ion-fab-list side="top" (click)="launch()">
-          <ion-fab-button>
-            <ion-icon name="logo-youtube"></ion-icon>
+          <ion-fab-button style="--background :#F65889">
+            <img src="/assets/icon/seanceNow.svg" alt="" />
           </ion-fab-button>
         </ion-fab-list>
         <ion-fab-list side="end" style="top: -30px">
           <ion-fab-button>
-            <ion-icon name="logo-youtube" (click)="launch('gmail')"></ion-icon>
+            <ion-icon name="logo-youtube" (click)="createPost()"></ion-icon>
           </ion-fab-button>
         </ion-fab-list>
       </ion-fab>

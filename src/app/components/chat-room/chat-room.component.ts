@@ -26,10 +26,11 @@ export class ChatRoomComponent implements OnInit {
   constructor(
     public modaCtl: ModalController,
     public chatService: ChatService,
-    public ref: ChangeDetectorRef,
+    public ref: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
+    console.log(this.contact, this.user, this.id);
     this.chatService.getMessages(this.id);
     this.message$ = this.chatService.msgSubject$.pipe(
       tap((r) => {

@@ -15,13 +15,18 @@ import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 import { AngularFireModule } from '@angular/fire/compat';
 import { environment } from '../environments/environment.prod';
+import { VideoCapturePlus } from '@ionic-native/video-capture-plus/ngx';
+import { VideoEditor } from '@ionic-native/video-editor/ngx';
+import { MediaCapture } from '@ionic-native/media-capture/ngx';
+import { NativeStorage } from '@ionic-native/native-storage/ngx';
+import { TimeRelativePipe } from './pipe/time-relative.pipe';
 
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(),
+    IonicModule.forRoot({ mode: 'ios' }),
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
@@ -37,6 +42,10 @@ import { environment } from '../environments/environment.prod';
     MusicFeedService,
     GooglePlus,
     ScreenOrientation,
+    VideoCapturePlus,
+    VideoEditor,
+    MediaCapture,
+    NativeStorage,
   ],
   bootstrap: [AppComponent],
 })

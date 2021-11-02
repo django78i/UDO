@@ -17,7 +17,7 @@
   <ion-row class="c-date">
     <span class="day">Aujourd'hui</span>
     <span class="bounce">.</span>
-    <span class="heure">Il y a 5 min.</span>
+    <span class="heure"> {{dateSession}}. </span>
   </ion-row>
   <ion-row class="activite">
     <span class="rond">
@@ -73,7 +73,7 @@
     <span class="labelStat">Commentaires</span>
   </ion-row>
   <ion-row class="c-row">
-    <ion-item lines="none" class="c-item" *ngFor="let item of listNotif">
+    <ion-item lines="none" class="c-item" *ngFor="let item of listReactions">
       <ion-row slot="start" class="c-row-first">
         <ion-img [src]="item?.img" class="img-personn"></ion-img>
         <ion-label class="nombre"> {{item?.nombre}}</ion-label>
@@ -81,7 +81,7 @@
       <ion-grid class="c-grid">
         <ion-row>
           <ion-item lines="none" class="item-name">
-            <ion-label class="name"> {{item?.name}} </ion-label>
+            <ion-label class="name"> {{item?.username}} </ion-label>
             <!-- <span class="point" ></span> -->
             <ion-label slot="end" class="date"> {{item?.date}} </ion-label>
           </ion-item>
@@ -89,7 +89,7 @@
 
         <ion-row class="comment">
           <ion-label>
-            {{item?.comment}}
+            {{item?.commentaire}}
           </ion-label>
         </ion-row>
       </ion-grid>

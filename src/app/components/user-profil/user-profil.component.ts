@@ -8,11 +8,11 @@ import {
   ViewChild,
   ViewChildren,
 } from '@angular/core';
-import { NavigationExtras } from '@angular/router';
 import { ModalController, NavController } from '@ionic/angular';
 import { ChatService } from 'src/app/services/chat.service';
 import { UserService } from 'src/app/services/user-service.service';
 import { ChatRoomComponent } from '../chat-room/chat-room.component';
+import * as _ from 'lodash';
 
 interface User {
   activitesPratiquees: any[];
@@ -29,7 +29,7 @@ interface User {
   templateUrl: './user-profil.component.html',
   styleUrls: ['./user-profil.component.scss'],
 })
-export class UserProfilComponent implements OnInit, AfterViewInit {
+export class UserProfilComponent implements OnInit {
   @ViewChildren('hexagon') hexagon: QueryList<ElementRef>;
   @ViewChildren('points') points: QueryList<ElementRef>;
   @ViewChild('stat') stat: ElementRef;
@@ -107,13 +107,14 @@ export class UserProfilComponent implements OnInit, AfterViewInit {
     { name: 'Souplesse', stat: 100 },
     { name: 'Gainage', stat: 200 },
   ];
-  max = 1000;
+  max = 20;
   donneeFormat: any[] = [];
-  seg: string = 'résumé';
+  seg: string = 'resume';
   statTable = [];
   position: string;
-  @Input() user: User;
+  @Input() userId: any;
   @Input() currentUser: User;
+  user: any;
 
   friendBool: boolean;
 
@@ -125,29 +126,39 @@ export class UserProfilComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit() {
-    this.createGraph();
-    this.position = this.createStats();
-    console.log(this.currentUser);
-    this.friendBool = this.currentUser.friends?.some(
-      (friend) => friend.uid == this.user.uid
-    );
-    console.log(this.friendBool);
+    console.log(this.userId);
+    this.userService.findUser(this.userId).then((user) => {
+      this.user = user.data();
+
+      const tableOrder = _.orderBy(this.user.metrics, ['value'], ['desc']);
+      console.log(tableOrder);
+      this.max = this.user.metrics ? tableOrder[0].value * 1.2 : 0;
+
+      // this.createGraph();
+      // this.position = this.createStats();
+      console.log(this.currentUser, this.user);
+      this.friendBool = this.currentUser.friends?.some(
+        (friend) => friend.uid == this.user.uid
+      );
+      console.log(this.friendBool);
+    });
   }
 
-  ngAfterViewInit() {
-    this.hexagon.map((hex, indice) => {
-      const position = `${this.donneeFormat[indice][0].x},${this.donneeFormat[indice][0].y} ${this.donneeFormat[indice][1].x},${this.donneeFormat[indice][1].y} ${this.donneeFormat[indice][2].x},${this.donneeFormat[indice][2].y} ${this.donneeFormat[indice][3].x},${this.donneeFormat[indice][3].y} ${this.donneeFormat[indice][4].x},${this.donneeFormat[indice][4].y} ${this.donneeFormat[indice][5].x},${this.donneeFormat[indice][5].y}`;
-      hex.nativeElement.setAttribute('points', position);
-      indice == 0
-        ? (hex.nativeElement.style.strokeWidth = '2px')
-        : (hex.nativeElement.style.strokeWidth = '1px');
-    });
-    this.points.map((hex, indice) => {
-      hex.nativeElement.setAttribute('cx', this.statTable[indice].position.x);
-      hex.nativeElement.setAttribute('cy', this.statTable[indice].position.y);
-    });
-    this.stat.nativeElement.setAttribute('points', this.position);
-  }
+  // ngAfterViewInit() {
+  //   console.log(this.user);
+  //   this.hexagon.map((hex, indice) => {
+  //     const position = `${this.donneeFormat[indice][0].x},${this.donneeFormat[indice][0].y} ${this.donneeFormat[indice][1].x},${this.donneeFormat[indice][1].y} ${this.donneeFormat[indice][2].x},${this.donneeFormat[indice][2].y} ${this.donneeFormat[indice][3].x},${this.donneeFormat[indice][3].y} ${this.donneeFormat[indice][4].x},${this.donneeFormat[indice][4].y} ${this.donneeFormat[indice][5].x},${this.donneeFormat[indice][5].y}`;
+  //     hex.nativeElement.setAttribute('points', position);
+  //     indice == 0
+  //       ? (hex.nativeElement.style.strokeWidth = '2px')
+  //       : (hex.nativeElement.style.strokeWidth = '1px');
+  //   });
+  //   this.points.map((hex, indice) => {
+  //     hex.nativeElement.setAttribute('cx', this.statTable[indice].position.x);
+  //     hex.nativeElement.setAttribute('cy', this.statTable[indice].position.y);
+  //   });
+  //   this.stat.nativeElement.setAttribute('points', this.position);
+  // }
 
   close(data?) {
     this.modalController.dismiss(data);
@@ -155,21 +166,82 @@ export class UserProfilComponent implements OnInit, AfterViewInit {
 
   createStats() {
     let table: any[] = [];
-    this.stats.map((stat, i) => {
-      const ratio = stat.stat / this.max;
-      const position = {
-        x: 130 - this.doneesIniitial[i].vecteur.x * ratio,
-        y: 130 - this.doneesIniitial[i].vecteur.y * ratio,
-      };
-      this.statTable.push({
-        name: stat.name,
-        ratio: ratio * 100,
-        position: position,
+    if (this.user.metrics) {
+      this.user.metrics.map((stat, i) => {
+        const ratio = stat.value / this.max;
+        const position = {
+          x: 130 - this.doneesIniitial[i].vecteur.x * ratio,
+          y: 130 - this.doneesIniitial[i].vecteur.y * ratio,
+        };
+        this.statTable.push({
+          name: stat.name,
+          ratio: ratio * 100,
+          position: position,
+        });
       });
-    });
+    } else {
+      const table: any[] = [
+        {
+          name: 'corps haut',
+          value: 0,
+          ratio: 0,
+          position: {
+            x: 130,
+            y: 130,
+          },
+        },
+        {
+          name: 'corps bas',
+          value: 130,
+          ratio: 130,
+          position: {
+            x: 130,
+            y: 130,
+          },
+        },
+        {
+          name: 'souplesse',
+          value: 130,
+          ratio: 130,
+          position: {
+            x: 130,
+            y: 130,
+          },
+        },
+        {
+          name: 'explosivité',
+          value: 130,
+          ratio: 130,
+          position: {
+            x: 130,
+            y: 130,
+          },
+        },
+        {
+          name: 'cardio',
+          value: 130,
+          ratio: 130,
+          position: {
+            x: 130,
+            y: 130,
+          },
+        },
+        {
+          name: 'gainage',
+          value: 130,
+          ratio: 130,
+          position: {
+            x: 130,
+            y: 130,
+          },
+        },
+      ];
+      this.statTable = table;
+    }
     let position;
     return (position = `${this.statTable[0].position.x},${this.statTable[0].position.y} ${this.statTable[1].position.x},${this.statTable[1].position.y} ${this.statTable[2].position.x},${this.statTable[2].position.y} ${this.statTable[3].position.x},${this.statTable[3].position.y} ${this.statTable[4].position.x},${this.statTable[4].position.y} ${this.statTable[5].position.x},${this.statTable[5].position.y}`);
   }
+  
 
   createGraph() {
     this.ratio.map((ratio) => {
@@ -198,17 +270,17 @@ export class UserProfilComponent implements OnInit, AfterViewInit {
     this.friendBool = false;
   }
 
-  controlRoom(): Promise<any[]> {
+  controlRoom(): Promise<any> {
     return this.chatService.findRoom(this.currentUser.uid, this.user.uid);
   }
 
   async chat() {
     const check = await this.controlRoom();
-    const roomId = check.length
-      ? ''
+    const roomId = check
+      ? check.uid
       : await this.chatService.createRoom(this.currentUser, this.user);
 
-    console.log(roomId);
+    console.log(check);
     const modal = await this.modalController.create({
       component: ChatRoomComponent,
       componentProps: {
@@ -218,5 +290,11 @@ export class UserProfilComponent implements OnInit, AfterViewInit {
       },
     });
     return await modal.present();
+  }
+
+  segmentChanged(ev) {
+    console.log(ev);
+    this.seg = ev.detail.value;
+    console.log(this.seg);
   }
 }

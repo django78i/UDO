@@ -1,4 +1,4 @@
-<section style="height: 100%; ">
+<section style="height: 100%; overflow: auto">
   <div class="iconTitle">
     <img
       src="../../../../assets/icon/dot.svg"
@@ -20,7 +20,11 @@
         >{{ i + 1 }}</ion-label
       >
       <ion-item lines="none">
-        <ion-avatar slot="start" [ngClass]="{ greyBlank: !cl.avatar }">
+        <ion-avatar
+          slot="start"
+          [ngClass]="{ greyBlank: !cl.avatar }"
+          (click)="openProfil(cl)"
+        >
           <img [src]="cl.avatar" alt="" *ngIf="cl.avatar" />
           <img
             src="https://img.icons8.com/ios-filled/50/000000/gender-neutral-user.png"
@@ -39,7 +43,7 @@
               margin: 0 0 2px;
             "
           >
-            {{ cl.name }}
+            {{ cl.userName }}
           </h3>
           <p
             style="font-size: 12px; font-weight: 500; color: black"

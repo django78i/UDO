@@ -13,6 +13,7 @@ export class DetailPostComponent implements OnInit {
   @Input() user: any;
   segmentValue = 'resume';
   message: any;
+  tableReactions: any[] = [];
   constructor(
     public modalCtrl: ModalController,
     public ref: ChangeDetectorRef,
@@ -21,6 +22,17 @@ export class DetailPostComponent implements OnInit {
 
   ngOnInit() {
     console.log(this.post, this.user);
+    this.post.reactions.map((react) => {
+      if (react.users.length) {
+        react.users.map((user) => {
+          this.tableReactions.push({
+            icon: react.icon,
+            user: user,
+          });
+        });
+      }
+    });
+    console.log(this.tableReactions);
   }
 
   close() {

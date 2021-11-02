@@ -4,7 +4,7 @@
     "sousAcitivite": [
       {
         "nom": "Aviron",
-        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "icon": "assets/icon/activitiesList/UDO/Aquatique/aviron.svg",
         "metriques": {
           "cardio": 2,
           "explosivité": 1,
@@ -16,7 +16,7 @@
       },
       {
         "nom": "Kayak",
-        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "icon": "assets/icon/activitiesList/UDO/Aquatique/kayak.svg",
         "metriques": {
           "cardio": 2,
           "explosivité": 2,
@@ -28,7 +28,7 @@
       },
       {
         "nom": "Natation",
-        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "icon": "assets/icon/activitiesList/UDO/Aquatique/natation.svg",
         "metriques": {
           "cardio": 2,
           "explosivité": 1,
@@ -40,7 +40,7 @@
       },
       {
         "nom": "Water polo",
-        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "icon": "assets/icon/activitiesList/UDO/Aquatique/waterpolo.svg",
         "metriques": {
           "cardio": 2,
           "explosivité": 2,
@@ -57,7 +57,7 @@
     "sousAcitivite": [
       {
         "nom": "Badminton",
-        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "icon": "assets/icon/activitiesList/UDO/Raquettes/badminton.svg",
         "metriques": {
           "cardio": 3,
           "explosivité": 2,
@@ -69,7 +69,7 @@
       },
       {
         "nom": "Tennis",
-        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "icon": "assets/icon/activitiesList/UDO/Raquettes/tennis.svg",
         "metriques": {
           "cardio": 2,
           "explosivité": 1,
@@ -81,7 +81,7 @@
       },
       {
         "nom": "Tennis de table",
-        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "icon": "assets/icon/activitiesList/UDO/Raquettes/pingpong.svg",
         "metriques": {
           "cardio": 2,
           "explosivité": 2,
@@ -98,7 +98,7 @@
     "sousAcitivite": [
       {
         "nom": "Volleyball",
-        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "icon": "assets/icon/activitiesList/UDO/Volley-ball/volleyball.svg",
         "metriques": {
           "cardio": 2,
           "explosivité": 2,
@@ -115,7 +115,7 @@
     "sousAcitivite": [
       {
         "nom": "Couse à pied",
-        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "icon": "assets/icon/activitiesList/UDO/Running/courseapied.svg",
         "metriques": {
           "cardio": 2,
           "explosivité": 1,
@@ -127,7 +127,7 @@
       },
       {
         "nom": "Marche",
-        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "icon": "assets/icon/activitiesList/UDO/Running/marche.svg",
         "metriques": {
           "cardio": 1,
           "explosivité": 0,
@@ -144,7 +144,7 @@
     "sousAcitivite": [
       {
         "nom": "Boxe",
-        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "icon": "assets/icon/activitiesList/UDO/Combat/boxe.svg",
         "metriques": {
           "cardio": 3,
           "explosivité": 3,
@@ -156,7 +156,7 @@
       },
       {
         "nom": "Jui-jitsu",
-        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "icon": "assets/icon/activitiesList/UDO/Combat/jiujitsu.svg",
         "metriques": {
           "cardio": 2,
           "explosivité": 2,
@@ -168,7 +168,7 @@
       },
       {
         "nom": "Judo",
-        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "icon": "assets/icon/activitiesList/UDO/Combat/judo.svg",
         "metriques": {
           "cardio": 2,
           "explosivité": 2,
@@ -180,7 +180,7 @@
       },
       {
         "nom": "Karaté",
-        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "icon": "assets/icon/activitiesList/UDO/Combat/karate.svg",
         "metriques": {
           "cardio": 2,
           "explosivité": 2,
@@ -192,7 +192,7 @@
       },
       {
         "nom": "TaeKwondo",
-        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "icon": "assets/icon/activitiesList/UDO/Combat/taekwondo.svg",
         "metriques": {
           "cardio": 2,
           "explosivité": 2,
@@ -209,7 +209,7 @@
     "sousAcitivite": [
       {
         "nom": "Foot à 11",
-        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "icon": "assets/icon/activitiesList/UDO/Football/football11.svg",
         "metriques": {
           "cardio": 2,
           "explosivité": 2,
@@ -221,7 +221,7 @@
       },
       {
         "nom": "Foot à 5",
-        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "icon": "assets/icon/activitiesList/UDO/Football/football5.svg",
         "metriques": {
           "cardio": 2,
           "explosivité": 3,
@@ -238,7 +238,7 @@
     "sousAcitivite": [
       {
         "nom": "Corde à sauter",
-        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "icon": "assets/icon/activitiesList/UDO/Fitness/cordeasauter.svg",
         "metriques": {
           "cardio": 3,
           "explosivité": 1,
@@ -250,7 +250,7 @@
       },
       {
         "nom": "Course sur tapis",
-        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "icon": "assets/icon/activitiesList/UDO/Fitness/coursesurtapis.svg",
         "metriques": {
           "cardio": 2,
           "explosivité": 1,
@@ -262,7 +262,7 @@
       },
       {
         "nom": "Elliptique",
-        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "icon": "assets/icon/activitiesList/UDO/Fitness/elliptique.svg",
         "metriques": {
           "cardio": 2,
           "explosivité": 1,
@@ -274,7 +274,7 @@
       },
       {
         "nom": "Fractionné (HIIT)",
-        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "icon": "assets/icon/activitiesList/UDO/Fitness/fractionnehiit.svg",
         "metriques": {
           "cardio": 3,
           "explosivité": 3,
@@ -286,7 +286,7 @@
       },
       {
         "nom": "Gainage",
-        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "icon": "assets/icon/activitiesList/UDO/Fitness/gainage.svg",
         "metriques": {
           "cardio": 1,
           "explosivité": 1,
@@ -298,7 +298,7 @@
       },
       {
         "nom": "Pilates",
-        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "icon": "assets/icon/activitiesList/UDO/Fitness/pilates.svg",
         "metriques": {
           "cardio": 1,
           "explosivité": 1,
@@ -310,7 +310,7 @@
       },
       {
         "nom": "Rameur",
-        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "icon": "assets/icon/activitiesList/UDO/Fitness/rameur.svg",
         "metriques": {
           "cardio": 2,
           "explosivité": 1,
@@ -322,7 +322,7 @@
       },
       {
         "nom": "Récupération",
-        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "icon": "assets/icon/activitiesList/UDO/Fitness/recuperation.svg",
         "metriques": {
           "cardio": 1,
           "explosivité": 1,
@@ -334,7 +334,7 @@
       },
       {
         "nom": "Renforcement fonctionnel",
-        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "icon": "assets/icon/activitiesList/UDO/Fitness/renforcement.svg",
         "metriques": {
           "cardio": 1,
           "explosivité": 2,
@@ -346,7 +346,7 @@
       },
       {
         "nom": "Stepper",
-        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "icon": "assets/icon/activitiesList/UDO/Fitness/stepper.svg",
         "metriques": {
           "cardio": 2,
           "explosivité": 2,
@@ -358,7 +358,7 @@
       },
       {
         "nom": "Vélo d'appartement",
-        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "icon": "assets/icon/activitiesList/UDO/Fitness/veloappart.svg",
         "metriques": {
           "cardio": 2,
           "explosivité": 1,
@@ -375,7 +375,7 @@
     "sousAcitivite": [
       {
         "nom": "Danse",
-        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "icon": "assets/icon/activitiesList/UDO/Divers/danse.svg",
         "metriques": {
           "cardio": 1,
           "explosivité": 1,
@@ -387,7 +387,7 @@
       },
       {
         "nom": "Equitation",
-        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "icon": "assets/icon/activitiesList/UDO/Divers/equitation.svg",
         "metriques": {
           "cardio": 1,
           "explosivité": 1,
@@ -399,7 +399,7 @@
       },
       {
         "nom": "Escalade",
-        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "icon": "assets/icon/activitiesList/UDO/Divers/escalade.svg",
         "metriques": {
           "cardio": 1,
           "explosivité": 1,
@@ -411,7 +411,7 @@
       },
       {
         "nom": "Escrime",
-        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "icon": "assets/icon/activitiesList/UDO/Divers/escrime.svg",
         "metriques": {
           "cardio": 3,
           "explosivité": 3,
@@ -423,7 +423,7 @@
       },
       {
         "nom": "Golf",
-        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "icon": "assets/icon/activitiesList/UDO/Divers/golf.svg",
         "metriques": {
           "cardio": 1,
           "explosivité": 1,
@@ -435,7 +435,7 @@
       },
       {
         "nom": "Randonnée",
-        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "icon": "assets/icon/activitiesList/UDO/Divers/randonnee.svg",
         "metriques": {
           "cardio": 1,
           "explosivité": 0,
@@ -447,7 +447,7 @@
       },
       {
         "nom": "Taï chi",
-        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "icon": "assets/icon/activitiesList/UDO/Divers/taichi.svg",
         "metriques": {
           "cardio": 1,
           "explosivité": 1,
@@ -459,7 +459,7 @@
       },
       {
         "nom": "Yoga",
-        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "icon": "assets/icon/activitiesList/UDO/Divers/yoga.svg",
         "metriques": {
           "cardio": 1,
           "explosivité": 1,
@@ -471,7 +471,7 @@
       },
       {
         "nom": "Zumba",
-        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "icon": "assets/icon/activitiesList/UDO/Divers/zumba.svg",
         "metriques": {
           "cardio": 2,
           "explosivité": 1,
@@ -488,7 +488,7 @@
     "sousAcitivite": [
       {
         "nom": "Badminton sourd",
-        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "icon": "assets/icon/activitiesList/UDO/Handisport/badmintonsourd.svg",
         "metriques": {
           "cardio": 2,
           "explosivité": 2,
@@ -500,7 +500,7 @@
       },
       {
         "nom": "Basket fauteil",
-        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "icon": "assets/icon/activitiesList/UDO/Handisport/basketfauteuil.svg",
         "metriques": {
           "cardio": 3,
           "explosivité": 2,
@@ -512,7 +512,7 @@
       },
       {
         "nom": "Boccia",
-        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "icon": "assets/icon/activitiesList/UDO/Handisport/boccia.svg",
         "metriques": {
           "cardio": 1,
           "explosivité": 1,
@@ -524,7 +524,7 @@
       },
       {
         "nom": "Ceci-foot",
-        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "icon": "assets/icon/activitiesList/UDO/Handisport/cecifoot.svg",
         "metriques": {
           "cardio": 2,
           "explosivité": 1,
@@ -536,7 +536,7 @@
       },
       {
         "nom": "Course en fauteuil",
-        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "icon": "assets/icon/activitiesList/UDO/Handisport/courseenfauteuil.svg",
         "metriques": {
           "cardio": 3,
           "explosivité": 2,
@@ -548,7 +548,7 @@
       },
       {
         "nom": "Fauteuil",
-        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "icon": "assets/icon/activitiesList/UDO/Handisport/fauteuil.svg",
         "metriques": {
           "cardio": 2,
           "explosivité": 1,
@@ -560,7 +560,7 @@
       },
       {
         "nom": "Foot fauteuil électrique",
-        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "icon": "assets/icon/activitiesList/UDO/Handisport/footfauteuil.svg",
         "metriques": {
           "cardio": 1,
           "explosivité": 0,
@@ -572,7 +572,7 @@
       },
       {
         "nom": "Foot mal marchand",
-        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "icon": "assets/icon/activitiesList/UDO/Handisport/footmalmarchants.svg",
         "metriques": {
           "cardio": 1,
           "explosivité": 1,
@@ -584,7 +584,7 @@
       },
       {
         "nom": "Foot sourd",
-        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "icon": "assets/icon/activitiesList/UDO/Handisport/footsourd.svg",
         "metriques": {
           "cardio": 2,
           "explosivité": 1,
@@ -596,7 +596,7 @@
       },
       {
         "nom": "Goalball",
-        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "icon": "assets/icon/activitiesList/UDO/Handisport/goalball.svg",
         "metriques": {
           "cardio": 1,
           "explosivité": 1,
@@ -608,7 +608,7 @@
       },
       {
         "nom": "Handball sourd",
-        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "icon": "assets/icon/activitiesList/UDO/Handisport/handballsourd.svg",
         "metriques": {
           "cardio": 2,
           "explosivité": 2,
@@ -620,7 +620,7 @@
       },
       {
         "nom": "Handbike",
-        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "icon": "assets/icon/activitiesList/UDO/Handisport/handbike.svg",
         "metriques": {
           "cardio": 2,
           "explosivité": 2,
@@ -632,7 +632,7 @@
       },
       {
         "nom": "Rugby fauteuil",
-        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "icon": "assets/icon/activitiesList/UDO/Handisport/rugbyfauteuil.svg",
         "metriques": {
           "cardio": 3,
           "explosivité": 2,
@@ -644,7 +644,7 @@
       },
       {
         "nom": "Tandem",
-        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "icon": "assets/icon/activitiesList/UDO/Handisport/tandemhandi.svg",
         "metriques": {
           "cardio": 2,
           "explosivité": 1,
@@ -656,7 +656,7 @@
       },
       {
         "nom": "Tennis de table fauteuil",
-        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "icon": "assets/icon/activitiesList/UDO/Handisport/pingpongfauteuil.svg",
         "metriques": {
           "cardio": 2,
           "explosivité": 2,
@@ -668,7 +668,7 @@
       },
       {
         "nom": "Tennis en fauteuil",
-        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "icon": "assets/icon/activitiesList/UDO/Handisport/tennisfauteuil.svg",
         "metriques": {
           "cardio": 2,
           "explosivité": 2,
@@ -680,7 +680,7 @@
       },
       {
         "nom": "Vélo solo",
-        "icon": "assets/icon/icons8-soccer-player-50.svg",
+        "icon": "assets/icon/activitiesList/UDO/Handisport/velosolo.svg",
         "metriques": {
           "cardio": 2,
           "explosivité": 1,

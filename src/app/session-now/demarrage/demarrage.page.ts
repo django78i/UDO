@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController, ModalController, NavController, ToastController } from '@ionic/angular';
+import {AlertController, ModalController, NavController, ToastController} from '@ionic/angular';
 import { ListMetricsPage } from '../list-metrics/list-metrics.page';
 import { NotificationsPage } from '../notifications/notifications.page';
 import { ReglagesPage } from '../reglages/reglages.page';
@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import { Health } from '@ionic-native/health/ngx';
 import { Platform } from '@ionic/angular';
 import { DonneesPriveComponent } from '../donnees-prive/donnees-prive.component';
-import { SessionNowService } from '../../services/session-now-service.service';
+import {SessionNowService} from '../../services/session-now-service.service';
 import { AddContenuComponent } from '../add-contenu/add-contenu.component';
 import moment from 'moment';
 
@@ -34,36 +34,38 @@ export class DemarragePage implements OnInit {
   listChoix = [
     {
       img: 'assets/images/distance.svg',
-      nombre: '1.78',
+      nombre: '0',
       name: 'Distance',
       exposant: 'KM',
       fieldname: 'distance'
     },
     {
       img: 'assets/images/pas.svg',
-      nombre: '2617',
+      nombre: '0',
       name: 'Nombre de pas',
       exposant: '',
       fieldname: 'steps'
     },
     {
       img: 'assets/images/coeur.svg',
-      nombre: '135',
+      nombre: '0',
       name: 'BPM',
       exposant: '',
-      fieldname: 'height'
+      fieldname: 'heart_rate'
     },
     {
       img: 'assets/images/calorie.svg',
-      nombre: '250',
+      nombre: '0',
       name: 'Calories',
       exposant: 'CAL',
-      fieldname: 'weight'
+      fieldname: 'calories'
     },
   ];
   sessionNow = new SessionNowModel();
   listSettings = [];
   user: any;
+  reactions = 0;
+  interval;
   constructor(
     private modalCtrl: ModalController,
     private router: Router,
@@ -80,6 +82,29 @@ export class DemarragePage implements OnInit {
       this.presentAlertConfirm();
     });
     this.user = JSON.parse(localStorage.getItem('user'));
+    this.getSessionNow();
+  }
+
+  async getSessionNow() {
+
+    this.interval = setInterval(() => {
+      let sessionNow = JSON.parse(localStorage.getItem('sessionNow'));
+      if (sessionNow) {
+        this.snService.find(sessionNow.uid, 'session-now').then((resp: any) => {
+          let value = resp._document.data.value.mapValue.fields;
+          if (value.reactions.arrayValue) {
+            this.reactions = value.reactions.arrayValue.values?.length;
+            this.sessionNow.reactions = value.reactions.arrayValue.values;
+           // localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
+          }else{
+            this.reactions = 0;
+          }
+          this.sessionNow.reactions = value.reactions.arrayValue.values;
+          localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
+        });
+
+      }
+    }, 10000);
   }
   async presentAlertConfirm() {
     this.stop();
@@ -108,7 +133,7 @@ export class DemarragePage implements OnInit {
   }
   ngOnInit() {
     const stSettings = localStorage.getItem('reglages');
-    if (stSettings) {
+    if(stSettings){
       this.listSettings = JSON.parse(stSettings);
     }
     let valPause = localStorage.getItem('pause');
@@ -121,31 +146,31 @@ export class DemarragePage implements OnInit {
     this.listElement = [
       {
         img: 'assets/images/distance.svg',
-        nombre: '1.78',
+        nombre: '0',
         name: 'Distance',
         exposant: 'KM',
         fieldname: 'distance'
       },
       {
         img: 'assets/images/pas.svg',
-        nombre: '2617',
+        nombre: '0',
         name: 'Nombre de pas',
         exposant: '',
         fieldname: 'steps'
       },
       {
         img: 'assets/images/coeur.svg',
-        nombre: '135',
+        nombre: '0',
         name: 'BPM',
         exposant: '',
-        fieldname: 'height'
+        fieldname: 'heart_rate'
       },
       {
         img: 'assets/images/calorie.svg',
-        nombre: '250',
+        nombre: '0',
         name: 'Calories',
         exposant: 'CAL',
-        fieldname: 'weight'
+        fieldname: 'calories'
       },
     ];
     let item = JSON.parse(localStorage.getItem('activite'));
@@ -158,18 +183,19 @@ export class DemarragePage implements OnInit {
     } else {
       this.listElement = JSON.parse(localStorage.getItem('choix'));
     }
-    this.sessionNow.startDate = new Date().toISOString().split('T')[0] + ' ' + new Date().toISOString().split('T')[1].split('.')[0];
-    this.sessionNow.activity = this.activite?.name;
-    if (this.listSettings !== null && this.listSettings !== undefined && this.listSettings.length !== 0) {
-      if (!this.listSettings['modePrive']) {
-        this.sessionNow.mode = 'privée';
-      } else {
-        this.sessionNow.mode = 'public';
+    this.sessionNow.startDate=new Date().toISOString();
+    this.sessionNow.activity=this.activite?.name;
+    if(this.listSettings!==null && this.listSettings!==undefined && this.listSettings.length!==0){
+      if(!this.listSettings['modePrive']){
+        this.sessionNow.mode='privée';
+      }else{
+        this.sessionNow.mode='public';
       }
     } else {
       this.sessionNow.mode = 'public';
     }
     this.sessionNow.isLive = true;
+    // this.sessionNow.uid = "ef8f7e570c5f3be4f726ce612224a350";
     this.snService.create(this.sessionNow, 'session-now')
       .then(res => {
         this.sessionNow.uid = res;
@@ -185,13 +211,12 @@ export class DemarragePage implements OnInit {
             console.log("je suis la");
             // this.sessionNow.uid = res;
             // localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
-            // localStorage.setItem('posted',''+true);
           })
 
 
       })
       .catch(err => console.error(err));
-    // localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
+    localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
   }
   async checkPlatformReady() {
     const ready = !!await this.platform.ready();
@@ -217,27 +242,34 @@ export class DemarragePage implements OnInit {
       let that = this;
       // this.getMetrics();
       // @ts-ignore
-      // setTimeout(() => { that.getMetrics(); }, 1000);
+       setTimeout(() => { that.getMetrics(); }, 1000);
     }
   }
   // @ts-ignore
   queryMetrics(metric, item) {
+    console.log(new Date(this.sessionNow.startDate));
     if (metric === 'steps' || metric === 'distance') {
       this.health.queryAggregated({
-        startDate: new Date(new Date().getTime() - 1 * 24 * 60 * 60 * 1000), // three days ago
+        startDate: new Date(this.sessionNow.startDate), // three days ago
         endDate: new Date(), // now
         dataType: metric,
-        bucket: 'day',
+        bucket: 'hour',
         //limit: 1000
       }).then(res => {
+
         item.nombre = res.length > 0 ? (Math.round((parseFloat(res[res.length - 1]?.value) + Number.EPSILON) * 100) / 100) : '0';
+        if(metric === 'distance'){
+          if(item.nombre!==0 && item.nombre!==undefined && item.nombre!==''){
+            item.nombre= Math.round(item.nombre / 100) / 10;
+          }
+        }
         console.log('res', res);
       })
         .catch(e => console.log('error3 ', e));
     }
     else {
       this.health.query({
-        startDate: new Date(new Date().getTime() - 1 * 24 * 60 * 60 * 1000), // three days ago
+        startDate: new Date(this.sessionNow.startDate), // three days ago
         endDate: new Date(), // now
         dataType: metric,
         limit: 100
@@ -247,16 +279,7 @@ export class DemarragePage implements OnInit {
       })
         .catch(e => console.log('error1 ', e));
     }
-    this.health.query({
-      startDate: new Date(new Date().getTime() - 1 * 24 * 60 * 60 * 1000), // three days ago
-      endDate: new Date(), // now
-      dataType: 'steps',
-      limit: 1000
-    }).then(res => {
-      item.nombre = res.length > 0 ? (Math.round((parseFloat(res[res.length - 1]?.value) + Number.EPSILON) * 100) / 100) : '0';
-      console.log('res', res);
-    })
-      .catch(e => console.log('error1 ', e));
+
   }
   checkPause() {
     this.pause = true;
@@ -273,18 +296,18 @@ export class DemarragePage implements OnInit {
   }
   displayRecap() {
     this.stop();
-    let listMetricAuhorised = ['steps', 'distance', 'height', 'weight'];
-    this.sessionNow.isLive = false;
-    this.sessionNow.duration = this.mn + ':' + this.s;
-    for (let metric of this.listElement) {
-      for (let metricAutorised of listMetricAuhorised) {
-        if (metric.fieldname === metricAutorised) {
+    let listMetricAuhorised=['steps','distance','height','weight'];
+    this.sessionNow.isLive=false;
+    this.sessionNow.duration=this.mn+':'+this.s;
+    for (let metric of this.listElement){
+      for(let metricAutorised of listMetricAuhorised){
+        if(metric.fieldname===metricAutorised){
           this.sessionNow.metrics.push(metric);
         }
       }
     }
 
-    this.sessionNow.endDate = new Date().toISOString().split('T')[0] + ' ' + new Date().toISOString().split('T')[1].split('.')[0];
+    this.sessionNow.endDate=new Date().toISOString().split('T')[0] +' '+new Date().toISOString().split('T')[1].split('.')[0];
     localStorage.setItem('counter', JSON.stringify({ mn: this.mn, s: this.s }));
     localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
 
@@ -325,7 +348,7 @@ export class DemarragePage implements OnInit {
       cssClass: 'my-custom-contenu-modal',
     });
     modal.onDidDismiss().then((data: any) => {
-      this.base64 = data.data;
+      this.base64 =data.data;
     });
     return await modal.present();
 
@@ -409,7 +432,7 @@ export class DemarragePage implements OnInit {
 
   }
 }
-export class SessionNowModel {
+export class SessionNowModel{
   uid: string;
   startDate: string;
   endDate: string;
@@ -418,18 +441,18 @@ export class SessionNowModel {
   photo: string;
   username: string;
   reactionNumber: number;
-  reactions = [];
-  metrics = [
+  reactions= [];
+  metrics= [
 
   ];
   score: number;
   mode: string; // 'private or public'
-  championant: string; // nulllable true
-  isLive: boolean; // true or false
+  championant: string ; // nulllable true
+  isLive: boolean ; // true or false
   duration: string;
   comment: string;
 }
-export class PostModel {
+export class PostModel{
   postedAt: string;
   postedBy: string;
   sessionUUID: string;

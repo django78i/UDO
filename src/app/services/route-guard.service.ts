@@ -5,6 +5,7 @@ import {
   RouterStateSnapshot,
 } from '@angular/router';
 import { getAuth } from '@firebase/auth';
+import { NavController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { UserService } from './user-service.service';
 
@@ -15,7 +16,8 @@ export class RouteGuardService {
   constructor(
     private router: Router,
     public userService: UserService,
-    public zone: NgZone
+    public zone: NgZone,
+    public navCtl: NavController
   ) {}
 
   canActivate(
@@ -29,7 +31,7 @@ export class RouteGuardService {
           resolve(true);
         } else {
           this.zone.run(() => {
-            this.router.navigate(['connexion']);
+            this.navCtl.navigateForward('connexion');
           });
           resolve(false);
         }

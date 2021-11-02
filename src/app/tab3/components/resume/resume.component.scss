@@ -1,84 +1,89 @@
-section{
-    margin-top: 45px;
-    margin-bottom: 15px;
-}
-section:nth-child(1){
-    margin-top: 25px;
+// section{
+//     margin-top: 45px;
+//     margin-bottom: 15px;
+// }
+section:nth-child(1) {
+  margin-top: 25px;
 }
 
 .iconTitle {
-    display: flex;
-    gap: 5px;
-    align-items: center;
-    margin-bottom: 10px;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  margin-bottom: 10px;
 }
 
 ion-item::part(native) {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 ion-chip {
-    --background: #ffffff;
-    ion-label{
-        font-size: 14px;
-        font-weight: 600;
-        color: black;
-        opacity: 0.65;
-    }
+  --background: #ffffff;
+  ion-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: black;
+    opacity: 0.65;
+  }
 }
 
 ion-avatar {
-    background: #e7eaf4;
+  background: #e7eaf4;
 }
 
 ion-thumbnail {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 13px;
-    background: #ffffff;
-    img {
-        height: 21px;
-        width: 24px;
-    }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 13px;
+  background: #ffffff;
+  img {
+    height: 21px;
+    width: 24px;
+  }
 }
 
 .friends {
-    background: #000000;
+  background: #000000;
 }
 
 .titre {
-    font-size: 37px;
-    font-weight: 900;
-    margin: 0;
+  font-size: 37px;
+  font-weight: 900;
+  margin: 0;
 }
 
-
-.detailTitre{
-    font-size: 12px;
-    font-weight: 600;
+.detailTitre {
+  font-size: 12px;
+  font-weight: 600;
 }
 
-.labelRight{
-    background: #EAEBEF;
-    font-size: 24px;
-    font-weight: 700;
+.labelRight {
+  background: #eaebef;
+  font-size: 24px;
+  font-weight: 700;
 }
 
-.itemLeft::part(native){
-    padding-left: 0;
+.itemLeft::part(native) {
+  padding-left: 0;
 }
 
-.barStat{
-    --padding-start: 15px;
-    --padding-end: 15px;
+.barStat {
+  --padding-start: 15px;
+  --padding-end: 15px;
 }
 
-h4{
-    font-size: 12px;
+h4 {
+  font-size: 12px;
 }
 
-.sousTitre{
-    font-size: 14px;
+.sousTitre {
+  font-size: 14px;
+}
+
+.contentTotal {
+  padding: 0 15px;
+  margin-top: 45px;
+  margin-bottom: 15px;
 }

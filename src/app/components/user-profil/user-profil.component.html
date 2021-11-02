@@ -60,243 +60,38 @@
       mode="ios"
       (ionChange)="segmentChanged($event)"
       [value]="seg"
-      style="--background: #dfdfe8"
+      style="--background: #dfdfe8; margin-bottom: 20px"
     >
-      <ion-segment-button value="résumé">Résumé </ion-segment-button>
-      <ion-segment-button value="amis"> Mes amis </ion-segment-button>
-      <ion-segment-button value="historique"> Historique </ion-segment-button>
+      <ion-segment-button value="resume">Résumé </ion-segment-button>
+      <ion-segment-button value="amis"> amis </ion-segment-button>
+      <!-- <ion-segment-button value="historique"> Historique </ion-segment-button> -->
     </ion-segment>
-    <div class="iconTitle">
-      <img
-        src="assets/icon/dot.svg"
-        style="
-          background-color: rgb(233, 229, 229);
-          padding: 10px;
-          border-radius: 50%;
-        "
-        alt=""
-      />
-      <h4 style="font-weight: 900; margin: 0">skills</h4>
-    </div>
-
-    <div style="margin-top: 15px; display: flex; justify-content: center">
-      <div style="margin: auto">
-        <svg width="300px" height="250px">
-          <text
-            x="0"
-            y="80"
-            font-family="Verdana"
-            font-size="10"
-            font-weight="700"
-          >
-            CRD
-          </text>
-          <text
-            x="0"
-            y="180"
-            font-family="Verdana"
-            font-size="10"
-            font-weight="700"
-          >
-            GNG
-          </text>
-          <text
-            x="120"
-            y="10"
-            font-family="Verdana"
-            font-size="10"
-            font-weight="700"
-          >
-            CH
-          </text>
-          <text
-            x="240"
-            y="80"
-            font-family="Verdana"
-            font-size="10"
-            font-weight="700"
-          >
-            XPL
-          </text>
-          <text
-            x="240"
-            y="180"
-            font-family="Verdana"
-            font-size="10"
-            font-weight="700"
-          >
-            SPL
-          </text>
-          <text
-            x="120"
-            y="250"
-            font-family="Verdana"
-            font-size="10"
-            font-weight="700"
-          >
-            SPL
-          </text>
-          <!-- <defs>
-            <filter id="round">
-              <feGaussianBlur
-                in="SourceGraphic"
-                stdDeviation="5"
-                result="blur"
-              />
-              <feColorMatrix
-                in="blur"
-                mode="matrix"
-                values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 19 -9"
-                result="goo"
-              />
-              <feComposite in="SourceGraphic" in2="goo" operator="atop" />
-            </filter>
-          </defs> -->
-          <polygon
-            style="
-              position: relative;
-              fill: #f7f7fa;
-              stroke-linejoin: round;
-              stroke: #cfced6;
-            "
-            *ngFor="let form of donneeFormat"
-            #hexagon
-          ></polygon>
-          <polygon
-            style="
-              position: relative;
-              fill: rgba(24, 24, 24, 0.26);
-              stroke-linejoin: round;
-              stroke: #000000;
-              stroke-width: 2px;
-            "
-            #stat
-          ></polygon>
-          <circle
-            style="fill: #f7f7fa; stroke-width: 2px; stroke: black"
-            id="pointA"
-            #points
-            r="2"
-            *ngFor="let stat of statTable"
-          />
-        </svg>
-      </div>
-    </div>
-    <div class="iconTitle">
-      <img
-        src="assets/icon/dot.svg"
-        style="
-          background-color: rgb(233, 229, 229);
-          padding: 10px;
-          border-radius: 50%;
-        "
-        alt=""
-      />
-      <h4 style="font-weight: 900; margin: 0">DETAILS</h4>
-    </div>
-    <ion-grid>
-      <ion-row>
-        <ion-col>
-          <ion-card class="cardActivities">
-            <ion-card-header>
-              <ion-card-title>
-                <img
-                  src="https://img.icons8.com/ios-glyphs/30/000000/pullups.png"
-                />
-              </ion-card-title>
-            </ion-card-header>
-            <ion-card-content style="padding: 0 20px 10px">
-              <ion-card-title>{{ statTable[0].ratio }} % </ion-card-title>
-              <ion-card-subtitle> {{ statTable[0].name }} </ion-card-subtitle>
-            </ion-card-content>
-          </ion-card>
-        </ion-col>
-        <ion-col>
-          <ion-card class="cardActivities">
-            <ion-card-header>
-              <img
-                src="https://img.icons8.com/ios-glyphs/30/000000/squats.png"
-              />
-            </ion-card-header>
-            <ion-card-content style="padding: 0 20px 10px">
-              <ion-card-title>{{ statTable[1].ratio }} % </ion-card-title>
-              <ion-card-subtitle> {{ statTable[1].name }} </ion-card-subtitle>
-            </ion-card-content>
-          </ion-card>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col>
-          <ion-card class="cardActivities">
-            <ion-card-header>
-              <ion-card-title>
-                <img
-                  src="https://img.icons8.com/material-rounded/24/000000/like--v2.png"
-                />
-              </ion-card-title>
-            </ion-card-header>
-            <ion-card-content style="padding: 0 20px 10px">
-              <ion-card-title>{{ statTable[2].ratio }} %</ion-card-title>
-              <ion-card-subtitle> {{ statTable[2].name }} </ion-card-subtitle>
-            </ion-card-content>
-          </ion-card>
-        </ion-col>
-        <ion-col>
-          <ion-card class="cardActivities">
-            <ion-card-header>
-              <img
-                src="https://img.icons8.com/material-rounded/24/000000/sports-mode.png"
-              />
-            </ion-card-header>
-            <ion-card-content style="padding: 0 20px 10px">
-              <ion-card-title>{{ statTable[3].ratio }} % </ion-card-title>
-              <ion-card-subtitle> {{ statTable[3].name }}</ion-card-subtitle>
-            </ion-card-content>
-          </ion-card>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col>
-          <ion-card class="cardActivities">
-            <ion-card-header>
-              <ion-card-title>
-                <img
-                  src="https://img.icons8.com/material-rounded/24/000000/stretching.png"
-                />
-              </ion-card-title>
-            </ion-card-header>
-            <ion-card-content style="padding: 0 20px 10px">
-              <ion-card-title>{{ statTable[4].ratio }} %</ion-card-title>
-              <ion-card-subtitle> {{ statTable[4].name }} </ion-card-subtitle>
-            </ion-card-content>
-          </ion-card>
-        </ion-col>
-        <ion-col>
-          <ion-card class="cardActivities">
-            <ion-card-header>
-              <img
-                src="https://img.icons8.com/ios-filled/24/000000/plank.png"
-              />
-            </ion-card-header>
-            <ion-card-content style="padding: 0 20px 10px">
-              <ion-card-title> {{ statTable[5].ratio }} % </ion-card-title>
-              <ion-card-subtitle>{{ statTable[5].name }} </ion-card-subtitle>
-            </ion-card-content>
-          </ion-card>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+    <section *ngIf="seg == 'amis'">
+      <app-friend-page-list [friends]="user.friends"></app-friend-page-list>
+    </section>
+    <section *ngIf="seg == 'resume'">
+      <app-user-param [user]="user"></app-user-param>
+    </section>
   </section>
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab
+    vertical="bottom"
+    horizontal="end"
+    slot="fixed"
+    *ngIf="userId != currentUser.uid"
+  >
     <ion-fab-button>
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
     <ion-fab-list side="top">
       <ion-fab-button color="primary" (click)="addFriend()" *ngIf="!friendBool">
-        <img src="assets/icon/friends-white.svg" alt=""  />
+        <img src="assets/icon/friends-white.svg" alt="" />
       </ion-fab-button>
-      <ion-fab-button color="warning" (click)="removeFriend()" *ngIf="friendBool">
-        <img src="assets/icon/friends-white.svg" alt=""  />
+      <ion-fab-button
+        color="warning"
+        (click)="removeFriend()"
+        *ngIf="friendBool"
+      >
+        <img src="assets/icon/friends-white.svg" alt="" />
       </ion-fab-button>
       <ion-fab-button color="success" (click)="chat()">
         <img src="assets/icon/chat_white.svg" alt="" />

@@ -42,6 +42,9 @@
         <splash density="port-xhdpi" src="resources/android/splash/drawable-port-xhdpi-screen.png" />
         <splash density="port-xxhdpi" src="resources/android/splash/drawable-port-xxhdpi-screen.png" />
         <splash density="port-xxxhdpi" src="resources/android/splash/drawable-port-xxxhdpi-screen.png" />
+        <feature name="VideoCapturePlus">
+            <param name="android-package" value="nl.xservices.plugins.videocaptureplus.VideoCapturePlus" />
+        </feature>
     </platform>
     <platform name="ios">
         <preference name="AllowInlineMediaPlayback" value="true" />

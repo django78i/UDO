@@ -6,6 +6,11 @@ video {
   border-radius: 20px;
 }
 
+ion-content {
+  --padding-start: 15px;
+  --padding-end: 15px;
+}
+
 ion-card-header {
   padding: 0;
 }
@@ -47,7 +52,6 @@ ion-toolbar {
   align-items: center;
   margin-top: 10px;
   margin-bottom: 10px;
-  padding-left: 15px;
 }
 
 .badgeHeader {
@@ -162,7 +166,6 @@ swiper ion-card {
     font-weight: 700;
   }
 }
-
 
 ion-avatar {
   position: relative;

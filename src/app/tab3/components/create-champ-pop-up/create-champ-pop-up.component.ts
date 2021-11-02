@@ -184,34 +184,51 @@ export class CreateChampPopUpComponent
     this.swiper.swiperRef.slidePrev();
   }
 
-
   chooseFriends(event) {
+    console.log(event);
     this.friendsList = event;
   }
 
-  saveChamp() {
+  nextFriends() {
+    this.champService.matchUser(this.range, this.activitesList);
+    this.slideNext('amis');
+  }
+
+  saveChamp(ev) {
+    const user = {
+      avatar: this.user.avatar,
+      etat: 'prêt',
+      userName: this.user.userName,
+      niveau: this.user.niveau,
+      uid: this.user.uid,
+    };
+    console.log(this.friendsList);
+    this.friendsList.push(user);
     const champ = {
       dateCreation: new Date(),
       dateDemarrage: moment(new Date()).add(7, 'days').toDate(),
       banniere: this.ban,
+      journeeTotale: this.seanceWeekCount * this.weekCount,
       name: this.formChamp.get('name').value,
       dureeMax: this.weekCount,
+      status: 'en attente',
       seanceByWeek: this.seanceWeekCount,
-      niveauMax: this.range?.upper,
-      niveauMin: this.range?.lower,
+      niveauMax: this.range ? this.range.upper : '',
+      niveauMin: this.range ? this.range.lower : '',
       activites: this.activitesList,
       createur: {
         name: this.user.userName,
         uid: this.user.uid,
+        avatar: user.avatar,
       },
       type: this.private.type,
       participants: this.friendsList,
       nbParticipants: this.friendsList?.length,
     };
+    console.log(champ);
+    this.champService.createChampionnat(champ);
+    this.modalCtrl.dismiss();
     this.presentToast();
-    this.champService.matchUser(this.range, champ.activites);
-
-    this.slideNext('amis');
   }
 
   async presentToast() {

@@ -66,11 +66,22 @@
     <ion-item slot="start" lines="none" class="inputZone">
       <ion-icon
         name="image-outline"
-        style="padding: 8px; border-radius: 50%; background-color: white; margin-right: 5px;"
+        style="
+          padding: 8px;
+          border-radius: 50%;
+          background-color: white;
+          margin-right: 5px;
+        "
       ></ion-icon>
-      <ion-input (ionChange)="getText($event)" #inputMsg placeholder="tapez un message" ></ion-input>
+      <ion-input
+        enterkeyhint="enter"
+        (ionChange)="getText($event)"
+        #inputMsg
+        placeholder="tapez un message"
+      ></ion-input>
     </ion-item>
     <ion-button
+      (click)="send()"
       slot="end"
       style="
         --border-radius: 50%;

@@ -69,6 +69,7 @@
   <app-classement
     *ngIf="segmentValue == 'participants'"
     [champ]="championnat"
+    [user]="user"
   ></app-classement>
   <app-feeds
     *ngIf="segmentValue == 'feed'"
@@ -87,7 +88,9 @@
     style="--ion-safe-area-left: 40px; width: 60% !important"
   >
     <ion-button
-      shape="round"
+      expand="block"
+      class="buttonNextSlide"
+      (click)="startChamp()"
       *ngIf="
         championnat.status == 'en attente' &&
         championnat.createur.uid == user.uid
@@ -95,15 +98,18 @@
       >Démarrer</ion-button
     >
     <ion-button
-      shape="round"
+      expand="block"
+      class="buttonNextSlide"
+      (click)="participer()"
       *ngIf="
-        championnat.createur.uid != user.uid &&
-        championnat.status == 'en attente'
+        championnat.status == 'en attente' 
+        && userEncours.etat == 'en attente'
       "
-      >{{ championnat.dateDemarrage | timeRelative }}</ion-button
+      >Participer</ion-button
     >
     <ion-button
       expand="block"
+      (click)="seanceNow()"
       *ngIf="championnat.status == 'en cours'"
       class="buttonNextSlide"
       >Séance Now</ion-button

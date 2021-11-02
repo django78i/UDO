@@ -8,24 +8,22 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Tab1PageRoutingModule } from './tab1-routing.module';
 import { SwiperModule } from 'swiper/angular';
 import { TimeRelativePipe } from '../pipe/time-relative.pipe';
-import { SliderChallengeComponent } from '../components/slider-challenge/slider-challenge.component';
-import {ExternalSessionNowComponent} from "../session-now/external-session-now/external-session-now.component";
+import { TimeFeedPipe } from '../pipe/time-feed.pipe';
 
 @NgModule({
   imports: [
+
     IonicModule,
     CommonModule,
     FormsModule,
     ExploreContainerComponentModule,
     Tab1PageRoutingModule,
     MatProgressSpinnerModule,
-    SwiperModule
+    SwiperModule,
   ],
   declarations: [
     Tab1Page,
-    TimeRelativePipe,
-    SliderChallengeComponent,
-    ExternalSessionNowComponent
+    TimeRelativePipe
   ]
 })
 export class Tab1PageModule { }

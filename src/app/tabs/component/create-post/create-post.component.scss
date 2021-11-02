@@ -1,0 +1,46 @@
+.base-image {
+  border: 2px dashed #2a2a2c;
+  border-radius: 29px;
+  width: 89%;
+  margin: 40px 23px;
+  height: 117px;
+}
+
+.addMedia {
+  border: 2px dashed #2a2a2c;
+  border-radius: 29px;
+  width: 89%;
+  margin: 40px 23px;
+  height: 117px;
+  .appareil {
+    width: 30px;
+    height: 27px;
+    margin: 20px auto 10px auto;
+    width: 100%;
+  }
+  .ajouter {
+    width: 100%;
+    letter-spacing: -0.14px;
+    color: #2a2a2c;
+    opacity: 1;
+    font-size: 14px;
+    font-family: "PoppinsBold" !important;
+    margin: auto;
+    text-align: center;
+    margin-top: -14px;
+  }
+  .taille {
+    font-size: 10px;
+    font-family: "PoppinsMedium" !important;
+    letter-spacing: -0.1px;
+    color: #2a2a2c;
+    opacity: 0.6;
+    margin: auto;
+    text-align: center;
+    margin-top: -15px;
+  }
+}
+.buttonNextSlide {
+  height: 80px;
+  --border-radius: 22px;
+}

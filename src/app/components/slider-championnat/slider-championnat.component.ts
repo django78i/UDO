@@ -27,6 +27,7 @@ export class SliderChampionnatComponent implements OnInit, AfterContentChecked {
   constructor() {}
 
   ngOnInit() {
+    console.log(this.championnats);
   }
 
   config: SwiperOptions = {

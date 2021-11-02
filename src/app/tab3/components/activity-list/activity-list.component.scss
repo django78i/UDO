@@ -1,37 +1,57 @@
 .champColor {
-    margin-bottom: 20px;
-    margin-top: 0;
-    height: 60px;
-    --detail-icon-opacity: 1;
-    --detail-icon-color: black;
-    &::part(detail-icon) {
-        background: #e0e0e0;
-        padding: 5px;
-        width: 30px;
-        height: 31px;
-        border-radius: 11px;
-    }
+  margin-bottom: 0;
+  margin-top: 0;
+  height: 60px;
+  --detail-icon-opacity: 1;
+  --detail-icon-color: black;
+  &::part(detail-icon) {
+    background: #e0e0e0;
+    padding: 5px;
+    width: 30px;
+    height: 31px;
+    border-radius: 11px;
+  }
 }
 
-
-.notActiveContent::part(detail-icon){
-    transform: rotate(90deg);
+.notActiveContent::part(detail-icon) {
+  transform: rotate(90deg);
 }
 
-ion-item::part(detail-icon){
-    transform: rotate(0deg);
-    transition: 0.3s ease all;
+ion-item::part(detail-icon) {
+  transform: rotate(0deg);
+  transition: 0.3s ease all;
 }
 
-.extend{
-    height: auto;
+.extend {
+  height: auto;
 }
 
-.accord{
-    transition: 0.3s ease all;
+.accord {
+  transition: 0.3s ease all;
 }
 
+.small {
+  height: 0px;
+}
 
-.small{
-    height: 0px;
+.typeLogo {
+  height: 50px;
+  width: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  border: 1px solid #2a2a2c36;
+  margin-right: 10px;
+  img {
+    width: 50%;
+  }
+  &.sombre {
+    background-color: #2b2d2f;
+  }
+}
+
+.lineAct {
+  --padding-bottom: 10px;
+  --padding-top: 10px;
 }

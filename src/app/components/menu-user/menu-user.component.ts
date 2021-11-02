@@ -23,7 +23,7 @@ export class MenuUserComponent implements OnInit {
     const modal = await this.modalController.create({
       component: UserProfilComponent,
       componentProps: {
-        user: this.user,
+        userId: this.user.uid,
         currentUser: this.user,
       },
     });

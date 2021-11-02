@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TabsPage } from './tabs.page';
-import {ExternalSessionNowComponent} from "../session-now/external-session-now/external-session-now.component";
+import { ExternalSessionNowComponent } from '../session-now/external-session-now/external-session-now.component';
+import { ExternalSessionNowLoaderPage } from '../session-now/external-session-now/external-session-now-loader/external-session-now-loader.page';
 
 const routes: Routes = [
   {
@@ -10,32 +11,38 @@ const routes: Routes = [
     children: [
       {
         path: 'tab1',
-        loadChildren: () => import('../tab1/tab1.module').then(m => m.Tab1PageModule)
+        loadChildren: () =>
+          import('../tab1/tab1.module').then((m) => m.Tab1PageModule),
       },
       {
         path: 'tab2',
-        loadChildren: () => import('../tab2/tab2.module').then(m => m.Tab2PageModule)
+        loadChildren: () =>
+          import('../tab2/tab2.module').then((m) => m.Tab2PageModule),
       },
       {
         path: 'tab3',
-        loadChildren: () => import('../tab3/tab3.module').then(m => m.Tab3PageModule)
+        loadChildren: () =>
+          import('../tab3/tab3.module').then((m) => m.Tab3PageModule),
       },
       {
         path: '',
         redirectTo: '/tabs/tab1',
-        pathMatch: 'full'
-      }
-    ]
+        pathMatch: 'full',
+      },
+    ],
   },
   {
     path: '',
-    redirectTo: '/tabs/tab1',
-    pathMatch: 'full'
-  }
+    redirectTo: 'tabs/tab1',
+    pathMatch: 'full',
+  },
+  {
+    path: 'session-now/external-session-now-loader',
+    component: ExternalSessionNowLoaderPage,
+  },
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)]
-
+  imports: [RouterModule.forChild(routes)],
 })
 export class TabsPageRoutingModule {}

@@ -33,10 +33,15 @@ export class ActivityListComponent implements OnInit, OnDestroy {
   @Output() activitesEvent: EventEmitter<any> = new EventEmitter();
   @Output() backAction: EventEmitter<any> = new EventEmitter();
   @Input() header: boolean;
+  @Input() listAct: any[];
 
   constructor(public http: HttpClient, private ref: ChangeDetectorRef) {}
 
   ngOnInit() {
+    console.log(this.listAct);
+    this.choix = this.listAct ? this.listAct : [];
+    console.log(this.choix);
+    
     this.activities$ = this.http
       .get<any[]>('../../../assets/mocks/activitiesList.json')
       .pipe(
@@ -46,10 +51,16 @@ export class ActivityListComponent implements OnInit, OnDestroy {
           activities.map((ac) => {
             let table = [];
             const ssActTable = ac.sousAcitivite.map((ssAct) => {
-              return {
-                ...ssAct,
-                isChecked: false,
-              };
+              console.log(this.choix);
+              return this.choix.some((choi) => choi.nom == ssAct.nom)
+                ? {
+                    ...ssAct,
+                    isChecked: true,
+                  }
+                : {
+                    ...ssAct,
+                    isChecked: false,
+                  };
             });
             table.push(ssActTable);
             activiteFil.push({
@@ -86,11 +97,12 @@ export class ActivityListComponent implements OnInit, OnDestroy {
 
   change(categ) {
     console.log(categ);
+    console.log(this.choix);
     if (!categ.isChecked) {
-      console.log('on push')
-      this.choix.push(categ.nom);
+      console.log('on push');
+      this.choix.push(categ);
     } else {
-      const indCategorieInTable = this.choix.findIndex((r) => r == categ.nom);
+      const indCategorieInTable = this.choix.findIndex((r) => r.nom == categ.nom);
       indCategorieInTable != -1
         ? this.choix.splice(indCategorieInTable, 1)
         : '';

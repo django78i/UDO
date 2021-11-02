@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
-import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { ChampionnatsService } from 'src/app/services/championnats.service';
 import { UserService } from 'src/app/services/user-service.service';
@@ -13,6 +13,7 @@ import { UserService } from 'src/app/services/user-service.service';
 export class FriendsListComponent implements OnInit {
   @Output() backAction: EventEmitter<any> = new EventEmitter();
   @Output() friendList: EventEmitter<any> = new EventEmitter();
+  @Output() champCreate: EventEmitter<any> = new EventEmitter();
   friendsList$: Observable<any[]>;
   friendsList: any[] = [];
   friendsSelected: any[] = [];
@@ -24,7 +25,7 @@ export class FriendsListComponent implements OnInit {
   @Input() type: any;
   @Input() range: any;
   @Input() acitivities: any;
-
+  subscription: Subscription;
   constructor(
     public http: HttpClient,
     public userService: UserService,
@@ -32,7 +33,11 @@ export class FriendsListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.friendsList$ = this.champService.friendsListSubject$
+    this.subscription = this.champService.friendsListSubject$.subscribe(
+      (friends) => {
+        this.friendsList = friends;
+      }
+    );
   }
 
   back() {
@@ -40,16 +45,41 @@ export class FriendsListComponent implements OnInit {
   }
 
   selectFriend(friend) {
+    console.log(friend, this.friendsSelected);
     friend = { ...friend, etat: 'en attente' };
-    const ind = this.friendsSelected.findIndex((fr) => fr.name == friend.name);
+    const ind = this.friendsSelected.findIndex(
+      (fr) => fr.userName == friend.userName
+    );
     ind != -1
       ? this.friendsSelected.splice(ind, 1)
       : this.friendsSelected.push(friend);
+    console.log(this.friendsSelected);
     this.friendList.emit(this.friendsSelected);
   }
 
+  clear(event){
+    this.subscription = this.champService.friendsListSubject$.subscribe(
+      (friends) => {
+        this.friendsList = friends;
+      }
+    );
 
-  filterFriends() {
-    this.filterFriendsSubject$.next(this.filteredFriends);
+  }
+
+  filterFriends(ev) {
+    let table = [];
+    console.log(ev);
+    this.friendsList.map((fr) => {
+      if (fr.userName) {
+        fr.userName.includes(ev.detail.value) ? table.push(fr) : '';
+      }
+    });
+    console.log(table);
+    this.friendsList = table;
+    this.filterFriendsSubject$.next(table);
+  }
+
+  create() {
+    this.champCreate.emit('true');
   }
 }

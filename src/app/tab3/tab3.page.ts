@@ -70,7 +70,7 @@ export class Tab3Page implements OnInit, AfterContentChecked {
     private ref: ChangeDetectorRef,
     public navController: NavController,
     public router: Router,
-    public navCtl : NavController
+    public navCtl: NavController
   ) {}
 
   ngOnInit() {
@@ -180,6 +180,7 @@ export class Tab3Page implements OnInit, AfterContentChecked {
   }
 
   chatPage() {
-    this.navCtl.navigateForward(['chat']);
+    // this.navCtl.navigateForward('chat');
+    this.router.navigate(['chat']);
   }
 }

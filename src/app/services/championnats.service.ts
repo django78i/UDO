@@ -10,6 +10,7 @@ import {
   query,
   setDoc,
   where,
+  updateDoc,
 } from 'firebase/firestore';
 import { BehaviorSubject, from, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -122,9 +123,16 @@ export class ChampionnatsService {
       .subscribe();
   }
 
+  async updateChamp(champ) {
+    await updateDoc(doc(this.db, 'championnats', champ.uid), champ);
+  }
+
   async sendMessage(msg, postUid) {
     console.log(msg, postUid);
-    await addDoc(collection(this.db, `post-session-now/${postUid}/messages`), msg);
+    await addDoc(
+      collection(this.db, `post-session-now/${postUid}/messages`),
+      msg
+    );
   }
 
   async getMessage(postUid) {

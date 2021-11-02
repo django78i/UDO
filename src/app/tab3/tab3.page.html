@@ -143,6 +143,7 @@
 
     <!-- <ng-container *ngIf="userChampionnats"> -->
     <app-user-championnats-slide
+      [user]="user"
       [championnats]="userChampionnats"
       (champ)="champModal($event)"
       *ngIf="userChampionnats && !loaderUserChamp; else tempChamp"

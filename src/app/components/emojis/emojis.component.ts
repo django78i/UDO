@@ -30,4 +30,8 @@ export class EmojisComponent implements OnInit {
   send() {
     this.modalController.dismiss(this.emoji);
   }
+
+  close() {
+    this.modalController.dismiss();
+  }
 }

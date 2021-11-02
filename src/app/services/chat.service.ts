@@ -8,33 +8,32 @@ import {
   collection,
   where,
   getDocs,
+  getDoc,
   onSnapshot,
   updateDoc,
+  orderBy,
 } from 'firebase/firestore';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ChatService {
   msgSubject$: BehaviorSubject<any> = new BehaviorSubject(null);
-  roomSubject$: BehaviorSubject<any> = new BehaviorSubject(null);
+  roomSubject$: Subject<any> = new Subject();
 
   constructor() {}
 
   async findRoom(userUid, contactUid): Promise<any[]> {
-    console.log('test');
     const db = getFirestore();
-    const first = query(
-      collection(db, 'rooms'),
-      where('uid', '==', userUid + contactUid),
-      where('uid', '==', contactUid + userUid)
-    );
-    const table = [];
-    const querySnap = await getDocs(first);
-    querySnap.forEach((room) => {
-      room ? table.push(room) : '';
-    });
+    const first = doc(db, 'rooms', userUid + contactUid);
+    const second = doc(db, 'rooms', contactUid + userUid);
+    let table;
+    const querySnap = (await getDoc(first)).data()
+      ? await (await getDoc(first))
+      : await getDoc(second);
+    table = querySnap.data();
+    console.log(table)
     return table;
   }
 
@@ -68,7 +67,10 @@ export class ChatService {
   async getMessages(uid) {
     console.log(uid);
     const db = getFirestore();
-    const docRef = query(collection(db, `rooms/${uid}/messages`));
+    const docRef = query(
+      collection(db, `rooms/${uid}/messages`),
+      orderBy('date', 'asc')
+    );
     const unsubscribe = onSnapshot(docRef, (querySnapshot) => {
       const champs = [];
       querySnapshot.forEach((doc) => {

@@ -13,7 +13,8 @@ ion-col > div {
 }
 
 ion-card.cardActivities {
-  width: 100%;
+  flex: 1;
+  min-width: 40%;
   margin: 0;
   height: 135px;
   --background: #eaebef;

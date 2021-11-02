@@ -46,6 +46,7 @@
           (click)="addPhoto()"
           slot="start"
         ></ion-icon>
+        <ion-icon name="camera-outline" (click)="takePhoto()"></ion-icon>
         <div style="position: relative" *ngIf="picture">
           <img [src]="picture" alt="" class="photoJoin" />
           <img
@@ -55,6 +56,14 @@
             (click)="deletePhoto()"
           />
         </div>
+        <!-- <div>
+          <video
+            *ngIf="videoThumb"
+            #player
+            autoplay
+            (click)="play(videoThumb)"
+          ></video>
+        </div> -->
       </ion-item>
     </div>
   </ion-toolbar>
@@ -77,19 +86,20 @@
           margin-left: 0;
         "
       >
-        <ion-card-header
-          *ngIf="item.isLive == false"
-          (click)="openDetail(item)"
-        >
+        <ion-card-header *ngIf="item.isLive == false">
           <ion-toolbar class="postZone">
             <ion-grid>
               <ion-row>
                 <ion-col size="10">
                   <ion-item lines="none">
-                    <ion-avatar style="margin-right: 10px" slot="start">
-                      <img
-                        src="../../assets/mocks/ToyFaces_Colored_BG_56@2x.png"
-                      />
+                    <ion-avatar
+                      style="margin-right: 10px; background: grey"
+                      slot="start"
+                      (click)="
+                        openProfil(item.userId ? item.userId : item.userUid)
+                      "
+                    >
+                      <img [src]="item.userAvatar" />
                     </ion-avatar>
                     <ion-label>
                       <p>{{ item.username }}</p>
@@ -115,24 +125,30 @@
               </ion-row>
             </ion-grid>
           </ion-toolbar>
-          <p style="padding-left: 20px; margin: 0">{{ item.text }}</p>
-          <div *ngIf="item.photo" class="postPhoto">
-            <img [src]="item.photo" alt="" style="height: 100%; width: 100%" />
-            <!-- <video
-            #player
-            playsinline
-            preload="auto"
-            autoplay="true"
-            (click)="sound()"
+          <p
+            style="
+              padding-left: 20px;
+              margin: 5px;
+              font-size: 14px;
+              font-weight: 600;
+            "
+            (click)="openDetail(item)"
           >
-            <source [src]="item.src" type="video/mp4" />
-          </video> -->
-          </div>
+            {{ item.text }}
+          </p>
+          <!-- <div *ngIf="item.video" class="postPhoto">
+            <video playsinline preload="auto" autoplay="true" (click)="sound()">
+              <source [src]="item.video" type="video/mp4" />
+            </video>
+          </div> -->
         </ion-card-header>
-        <ion-card-header *ngIf="item.isLive == true" (click)="openDetail(item)">
+        <ion-card-header *ngIf="item.isLive == true">
           <ion-item lines="none" class="liveZone">
-            <ion-avatar style="margin-right: 10px" slot="start">
-              <img src="../../assets/mocks/ToyFaces_Colored_BG_56@2x.png" />
+            <ion-avatar
+              style="margin-right: 10px; background: grey"
+              slot="start"
+            >
+              <img [src]="item.avatar" />
             </ion-avatar>
             <ion-label>
               <p>
@@ -156,6 +172,20 @@
             </ion-label>
           </ion-item>
         </ion-card-header>
+        <img
+          [src]="item.photo"
+          alt=""
+          (click)="openDetail(item)"
+          style="
+            display: block;
+            max-width: 400px;
+            max-height: 300px;
+            width: auto;
+            height: auto;
+            margin: auto;
+            border-radius: 15px;
+          "
+        />
         <ion-card-content style="padding: 0">
           <div style="display: flex; gap: 10px; margin-top: 5px">
             <img src="../../assets/icon/Icon feather-share-2.svg" alt="" />
@@ -167,7 +197,11 @@
             <div style="overflow-x: auto">
               <div style="display: inline-flex">
                 <ng-container *ngFor="let rect of item.reactions">
-                  <ion-chip outline *ngIf="rect.nombre != 0">
+                  <ion-chip
+                    outline
+                    *ngIf="rect.nombre > 0"
+                    (click)="controleReaction(i, item.reactions, rect)"
+                  >
                     <ion-avatar>
                       <img [src]="rect.icon" alt="" />
                     </ion-avatar>

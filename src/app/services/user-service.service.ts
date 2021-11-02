@@ -158,14 +158,14 @@ export class UserService {
     const us = user;
     us.friends
       ? us.friends.push({
-          name: fr.userName,
+          userName: fr.userName,
           uid: fr.uid,
-          avatar: fr.avatar? fr.avatar : '',
+          avatar: fr.avatar ? fr.avatar : '',
           niveau: fr.niveau,
         })
       : (us.friends = [
           {
-            name: fr.userName,
+            userName: fr.userName,
             uid: fr.uid,
             avatar: fr.avatar,
             niveau: fr.niveau,

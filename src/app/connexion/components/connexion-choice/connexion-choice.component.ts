@@ -65,7 +65,7 @@ export class ConnexionChoiceComponent implements OnInit {
 
     const { role, data } = await loading.onDidDismiss();
     user.userName
-      ? this.navController.navigateForward([''])
+      ? this.navController.navigateForward('')
       : this.navController.navigateForward('onboarding');
   }
 

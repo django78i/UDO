@@ -49,7 +49,7 @@ import { environment } from '../../environments/environment.prod';
     IonicModule.forRoot(),
     NgCircleProgressModule.forRoot(),
     AngularFireModule.initializeApp(environment.firebaseConfig),
-    
+
   ],
   declarations: [SessionNowComponent,ActivitiesPage,ReglagesPage,ListMetricsPage],
   // entryComponents: [ActivitiesPage,ReglagesPage,ListMetricsPage],

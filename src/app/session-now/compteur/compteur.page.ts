@@ -12,16 +12,18 @@ export class CompteurPage implements OnInit {
   currentCompteur = 9;
   current=1;
   max=10;
+  interval;
   list=['Cliquez sur le compte à rebours pour raccourcir le temps','Pensez à vous échauffer au début de votre séance','Les séances libres permettent de partager votre progression avec les autres utilisateurs','Vos données médicales restent privées et ne seront pas partagées ni stockés sur nos serveurs.','Cliquez sur le compte à rebours pour raccourcir le temps','Pensez à vous échauffer au début de votre séance','Les séances libres permettent de partager votre progression avec les autres utilisateurs','Vos données médicales restent privées et ne seront pas partagées ni stockés sur nos serveurs.','Cliquez sur le compte à rebours pour raccourcir le temps'];
   currentElement ='Cliquez sur le compte à rebours pour raccourcir le temps';
   constructor(private router: Router) {
     let i=-1;
-    setInterval(()=>{
+   this.interval= setInterval(()=>{
       this.current +=1 ;
       i++;
       this.currentElement = this.list[i];
       this.currentCompteur --;
       if (this.currentCompteur === 0) {
+        clearInterval(this.interval);
         this.router.navigate(['session-now/demarrage']);
       }
      }, 1000);

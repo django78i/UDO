@@ -1,4 +1,4 @@
-<ion-header mode="ios" style="--background: transparent">
+<ion-header mode="ios" style="--background: #f4f5fa">
   <ion-toolbar style="--border-width: 0 0 0 !important; --background: #f4f5fa">
     <ion-button
       slot="start"
@@ -16,19 +16,27 @@
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
+
   <ion-item lines="none" style="--background: #f4f5fa">
-    <ion-avatar style="margin-right: 10px" slot="start">
+    <ion-avatar style="margin-right: 10px; background: grey" slot="start">
       <img [src]="user.avatar" />
     </ion-avatar>
     <ion-label>
-      <p>{{ post.user.name }}</p>
+      <div style="display: flex; gap: 10px; align-items: center">
+        <p>{{ post.username }}</p>
+        <ion-note style="font-size: 10px">{{
+          post.startDate | timeRelative
+        }}</ion-note>
+      </div>
       <div style="display: flex; gap: 5px; align-items: center">
-        <img src="../../assets/icon/testIconCateg.svg" alt="" />
+        <!-- <img src="../../assets/icon/testIconCateg.svg" alt="" /> -->
         <p style="font-size: 10px; font-weight: 900">
           {{ post.activity }}
         </p>
-        <ion-note style="font-size: 10px">Il y'a 5 min</ion-note>
       </div>
+      <ion-note style="font-size: 12px; padding-left: 40px" *ngIf="post.text">{{
+        post.text
+      }}</ion-note>
     </ion-label>
   </ion-item>
   <ion-segment
@@ -80,18 +88,93 @@
   </div>
 </ion-header>
 <ion-content>
-  <div class="iconTitle" *ngIf="segmentValue == 'resume'">
-    <img
-      src="../../../../assets/icon/dot.svg"
-      style="
-        background-color: rgb(233, 229, 229);
-        padding: 10px;
-        border-radius: 50%;
-      "
-      alt=""
-    />
-    <h4 style="font-weight: 900; margin: 0">Statistiques</h4>
-  </div>
+  <section
+    *ngIf="segmentValue == 'resume'"
+    style="
+      padding: 0 15px;
+      background: #f4f5fa;
+      border-radius: 13px;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      padding: 23px 15px 10px;
+      flex-direction: column;
+    "
+  >
+    <ion-card style="height: 300px">
+      <img
+        [src]="post.photo"
+        alt=""
+        style="
+          display: block;
+          max-width: 400px;
+          max-height: 300px;
+          width: auto;
+          height: auto;
+          margin: auto;
+        "
+      />
+    </ion-card>
+
+    <!-- <div class="iconTitle" *ngIf="post.metrics">
+      <img
+        src="../../assets/icon/dot.svg"
+        style="
+          background-color: rgb(233, 229, 229);
+          padding: 10px;
+          border-radius: 50%;
+        "
+        alt=""
+      />
+      <h4 style="font-weight: 900; margin: 0">STATISTIQUES</h4>
+    </div> -->
+
+    <div class="iconTitle">
+      <img
+        src="../../assets/icon/dot.svg"
+        style="
+          background-color: rgb(233, 229, 229);
+          padding: 10px;
+          border-radius: 50%;
+        "
+        alt=""
+      />
+      <h4 style="font-weight: 900; margin: 0">ENCOURAGEMENTS</h4>
+    </div>
+
+    <ion-item
+      *ngFor="let react of tableReactions"
+      lines="none"
+      style="--background: white; border-radius: 20px"
+    >
+      <ion-avatar slot="start" (click)="openProfil(react.user.uid)">
+        <img [src]="react.user.avatar" alt="" *ngIf="react.user.avatar" />
+        <img
+          src="https://img.icons8.com/ios-filled/50/000000/gender-neutral-user.png"
+          *ngIf="!react.user.avatar"
+          alt=""
+        />
+        <ion-badge>{{ react.user.niveau }}</ion-badge>
+      </ion-avatar>
+      <ion-label>
+        <h3
+          style="
+            font-size: 14px;
+            color: black;
+            font-weight: 700;
+            margin: 0 0 2px;
+          "
+        >
+          {{ react.user.name }}
+        </h3>
+        <p>{{ react.user.date | timeRelative }}</p>
+      </ion-label>
+      <ion-thumbnail slot="end">
+        <img [src]="react.icon" alt="" />
+      </ion-thumbnail>
+    </ion-item>
+  </section>
+
   <app-messages
     *ngIf="segmentValue == 'messages'"
     [user]="user"
