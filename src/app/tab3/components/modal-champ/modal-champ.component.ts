@@ -15,6 +15,7 @@ import moment from 'moment';
 import { ChampionnatsService } from 'src/app/services/championnats.service';
 
 interface Championnat {
+  uid: string;
   dateCreation: Date;
   dateDemarrage: Date;
   banniere: string;
@@ -143,6 +144,7 @@ export class ModalChampComponent implements OnInit, AfterViewInit {
   }
 
   seanceNow() {
+    localStorage.setItem('championnatUid', this.championnat.uid);
     this.navCtl.navigateForward('session-now');
     this.modalCtrl.dismiss();
   }

@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { Observable } from 'rxjs';
 import { ChampionnatsService } from 'src/app/services/championnats.service';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 
 @Component({
   selector: 'app-detail-post',
@@ -14,6 +14,8 @@ export class DetailPostComponent implements OnInit {
   segmentValue = 'resume';
   message: any;
   tableReactions: any[] = [];
+  picture: any;
+
   constructor(
     public modalCtrl: ModalController,
     public ref: ChangeDetectorRef,
@@ -53,5 +55,18 @@ export class DetailPostComponent implements OnInit {
     };
     this.champService.sendMessage(message, this.post.uid);
     this.message = '';
+  }
+
+  async addPhoto() {
+    const image = await Camera.getPhoto({
+      quality: 100,
+      allowEditing: false,
+      source: CameraSource.Photos,
+      resultType: CameraResultType.DataUrl,
+    });
+
+    // Here you get the image as result.
+    const theActualPicture = image.dataUrl;
+    this.picture = theActualPicture;
   }
 }

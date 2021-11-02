@@ -48,7 +48,47 @@ export class MusicFeedService {
       table.push(f.data());
     });
     const lastVisible: any =
-      documentSnapshots.docs[documentSnapshots.docs.length - 1];
+      documentSnapshots.docs[documentSnapshots.docs.length - 1].data();
+    console.log(documentSnapshots.docs.length);
+
+    return { table: table, last: lastVisible };
+  }
+
+  async feedFilter(filter: string) {
+    console.log(filter);
+    const table = [];
+    const db = getFirestore();
+    let first;
+    if (filter == 'En direct') {
+      console.log('direct');
+      first = query(
+        collection(db, 'post-session-now'),
+        where('isLive', '==', 'true'),
+        orderBy('startDate', 'desc')
+      );
+    }
+    if (filter == 'Récent') {
+      console.log('recent');
+      first = query(
+        collection(db, 'post-session-now'),
+        orderBy('startDate', 'desc')
+      );
+    }
+
+    const user = await this.userService.getCurrentUser();
+
+    const documentSnapshots = await getDocs(first);
+
+    documentSnapshots.forEach((f) => {
+      table.push(f.data());
+    });
+    const lastVisible: any = documentSnapshots.docs[
+      documentSnapshots.docs.length - 1
+    ]
+      ? documentSnapshots.docs[documentSnapshots.docs.length - 1].data()
+      : null;
+    console.log(documentSnapshots.docs.length);
+
     return { table: table, last: lastVisible };
   }
 
@@ -74,7 +114,8 @@ export class MusicFeedService {
     // Get the last visible document
     // this.lastVisible =
     this.lastVisible =
-      documentSnapshots.docs[documentSnapshots.docs.length - 1];
+      documentSnapshots.docs[documentSnapshots.docs.length - 1].data();
+    console.log(documentSnapshots.docs.length);
     return { table: table, last: this.lastVisible };
   }
 

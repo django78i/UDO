@@ -8,6 +8,7 @@ import {
   AfterContentChecked,
   OnInit,
   OnDestroy,
+  AfterViewChecked,
 } from '@angular/core';
 import { SwiperOptions } from 'swiper';
 import { SwiperComponent } from 'swiper/angular';
@@ -41,7 +42,7 @@ interface Users {
   templateUrl: 'tab1.page.html',
   styleUrls: ['tab1.page.scss'],
 })
-export class Tab1Page implements OnInit, OnDestroy {
+export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
   // feed = data;
   feed: Observable<any>;
   feeds: any[] = [];
@@ -69,18 +70,18 @@ export class Tab1Page implements OnInit, OnDestroy {
       icon: '',
       name: 'Récent',
     },
-    {
-      icon: '../../assets/icon/tendance.svg',
-      name: 'Tendance',
-    },
+    // {
+    //   icon: '../../assets/icon/tendance.svg',
+    //   name: 'Tendance',
+    // },
     {
       icon: '../../assets/icon/live.svg',
       name: 'En direct',
     },
-    {
-      icon: '../../assets/icon/friends.svg',
-      name: 'Mes amis',
-    },
+    // {
+    //   icon: '../../assets/icon/friends.svg',
+    //   name: 'Mes amis',
+    // },
   ];
 
   value = 70;
@@ -114,6 +115,12 @@ export class Tab1Page implements OnInit, OnDestroy {
     this.lastVisible = feed.last;
   }
 
+  ngAfterContentChecked() {
+    if (this.swiper2) {
+      this.swiper2.map((swip) => swip.updateSwiper({}));
+    }
+  }
+
   async showMenu() {
     const modal = await this.modalController.create({
       component: MenuUserComponent,
@@ -131,6 +138,7 @@ export class Tab1Page implements OnInit, OnDestroy {
     setTimeout(() => {
       event.target.complete();
       this.lastVisible = feedPlus.last;
+      console.log(taille.last);
       feedPlus.table.forEach((fed) => this.feeds.push(fed));
       // App logic to determine if all data is loaded
       // and disable the infinite scroll
@@ -149,6 +157,13 @@ export class Tab1Page implements OnInit, OnDestroy {
       this.feeds = feedRefresh.table;
       this.lastVisible = feedRefresh.last;
     }, 2000);
+  }
+
+  async clickFilter(filter: string) {
+    this.feeds = [];
+    const feedRefresh = await this.feedService.feedFilter(filter);
+    this.feeds = feedRefresh.table;
+    this.lastVisible = feedRefresh.last;
   }
 
   async presentPopover(i: number, feedLik) {

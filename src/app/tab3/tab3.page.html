@@ -21,7 +21,7 @@
 <ion-content [fullscreen]="true">
   <div
     class="banniere"
-    *ngIf="challenges|async as chall; else banTemplate"
+    *ngIf="challenges|async as chall"
     [style.background]="bannData.background"
   >
     <div style="display: flex; flex-direction: column">
@@ -177,13 +177,26 @@
     <app-slider-championnat
       (champ)="launchDetail($event)"
       [championnats]="championnatsList"
-      *ngIf="championnatsList && !loaderChamp; else tempChamp"
+      *ngIf="userChampionnats && !loaderUserChamp; else tempChamp"
     ></app-slider-championnat>
   </div>
   <div style="width: 100%; margin-bottom: 100px; margin-top: 15px">
+    <div class="iconTitle">
+      <img
+        src="assets/icon/dot.svg"
+        style="
+          background-color: rgb(233, 229, 229);
+          padding: 10px;
+          border-radius: 50%;
+        "
+        alt=""
+      />
+      <h4 style="font-weight: 900; margin: 0">NETWORK</h4>
+    </div>
+
     <app-slider-network
-      [championnats]="net"
-      *ngIf="championnatsNetwork|async as net;else tempNetWork"
+      [championnats]="championnatsNetwork"
+      *ngIf="championnatsNetwork && !loaderNetwork;else tempNetWork"
     ></app-slider-network>
   </div>
   <ng-template #tempChamp>

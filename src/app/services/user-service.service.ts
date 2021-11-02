@@ -78,6 +78,7 @@ export class UserService {
   async getCurrentUser(): Promise<DocumentData> {
     const user = await this.auth.currentUser;
     const userDataBase = await this.findUser(user.uid);
+    localStorage.setItem('user', JSON.stringify(userDataBase.data()));
     return userDataBase.data();
   }
 
