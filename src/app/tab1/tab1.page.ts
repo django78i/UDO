@@ -156,13 +156,9 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
     }, 2000);
   }
 
-  //Choix du filtre
-  async clickFilter(filter: string, i) {
-    this.indice = i;
+  async clickFilter(filter: string) {
     this.feeds = [];
-    this.filter = filter;
     const feedRefresh = await this.feedService.feedFilter(filter);
-    console.log(feedRefresh);
     this.feeds = feedRefresh.table;
     this.lastVisible = feedRefresh.last;
   }
