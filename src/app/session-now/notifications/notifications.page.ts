@@ -20,17 +20,17 @@ export class NotificationsPage implements OnInit {
       if (this.reaction > 0) {
         for (let val of list) {
           let currentValue;
-          let date = moment(val.mapValue.fields.date.stringValue).diff(moment(), 'minutes');
+          let date = moment(val.mapValue.fields.date.stringValue).diff(moment(), 'seconds');
           if (date > 60) {
-            date = moment(val.mapValue.fields.date.stringValue).diff(moment(), 'hours');
+            date = moment(val.mapValue.fields.date.stringValue).diff(moment(), 'minutes');
             if (date > 60) {
-              date = moment(val.mapValue.fields.date.stringValue).diff(moment(), 'days');
-              currentValue = 'il ya ' + date + ' jours';
+              date = moment(val.mapValue.fields.date.stringValue).diff(moment(), 'hours');
+              currentValue = "Il y'a " + date + " heures";
             } else {
-              currentValue = 'il ya ' + date + ' heures';
+              currentValue = "Il y'a " + date + " minutes";
             }
           } else {
-            currentValue = 'il ya ' + date + ' minutes';
+            currentValue = "Il y'a moins d'1 min";
           }
           let value = {
             icon: "assets/images/" + val.mapValue.fields.reactionType.stringValue,
@@ -43,8 +43,9 @@ export class NotificationsPage implements OnInit {
           this.listReactions.push(value);
 
         }
+      } else {
+        this.listReactions = [];
       }
-      console.log("reactions", this.listReactions);
 
     }
   }

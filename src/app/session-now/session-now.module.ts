@@ -31,6 +31,7 @@ import {AppLauncher}  from '@ionic-native/app-launcher/ngx';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 import { AngularFireModule } from '@angular/fire/compat';
 import { environment } from '../../environments/environment.prod';
+import {Keyboard} from '@ionic-native/keyboard/ngx';
 
 @NgModule({
   imports: [
@@ -53,7 +54,7 @@ import { environment } from '../../environments/environment.prod';
   ],
   declarations: [SessionNowComponent,ActivitiesPage,ReglagesPage,ListMetricsPage],
   // entryComponents: [ActivitiesPage,ReglagesPage,ListMetricsPage],
-  providers: [Camera,ScreenOrientation,{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },Health,AppLauncher
+  providers: [Camera,ScreenOrientation,Keyboard ,{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },Health,AppLauncher
   ,{provide: HAMMER_GESTURE_CONFIG, useClass: IonicGestureConfig}
   ],
   exports:[ReglagesPage]

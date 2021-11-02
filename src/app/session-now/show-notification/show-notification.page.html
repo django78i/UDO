@@ -1,0 +1,31 @@
+
+  <ion-item lines="none" class="c-item">
+    <ion-row slot="start" class="c-row-first">
+      <ion-avatar>
+        <ion-img [src]="item?.img" class="img-personn"></ion-img>
+      </ion-avatar>
+      <span class="nombre">{{item?.nombre}} </span>
+    
+    </ion-row>
+    <ion-grid class="c-grid">
+      <ion-row>
+        <ion-item lines="none" class="item-name">
+          {{item?.username}} 
+          <!-- <span class="point" ></span> -->
+          <span slot="end" class="date"> {{item?.date}} </span>
+        
+        </ion-item>
+      </ion-row>
+  
+      <ion-row class="comment">
+        <span>
+          {{item?.commentaire}}
+          
+        </span>
+      </ion-row>
+    </ion-grid>
+    <!-- <ion-img slot="start" class="close"  src="assets/images/close.svg"> </ion-img> -->
+    <ion-img slot="end" (click)="close()" class="icon-end" [src]="item?.icon"></ion-img>
+    <ion-img slot="end" (click)="close()" class="icon-end" src="assets/images/ThumbsUp.png"></ion-img>
+    
+  </ion-item>

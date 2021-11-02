@@ -169,3 +169,11 @@ ion-slides.preseanceSlide {
   width: 90%;
   border-radius: 35px;
 }
+.my-custom-show-notification-modal{
+  height: 81px;
+  border-radius: 24px;
+  margin-top: 8px!important;
+  --backdrop-opacity:0 !important;
+  width: 93%;
+  margin: auto;
+}

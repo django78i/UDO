@@ -21,8 +21,8 @@ export class AddContenuComponent implements OnInit {
   postModel: PostModel;
   user;
   constructor(private modalCtr: ModalController,
-    private storage: AngularFireStorage,
-    private sessionNowService: SessionNowService) {
+              private storage: AngularFireStorage,
+              private sessionNowService: SessionNowService) {
     this.sessionNow = JSON.parse(localStorage.getItem('sessionNow'));
     this.user = JSON.parse(localStorage.getItem('user'));
   }
@@ -76,39 +76,39 @@ export class AddContenuComponent implements OnInit {
     const task = this.storage.upload(`images/${currentDate}`, file);
     task.snapshotChanges()
       .pipe(finalize(() => {
-        this.downloadURL = fileRef.getDownloadURL();
-        this.downloadURL.subscribe(downloadURL => {
-          if (downloadURL) {
-            let image = {
-              picture: this.base64Image,
-              path: filePath
-            }
-            localStorage.setItem('image', JSON.stringify(image));
-            if (!this.sessionNow) {
-              this.close();
-              this.sessionNowService.dissmissLoading();
-              this.sessionNowService.show('Image chargée avec succès', 'success');
-            } else {
-              let postModel: PostModel = {
-                postedAt: moment().format('DD/MM/YYYY'),
-                postedBy: this.user ? this.user.userName : '',
-                sessionUUID: this.sessionNow.uid,
+          this.downloadURL = fileRef.getDownloadURL();
+          this.downloadURL.subscribe(downloadURL => {
+            if (downloadURL) {
+              let image = {
                 picture: this.base64Image,
-                type:'picture'
+                path: filePath
               }
-              this.sessionNowService.create(postModel, 'post-session-now')
-                .then(resPicture => {
-                  this.close();
-                  this.sessionNowService.dissmissLoading();
-                  this.sessionNowService.show('Image créée avec succès', 'success');
-                })
+              localStorage.setItem('image', JSON.stringify(image));
+              if (!this.sessionNow) {
+                this.close();
+                this.sessionNowService.dissmissLoading();
+                this.sessionNowService.show('Image chargée avec succès', 'success');
+              } else {
+                let postModel: PostModel = {
+                  postedAt: moment().format('DD/MM/YYYY'),
+                  postedBy: this.user ? this.user.userName : '',
+                  sessionUUID: this.sessionNow.uid,
+                  picture: this.base64Image,
+                  type:'picture'
+                }
+                this.sessionNowService.create(postModel, 'post-session-now')
+                  .then(resPicture => {
+                    this.close();
+                    this.sessionNowService.dissmissLoading();
+                    this.sessionNowService.show('Image créée avec succès', 'success');
+                  })
+              }
             }
-          }
-        }, error => {
-          this.sessionNowService.show('Erreur sur le serveur veuillez réssayé', 'error');
-          this.sessionNowService.dissmissLoading();
-        });
-      })
+          }, error => {
+            this.sessionNowService.show('Erreur sur le serveur veuillez réssayé', 'error');
+            this.sessionNowService.dissmissLoading();
+          });
+        })
       )
       .subscribe(url => {
         if (url) {
@@ -137,5 +137,5 @@ export class PostModel {
   postedBy: string;
   sessionUUID: string;
   picture: string;
-  type:string;
+  type: string;
 }

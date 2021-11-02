@@ -131,7 +131,7 @@ ion-content{
     }
     .time{
         .value{
-            font-family: "StaatlichesRegular";
+            font-family: "StaatlichesRegular" !important;
             color: #2A2A2C;
             font-size: 60px;
             margin: auto;
@@ -160,7 +160,7 @@ ion-content{
         .nombre{
             color: #2A2A2C;
             font-size: 40px;
-            font-family: "StaatlichesRegular";
+            font-family: "StaatlichesRegular" !important;
             margin-top: 15px;
         }
         .exposant{
@@ -216,7 +216,7 @@ ion-content{
         font-size: 12px;
         padding-left: 8px;
         padding-top: 11px;
-        font-family: "StaatlichesRegular";
+        font-family: "StaatlichesRegular" !important;
         display: none;
     }
     .item-name{

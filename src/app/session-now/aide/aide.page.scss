@@ -29,7 +29,7 @@ ion-content{
         }
     }
     .info ion-label{
-        font-family: "PoppinsBold";
+        font-family: "PoppinsBold" !important;
         font-size: 24px;
         margin: auto;
         color: black;
@@ -40,7 +40,7 @@ ion-content{
         padding: 14px;
         margin-top: -10px;
         ion-label{
-            font-family: "PoppinsMedium";
+            font-family: "PoppinsMedium" !important;
             font-size: 12px;
             margin: auto;
             color: #373738;
@@ -53,7 +53,7 @@ ion-content{
         padding: 14px 30px;
         margin-top: -10px;
         ion-label{
-            font-family: "PoppinsMedium";
+            font-family: "PoppinsMedium" !important;
             font-size: 12px;
             margin: auto;
             color: #373738;
