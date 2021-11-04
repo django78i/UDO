@@ -1,14 +1,14 @@
-<!-- <ion-header class="c-header">
-
-</ion-header> -->
-
-<ion-content>
+<ion-header class="c-header">
   <ion-toolbar>
     <ion-item lines="none">
       <ion-img slot="start" class="img-back" src="assets/images/backArrow.svg" (click)="retour()"> </ion-img>
       <ion-img slot="end" class="img-info" src="assets/images/feather-info.svg" (click)="information()"> </ion-img>
     </ion-item>
   </ion-toolbar>
+</ion-header>
+
+<ion-content>
+ 
   <ion-slides [options]="slideOptsOne" #mySlider pager="true" class="preseanceSlide">
 
     <ion-slide>

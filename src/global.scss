@@ -150,6 +150,9 @@ ion-slides.preseanceSlide {
 .c-header .header-md::after {
   background-image: none !important;
 }
+.header-ios ion-toolbar:last-of-type {
+  --border-width: 0 !important;
+}
 .toggle-calm .toggle-inner {
   width: 16px;
   height: 16px;
