@@ -1,5 +1,11 @@
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import {
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import { IonTextarea, ModalController } from '@ionic/angular';
 import { ChampionnatsService } from 'src/app/services/championnats.service';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 
@@ -15,6 +21,8 @@ export class DetailPostComponent implements OnInit {
   message: any;
   tableReactions: any[] = [];
   picture: any;
+
+  @ViewChild('texArea') textArea: IonTextarea;
 
   constructor(
     public modalCtrl: ModalController,
@@ -52,9 +60,12 @@ export class DetailPostComponent implements OnInit {
       text: this.message,
       date: new Date(),
       sender: this.user,
+      image: this.picture ? this.picture : '',
     };
     this.champService.sendMessage(message, this.post.uid);
     this.message = '';
+    this.picture = null;
+    this.textArea.ionBlur;
   }
 
   async addPhoto() {

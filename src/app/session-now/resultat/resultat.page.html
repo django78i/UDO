@@ -1,18 +1,17 @@
 <ion-content>
-  <ion-row >
-    <img  *ngIf="base64" class="base-image" (click)="addContenu()" [src]="base64" />
+  <ion-row>
+    <img
+      *ngIf="base64Image"
+      class="base-image"
+      (click)="addContenu()"
+      [src]="base64Image"
+    />
   </ion-row>
-  <ion-row  *ngIf="!base64" class="addMedia" (click)="addContenu()">
+  <ion-row *ngIf="!base64Image" class="addMedia" (click)="addContenu()">
     <ion-img class="appareil" src="assets/images/photo2.svg"></ion-img>
-    <div class="ajouter">
-      Ajouter un média
-    </div>
-    <div class="taille">
-      Taille maximum : 25 Mo
-    </div>
+    <div class="ajouter">Ajouter un média</div>
+    <div class="taille">Taille maximum : 25 Mo</div>
   </ion-row>
-
- 
 
   <ion-row class="c-date">
     <span class="day">Aujourd'hui</span>
@@ -26,7 +25,12 @@
     <span class="nameActivity">{{activite.name}}</span>
   </ion-row>
   <ion-row class="message">
-    <ion-textarea [(ngModel)]="sessionNow.comment" class="c-textarea" placeholder="Comment c’est passé votre séance ?">
+    <ion-textarea
+      (ionChange)="changeInput($event)"
+      [(ngModel)]="sessionNow.comment"
+      class="c-textarea"
+      placeholder="Comment c’est passé votre séance ?"
+    >
     </ion-textarea>
     <ion-img class="crayon" src="assets/images/crayon.PNG"></ion-img>
   </ion-row>
@@ -41,29 +45,33 @@
       </span>
     </ion-row>
     <ion-row>
-      <span class="duree">
-        Durée
-      </span>
+      <span class="duree"> Durée </span>
     </ion-row>
   </ion-grid>
   <ion-grid class="choice">
     <ion-row>
-      <ion-col class="c-col" size="6" *ngFor="let item of listElement ; let i=index">
+      <ion-col
+        class="c-col"
+        size="6"
+        *ngFor="let item of listElement ; let i=index"
+      >
         <ion-row>
-          <ion-img class="c-image"
+          <ion-img
+            class="c-image"
             [ngStyle]="{'width': item.width ? item.width : item.width,'height' : item.height ? item.height : item.height}"
-            [src]="item.img"></ion-img>
+            [src]="item.img"
+          ></ion-img>
         </ion-row>
         <ion-row>
           <div class="element">
             <ion-label class="nombre"> {{item.nombre}} </ion-label>
-            <span class="exposant" *ngIf="item.exposant"> {{item.exposant}} </span>
+            <span class="exposant" *ngIf="item.exposant">
+              {{item.exposant}}
+            </span>
           </div>
         </ion-row>
         <ion-row>
-          <ion-label class="name">
-            {{item.name}}
-          </ion-label>
+          <ion-label class="name"> {{item.name}} </ion-label>
         </ion-row>
       </ion-col>
     </ion-row>
@@ -78,7 +86,7 @@
         <ion-avatar>
           <ion-img [src]="item?.img" class="img-personn"></ion-img>
         </ion-avatar>
-        
+
         <ion-label class="nombre"> {{item?.nombre}}</ion-label>
       </ion-row>
       <ion-grid class="c-grid">
@@ -91,9 +99,7 @@
         </ion-row>
 
         <ion-row class="comment">
-          <ion-label>
-            {{item?.commentaire}}
-          </ion-label>
+          <ion-label> {{item?.commentaire}} </ion-label>
         </ion-row>
       </ion-grid>
       <ion-img slot="end" class="icon-end" [src]="item?.icon"></ion-img>

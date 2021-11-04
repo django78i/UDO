@@ -16,14 +16,23 @@ export class PreseancePage implements OnInit {
   slideOptsOne = {
     initialSlide: 0,
     slidesPerView: 1,
-    autoplay: false
+    autoplay: false,
   };
-  base64;
+  base64: any;
   current = 90;
   max = 100;
   isActif: boolean = false;
-  activite = { name: 'Sélectionnez une activité', image: 'assets/images/questionmark.svg', padding2: '34px 40px;', width2: '25px' }
-  constructor(private modalCtrl: ModalController, private router: Router, public navCtl:  NavController) { }
+  activite = {
+    name: 'Sélectionnez une activité',
+    image: 'assets/images/questionmark.svg',
+    padding2: '34px 40px;',
+    width2: '25px',
+  };
+  constructor(
+    private modalCtrl: ModalController,
+    private router: Router,
+    public navCtl: NavController
+  ) {}
 
   ngOnInit() {
     let item = localStorage.getItem('activite');
@@ -36,34 +45,26 @@ export class PreseancePage implements OnInit {
     const modal = await this.modalCtrl.create({
       component: ActivitiesPage,
       cssClass: 'my-custom-activite-modal',
-      componentProps: {
-
-      }
+      componentProps: {},
     });
     modal.onDidDismiss().then((data: any) => {
       let value = JSON.parse(localStorage.getItem('activite'));
       if (value) {
-        this.activite = value
+        this.activite = value;
         this.isActif = true;
       }
     });
     return await modal.present();
-
   }
 
   async reglage() {
     const modal = await this.modalCtrl.create({
       component: ReglagesPage,
       cssClass: 'my-custom-activite-modal',
-      componentProps: {
-
-      }
+      componentProps: {},
     });
-    modal.onDidDismiss().then((data: any) => {
-
-    });
+    modal.onDidDismiss().then((data: any) => {});
     return await modal.present();
-
   }
 
   information() {
@@ -74,12 +75,13 @@ export class PreseancePage implements OnInit {
     const modal = await this.modalCtrl.create({
       component: AddPostContenuComponent,
       cssClass: 'my-custom-contenu-modal',
+      componentProps: {
+        picture: this.base64,
+        activity: this.activite,
+      },
     });
-    modal.onDidDismiss().then((data: any) => {
-
-    });
+    modal.onDidDismiss().then((data: any) => {});
     return await modal.present();
-
   }
   async openCamera() {
     const image = await Camera.getPhoto({
@@ -87,27 +89,24 @@ export class PreseancePage implements OnInit {
       allowEditing: false,
       source: CameraSource.Camera,
       resultType: CameraResultType.DataUrl,
-    //  saveToGallery: true
-
+      //  saveToGallery: true
     });
 
     // Here you get the image as result.
     const theActualPicture = image.dataUrl;
-    localStorage.setItem('picture', theActualPicture);
+    this.base64 = theActualPicture;
+    // localStorage.setItem('picture', theActualPicture);
     this.addContenu();
     // this.modalCtr.dismiss(this.base64Image);
-
   }
   start() {
     if (this.isActif) {
       let choice = JSON.parse(localStorage.getItem('reglages'));
-      if (!choice)
-        this.router.navigate(['/session-now/demarrage']);
+      if (!choice) this.router.navigate(['/session-now/demarrage']);
       else {
         if (choice.compteRebour == true) {
           this.router.navigate(['/session-now/counter']);
-        }
-        else {
+        } else {
           this.router.navigate(['/session-now/demarrage']);
         }
       }
@@ -115,12 +114,10 @@ export class PreseancePage implements OnInit {
   }
 
   swipeNext() {
-
     this.slides.getActiveIndex().then((index: number) => {
       if (index != 2) this.slides.slideNext();
       else this.slides.slideTo(0);
     });
-
   }
   retour() {
     this.navCtl.navigateBack('tabs/tab1');

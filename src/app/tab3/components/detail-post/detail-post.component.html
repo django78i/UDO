@@ -23,19 +23,26 @@
     </ion-avatar>
     <ion-label>
       <div style="display: flex; gap: 10px; align-items: center">
-        <p>{{ post.username }}</p>
+        <p>{{ post.userName }}</p>
         <ion-note style="font-size: 10px">{{
           post.startDate | timeRelative
         }}</ion-note>
       </div>
-      <div style="display: flex; gap: 5px; align-items: center">
-        <!-- <img src="../../assets/icon/testIconCateg.svg" alt="" /> -->
+      <div
+        style="display: flex; gap: 5px; align-items: center"
+        *ngIf="post.activity"
+      >
+        <img
+          [src]="post.activity.image"
+          alt=""
+          style="width: 20px; height: 20px"
+        />
         <p style="font-size: 10px; font-weight: 900">
-          {{ post.activity }}
+          {{ post.activity.name }}
         </p>
       </div>
       <ion-note style="font-size: 12px; padding-left: 40px" *ngIf="post.text">{{
-        post.text
+        post.comment
       }}</ion-note>
     </ion-label>
   </ion-item>
@@ -56,13 +63,14 @@
     *ngIf="segmentValue == 'messages'"
   >
     <ion-item lines="none" style="--background: #f4f5fa">
-      <ion-input
+      <ion-textarea
+        #texArea
         [(ngModel)]="message"
         mode="ios"
         inputmode="text"
         clear-on-edit
         placeholder="Publier un post"
-      ></ion-input>
+      ></ion-textarea>
       <ion-button
         slot="end"
         style="
@@ -125,7 +133,7 @@
       />
     </ion-card>
 
-    <!-- <div class="iconTitle" *ngIf="post.metrics">
+    <div class="iconTitle" *ngIf="post.metrics">
       <img
         src="../../assets/icon/dot.svg"
         style="
@@ -136,7 +144,42 @@
         alt=""
       />
       <h4 style="font-weight: 900; margin: 0">STATISTIQUES</h4>
-    </div> -->
+    </div>
+    <div style="text-align: center" *ngIf="post.activity">
+      <span style="font-size: 33px; font-weight: 700">
+        {{ post.duree.mn | number: "2.0-0" }}:{{
+          post.duree.s | number: "2.0-0"
+        }}</span
+      >
+    </div>
+    <div
+      style="
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 20px;
+      "
+      *ngIf="post.activity"
+    >
+      <div
+        *ngFor="let metric of post.metrics"
+        style="
+          min-width: 150px;
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
+          align-items: center;
+        "
+      >
+        <img [src]="metric.img" style="height: 10px" alt="" />
+        <p style="font-size: 23px; margin: 0; font-weight: 600">
+          {{ metric.nombre }}
+        </p>
+        <p style="margin: 0; font-weight: 600; color: #00000070">
+          {{ metric.name }}
+        </p>
+      </div>
+    </div>
 
     <div class="iconTitle">
       <img

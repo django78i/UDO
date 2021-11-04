@@ -12,7 +12,6 @@ import { TimeFeedPipe } from '../pipe/time-feed.pipe';
 
 @NgModule({
   imports: [
-
     IonicModule,
     CommonModule,
     FormsModule,
@@ -21,9 +20,6 @@ import { TimeFeedPipe } from '../pipe/time-feed.pipe';
     MatProgressSpinnerModule,
     SwiperModule,
   ],
-  declarations: [
-    Tab1Page,
-    TimeRelativePipe
-  ]
+  declarations: [Tab1Page, TimeRelativePipe, TimeFeedPipe],
 })
-export class Tab1PageModule { }
+export class Tab1PageModule {}

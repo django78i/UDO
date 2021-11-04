@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import {AlertController, ModalController, NavController, ToastController} from '@ionic/angular';
+import {
+  AlertController,
+  ModalController,
+  NavController,
+  ToastController,
+} from '@ionic/angular';
 import { ListMetricsPage } from '../list-metrics/list-metrics.page';
 import { NotificationsPage } from '../notifications/notifications.page';
 import { ReglagesPage } from '../reglages/reglages.page';
@@ -7,12 +12,10 @@ import { Router } from '@angular/router';
 import { Health } from '@ionic-native/health/ngx';
 import { Platform } from '@ionic/angular';
 import { DonneesPriveComponent } from '../donnees-prive/donnees-prive.component';
-import {SessionNowService} from '../../services/session-now-service.service';
+import { SessionNowService } from '../../services/session-now-service.service';
 import { AddPostContenuComponent } from '../add-post-contenu/add-post-contenu.component';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { ShowNotificationPage } from '../show-notification/show-notification.page';
-
-
 
 @Component({
   selector: 'app-demarrage',
@@ -20,7 +23,6 @@ import { ShowNotificationPage } from '../show-notification/show-notification.pag
   styleUrls: ['./demarrage.page.scss'],
 })
 export class DemarragePage implements OnInit {
-
   listElement: any = [];
   base64;
   t: any;
@@ -38,28 +40,28 @@ export class DemarragePage implements OnInit {
       nombre: '0',
       name: 'Distance',
       exposant: 'KM',
-      fieldname: 'distance'
+      fieldname: 'distance',
     },
     {
       img: 'assets/images/pas.svg',
       nombre: '0',
       name: 'Nombre de pas',
       exposant: '',
-      fieldname: 'steps'
+      fieldname: 'steps',
     },
     {
       img: 'assets/images/heart_m.svg',
       nombre: '0',
       name: 'BPM',
       exposant: '',
-      fieldname: 'heart_rate'
+      fieldname: 'heart_rate',
     },
     {
       img: 'assets/images/calories_m.svg',
       nombre: '0',
       name: 'Calories',
       exposant: 'CAL',
-      fieldname: 'calories'
+      fieldname: 'calories',
     },
   ];
   sessionNow = new SessionNowModel();
@@ -90,7 +92,6 @@ export class DemarragePage implements OnInit {
    * cette fonction permet de recuperer la seance now en cours
    */
   async getSessionNow() {
-
     this.interval = setInterval(() => {
       let sessionNow = JSON.parse(localStorage.getItem('sessionNow'));
       if (sessionNow) {
@@ -99,18 +100,20 @@ export class DemarragePage implements OnInit {
           if (value.reactions.arrayValue.values) {
             this.reactions = value.reactions.arrayValue.values?.length;
             this.sessionNow.reactions = value.reactions.arrayValue.values;
-            if(this.sessionNow.reactions.length!= sessionNow.reactions.length && this.reactions!=0){
+            if (
+              this.sessionNow.reactions.length != sessionNow.reactions.length &&
+              this.reactions != 0
+            ) {
               this.showNotification();
             }
             // localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
-          }else{
+          } else {
             this.reactions = 0;
             this.sessionNow.reactions = [];
           }
 
           localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
         });
-
       }
     }, 10000);
   }
@@ -131,21 +134,22 @@ export class DemarragePage implements OnInit {
           cssClass: 'secondary',
           handler: (blah) => {
             this.start();
-          }
-        }, {
+          },
+        },
+        {
           text: 'Oui',
           handler: () => {
             this.displayRecap();
-          }
-        }
-      ]
+          },
+        },
+      ],
     });
 
     await alert.present();
   }
   ngOnInit() {
     const stSettings = localStorage.getItem('reglages');
-    if(stSettings){
+    if (stSettings) {
       this.listSettings = JSON.parse(stSettings);
     }
     let valPause = localStorage.getItem('pause');
@@ -161,28 +165,28 @@ export class DemarragePage implements OnInit {
         nombre: '0',
         name: 'Distance',
         exposant: 'KM',
-        fieldname: 'distance'
+        fieldname: 'distance',
       },
       {
         img: 'assets/images/pas.svg',
         nombre: '0',
         name: 'Nombre de pas',
         exposant: '',
-        fieldname: 'steps'
+        fieldname: 'steps',
       },
       {
         img: 'assets/images/heart_m.svg',
         nombre: '0',
         name: 'BPM',
         exposant: '',
-        fieldname: 'heart_rate'
+        fieldname: 'heart_rate',
       },
       {
         img: 'assets/images/calories_m.svg',
         nombre: '0',
         name: 'Calories',
         exposant: 'CAL',
-        fieldname: 'calories'
+        fieldname: 'calories',
       },
     ];
     let item = JSON.parse(localStorage.getItem('activite'));
@@ -195,39 +199,45 @@ export class DemarragePage implements OnInit {
     } else {
       this.listElement = JSON.parse(localStorage.getItem('choix'));
     }
-    this.sessionNow.startDate=new Date().toISOString();
-    this.sessionNow.activity=this.activite?.name;
-    if(this.listSettings!==null && this.listSettings!==undefined && this.listSettings.length!==0){
-      if(!this.listSettings['modePrive']){
-        this.sessionNow.mode='privée';
-      }else{
-        this.sessionNow.mode='public';
+    this.sessionNow.startDate = new Date();
+    this.sessionNow.activity = this.activite;
+    if (
+      this.listSettings !== null &&
+      this.listSettings !== undefined &&
+      this.listSettings.length !== 0
+    ) {
+      if (!this.listSettings['modePrive']) {
+        this.sessionNow.mode = 'privée';
+      } else {
+        this.sessionNow.mode = 'public';
       }
     } else {
       this.sessionNow.mode = 'public';
     }
     this.sessionNow.isLive = true;
     // this.sessionNow.uid = "ef8f7e570c5f3be4f726ce612224a350";
-    this.snService.create(this.sessionNow, 'session-now')
-      .then(res => {
+    this.snService
+      .createSessionNow(this.sessionNow)
+      .then((res) => {
         this.sessionNow.uid = res;
         localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
         this.sessionNow.photo = this.image ? this.image.picture : '';
-        this.sessionNow.username = this.user ? this.user.userName : '';
+        this.sessionNow.userName = this.user ? this.user.userName : '';
         this.sessionNow.userId = this.user ? this.user.uid : '';
+        this.sessionNow.sessionId = res;
+        this.sessionNow.userAvatar = this.user.avatar;
+        this.sessionNow.userNiveau = this.user.niveau;
+
         let sessionNow = { ...this.sessionNow };
         sessionNow['type'] = 'session-now';
 
-        this.snService.create(sessionNow, 'post-session-now')
-          .then(resPost => {
-            console.log("je suis la");
-            // this.sessionNow.uid = res;
-            // localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
-          });
-
-
+        this.snService.createPostSessionNow(sessionNow).then((resPost) => {
+          console.log('je suis la');
+          // this.sessionNow.uid = res;
+          localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
+        });
       })
-      .catch(err => console.error(err));
+      .catch((err) => console.error(err));
     localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
   }
 
@@ -235,20 +245,22 @@ export class DemarragePage implements OnInit {
    * cette fonction permet de verififer si la plateforme est disponible pour le health
    */
   async checkPlatformReady() {
-    const ready = !!await this.platform.ready();
+    const ready = !!(await this.platform.ready());
     if (ready) {
       // Use plugin functions here
-      this.health.requestAuthorization([
-        'distance', 'nutrition','activity',  //read and write permissions
-        {
-          read: ['steps', 'height', 'weight','heart_rate','calories'],//read only permission
-          write: ['height', 'weight']  //write only permission
-        }
-      ])
-        .then(res => this.getMetrics())
-        .catch(e => console.log('error1 ' + e));
+      this.health
+        .requestAuthorization([
+          'distance',
+          'nutrition',
+          'activity', //read and write permissions
+          {
+            read: ['steps', 'height', 'weight', 'heart_rate', 'calories'], //read only permission
+            write: ['height', 'weight'], //write only permission
+          },
+        ])
+        .then((res) => this.getMetrics())
+        .catch((e) => console.log('error1 ' + e));
     }
-
   }
 
   /**
@@ -262,7 +274,9 @@ export class DemarragePage implements OnInit {
       let that = this;
       // this.getMetrics();
       // @ts-ignore
-       setTimeout(() => { that.getMetrics(); }, 1000);
+      setTimeout(() => {
+        that.getMetrics();
+      }, 1000);
     }
   }
 
@@ -271,20 +285,30 @@ export class DemarragePage implements OnInit {
    * @param res
    * @param item
    */
-  processMetricResult(res,item){
-    if(item.fieldname ==='speed' ){
-      const distance=      res.length > 0 ? res[res.length - 1]?.value: 0;
-      if(distance!==0){
-        const speed=this.calculSpeed(distance,((this.mn*60)+this.s));
-        item.nombre= (Math.round((parseFloat(speed.km.toString()) + Number.EPSILON) * 100) / 100);
+  processMetricResult(res, item) {
+    if (item.fieldname === 'speed') {
+      const distance = res.length > 0 ? res[res.length - 1]?.value : 0;
+      if (distance !== 0) {
+        const speed = this.calculSpeed(distance, this.mn * 60 + this.s);
+        item.nombre =
+          Math.round((parseFloat(speed.km.toString()) + Number.EPSILON) * 100) /
+          100;
       }
+    } else {
+      item.nombre =
+        res.length > 0
+          ? Math.round(
+              (parseFloat(res[res.length - 1]?.value) + Number.EPSILON) * 100
+            ) / 100
+          : '0';
     }
-    else{
-      item.nombre = res.length > 0 ? (Math.round((parseFloat(res[res.length - 1]?.value) + Number.EPSILON) * 100) / 100) : '0';
-    }
-    if(item.fieldname === 'distance'){
-      if(item.nombre!==0 && item.nombre!==undefined && item.nombre!==''){
-        item.nombre= Math.round(item.nombre / 100) / 10;
+    if (item.fieldname === 'distance') {
+      if (
+        item.nombre !== 0 &&
+        item.nombre !== undefined &&
+        item.nombre !== ''
+      ) {
+        item.nombre = Math.round(item.nombre / 100) / 10;
       }
     }
     console.log('res', res);
@@ -300,23 +324,25 @@ export class DemarragePage implements OnInit {
     let option = {
       startDate: new Date(this.sessionNow.startDate), // three days ago
       endDate: new Date(), // now
-      dataType: metric
+      dataType: metric,
     };
     console.log(new Date(this.sessionNow.startDate));
-    if (metric === 'steps' || metric === 'distance' || metric==='speed') {
-      if( metric==='speed') {
+    if (metric === 'steps' || metric === 'distance' || metric === 'speed') {
+      if (metric === 'speed') {
         option.dataType = 'distance';
       }
-      option['bucket']='hour';
-      this.health.queryAggregated(option).then(res => this.processMetricResult(res,item) )
-        .catch(e => console.log('error3 ', e));
+      option['bucket'] = 'hour';
+      this.health
+        .queryAggregated(option)
+        .then((res) => this.processMetricResult(res, item))
+        .catch((e) => console.log('error3 ', e));
+    } else {
+      option['limit'] = 100;
+      this.health
+        .query(option)
+        .then((res) => this.processMetricResult(res, item))
+        .catch((e) => console.log('error1 ', e));
     }
-    else {
-      option['limit']=100;
-      this.health.query(option).then(res =>this.processMetricResult(res,item))
-        .catch(e => console.log('error1 ', e));
-    }
-
   }
   checkPause() {
     this.pause = true;
@@ -336,18 +362,28 @@ export class DemarragePage implements OnInit {
    */
   displayRecap() {
     this.stop();
-    const listMetricAuhorised=['steps','distance','calories','activity','height','weight'];
-    this.sessionNow.isLive=false;
-    this.sessionNow.duration=this.mn+':'+this.s;
-    for (let metric of this.listElement){
-      for(const metricAutorised of listMetricAuhorised){
-        if(metric.fieldname===metricAutorised){
+    const listMetricAuhorised = [
+      'steps',
+      'distance',
+      'calories',
+      'activity',
+      'height',
+      'weight',
+    ];
+    this.sessionNow.isLive = false;
+    this.sessionNow.duration = this.mn + ':' + this.s;
+    for (let metric of this.listElement) {
+      for (const metricAutorised of listMetricAuhorised) {
+        if (metric.fieldname === metricAutorised) {
           this.sessionNow.metrics.push(metric);
         }
       }
     }
 
-    this.sessionNow.endDate=new Date().toISOString().split('T')[0] +' '+new Date().toISOString().split('T')[1].split('.')[0];
+    this.sessionNow.endDate =
+      new Date().toISOString().split('T')[0] +
+      ' ' +
+      new Date().toISOString().split('T')[1].split('.')[0];
     localStorage.setItem('counter', JSON.stringify({ mn: this.mn, s: this.s }));
     localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
     // redirection vers le composant qui affiche le recapitulatif
@@ -365,13 +401,11 @@ export class DemarragePage implements OnInit {
       resultType: CameraResultType.DataUrl,
     });
 
-
     // Here you get the image as result.
     const theActualPicture = image.dataUrl;
     localStorage.setItem('picture', theActualPicture);
-    this.addContenu();
+    this.addContenu(theActualPicture);
     // this.modalCtr.dismiss(this.base64Image);
-
   }
   /**
    * cette fonction permet d'afficher un toast message
@@ -383,7 +417,7 @@ export class DemarragePage implements OnInit {
       message,
       duration: 4000,
       color: type,
-      position: 'bottom'
+      position: 'bottom',
     });
     toast.present();
   }
@@ -403,16 +437,13 @@ export class DemarragePage implements OnInit {
       component: ShowNotificationPage,
       cssClass: 'my-custom-show-notification-modal',
       componentProps: {
-        data:{
-          data:this.sessionNow.reactions[0]
-        }
-      }
+        data: {
+          data: this.sessionNow.reactions[0],
+        },
+      },
     });
-    modal.onDidDismiss().then((data: any) => {
-
-    });
+    modal.onDidDismiss().then((data: any) => {});
     return await modal.present();
-
   }
   /**
    * Cette methode permet d'ouvrir le modal des notification
@@ -422,30 +453,26 @@ export class DemarragePage implements OnInit {
     const modal = await this.modalCtrl.create({
       component: NotificationsPage,
       cssClass: 'my-custom-activite-modal',
-      componentProps: {
-
-      }
+      componentProps: {},
     });
-    modal.onDidDismiss().then((data: any) => {
-
-    });
+    modal.onDidDismiss().then((data: any) => {});
     return await modal.present();
-
   }
 
   /**
    * Cette methode permet d'ouvrir le modal de selection des photos
    */
-  async addContenu() {
+  async addContenu(picture) {
+    console.log('ouverture content');
     const modal = await this.modalCtrl.create({
       component: AddPostContenuComponent,
       cssClass: 'my-custom-contenu-modal',
+      componentProps: { picture: picture, activity: this.activite },
     });
-    modal.onDidDismiss().then((data: any) => {
-      this.base64 =data.data;
-    });
+    // modal.onDidDismiss().then((data: any) => {
+    //   this.base64 = data.data;
+    // });
     return await modal.present();
-
   }
 
   /**
@@ -456,15 +483,10 @@ export class DemarragePage implements OnInit {
     const modal = await this.modalCtrl.create({
       component: ReglagesPage,
       cssClass: 'my-custom-activite-modal',
-      componentProps: {
-
-      }
+      componentProps: {},
     });
-    modal.onDidDismiss().then((data: any) => {
-
-    });
+    modal.onDidDismiss().then((data: any) => {});
     return await modal.present();
-
   }
 
   /**
@@ -494,7 +516,9 @@ export class DemarragePage implements OnInit {
    */
   start() {
     this.status = 'play';
-    this.t = setInterval(() => { this.updateChrono(); }, 100);
+    this.t = setInterval(() => {
+      this.updateChrono();
+    }, 100);
     // btn_start.disabled=true;
   }
   /**
@@ -517,19 +541,21 @@ export class DemarragePage implements OnInit {
       cssClass: 'my-custom-activite-modal',
       componentProps: {
         choix: item,
-        min:this.mn,
-        sec:this.s
-      }
+        min: this.mn,
+        sec: this.s,
+      },
     });
     modal.onDidDismiss().then((data: any) => {
       if (data.data) {
         let value = data.data;
         for (let el of this.listElement) {
           if (el.name === value.name) {
-            this.showMessage('Cette activité est déjà dans la liste', 'warning')
+            this.showMessage(
+              'Cette activité est déjà dans la liste',
+              'warning'
+            );
             return;
           }
-
         }
         for (let val of this.listChoix) {
           if (value.name == val.name) {
@@ -543,7 +569,6 @@ export class DemarragePage implements OnInit {
       }
     });
     return await modal.present();
-
   }
 
   /**
@@ -551,36 +576,39 @@ export class DemarragePage implements OnInit {
    * @param distanceMeter
    * @param timeSeconds
    */
-  calculSpeed(distanceMeter,timeSeconds){
+  calculSpeed(distanceMeter, timeSeconds) {
     return {
-      m:distanceMeter/timeSeconds ,
-      km:(distanceMeter/timeSeconds)*3.6
+      m: distanceMeter / timeSeconds,
+      km: (distanceMeter / timeSeconds) * 3.6,
     };
   }
 }
-export class SessionNowModel{
+export class SessionNowModel {
   uid: string;
-  startDate: string;
+  startDate: Date;
   endDate: string;
   activity: string;
   userId: string;
   photo: string;
-  username: string;
+  userName: string;
   reactionNumber: number;
-  reactions= [];
-  metrics= [
-
-  ];
+  reactions = [];
+  metrics = [];
   score: number;
   mode: string; // 'private or public'
-  championant: string ; // nulllable true
-  isLive: boolean ; // true or false
+  championant: string; // nulllable true
+  isLive: boolean; // true or false
   duration: string;
   comment: string;
+  sessionId: string;
+  userAvatar: string;
+  userNiveau: number;
 }
-export class PostModel{
+export class PostModel {
   postedAt: string;
   postedBy: string;
-  sessionUUID: string;
+  sessionId: string;
   picture: string;
+  userAvatar: string;
+  userNiveau: number;
 }

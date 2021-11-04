@@ -15,6 +15,7 @@
         </ion-avatar>
 
         <ion-input
+          (ionFocus)="test($event)"
           #inputFeed
           (ionChange)="inputRead($event)"
           mode="ios"
@@ -22,6 +23,7 @@
           clear-on-edit
           placeholder="Publier un post"
         ></ion-input>
+        <div *ngIf="boole">test</div>
         <ion-button
           slot="end"
           style="
@@ -56,14 +58,6 @@
             (click)="deletePhoto()"
           />
         </div>
-        <!-- <div>
-          <video
-            *ngIf="videoThumb"
-            #player
-            autoplay
-            (click)="play(videoThumb)"
-          ></video>
-        </div> -->
       </ion-item>
     </div>
   </ion-toolbar>

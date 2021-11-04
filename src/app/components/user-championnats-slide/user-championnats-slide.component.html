@@ -1,3 +1,4 @@
+<ion-content>
 <swiper #swiper [config]="config" style="padding-left: 15px">
   <ng-template swiperSlide *ngFor="let champ of championnats; let i = index">
     <ion-card
@@ -38,13 +39,13 @@
       <ion-card-content class="cardContentZone">
         <ion-item style="--background: transparent" lines="none">
           <ion-label>
-            {{ position + 1 }}
+            {{ champ.position + 1 }}
           </ion-label>
           <div style="display: flex; gap: 5px; flex-direction: column">
             <ion-note>{{ champ.dateFin | timeRelative | uppercase }}</ion-note>
             <ion-note style="font-size: 12px; color: white; font-weight: 700"
-              >J. {{ userInfo.journeeEnCours }}
-              <ion-chip> + {{ userInfo.bonus }} </ion-chip>
+              >J. {{ userInfo?.journeeEnCours }}
+              <ion-chip> + {{ userInfo?.bonus }} </ion-chip>
             </ion-note>
           </div>
         </ion-item>

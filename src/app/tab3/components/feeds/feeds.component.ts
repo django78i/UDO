@@ -54,6 +54,7 @@ export class FeedsComponent implements OnInit {
   reaction: any;
   picture: any;
   pictureUrl: string;
+  boole: boolean = false;
   text: string;
   blob: Blob;
   @ViewChild('inputFeed') inputFeed: IonInput;
@@ -272,7 +273,7 @@ export class FeedsComponent implements OnInit {
               activity: '',
               championnat: this.championnat.uid,
             };
-            this.feedService.sendPost(post);
+            // this.feedService.sendPost(post);
             this.feedReinit();
           });
         },
@@ -295,9 +296,16 @@ export class FeedsComponent implements OnInit {
         activity: '',
         championnat: this.championnat.uid,
       };
-      await this.feedService.sendPost(post);
+      // await this.feedService.sendPost(post);
+
       this.feedReinit();
     }
+  }
+
+  test(event) {
+    console.log(this.inputFeed);
+    this.inputFeed.color = 'red';
+    this.boole = true;
   }
 
   async feedReinit() {
@@ -309,8 +317,11 @@ export class FeedsComponent implements OnInit {
       this.feed.push(fee);
     });
     this.inputFeed.value = null;
+    this.inputFeed.ionBlur;
     this.picture = null;
     this.pictureUrl = null;
+    this.boole = false;
+
   }
 
   async openProfil(contact) {

@@ -11,19 +11,26 @@
     <img
       *ngIf="base64"
       class="base-image"
-      (click)="takePhoto()"
+      (click)="addContenu()"
       [src]="base64"
     />
   </ion-row>
-  <ion-row *ngIf="!base64" class="addMedia" (click)="takePhoto()">
+  <ion-row *ngIf="!base64" class="addMedia" (click)="addContenu()">
     <ion-img class="appareil" src="assets/images/photo2.svg"></ion-img>
     <div class="ajouter">Ajouter un média</div>
     <div class="taille">Taille maximum : 25 Mo</div>
   </ion-row>
-  <ion-item>
-    <ion-input slot="start" (ionChange)="inputRead($event)"></ion-input>
-    <ion-icon name="pencil-sharp" slot="end"></ion-icon>
-  </ion-item>
+  <ion-row>
+    <ion-item lines="full" style="margin: auto">
+      <ion-label position="floating"> Commentez votre publication</ion-label>
+      <ion-input #InputArea (ionChange)="inputRead($event)"></ion-input>
+      <ion-icon
+        name="pencil-sharp"
+        slot="end"
+        style="margin-top: 32 px"
+      ></ion-icon>
+    </ion-item>
+  </ion-row>
   <ion-fab
     vertical="bottom"
     horizontal="start"

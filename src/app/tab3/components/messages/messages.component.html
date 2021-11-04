@@ -24,14 +24,34 @@
             <ion-badge>{{ message.sender.niveau }}</ion-badge>
           </ion-avatar>
           <ion-label>
-            <p>{{ message.sender.userName }}</p>
-            <p>{{ message.date | timeRelative }}</p>
+            <p style="font-size: 14px; color: black; font-weight: 700">
+              {{ message.sender.userName }}
+            </p>
+            <p style="font-size: 10px">
+              {{ message.date | timeRelative }}
+            </p>
           </ion-label>
         </ion-item>
+        <ion-item style="--padding-start: 71px" lines="none">
+          <span style="font-size: 14px; font-weight: 500">{{
+            message.text
+          }}</span>
+        </ion-item>
       </ion-card-header>
-      <ion-card-content style="padding-left: 73px">
-        <p>{{ message.text }}</p>
-      </ion-card-content>
+      <img
+        [src]="message?.image"
+        style="
+          display: block;
+          max-width: 400px;
+          max-height: 300px;
+          width: auto;
+          height: auto;
+          margin: auto;
+          border-radius: 15px;
+        "
+        alt=""
+      />
+      <ion-card-content style="padding-left: 73px"> </ion-card-content>
     </ion-card>
   </ng-container>
   <ng-template #showBlank>

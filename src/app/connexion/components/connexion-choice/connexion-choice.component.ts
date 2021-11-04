@@ -24,7 +24,6 @@ export class ConnexionChoiceComponent implements OnInit {
   user: any;
   errorSub: BehaviorSubject<string> = new BehaviorSubject(null);
 
-
   constructor(
     public userService: UserService,
     public fb: FormBuilder,
@@ -58,7 +57,7 @@ export class ConnexionChoiceComponent implements OnInit {
   }
 
   async redirect(user): Promise<void> {
-    console.log(user)
+    console.log(user);
     const loading = await this.loadingController.create({
       message: 'Veuillez patienter...',
       duration: 2000,
@@ -66,9 +65,11 @@ export class ConnexionChoiceComponent implements OnInit {
     await loading.present();
 
     const { role, data } = await loading.onDidDismiss();
-    user.userName
-      ? this.navController.navigateForward('')
-      : this.navController.navigateForward('onboarding');
+    this.zone.run(() => {
+      user.userName
+        ? this.navController.navigateForward('')
+        : this.navController.navigateForward('onboarding');
+    });
   }
 
   connexion() {

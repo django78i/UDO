@@ -29,6 +29,7 @@ export class ChampionnatsService {
   constructor() {}
 
   async createChampionnat(champ) {
+    console.log(champ);
     const id = this.createId();
     champ = { ...champ, uid: id };
     await setDoc(doc(this.db, 'championnats', champ.uid), champ);
@@ -39,7 +40,8 @@ export class ChampionnatsService {
       collection(this.db, 'championnats'),
       where('status', '==', 'en cours')
     );
-    const unsubscribe = onSnapshot(docRef, (querySnapshot) => {
+
+    onSnapshot(docRef, (querySnapshot) => {
       const champs = [];
       querySnapshot.forEach((doc) => {
         const document = doc.data();
@@ -53,7 +55,6 @@ export class ChampionnatsService {
       });
     });
   }
-
 
   getChampionnatNetwork(user) {
     const docRef = query(

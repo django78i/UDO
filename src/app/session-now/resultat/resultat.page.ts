@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AddContenuComponent } from '../add-contenu/add-contenu.component';
-import { ModalController, Platform } from '@ionic/angular';
+import { ModalController, NavController, Platform } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { DonneesPriveComponent } from '../donnees-prive/donnees-prive.component';
 import { Location } from '@angular/common';
@@ -11,6 +11,12 @@ import { SessionNowService } from '../../services/session-now-service.service';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadString,
+} from 'firebase/storage';
 
 @Component({
   selector: 'app-resultat',
@@ -31,21 +37,40 @@ export class ResultatPage implements OnInit {
   listReactions = [];
   dateSession: any;
   listNotif: any = [
-    { img: 'assets/images/personn.png', nombre: '70', name: 'Bernard', comment: 'Lorem ipsum dolor sit atmet', date: 'Il y a 1 min.', icon: 'assets/images/Blush.png' },
-    { img: 'assets/images/personn2.PNG', nombre: '10', name: 'Mélanie', comment: 'Lorem ipsum dolor sit atmet', date: 'Il y a 1 min.', icon: 'assets/images/ThumbsUp.png' },
+    {
+      img: 'assets/images/personn.png',
+      nombre: '70',
+      name: 'Bernard',
+      comment: 'Lorem ipsum dolor sit atmet',
+      date: 'Il y a 1 min.',
+      icon: 'assets/images/Blush.png',
+    },
+    {
+      img: 'assets/images/personn2.PNG',
+      nombre: '10',
+      name: 'Mélanie',
+      comment: 'Lorem ipsum dolor sit atmet',
+      date: 'Il y a 1 min.',
+      icon: 'assets/images/ThumbsUp.png',
+    },
   ];
   user;
-  constructor(private modalCtrl: ModalController,
+  constructor(
+    private modalCtrl: ModalController,
     private platform: Platform,
-    private _location: Location,private storage: AngularFireStorage,
-    private sessionNowService:SessionNowService) {
+    private _location: Location,
+    private storage: AngularFireStorage,
+    private sessionNowService: SessionNowService,
+    public navCtl: NavController,
+    public router: Router
+  ) {
     this.platform.backButton.subscribeWithPriority(10, () => {
       console.log('Handler was called!');
       this._location.back();
     });
-    if (localStorage.getItem('picture')) {
-      this.base64Image = localStorage.getItem('picture');
-    }
+    // if (localStorage.getItem('picture')) {
+    //   this.base64Image = localStorage.getItem('picture');
+    // }
     this.counter = JSON.parse(localStorage.getItem('counter'));
     this.sessionNow = JSON.parse(localStorage.getItem('sessionNow'));
     this.user = JSON.parse(localStorage.getItem('user'));
@@ -53,7 +78,7 @@ export class ResultatPage implements OnInit {
   }
 
   ngOnInit() {
-    this.listNotif=[];
+    this.listNotif = [];
     this.activite = JSON.parse(localStorage.getItem('activite'));
     this.listElement = JSON.parse(localStorage.getItem('choix'));
 
@@ -65,28 +90,37 @@ export class ResultatPage implements OnInit {
       // this.activite = item;
       if (this.sessionNow) {
         let list = this.sessionNow.reactions;
-        let currentSeconds,currentMinutes,currentHeures;
+        let currentSeconds, currentMinutes, currentHeures;
         currentSeconds = moment().diff(this.sessionNow.startDate, 'seconds');
         currentMinutes = moment().diff(this.sessionNow.startDate, 'minutes');
         currentHeures = moment().diff(this.sessionNow.startDate, 'hours');
-        if(currentSeconds>60){
-          if(currentMinutes>60){
+        if (currentSeconds > 60) {
+          if (currentMinutes > 60) {
             this.dateSession = 'il ya ' + currentHeures + ' heures';
-          }else{
+          } else {
             this.dateSession = 'il ya ' + currentMinutes + ' minutes';
           }
-        }else{
+        } else {
           this.dateSession = 'il ya ' + currentSeconds + ' secondes';
         }
 
-        if(list && list?.length !== 0){
+        if (list && list?.length !== 0) {
           for (let val of list) {
             let currentValue;
-            let date = moment(val.mapValue.fields.date.stringValue).diff(moment(), 'minutes');
+            let date = moment(val.mapValue.fields.date.stringValue).diff(
+              moment(),
+              'minutes'
+            );
             if (date > 60) {
-              date = moment(val.mapValue.fields.date.stringValue).diff(moment(), 'hours');
+              date = moment(val.mapValue.fields.date.stringValue).diff(
+                moment(),
+                'hours'
+              );
               if (date > 60) {
-                date = moment(val.mapValue.fields.date.stringValue).diff(moment(), 'days');
+                date = moment(val.mapValue.fields.date.stringValue).diff(
+                  moment(),
+                  'days'
+                );
                 currentValue = 'il ya ' + date + ' jours';
               } else {
                 currentValue = 'il ya ' + date + ' heures';
@@ -94,85 +128,76 @@ export class ResultatPage implements OnInit {
             } else {
               if (date < 60) {
                 currentValue = 'il ya ' + date + ' secondes';
-              }
-              else {
+              } else {
                 currentValue = 'il ya ' + date + ' minutes';
               }
             }
             let value = {
-              icon: 'assets/images/' + val.mapValue.fields.reactionType.stringValue,
+              icon:
+                'assets/images/' + val.mapValue.fields.reactionType.stringValue,
               commentaire: val.mapValue.fields.commentaire.stringValue,
               username: val.mapValue.fields.username.stringValue,
               img: 'assets/images/personn.png',
-              date: currentValue
+              date: currentValue,
             };
             this.listReactions.push(value);
-
-          }}
-
+          }
+        }
       }
     }
   }
 
   publier() {
-    // if (this.isPicture) {
-      if(this.isPicture == 'true'){
-        this.donneesPrive();
-      }
-      else if(localStorage.getItem('picture')){
-        this.upload();
-      }
-    // } else {
-    //   this.addContenu();
-    // }
+    this.upload();
   }
+
   upload(): void {
-    var currentDate = new Date().getTime();
-    const file: any = this.base64ToImage(this.base64Image);
-    const filePath = `images/${currentDate}`;
-    const fileRef = this.storage.ref(filePath);
-    this.sessionNowService.presentLoading();
-    const task = this.storage.upload(`images/${currentDate}`, file);
-    task.snapshotChanges()
-      .pipe(finalize(() => {
-        this.downloadURL = fileRef.getDownloadURL();
-        this.downloadURL.subscribe(downloadURL => {
-          if (downloadURL) {
-            let image = {
-              picture: this.base64Image,
-              path: filePath
-            }
-            localStorage.setItem('image', JSON.stringify(image));
-            if (!this.sessionNow) {
-              // this.sessionNowService.dissmissLoading();
-              // this.sessionNowService.show('Image chargée avec succès', 'success');
-            } else {
-              let postModel = {
-                postedAt: moment().format('DD/MM/YYYY'),
-                postedBy: this.user ? this.user.userName : '',
-                sessionUUID: this.sessionNow.uid,
-                picture: this.base64Image,
-                type: 'picture',
-                comment:localStorage.getItem('comment')
-              }
-              this.sessionNowService.create(postModel, 'post-session-now')
-                .then(resPicture => {
-                  // this.sessionNowService.dissmissLoading();
-                  // this.sessionNowService.show('Image créée avec succès', 'success');
-                })
-            }
-          }
-        }, error => {
-          this.sessionNowService.show('Erreur sur le serveur veuillez réssayé', 'error');
+    console.log(this.sessionNow);
+    const storage = getStorage();
+    const storageRef = ref(storage, `images/${new Date()}`);
+    const uploadTask = uploadString(storageRef, this.base64Image, 'data_url');
+    uploadTask.then((snapshot) => {
+      getDownloadURL(snapshot.ref).then((downloadURL) => {
+        if (!this.sessionNow) {
           this.sessionNowService.dissmissLoading();
-        });
-      })
-      )
-      .subscribe(url => {
-        if (url) {
-          console.log(url);
+          this.sessionNowService.show('Image chargée avec succès', 'success');
+        } else {
+          let postModel: PostModel = {
+            startDate: new Date(),
+            userName: this.user ? this.user.userName : '',
+            userId: this.user ? this.user.uid : '',
+            sessionId: this.sessionNow.uid,
+            photo: downloadURL,
+            type: 'picture',
+            reactions: [],
+            activity: this.sessionNow.activity,
+            isLive: false,
+            mode: this.sessionNow.mode,
+            userAvatar: this.user.avatar,
+            niveau: this.user.niveau,
+            metrics: this.sessionNow.metrics,
+            uid: this.sessionNow.uid,
+            comment: this.sessionNow.comment,
+            duree: this.counter,
+          };
+          console.log(postModel);
+          this.sessionNowService
+            .update(postModel, 'post-session-now')
+            .then((resPicture) => {
+              this.navCtl.navigateForward('');
+              this.sessionNowService.dissmissLoading();
+              this.sessionNowService.show(
+                'Seance publiée avec succés',
+                'success'
+              );
+            });
         }
       });
+    });
+  }
+
+  changeInput(event) {
+    this.sessionNow.comment = event.detail.value;
   }
 
   base64ToImage(dataURI) {
@@ -201,7 +226,6 @@ export class ResultatPage implements OnInit {
     localStorage.setItem('picture', theActualPicture);
     this.addContenu();
     // this.modalCtr.dismiss(this.base64Image);
-
   }
   async addContenu() {
     const modal = await this.modalCtrl.create({
@@ -209,9 +233,9 @@ export class ResultatPage implements OnInit {
       cssClass: 'my-custom-contenu-modal',
     });
     modal.onDidDismiss().then((data: any) => {
+      this.base64Image = data.data;
     });
     return await modal.present();
-
   }
   async donneesPrive() {
     localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
@@ -219,12 +243,26 @@ export class ResultatPage implements OnInit {
       component: DonneesPriveComponent,
       cssClass: 'my-custom-contenu-modal',
     });
-    modal.onDidDismiss().then((data: any) => {
-
-    });
+    modal.onDidDismiss().then((data: any) => {});
     return await modal.present();
-
   }
+}
 
-
+export class PostModel {
+  startDate: Date;
+  userName: string;
+  userId: string;
+  sessionId: string;
+  photo: string;
+  activity: string;
+  type: string;
+  isLive: boolean;
+  mode: string;
+  userAvatar: string;
+  niveau: number;
+  reactions: any;
+  metrics: any[];
+  uid: string;
+  comment: string;
+  duree: any;
 }

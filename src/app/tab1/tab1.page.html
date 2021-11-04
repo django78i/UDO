@@ -93,7 +93,7 @@
           margin-left: 0;
         "
       >
-        <ion-card-header *ngIf="item.isLive == false">
+        <ion-card-header *ngIf="item.type == 'picture'">
           <ion-toolbar class="postZone">
             <ion-grid>
               <ion-row>
@@ -109,11 +109,30 @@
                       <img [src]="item.userAvatar" />
                     </ion-avatar>
                     <ion-label>
-                      <p>{{ item.username }}</p>
-                      <div style="display: flex; gap: 5px; align-items: center">
-                        <img src="../../assets/icon/testIconCateg.svg" alt="" />
+                      <div
+                        style="display: flex; align-items: center; gap: 10px"
+                      >
+                        <p style="margin-bottom: 0">{{ item.userName }}</p>
+                        <ion-icon
+                          name="ellipse"
+                          style="font-size: 6px; margin-right: 5px"
+                        ></ion-icon>
+
+                        <p style="font-size: 10px">
+                          {{ item.startDate | timeRelative }}
+                        </p>
+                      </div>
+                      <div
+                        style="display: flex; gap: 5px; align-items: center"
+                        *ngIf="item.activity"
+                      >
+                        <img
+                          [src]="item.activity.image"
+                          alt=""
+                          style="width: 20px; height: 20px"
+                        />
                         <p style="font-size: 10px; font-weight: 900">
-                          {{ item.activity }}
+                          {{ item.activity.name }}
                         </p>
                       </div>
                     </ion-label>
@@ -138,10 +157,10 @@
             "
             (click)="openDetail(item)"
           >
-            {{ item.text }}
+            {{ item.comment }}
           </p>
         </ion-card-header>
-        <ion-card-header *ngIf="item.isLive == true">
+        <ion-card-header *ngIf="item.type =='session-now'">
           <ion-item lines="none" class="liveZone">
             <ion-avatar
               (click)="
@@ -150,20 +169,28 @@
               style="margin-right: 10px; background: grey"
               slot="start"
             >
-              <img [src]="item.avatar" />
+              <img [src]="item.userAvatar" />
             </ion-avatar>
             <ion-label>
-              <p>
-                {{ item.username }}
+              <div style="display: flex; align-items: center; gap: 10px">
+                <p style="margin-bottom: 0">{{ item.userName }}</p>
                 <ion-icon
                   name="ellipse"
                   style="font-size: 6px; margin-right: 5px"
                 ></ion-icon>
-              </p>
+
+                <p style="font-size: 10px">
+                  {{ item.startDate | timeRelative }}
+                </p>
+              </div>
               <div style="display: flex; gap: 5px; align-items: center">
-                <img src="../../assets/icon/testIconCateg.svg" alt="" />
+                <img
+                  [src]="item.activity.image"
+                  alt=""
+                  style="width: 20px; height: 20px"
+                />
                 <p style="font-size: 10px; font-weight: 900">
-                  {{ item.activity }}
+                  {{ item.activity.name }}
                 </p>
                 <ion-icon name="ellipse" style="font-size: 6px"></ion-icon>
                 <p class="liveIndicator">LIVE</p>
@@ -172,6 +199,7 @@
           </ion-item>
         </ion-card-header>
         <img
+          *ngIf="item.type == 'picture'"
           [src]="item.photo"
           alt=""
           (click)="openDetail(item)"

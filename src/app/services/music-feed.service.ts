@@ -47,8 +47,11 @@ export class MusicFeedService {
     documentSnapshots.forEach((f) => {
       table.push(f.data());
     });
-    const lastVisible: any =
-      documentSnapshots.docs[documentSnapshots.docs.length - 1].data();
+    const lastVisible: any = documentSnapshots.docs[
+      documentSnapshots.docs.length - 1
+    ]
+      ? documentSnapshots.docs[documentSnapshots.docs.length - 1]
+      : null;
     console.log(documentSnapshots.docs.length);
 
     return { table: table, last: lastVisible };
@@ -85,7 +88,7 @@ export class MusicFeedService {
     const lastVisible: any = documentSnapshots.docs[
       documentSnapshots.docs.length - 1
     ]
-      ? documentSnapshots.docs[documentSnapshots.docs.length - 1].data()
+      ? documentSnapshots.docs[documentSnapshots.docs.length - 1]
       : null;
     console.log(documentSnapshots.docs.length);
 
@@ -113,10 +116,13 @@ export class MusicFeedService {
 
     // Get the last visible document
     // this.lastVisible =
-    this.lastVisible =
-      documentSnapshots.docs[documentSnapshots.docs.length - 1].data();
+    const lastVisible: any = documentSnapshots.docs[
+      documentSnapshots.docs.length - 1
+    ]
+      ? documentSnapshots.docs[documentSnapshots.docs.length - 1]
+      : null;
     console.log(documentSnapshots.docs.length);
-    return { table: table, last: this.lastVisible };
+    return { table: table, last: lastVisible };
   }
 
   async addQuery(last, champUid?, code?) {
@@ -142,15 +148,26 @@ export class MusicFeedService {
     documentSnapshots.forEach((f) => {
       table.push(f.data());
     });
-    this.lastVisible =
-      documentSnapshots.docs[documentSnapshots.docs.length - 1];
+    const lastVisible: any = documentSnapshots.docs[
+      documentSnapshots.docs.length - 1
+    ]
+      ? documentSnapshots.docs[documentSnapshots.docs.length - 1]
+      : null;
 
-    return { table: table, last: this.lastVisible };
+    return { table: table, last: lastVisible };
   }
 
   async updatePost(post) {
     const db = getFirestore();
     const postRef = doc(db, 'post-session-now', post.uid);
+    await updateDoc(postRef, {
+      reactions: post.reactions,
+    });
+  }
+
+  async updateSeance(post) {
+    const db = getFirestore();
+    const postRef = doc(db, 'session-now', post.uid);
     await updateDoc(postRef, {
       reactions: post.reactions,
     });

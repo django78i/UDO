@@ -141,16 +141,14 @@
       <h4 style="font-weight: 900; margin: 0">EN COURS</h4>
     </div>
 
-    <!-- <ng-container *ngIf="userChampionnats"> -->
-    <app-user-championnats-slide
-      [user]="user"
-      [championnats]="userChampionnats"
-      (champ)="champModal($event)"
-      *ngIf="userChampionnats && !loaderUserChamp; else tempChamp"
-    >
-    </app-user-championnats-slide>
-
-    <!-- </ng-container> -->
+    <ng-container *ngIf="champService.champEnCoursSubject$|async as champ">
+      <app-user-championnats-slide
+        [user]="user"
+        [championnats]="champ"
+        (champ)="champModal($event)"
+      >
+      </app-user-championnats-slide>
+    </ng-container>
   </div>
   <ion-item
     button
@@ -174,11 +172,26 @@
     </ion-label>
   </ion-item>
   <div style="width: 100%">
-    <app-slider-championnat
-      (champ)="launchDetail($event)"
-      [championnats]="championnatsList"
-      *ngIf="userChampionnats && !loaderUserChamp; else tempChamp"
-    ></app-slider-championnat>
+    <div class="iconTitle">
+      <img
+        src="../../assets/icon/dot.svg"
+        style="
+          background-color: rgb(233, 229, 229);
+          padding: 10px;
+          border-radius: 50%;
+        "
+        alt=""
+      />
+      <h4 style="font-weight: 900; margin: 0">EN ATTENTE</h4>
+    </div>
+
+    <!-- <ng-template *ngIf="championnatsList"> -->
+      <app-slider-championnat
+        (champ)="launchDetail($event)"
+        [championnats]="championnatsList"
+        *ngIf="championnatsList ; else tempChamp"
+      ></app-slider-championnat>
+    <!-- </ng-template> -->
   </div>
   <div style="width: 100%; margin-bottom: 100px; margin-top: 15px">
     <div class="iconTitle">
@@ -194,10 +207,12 @@
       <h4 style="font-weight: 900; margin: 0">NETWORK</h4>
     </div>
 
-    <app-slider-network
-      [championnats]="championnatsNetwork"
-      *ngIf="championnatsNetwork && !loaderNetwork;else tempNetWork"
-    ></app-slider-network>
+    <ng-template *ngIf="!loaderNetwork">
+      <app-slider-network
+        [championnats]="championnatsNetwork"
+        *ngIf="championnatsNetwork || !loaderNetwork;else tempNetWork"
+      ></app-slider-network>
+    </ng-template>
   </div>
   <ng-template #tempChamp>
     <swiper #swiper [config]="config" style="padding-left: 0">

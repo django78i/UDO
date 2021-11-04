@@ -28,6 +28,7 @@ export class DonneesPriveComponent implements OnInit {
     console.log(sessionNow);
     if(sessionNow){
       this.snService.update(sessionNow,'session-now');
+      this.snService.update(sessionNow,'post-session-now');
     }
     localStorage.removeItem('image');
     this.close();

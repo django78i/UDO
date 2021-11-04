@@ -3,6 +3,7 @@ import {
   ChangeDetectorRef,
   Component,
   NgZone,
+  OnDestroy,
   OnInit,
   QueryList,
   ViewChildren,
@@ -30,7 +31,7 @@ import { Router } from '@angular/router';
   templateUrl: 'tab3.page.html',
   styleUrls: ['tab3.page.scss'],
 })
-export class Tab3Page implements OnInit, AfterContentChecked {
+export class Tab3Page implements OnInit, AfterContentChecked, OnDestroy {
   config: SwiperOptions = {
     slidesPerView: 1.3,
     spaceBetween: 20,
@@ -57,6 +58,7 @@ export class Tab3Page implements OnInit, AfterContentChecked {
   userInfo: any;
 
   userChampSubscription: Subscription;
+  userSubscription: Subscription;
   championnatSubscription: Subscription;
   championnatNetWorkSubscription: Subscription;
 
@@ -77,36 +79,34 @@ export class Tab3Page implements OnInit, AfterContentChecked {
     public navCtl: NavController
   ) {}
 
-  ngOnInit() {
-    this.user$ = from(this.userService.getCurrentUser());
-    this.user$.subscribe((user) => {
-      this.user = user;
-      //Championnats en cours
-      this.champService.getChampionnatsEnCours(this.user);
-      this.loaderUserChamp = true;
-      this.userChampSubscription =
-        this.champService.champEnCoursSubject$.subscribe((champ) => {
-          this.loaderUserChamp = false;
-          this.userChampionnats = champ;
-        });
-      //Championnats en attente
-      this.champService.getChampionnats(this.user);
-      this.loaderChamp = true;
-      this.championnatSubscription = this.champService.champSubject$.subscribe(
-        (champ) => {
-          this.loaderChamp = false;
-          this.championnatsList = champ;
-          this.ref.detectChanges();
-        }
-      );
-      this.champService.getChampionnatNetwork(this.user);
-      this.loaderNetwork = true;
-      this.championnatNetWorkSubscription =
-        this.champService.champNetWork$.subscribe((champ) => {
-          this.loaderNetwork = false;
-          this.championnatsNetwork = champ;
-        });
-    });
+  async ngOnInit() {
+    console.log('ici');
+    this.user = await this.userService.getCurrentUser();
+
+    // this.userSubscription = this.user$.subscribe((user) => {
+    console.log('la :', this.user);
+    // this.user = user;
+    //Championnats en cours
+    this.champService.getChampionnatsEnCours(this.user);
+    // this.champService.champEnCoursSubject$.subscribe((champ) => {
+    //   this.userChampionnats = champ ? champ : [];
+    //   console.log(this.userChampionnats);
+    // });
+    //Championnats en attente
+    // this.champService.getChampionnats(this.user);
+    // this.loaderChamp = true;
+    // this.championnatSubscription = this.champService.champSubject$.subscribe(
+    //   (champ) => {
+    //     this.championnatsList = champ ? champ : [];
+    //   }
+    // );
+    // this.champService.getChampionnatNetwork(this.user);
+    // this.loaderNetwork = true;
+    // this.championnatNetWorkSubscription =
+    //   this.champService.champNetWork$.subscribe((champ) => {
+    //     this.championnatsNetwork = champ ? champ : [];
+    //   });
+    // });
 
     this.challenges = this.http.get('../../assets/mocks/challenges.json').pipe(
       tap((r) => {
@@ -193,5 +193,12 @@ export class Tab3Page implements OnInit, AfterContentChecked {
   chatPage() {
     // this.navCtl.navigateForward('chat');
     this.router.navigate(['chat']);
+  }
+
+  ngOnDestroy() {
+    this.championnatNetWorkSubscription.unsubscribe();
+    this.userSubscription.unsubscribe();
+    this.championnatSubscription.unsubscribe();
+    this.userChampSubscription.unsubscribe();
   }
 }

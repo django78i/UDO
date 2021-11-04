@@ -27,7 +27,9 @@ export class AddContenuComponent implements OnInit {
     this.user = JSON.parse(localStorage.getItem('user'));
   }
 
-  ngOnInit() { }
+  ngOnInit() { 
+    console.log('openData')
+  }
 
   async close() {
     const closeModal = 'Modal Closed';
@@ -45,9 +47,9 @@ export class AddContenuComponent implements OnInit {
     // Here you get the image as result.
     const theActualPicture = image.dataUrl;
     this.base64Image = theActualPicture;
-    localStorage.setItem('picture', this.base64Image);
-    this.upload();
-    // this.modalCtr.dismiss(this.base64Image);
+    // localStorage.setItem('picture', this.base64Image);
+    // this.upload();
+    this.modalCtr.dismiss(this.base64Image);
 
   }
 
@@ -62,8 +64,8 @@ export class AddContenuComponent implements OnInit {
     // Here you get the image as result.
     const theActualPicture = image.dataUrl;
     this.base64Image = theActualPicture;
-    this.upload();
-    // this.modalCtr.dismiss(this.base64Image);
+    // this.upload();
+    this.modalCtr.dismiss(this.base64Image);
 
   }
 
@@ -74,6 +76,7 @@ export class AddContenuComponent implements OnInit {
     const fileRef = this.storage.ref(filePath);
     this.sessionNowService.presentLoading();
     const task = this.storage.upload(`images/${currentDate}`, file);
+    
     task.snapshotChanges()
       .pipe(finalize(() => {
           this.downloadURL = fileRef.getDownloadURL();
@@ -90,12 +93,18 @@ export class AddContenuComponent implements OnInit {
                 this.sessionNowService.show('Image chargée avec succès', 'success');
               } else {
                 let postModel: PostModel = {
-                  postedAt: moment().format('DD/MM/YYYY'),
-                  postedBy: this.user ? this.user.userName : '',
-                  sessionUUID: this.sessionNow.uid,
-                  picture: this.base64Image,
-                  type:'picture'
-                }
+                  startDate: moment().format('DD/MM/YYYY'),
+                  userName: this.user ? this.user.userName : '',
+                  userId: this.user ? this.user.uid : '',
+                  sessionId: this.sessionNow.uid,
+                  photo: this.base64Image,
+                  activity: this.sessionNow.activity,
+                  type: 'picture',
+                  isLive: false,
+                  reactions : [],
+                  mode: this.sessionNow.mode,
+                  userAvatar: this.sessionNow.userAvatar,
+                  niveau: this.sessionNow.userNiveau,                }
                 this.sessionNowService.create(postModel, 'post-session-now')
                   .then(resPicture => {
                     this.close();
@@ -133,9 +142,16 @@ export class AddContenuComponent implements OnInit {
   }
 }
 export class PostModel {
-  postedAt: string;
-  postedBy: string;
-  sessionUUID: string;
-  picture: string;
+  startDate: string;
+  userName: string;
+  userId: string;
+  sessionId: string;
+  photo: string;
+  activity: [];
   type: string;
+  isLive: boolean;
+  mode: string;
+  userAvatar: string;
+  niveau: number;
+  reactions : []
 }

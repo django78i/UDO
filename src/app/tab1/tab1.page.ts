@@ -142,7 +142,7 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
       feedPlus.table.forEach((fed) => this.feeds.push(fed));
       // App logic to determine if all data is loaded
       // and disable the infinite scroll
-      if (taille.last <= this.feeds.length) {
+      if (taille.last.data() <= this.feeds.length) {
         event.target.disabled = true;
       }
     }, 500);

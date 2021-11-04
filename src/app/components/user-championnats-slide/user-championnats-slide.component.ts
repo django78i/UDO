@@ -1,5 +1,6 @@
 import {
   AfterContentChecked,
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
@@ -33,17 +34,21 @@ export class UserChampionnatsSlideComponent implements OnInit {
   };
 
   userInfo: any;
-  constructor(public zone: NgZone) {}
+  constructor(public zone: NgZone, public ref : ChangeDetectorRef) {}
 
   ngOnInit() {
-    this.championnats.map((champ) => {
+    this.championnats.map((champ, i) => {
       this.userInfo = champ.participants.find(
         (user) => user.uid == champ.createur.uid
       );
+      console.log(this.userInfo)
       const classement = _.orderBy(champ.participants, ['points'], ['asc']);
       this.position = classement.findIndex(
         (user) => (user.uid = this.user.uid)
       );
+      this.championnats[i].position = this.position;
+      console.log(this.position);
+      // this.ref.detectChanges()
     });
   }
 

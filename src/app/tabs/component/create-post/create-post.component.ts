@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { MusicFeedService } from 'src/app/services/music-feed.service';
 import {
   getStorage,
@@ -7,7 +7,7 @@ import {
   uploadString,
 } from 'firebase/storage';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
-import { ModalController } from '@ionic/angular';
+import { IonInput, ModalController } from '@ionic/angular';
 import { AddContenuComponent } from 'src/app/session-now/add-contenu/add-contenu.component';
 
 @Component({
@@ -21,6 +21,7 @@ export class CreatePostComponent implements OnInit {
   pictureUrl: any;
   text: string;
   base64: any;
+  @ViewChild('InputArea') InputArea: IonInput;
 
   constructor(
     public feedService: MusicFeedService,
@@ -28,16 +29,14 @@ export class CreatePostComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    console.log(this.user)
+    console.log(this.user);
   }
-
 
   inputRead(event) {
     console.log(event.detail.value);
     this.text = event.detail.value;
   }
 
-  
   async send() {
     if (this.base64) {
       const tof = this.savePhoto(this.base64);
@@ -48,20 +47,21 @@ export class CreatePostComponent implements OnInit {
             console.log(this.pictureUrl);
             const post = {
               userId: this.user.uid,
-              username: this.user.userName,
+              userName: this.user.userName,
               userAvatar: this.user.avatar,
-              type: 'post',
+              type: 'picture',
               startDate: new Date(),
               reactions: [],
               photo: this.pictureUrl ? this.pictureUrl : '',
               mode: 'public',
               isLive: false,
-              text: this.text,
+              comment: this.text,
               // nombre: 0,
               activity: '',
               championnat: '',
             };
             this.feedService.sendPost(post);
+            this.close('envoyer');
           });
         },
         (error) => {
@@ -84,6 +84,8 @@ export class CreatePostComponent implements OnInit {
         championnat: '',
       };
       await this.feedService.sendPost(post);
+      this.InputArea.ionBlur;
+      this.text = '';
     }
   }
 
@@ -94,7 +96,7 @@ export class CreatePostComponent implements OnInit {
     const uploadTask = uploadString(storageRef, photo, 'data_url');
     return await uploadTask;
   }
-  
+
   async takePhoto() {
     const image = await Camera.getPhoto({
       quality: 100,
@@ -108,8 +110,8 @@ export class CreatePostComponent implements OnInit {
     this.base64 = theActualPicture;
   }
 
-
   async addContenu() {
+    console.log('addContenu')
     const modal = await this.modalCtrl.create({
       component: AddContenuComponent,
       cssClass: 'my-custom-contenu-modal',
@@ -120,7 +122,7 @@ export class CreatePostComponent implements OnInit {
     return await modal.present();
   }
 
-  close() {
-    this.modalCtrl.dismiss();
+  close(ev?) {
+    this.modalCtrl.dismiss(ev ? ev : []);
   }
 }

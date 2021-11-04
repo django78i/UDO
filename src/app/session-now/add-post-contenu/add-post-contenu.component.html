@@ -1,6 +1,11 @@
 <ion-content>
   <ion-toolbar>
-    <ion-img slot="start" (click)="close()" class="close" src="assets/images/closeGray.svg"></ion-img>
+    <ion-img
+      slot="start"
+      (click)="close()"
+      class="close"
+      src="assets/images/closeGray.svg"
+    ></ion-img>
     <ion-title class="name">POSTER UN MEDIA</ion-title>
   </ion-toolbar>
   <ion-row>
@@ -10,19 +15,29 @@
     <span class="rond">
       <ion-img [src]="activite.image"></ion-img>
     </span>
-    <span class="nameActivity">{{activite.name}}</span>
+    <span class="nameActivity">{{ activite.name }}</span>
   </ion-row>
   <ion-row class="message">
-    <ion-textarea [(ngModel)]="comment" class="c-textarea" placeholder="Comment c’est passé votre séance ?">
+    <ion-textarea
+      (ionChange)="changeInput($event)"
+      class="c-textarea"
+      placeholder="Comment c’est passé votre séance ?"
+    >
     </ion-textarea>
     <ion-img class="crayon" src="assets/images/crayon.PNG"></ion-img>
   </ion-row>
-  <ion-fab [hidden]="isVisible" class="c-ion-fab" (click)="publier()" vertical="bottom" slot="fixed">
+  <ion-fab
+    [hidden]="isVisible"
+    class="c-ion-fab"
+    (click)="publier()"
+    vertical="bottom"
+    slot="fixed"
+  >
     <!-- <ion-fab-button> -->
     <span>Publier</span>
     <!-- </ion-fab-button> -->
   </ion-fab>
-  <ion-row   [hidden]="!isVisible">
+  <ion-row [hidden]="!isVisible">
     <ion-button class="publier-bt" (click)="publier()">
       <span>Publier</span>
     </ion-button>
