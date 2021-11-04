@@ -1,5 +1,5 @@
 
-<ion-content>
+<ion-header>
   <ion-toolbar>
     <ion-item lines="none">
       <ion-img slot="start" class="notifiy-img" src="assets/images/feather-smile.svg" (click)="notification()"> </ion-img>
@@ -7,6 +7,8 @@
       <ion-img slot="end" class="img-info" src="assets/images/feather-info.svg" (click)="information()"> </ion-img>
     </ion-item>
   </ion-toolbar>
+</ion-header>
+<ion-content>
   <ion-row>
     <div class="circle">
       <ion-img [src]="activite?.image"></ion-img>

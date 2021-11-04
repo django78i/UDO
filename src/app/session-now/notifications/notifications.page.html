@@ -1,5 +1,5 @@
 
-<ion-content>
+<ion-header>
   <ion-toolbar>
     <ion-item lines="none">
       <ion-img slot="start" class="close" (click)="close()" src="assets/images/close.svg"> </ion-img>
@@ -7,6 +7,9 @@
       <span class="c-head-label" slot="end"> {{reaction}} </span>
     </ion-item>
   </ion-toolbar>
+</ion-header>
+<ion-content>
+
   <ion-row class="c-row" *ngIf="listReactions.length !=0 ">
     <ion-item lines="none" class="c-item" *ngFor="let item of listReactions">
       <ion-row slot="start" class="c-row-first">

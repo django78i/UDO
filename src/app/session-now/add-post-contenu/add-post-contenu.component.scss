@@ -1,7 +1,6 @@
 
-ion-content{
-    --ion-background-color: #F4F5FA;
-
+ion-header{
+    background-color: #F4F5FA !important;
     ion-toolbar{
         .close{
             width: 22px;
@@ -14,6 +13,10 @@ ion-content{
             font-size: 13px;
         }
     }
+}
+ion-content{
+    --background: #F4F5FA !important;
+
     .c-img{
         border-radius: 29px;
             height: 224px;

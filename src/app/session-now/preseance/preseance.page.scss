@@ -15,7 +15,7 @@ ion-header{
     }
 }
 ion-content{
-    --ion-background-color: #F4F5FA;
+    --background: #F4F5FA !important;
     
     .firstPart{
         text-align: center;
