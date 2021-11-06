@@ -18,6 +18,7 @@ export class PublicationPage implements OnInit {
   modeClasse = "";
   demarrage = "";
   modeRow="";
+  valeur=0;
   constructor(private router: Router, private platform: Platform) {
     this.platform.backButton.subscribeWithPriority(10, () => {
       console.log('Handler was called!');
@@ -63,7 +64,16 @@ export class PublicationPage implements OnInit {
             for(let act of this.listActivite){
               let val =parseInt(act.value)*time;
               act.value = val.toString();
+              this.valeur+=parseInt(act.value);
             }
+          }else{
+            for(let act of this.listActivite){
+              this.valeur+=parseInt(act.value);
+            }
+          }
+        }else{
+          for(let act of this.listActivite){
+            this.valeur+=parseInt(act.value);
           }
         }
 
