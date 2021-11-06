@@ -17,6 +17,7 @@ import { CreatePostComponent } from './component/create-post/create-post.compone
 import { FriendPageListComponent } from '../components/friend-page-list/friend-page-list.component';
 import { UserParamComponent } from '../components/user-param/user-param.component';
 import { TimeRelativePipe } from '../pipe/time-relative.pipe';
+import { AddContenuComponent } from '../session-now/add-contenu/add-contenu.component';
 
 @NgModule({
   imports: [
@@ -35,6 +36,7 @@ import { TimeRelativePipe } from '../pipe/time-relative.pipe';
     CreatePostComponent,
     FriendPageListComponent,
     UserParamComponent,
+    AddContenuComponent
     // TimeRelativePipe
   ],
   providers: [AppLauncher, Health],

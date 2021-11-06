@@ -144,12 +144,18 @@ export class ChampionnatsService {
     await updateDoc(doc(this.db, 'championnats', champ.uid), champ);
   }
 
-  async sendMessage(msg, postUid) {
-    console.log(msg, postUid);
+  async sendMessage(msg, post) {
+    console.log(msg, post);
+    post.postCount += 1 as Number;
+    const postLast = msg;
     await addDoc(
-      collection(this.db, `post-session-now/${postUid}/messages`),
+      collection(this.db, `post-session-now/${post.uid}/messages`),
       msg
     );
+    await updateDoc(doc(this.db, `post-session-now/${post.uid}`), {
+      postCount: post.postCount,
+      postLast: postLast,
+    });
   }
 
   async getMessage(postUid) {

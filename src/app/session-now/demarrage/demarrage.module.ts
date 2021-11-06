@@ -2,17 +2,17 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-import {IonicModule, IonicRouteStrategy} from '@ionic/angular';
+import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 
 import { DemarragePageRoutingModule } from './demarrage-routing.module';
 
 import { DemarragePage } from './demarrage.page';
-import {Camera} from '@ionic-native/camera/ngx';
-import {RouteReuseStrategy} from '@angular/router';
-import {Health} from '@ionic-native/health/ngx';
+import { Camera } from '@ionic-native/camera/ngx';
+import { RouteReuseStrategy } from '@angular/router';
+import { Health } from '@ionic-native/health/ngx';
 import { IonicGestureConfig } from '../../services/ionic-gesture-config.service';
-import {HAMMER_GESTURE_CONFIG} from '@angular/platform-browser';
-import {LongPressModule} from 'ionic-long-press';
+import { HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
+import { LongPressModule } from 'ionic-long-press';
 import { AidePage } from '../aide/aide.page';
 import { ReglagesPage } from '../reglages/reglages.page';
 import { AngularFireModule } from '@angular/fire/compat';
@@ -20,7 +20,8 @@ import { environment } from '../../../environments/environment.prod';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import 'firebase/storage';
 import { ShowNotificationPage } from '../show-notification/show-notification.page';
-import {Keyboard} from '@ionic-native/keyboard/ngx';
+import { Keyboard } from '@ionic-native/keyboard/ngx';
+import { AddPostContenuComponent } from '../add-post-contenu/add-post-contenu.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -31,9 +32,19 @@ import {Keyboard} from '@ionic-native/keyboard/ngx';
     AngularFireStorageModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
   ],
-  declarations: [DemarragePage,AidePage,ReglagesPage,ShowNotificationPage],
-  providers: [Camera,Keyboard,{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },Health
- ,{provide: HAMMER_GESTURE_CONFIG, useClass: IonicGestureConfig} ],
-
+  declarations: [
+    DemarragePage,
+    AidePage,
+    ReglagesPage,
+    ShowNotificationPage,
+    AddPostContenuComponent,
+  ],
+  providers: [
+    Camera,
+    Keyboard,
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    Health,
+    { provide: HAMMER_GESTURE_CONFIG, useClass: IonicGestureConfig },
+  ],
 })
 export class DemarragePageModule {}

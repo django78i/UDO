@@ -17,7 +17,7 @@
     </ion-buttons>
   </ion-toolbar>
   <section style="background: #f7f7fa; padding: 0 15px">
-    <ion-item button lines="none" class="badgeHeader" (click)="userProfil()">
+    <!-- <ion-item button lines="none" class="badgeHeader" (click)="userProfil()">
       <div>
         <div
           style="
@@ -40,7 +40,7 @@
         </p>
         <p style="font-size: 12px">Consulter mon profil</p>
       </ion-label>
-    </ion-item>
+    </ion-item> -->
     <div class="iconTitle">
       <img
         src="../../assets/icon/dot.svg"
@@ -53,27 +53,137 @@
       />
       <h4 style="font-weight: 900; margin: 0">FEED</h4>
     </div>
-    <swiper
-      #swiper2
-      [config]="config2"
-      style="padding-left: 15px"
-      class="sliderFilter"
-    >
-      <ng-template swiperSlide *ngFor="let filter of filters">
+  </section>
+
+  <swiper #swiper2 [config]="config2" class="sliderFilter">
+    <ng-template swiperSlide>
+      <ion-item
+        [ngClass]="{black: indice == 0, white :  indice !==0}"
+        (click)="clickFilter(filters[0].name, 0)"
+        style="width: auto"
+        lines="none"
+        class="chipFilter"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 13.78 15.07"
+          [ngClass]="{whiteFill: indice == 0, blackFill :  indice !==0}"
+        >
+          <g id="Layer_2" data-name="Layer 2">
+            <g id="Layer_1-2" data-name="Layer 1">
+              <path
+                d="M10.78,7.53a.41.41,0,0,0-.22-.37L3.66,3.07a.41.41,0,0,0-.43,0A.39.39,0,0,0,3,3.44v8.18a.4.4,0,0,0,.22.38.39.39,0,0,0,.43,0l6.9-4.09a.38.38,0,0,0,.22-.37m3,0a3.4,3.4,0,0,1-1.68,3L5.19,14.58a3.44,3.44,0,0,1-5.19-3V3.44A3.44,3.44,0,0,1,5.19.49L12.1,4.57A3.42,3.42,0,0,1,13.78,7.53Z"
+              />
+            </g>
+          </g>
+        </svg>
+        <ion-label
+          style="font-size: 14px; font-weight: 900"
+          [ngClass]="{whiteLabel: indice == 0 , blackLabel : indice !== 0}"
+          >{{filters[0].name}}</ion-label
+        >
+      </ion-item>
+    </ng-template>
+    <ng-template swiperSlide>
+      <ion-item
+        [ngClass]="{black: indice == 1, white :  indice !== 1}"
+        (click)="clickFilter(filters[1].name, 1)"
+        style="width: auto"
+        lines="none"
+        class="chipFilter"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 15.6 15.6"
+          [ngClass]="{whiteFill: indice == 1, blackFill :  indice !== 1 }"
+        >
+          <g id="Layer_2" data-name="Layer 2">
+            <g id="Layer_1-2" data-name="Layer 1">
+              <g id="Icon_feather-clock" data-name="Icon feather-clock">
+                <g id="Tracé_32399" data-name="Tracé 32399">
+                  <path
+                    d="M7.8,15.6a7.8,7.8,0,1,1,7.8-7.8A7.81,7.81,0,0,1,7.8,15.6Zm0-13.1A5.3,5.3,0,1,0,13.1,7.8,5.31,5.31,0,0,0,7.81,2.5Z"
+                  />
+                </g>
+                <g id="Tracé_32400" data-name="Tracé 32400">
+                  <path
+                    d="M9.6,10a1.23,1.23,0,0,1-.55-.13L6.56,8.57V4.8a1.25,1.25,0,0,1,2.5,0V7l1.1.55A1.25,1.25,0,0,1,9.6,10Z"
+                  />
+                </g>
+              </g>
+            </g>
+          </g>
+        </svg>
+        <ion-label
+          style="font-size: 14px; font-weight: 900"
+          [ngClass]="{whiteLabel: indice == 1 , blackLabel : indice !== 1}"
+          >{{filters[1].name}}</ion-label
+        >
+      </ion-item>
+    </ng-template>
+    <ng-template swiperSlide>
+      <ion-item
+        [ngClass]="{black: indice == 2, white :  indice !== 2}"
+        (click)="clickFilter(filters[2].name, 2)"
+        style="width: auto"
+        lines="none"
+        class="chipFilter"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 17.71 14.95"
+          [ngClass]="{whiteFill: indice == 2, blackFill :  indice !== 2 }"
+        >
+          <g id="Layer_2" data-name="Layer 2">
+            <g id="Layer_1-2" data-name="Layer 1">
+              <g id="Icon_feather-users" data-name="Icon feather-users">
+                <g id="Tracé_31927" data-name="Tracé 31927">
+                  <path
+                    d="M12.31,15a1.25,1.25,0,0,1-1.25-1.25V12.32A1.52,1.52,0,0,0,9.55,10.8H4A1.52,1.52,0,0,0,2.5,12.32V13.7a1.25,1.25,0,0,1-2.5,0V12.32a4,4,0,0,1,4-4H9.55a4,4,0,0,1,4,4V13.7A1.25,1.25,0,0,1,12.31,15Z"
+                  />
+                </g>
+                <g id="Tracé_31928" data-name="Tracé 31928">
+                  <path
+                    d="M6.78,8a4,4,0,1,1,4-4h0A4,4,0,0,1,6.78,8Zm0-5.53A1.52,1.52,0,1,0,8.3,4h0A1.5,1.5,0,0,0,6.78,2.5Z"
+                  />
+                </g>
+                <g id="Tracé_31929" data-name="Tracé 31929">
+                  <path
+                    d="M16.46,15a1.25,1.25,0,0,1-1.25-1.25V12.31a1.52,1.52,0,0,0-1.13-1.46,1.25,1.25,0,0,1,.62-2.42,4,4,0,0,1,3,3.88V13.7A1.25,1.25,0,0,1,16.46,15Z"
+                  />
+                </g>
+                <g id="Tracé_31930" data-name="Tracé 31930">
+                  <path
+                    d="M11.62,8a1.25,1.25,0,0,1-.31-2.46,1.5,1.5,0,0,0,1.1-1.09,1.52,1.52,0,0,0-1.1-1.84A1.25,1.25,0,0,1,11.93.13a4,4,0,0,1,0,7.79A1.63,1.63,0,0,1,11.62,8Z"
+                  />
+                </g>
+              </g>
+            </g>
+          </g>
+        </svg>
+        <ion-label
+          style="font-size: 14px; font-weight: 900"
+          [ngClass]="{whiteLabel: indice == 2 , blackLabel : indice !== 2}"
+          >{{filters[2].name}}</ion-label
+        >
+      </ion-item>
+    </ng-template>
+    <!-- <ng-template swiperSlide *ngFor="let filter of filters; let i = index">
         <ion-item
-          (click)="clickFilter(filter.name)"
+          [ngClass]="{black: i == indice, white : i !== indice}"
+          (click)="clickFilter(filter.name, i)"
           style="width: auto"
           lines="none"
           class="chipFilter"
         >
-          <img [src]="filter.icon" style="margin-right: 5px" />
-          <ion-label style="font-size: 14px; font-weight: 900"
+          <ion-label
+            style="font-size: 14px; font-weight: 900"
+            [ngClass]="{whiteLabel: i == indice, blackLabel : i !== indice}"
             >{{filter.name}}</ion-label
           >
         </ion-item>
-      </ng-template>
-    </swiper>
-  </section>
+      </ng-template> -->
+  </swiper>
 </ion-header>
 <ion-content>
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
@@ -81,8 +191,14 @@
   </ion-refresher>
   <section class="contenu" *ngIf="feeds; else showBlank">
     <ion-item
+      lines="full"
       *ngFor="let item of feeds; let i = index"
-      style="margin-bottom: 10px; --inner-padding-end: 0"
+      style="
+        margin-bottom: 10px;
+        --inner-padding-end: 0;
+        --padding-start: 15px;
+        --padding-end: 15px;
+      "
     >
       <ion-card
         style="
@@ -95,66 +211,51 @@
       >
         <ion-card-header *ngIf="item.type == 'picture'">
           <ion-toolbar class="postZone">
-            <ion-grid>
-              <ion-row>
-                <ion-col size="10">
-                  <ion-item lines="none">
-                    <ion-avatar
-                      style="margin-right: 10px; background: grey"
-                      slot="start"
-                      (click)="
-                        openProfil(item.userId ? item.userId : item.userUid)
-                      "
-                    >
-                      <img [src]="item.userAvatar" />
-                    </ion-avatar>
-                    <ion-label>
-                      <div
-                        style="display: flex; align-items: center; gap: 10px"
-                      >
-                        <p style="margin-bottom: 0">{{ item.userName }}</p>
-                        <ion-icon
-                          name="ellipse"
-                          style="font-size: 6px; margin-right: 5px"
-                        ></ion-icon>
+            <ion-avatar
+              style="margin-right: 10px; background: grey"
+              slot="start"
+              (click)="
+              openProfil(item.userId ? item.userId : item.userUid)
+            "
+            >
+              <img [src]="item.userAvatar" />
+            </ion-avatar>
+            <ion-label>
+              <div style="display: flex; align-items: center; gap: 10px">
+                <p style="margin-bottom: 0">{{ item.userName }}</p>
+                <ion-icon
+                  name="ellipse"
+                  style="font-size: 6px; margin-right: 5px"
+                ></ion-icon>
 
-                        <p style="font-size: 10px">
-                          {{ item.startDate | timeRelative }}
-                        </p>
-                      </div>
-                      <div
-                        style="display: flex; gap: 5px; align-items: center"
-                        *ngIf="item.activity"
-                      >
-                        <img
-                          [src]="item.activity.image"
-                          alt=""
-                          style="width: 20px; height: 20px"
-                        />
-                        <p style="font-size: 10px; font-weight: 900">
-                          {{ item.activity.name }}
-                        </p>
-                      </div>
-                    </ion-label>
-                  </ion-item>
-                </ion-col>
-                <ion-col size="2" style="--ion-grid-column-padding: 20px">
-                  <img
-                    src="../../assets/icon/threeDot.svg"
-                    alt=""
-                    style="height: 20px"
-                  />
-                </ion-col>
-              </ion-row>
-            </ion-grid>
+                <p style="font-size: 10px">
+                  {{ item.startDate | timeRelative }}
+                </p>
+              </div>
+              <div
+                style="display: flex; gap: 5px; align-items: center"
+                *ngIf="item.activity"
+              >
+                <img
+                  [src]="item.activity.image"
+                  alt=""
+                  style="width: 20px; height: 20px"
+                />
+                <p style="font-size: 10px; font-weight: 900">
+                  {{ item.activity.name }}
+                </p>
+              </div>
+            </ion-label>
+
+            <img
+              slot="end"
+              src="../../assets/icon/threeDot.svg"
+              alt=""
+              style="height: 20px"
+            />
           </ion-toolbar>
           <p
-            style="
-              padding-left: 20px;
-              margin: 5px;
-              font-size: 14px;
-              font-weight: 600;
-            "
+            style="margin: 0 12px 12px 0; font-size: 14px; font-weight: 600"
             (click)="openDetail(item)"
           >
             {{ item.comment }}
@@ -198,32 +299,70 @@
             </ion-label>
           </ion-item>
         </ion-card-header>
-        <img
-          *ngIf="item.type == 'picture'"
-          [src]="item.photo"
-          alt=""
-          (click)="openDetail(item)"
-          style="
-            display: block;
-            max-width: 400px;
-            max-height: 300px;
-            width: auto;
-            height: auto;
-            margin: auto;
-            border-radius: 15px;
-          "
-        />
+        <div>
+          <img
+            *ngIf="item.type == 'picture'"
+            [src]="item.photo"
+            alt=""
+            (click)="openDetail(item)"
+            style="
+              display: block;
+              max-width: 400px;
+              max-height: 300px;
+              width: auto;
+              height: auto;
+              margin: auto;
+              border-radius: 15px;
+            "
+          />
+        </div>
         <ion-card-content style="padding: 0">
-          <div style="display: flex; gap: 10px; margin-top: 5px">
+          <div
+            style="
+              display: flex;
+              gap: 10px;
+              align-items: center;
+              padding-top: 9px;
+            "
+          >
             <img
               (click)="presentPopover(i, item)"
               src="../../assets/icon/Icon material-add-circle-outline.svg"
               alt=""
             />
-            <div style="overflow-x: auto">
-              <div style="display: inline-flex">
+            <div style="overflow-x: auto; padding: 10px 15px">
+              <div style="display: inline-flex; gap: 25px">
                 <ng-container *ngFor="let rect of item.reactions">
-                  <ion-chip
+                  <div
+                    style="
+                      display: flex;
+                      border-radius: 20px;
+                      width: 51px;
+                      justify-content: space-between;
+                      position: relative;
+                      box-shadow: 0px 3px 6px #00000029;
+                    "
+                    *ngIf="rect.nombre !== 0"
+                    (click)="controleReaction(i, item.reactions, rect)"
+                  >
+                    <div style="flex: 1">
+                      <img
+                        [src]="rect.icon"
+                        alt=""
+                        style="position: absolute; left: -22px; top: -14px"
+                      />
+                    </div>
+                    <span
+                      style="
+                        flex: 1;
+                        text-align: center;
+                        font-weight: 900;
+                        color: black;
+                      "
+                      >{{rect.nombre}}</span
+                    >
+                  </div>
+                  <!-- <ion-chip
                     outline
                     *ngIf="rect.nombre > 0"
                     (click)="controleReaction(i, item.reactions, rect)"
@@ -232,10 +371,86 @@
                       <img [src]="rect.icon" alt="" />
                     </ion-avatar>
                     <ion-label>{{ rect.nombre }}</ion-label>
-                  </ion-chip>
+                  </ion-chip> -->
                 </ng-container>
               </div>
             </div>
+          </div>
+          <ion-item *ngIf="item.postLast" lines="none">
+            <ion-avatar
+              style="margin-right: 10px; background: grey"
+              slot="start"
+            >
+              <img [src]="item.postLast.sender.avatar" />
+            </ion-avatar>
+            <ion-label>
+              <div style="display: flex; align-items: center; gap: 10px">
+                <p style="margin-bottom: 0; font-weight: 700">
+                  {{ item.postLast.sender.userName }}
+                </p>
+                <ion-icon
+                  name="ellipse"
+                  style="font-size: 6px; margin-right: 5px"
+                ></ion-icon>
+
+                <p style="font-size: 10px">
+                  {{ item.postLast.date | timeRelative }}
+                </p>
+              </div>
+              <p style="font-size: 12px; color: black">
+                {{item.postLast.text}}
+              </p>
+            </ion-label>
+          </ion-item>
+          <div
+            *ngIf="item.postCount !== 0"
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              background: #2a2b25;
+              border-radius: 23px;
+              padding: 10px;
+              width: 68%;
+            "
+          >
+            <ion-label
+              style="--color: white; font-size: 12px"
+              (click)="openDetail(item)"
+              >Rejoindre la conversation</ion-label
+            >
+            <span
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+              "
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="23.519"
+                height="21.005"
+                viewBox="0 0 23.519 21.005"
+              >
+                <defs>
+                  <style>
+                    .a {
+                      fill: #ffffff;
+                      stroke: #ffffff;
+                      stroke-width: 0.5px;
+                    }
+                  </style>
+                </defs>
+                <path
+                  class="a"
+                  d="M313.56,676.9H295.593a2.54,2.54,0,0,0-2.526,2.527v15.733c0,2.236,3.058,2.856,4.4,1.511l.9-.9a1.168,1.168,0,0,1,.826-.341H313.56a2.539,2.539,0,0,0,2.526-2.527V679.431A2.538,2.538,0,0,0,313.56,676.9Zm-.281,2.807v12.914H298.2a1.146,1.146,0,0,0-.812.336l-.916.915a.35.35,0,0,1-.6-.247V679.711Z"
+                  transform="translate(-292.817 -676.654)"
+                />
+              </svg>
+              <p style="font-weight: 700; color: white; margin: 0">
+                {{item.postCount}}
+              </p>
+            </span>
           </div>
         </ion-card-content>
       </ion-card>

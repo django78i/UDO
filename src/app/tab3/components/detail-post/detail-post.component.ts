@@ -5,9 +5,10 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { IonTextarea, ModalController } from '@ionic/angular';
+import { IonInput, IonTextarea, ModalController } from '@ionic/angular';
 import { ChampionnatsService } from 'src/app/services/championnats.service';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { AddContenuComponent } from 'src/app/session-now/add-contenu/add-contenu.component';
 
 @Component({
   selector: 'app-detail-post',
@@ -22,7 +23,7 @@ export class DetailPostComponent implements OnInit {
   tableReactions: any[] = [];
   picture: any;
 
-  @ViewChild('texArea') textArea: IonTextarea;
+  @ViewChild('texArea') textArea: IonInput;
 
   constructor(
     public modalCtrl: ModalController,
@@ -62,22 +63,35 @@ export class DetailPostComponent implements OnInit {
       sender: this.user,
       image: this.picture ? this.picture : '',
     };
-    this.champService.sendMessage(message, this.post.uid);
+
+    this.champService.sendMessage(message, this.post);
     this.message = '';
     this.picture = null;
-    this.textArea.ionBlur;
+    this.textArea.setBlur();
   }
 
-  async addPhoto() {
-    const image = await Camera.getPhoto({
-      quality: 100,
-      allowEditing: false,
-      source: CameraSource.Photos,
-      resultType: CameraResultType.DataUrl,
-    });
+  // async addPhoto() {
+  //   const image = await Camera.getPhoto({
+  //     quality: 100,
+  //     allowEditing: false,
+  //     source: CameraSource.Photos,
+  //     resultType: CameraResultType.DataUrl,
+  //   });
 
-    // Here you get the image as result.
-    const theActualPicture = image.dataUrl;
-    this.picture = theActualPicture;
+  //   // Here you get the image as result.
+  //   const theActualPicture = image.dataUrl;
+  //   this.picture = theActualPicture;
+  // }
+
+  async addContenu() {
+    console.log('addContenu');
+    const modal = await this.modalCtrl.create({
+      component: AddContenuComponent,
+      cssClass: 'my-custom-contenu-modal',
+    });
+    modal.onDidDismiss().then((data: any) => {
+      this.picture = data.data != 'Modal Closed' ? data.data : null;
+    });
+    return await modal.present();
   }
 }

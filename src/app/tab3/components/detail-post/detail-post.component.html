@@ -63,14 +63,14 @@
     *ngIf="segmentValue == 'messages'"
   >
     <ion-item lines="none" style="--background: #f4f5fa">
-      <ion-textarea
+      <ion-input
         #texArea
         [(ngModel)]="message"
         mode="ios"
         inputmode="text"
         clear-on-edit
         placeholder="Publier un post"
-      ></ion-textarea>
+      ></ion-input>
       <ion-button
         slot="end"
         style="
@@ -89,7 +89,7 @@
       <ion-icon
         *ngIf="!picture"
         name="image-outline"
-        (click)="addPhoto()"
+        (click)="addContenu()"
         slot="start"
       ></ion-icon>
       <div style="position: relative" *ngIf="picture">
@@ -145,7 +145,7 @@
       />
       <h4 style="font-weight: 900; margin: 0">STATISTIQUES</h4>
     </div>
-    <div style="text-align: center" *ngIf="post.activity">
+    <div style="text-align: center" *ngIf="post.metrics">
       <span style="font-size: 33px; font-weight: 700">
         {{ post.duree.mn | number: "2.0-0" }}:{{
           post.duree.s | number: "2.0-0"

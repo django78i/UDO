@@ -29,6 +29,7 @@ import { DetailPostComponent } from './components/detail-post/detail-post.compon
 import { MessagesComponent } from './components/messages/messages.component';
 import { TimeFeedPipe } from '../pipe/time-feed.pipe';
 import { ChatRoomComponent } from '../components/chat-room/chat-room.component';
+import { AddContenuComponent } from '../session-now/add-contenu/add-contenu.component';
 
 @NgModule({
   imports: [
@@ -64,6 +65,7 @@ import { ChatRoomComponent } from '../components/chat-room/chat-room.component';
     EmojisComponent,
     DetailPostComponent,
     MessagesComponent,
+    AddContenuComponent,
   ],
 })
 export class Tab3PageModule {}

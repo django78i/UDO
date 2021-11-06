@@ -6,10 +6,10 @@ video {
   border-radius: 20px;
 }
 
-ion-content {
-  --padding-start: 15px;
-  --padding-end: 15px;
-}
+// ion-content {
+//   --padding-start: 15px;
+//   --padding-end: 15px;
+// }
 
 ion-card-header {
   padding: 0;
@@ -50,8 +50,8 @@ ion-toolbar {
   display: flex;
   gap: 5px;
   align-items: center;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  padding-top: 10px;
+  padding-bottom: 15px;
 }
 
 .badgeHeader {
@@ -93,10 +93,14 @@ ion-grid {
   width: auto !important;
 }
 
+.sliderFilter {
+  background: #f7f7fa;
+}
+
 .chipFilter {
   border: 1px solid #e1e4ef;
   border-radius: 19px;
-  --padding-start: 7px;
+  --padding-start: 13px;
 }
 
 .postPhoto {
@@ -190,4 +194,30 @@ ion-avatar {
 .big {
   height: 50px;
   width: 50px;
+}
+
+.black {
+  --background: black;
+}
+.white {
+  --background: white;
+}
+
+.blackLabel {
+  --color: black;
+}
+.whiteLabel {
+  --color: white;
+}
+
+.blackFill {
+  fill: black;
+}
+.whiteFill {
+  fill: white;
+}
+
+svg {
+  height: 14px;
+  margin-right: 9px;
 }

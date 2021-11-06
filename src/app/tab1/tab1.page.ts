@@ -15,7 +15,7 @@ import { SwiperComponent } from 'swiper/angular';
 import { MusicFeedService } from '../services/music-feed.service';
 import { HttpClient } from '@angular/common/http';
 import { from, Observable, Subscription } from 'rxjs';
-import { NavController } from '@ionic/angular';
+import { IonItem, NavController } from '@ionic/angular';
 import { MenuUserComponent } from '../components/menu-user/menu-user.component';
 import { ModalController, AnimationController } from '@ionic/angular';
 import { UserService } from '../services/user-service.service';
@@ -49,12 +49,13 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
   challenges: Observable<any>;
   @ViewChildren('player') videoPlayers: QueryList<any>;
   currentPlaying: HTMLVideoElement = null;
-
+  indice: number;
   stickyVideo: HTMLVideoElement = null;
   stickyPlaying = false;
   @ViewChild('stickyplayer', { static: false }) stickyPlayer: ElementRef;
   @ViewChildren('swiper') swiper: QueryList<SwiperComponent>;
   @ViewChildren('swiper2') swiper2: QueryList<SwiperComponent>;
+  @ViewChildren('filterItem') filterItem: QueryList<any>;
 
   config: SwiperOptions = {
     slidesPerView: 1.3,
@@ -78,10 +79,10 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
       icon: '../../assets/icon/live.svg',
       name: 'En direct',
     },
-    // {
-    //   icon: '../../assets/icon/friends.svg',
-    //   name: 'Mes amis',
-    // },
+    {
+      icon: '../../assets/icon/friends.svg',
+      name: 'Mes amis',
+    },
   ];
 
   value = 70;
@@ -100,7 +101,8 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
     public feedService: MusicFeedService,
     public http: HttpClient,
     public navCtl: NavController,
-    public userService: UserService
+    public userService: UserService,
+    public ref: ElementRef
   ) {}
 
   async ngOnInit() {
@@ -113,12 +115,19 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
     this.feeds = feed.table;
     console.log(this.feeds);
     this.lastVisible = feed.last;
+    this.indice = 0;
   }
 
   ngAfterContentChecked() {
     if (this.swiper2) {
       this.swiper2.map((swip) => swip.updateSwiper({}));
     }
+    // if (this.filterItem) {
+    //   this.filterItem.forEach((item, i) => {
+    //     console.log(item);
+    //     item.el.style.backgourndColor ="red"
+    //   });
+    // }
   }
 
   async showMenu() {
@@ -159,9 +168,11 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
     }, 2000);
   }
 
-  async clickFilter(filter: string) {
+  async clickFilter(filter: string, i) {
+    this.indice = i;
     this.feeds = [];
     const feedRefresh = await this.feedService.feedFilter(filter);
+    console.log(feedRefresh);
     this.feeds = feedRefresh.table;
     this.lastVisible = feedRefresh.last;
   }
@@ -210,37 +221,41 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
     if (isEmojiIsToUser != -1) {
       console.log('ici');
       return;
-    } else if (isEmojiExist != -1) {
-      console.log('parla');
-
-      this.feeds[i].reactions[isEmojiExist].nombre += 1;
-      this.feeds[i].reactions[isEmojiExist].users.push({
-        uid: this.user.uid,
-        name: this.user.userName,
-        date: new Date(),
-        avatar: this.user.avatar,
-      });
     } else {
-      console.log('la');
+      if (isEmojiExist != -1) {
+        console.log('parla');
+        this.feeds[i].reactionsNombre = this.feeds[i].reactionsNombre += 1;
+        this.feeds[i].reactions[isEmojiExist].nombre += 1;
+        this.feeds[i].reactions[isEmojiExist].users.push({
+          uid: this.user.uid,
+          name: this.user.userName,
+          date: new Date(),
+          avatar: this.user.avatar,
+        });
+      } else {
+        console.log('la');
+        this.feeds[i].reactionsNombre = this.feeds[i].reactionsNombre += 1;
 
-      this.feeds[i].reactions.push({
-        ...this.reaction,
-        nombre: 1,
-        users: [
-          {
-            uid: this.user.uid,
-            name: this.user.userName,
-            date: new Date(),
-            avatar: this.user.avatar,
-          },
-        ],
-      });
+        this.feeds[i].reactions.push({
+          ...this.reaction,
+          nombre: 1,
+          users: [
+            {
+              uid: this.user.uid,
+              name: this.user.userName,
+              date: new Date(),
+              avatar: this.user.avatar,
+            },
+          ],
+        });
+      }
+      console.log(this.feeds[i].reactionsNombre)
+      if (userAlreadyLike != -1) {
+        this.feeds[i].reactions[indice].nombre -= 1;
+        this.feeds[i].reactions[indice].users.splice(userAlreadyLike, 1);
+      }
+      this.feedService.updatePost(this.feeds[i]);
     }
-    if (userAlreadyLike != -1) {
-      this.feeds[i].reactions[indice].nombre -= 1;
-      this.feeds[i].reactions[indice].users.splice(userAlreadyLike, 1);
-    }
-    this.feedService.updatePost(this.feeds[i]);
   }
 
   async openDetail(post) {

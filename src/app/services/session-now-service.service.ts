@@ -87,7 +87,15 @@ export class SessionNowService {
 
   async update(document, collectionName) {
     const db = getFirestore();
-    await updateDoc(doc(db, collectionName, document.uid), document);
+    await updateDoc(doc(db, collectionName, document.uid), {
+      isLive: false,
+      type: document.type,
+      metrics: document.metrics,
+      photo: document.photo,
+      startDate: document.startDate,
+      comment: document.comment,
+      duree: document.duree,
+    });
   }
 
   async show(message, color) {

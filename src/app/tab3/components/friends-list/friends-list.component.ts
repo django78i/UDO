@@ -38,6 +38,7 @@ export class FriendsListComponent implements OnInit {
         this.friendsList = friends;
       }
     );
+    console.log(this.createur);
   }
 
   back() {
@@ -45,25 +46,26 @@ export class FriendsListComponent implements OnInit {
   }
 
   selectFriend(friend) {
-    console.log(friend, this.friendsSelected);
-    friend = { ...friend, etat: 'en attente' };
-    const ind = this.friendsSelected.findIndex(
-      (fr) => fr.userName == friend.userName
-    );
-    ind != -1
-      ? this.friendsSelected.splice(ind, 1)
-      : this.friendsSelected.push(friend);
-    console.log(this.friendsSelected);
-    this.friendList.emit(this.friendsSelected);
+    this.userService.addFriend(friend, this.createur);
+
+    // console.log(friend, this.friendsSelected);
+    // friend = { ...friend, etat: 'en attente' };
+    // const ind = this.friendsSelected.findIndex(
+    //   (fr) => fr.userName == friend.userName
+    // );
+    // ind != -1
+    //   ? this.friendsSelected.splice(ind, 1)
+    //   : this.friendsSelected.push(friend);
+    // console.log(this.friendsSelected);
+    // this.friendList.emit(this.friendsSelected);
   }
 
-  clear(event){
+  clear(event) {
     this.subscription = this.champService.friendsListSubject$.subscribe(
       (friends) => {
         this.friendsList = friends;
       }
     );
-
   }
 
   filterFriends(ev) {

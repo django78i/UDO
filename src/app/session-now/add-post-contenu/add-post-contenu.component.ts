@@ -1,6 +1,18 @@
-import { Component, OnInit, Input } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  ViewChild,
+  AfterViewInit,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
-import { ModalController, Platform } from '@ionic/angular';
+import {
+  IonInput,
+  IonTextarea,
+  ModalController,
+  Platform,
+} from '@ionic/angular';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
@@ -29,30 +41,33 @@ export class AddPostContenuComponent implements OnInit {
   @Input() picture: any;
   @Input() activity: any;
 
+  @ViewChild('textAreaZone') textAreaZone: IonInput;
+  small = false;
   constructor(
     private platform: Platform,
     private modalCtr: ModalController,
-    private keyboard: Keyboard,
-    private storage: AngularFireStorage,
-    private sessionNowService: SessionNowService
+    private sessionNowService: SessionNowService,
+    public ref: ChangeDetectorRef
   ) {
     this.sessionNow = JSON.parse(localStorage.getItem('sessionNow'));
     this.user = JSON.parse(localStorage.getItem('user'));
     this.base64Image = localStorage.getItem('picture');
     this.activite = JSON.parse(localStorage.getItem('activite'));
-    this.platform.keyboardDidShow.subscribe((ev) => {
-      const { keyboardHeight } = ev;
-      this.isVisible = true;
-      // Do something with the keyboard height such as translating an input above the keyboard.
-    });
+    // this.platform.keyboardDidShow.subscribe((ev) => {
+    //   const { keyboardHeight } = ev;
+    //   this.isVisible = true;
+    //   // Do something with the keyboard height such as translating an input above the keyboard.
+    // });
 
-    this.platform.keyboardDidHide.subscribe(() => {
-      // Move input back to original location
-      this.isVisible = false;
-    });
+    // this.platform.keyboardDidHide.subscribe(() => {
+    //   // Move input back to original location
+    //   this.isVisible = false;
+    // });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log(this.picture);
+  }
 
   async close() {
     const closeModal = 'Modal Closed';
@@ -61,6 +76,7 @@ export class AddPostContenuComponent implements OnInit {
   publier() {
     // if (this.sessionNow) {
     this.upload();
+    this.sessionNowService.presentLoading();
     //   localStorage.setItem('addPicture', '' + true);
     // } else {
     //   localStorage.setItem('comment', this.comment);
@@ -69,43 +85,80 @@ export class AddPostContenuComponent implements OnInit {
     // }
   }
 
-  upload(): void {
-    const storage = getStorage();
-    const storageRef = ref(storage, `images/${new Date()}`);
-    const uploadTask = uploadString(storageRef, this.picture, 'data_url');
-    uploadTask.then((snapshot) => {
-      getDownloadURL(snapshot.ref).then((downloadURL) => {
-        if (!this.sessionNow) {
-          this.close();
-          this.sessionNowService.dissmissLoading();
-          this.sessionNowService.show('Image chargée avec succès', 'success');
-        } else {
-          let postModel: PostModel = {
-            startDate: new Date(),
-            userName: this.user ? this.user.userName : '',
-            userId: this.user ? this.user.uid : '',
-            sessionId: this.sessionNow ? this.sessionNow.uid : '',
-            photo: downloadURL,
-            type: 'picture',
-            reactions: [],
-            activity: this.activity,
-            isLive: true,
-            mode: this.sessionNow ? this.sessionNow.mode : 'public',
-            userAvatar: this.user.avatar,
-            niveau: this.user.niveau,
-            comment: this.comment,
-          };
-
-          this.sessionNowService
-            .create(postModel, 'post-session-now')
-            .then((resPicture) => {
-              this.close();
-              this.sessionNowService.dissmissLoading();
-              this.sessionNowService.show('Image créée avec succès', 'success');
-            });
-        }
+  async upload() {
+    // const storage = getStorage();
+    // const storageRef = ref(storage, `images/${new Date()}`);
+    // const uploadTask = uploadString(storageRef, this.picture, 'data_url');
+    // uploadTask.then((snapshot) => {
+    //   getDownloadURL(snapshot.ref).then((downloadURL) => {
+    let url;
+    if (this.picture) {
+      const storage = getStorage();
+      const storageRef = ref(storage, `images/${new Date()}`);
+      const uploadTask = await uploadString(
+        storageRef,
+        this.picture,
+        'data_url'
+      );
+      url = await getDownloadURL(uploadTask.ref);
+    }
+    let postModel: PostModel;
+    if (!this.sessionNow) {
+      console.log('no sesionNow');
+      postModel = {
+        startDate: new Date(),
+        userName: this.user ? this.user.userName : '',
+        userId: this.user ? this.user.uid : '',
+        sessionId: '',
+        photo: url ? url : '',
+        type: 'picture',
+        reactions: [],
+        activity: this.activity,
+        isLive: true,
+        mode: 'public',
+        userAvatar: this.user.avatar,
+        niveau: this.user.niveau,
+        comment: this.comment,
+        postCount: 0,
+        reactionsNombre: 0,
+      };
+      // this.close();
+      // this.sessionNowService.dissmissLoading();
+      // this.sessionNowService.show('Image chargée avec succès', 'success');
+    } else {
+      postModel = {
+        startDate: new Date(),
+        userName: this.user ? this.user.userName : '',
+        userId: this.user ? this.user.uid : '',
+        sessionId: this.sessionNow ? this.sessionNow.uid : '',
+        photo: url ? url : '',
+        type: 'picture',
+        reactions: [],
+        activity: this.activity,
+        isLive: true,
+        mode: this.sessionNow ? this.sessionNow.mode : 'public',
+        userAvatar: this.user.avatar,
+        niveau: this.user.niveau,
+        comment: this.comment,
+        postCount: 0,
+        reactionsNombre: 0,
+      };
+    }
+    this.sessionNowService
+      .create(postModel, 'post-session-now')
+      .then((resPicture) => {
+        this.close();
+        this.sessionNowService.dissmissLoading();
+        this.sessionNowService.show('Image créée avec succès', 'success');
       });
-    });
+  }
+
+  blur(ev) {
+    this.isVisible = false;
+  }
+
+  active(ev) {
+    this.isVisible = true;
   }
 
   changeInput(event) {
@@ -139,4 +192,6 @@ export class PostModel {
   niveau: number;
   reactions: any;
   comment: string;
+  postCount: number;
+  reactionsNombre: number;
 }

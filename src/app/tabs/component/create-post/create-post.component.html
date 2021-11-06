@@ -23,7 +23,13 @@
   <ion-row>
     <ion-item lines="full" style="margin: auto">
       <ion-label position="floating"> Commentez votre publication</ion-label>
-      <ion-input #InputArea (ionChange)="inputRead($event)"></ion-input>
+      <ion-input
+        (keyup.enter)="publier()"
+        #InputArea
+        (ionChange)="inputRead($event)"
+        (ionBlur)="blur($event)"
+        (ionFocus)="active($event)"
+      ></ion-input>
       <ion-icon
         name="pencil-sharp"
         slot="end"
@@ -31,14 +37,35 @@
       ></ion-icon>
     </ion-item>
   </ion-row>
-  <ion-fab
+  <!-- <ion-fab
+    *ngIf="!isVisible"
     vertical="bottom"
     horizontal="start"
     slot="fixed"
     style="--ion-safe-area-left: 40px; width: 60% !important"
   >
-    <ion-button expand="block" class="buttonNextSlide" (click)="send()"
-      >Publier</ion-button
-    >
-  </ion-fab>
+  </ion-fab> -->
+  <!-- <ion-fab
+    *ngIf="isVisible"
+    vertical="bottom"
+    horizontal="end"
+    slot="fixed"
+    type="submit"
+    style="--ion-safe-area-right: 30px; width: 40% !important; height: 50px"
+  >
+    <ion-button (click)="send()">Publier</ion-button>
+  </ion-fab> -->
 </ion-content>
+<ion-footer>
+  <ion-button
+    *ngIf="!isVisible"
+    expand="block"
+    class="buttonNextSlide"
+    (click)="send()"
+    type="submit"
+    >Publier</ion-button
+  >
+  <ion-button (click)="send()" type="submit" *ngIf="isVisible" slot="end"
+    >Publier</ion-button
+  >
+</ion-footer>

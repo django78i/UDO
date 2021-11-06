@@ -227,6 +227,8 @@ export class DemarragePage implements OnInit {
         this.sessionNow.sessionId = res;
         this.sessionNow.userAvatar = this.user.avatar;
         this.sessionNow.userNiveau = this.user.niveau;
+        this.sessionNow.postCount = 0;
+        this.sessionNow.reactionsNombre = 0;
 
         let sessionNow = { ...this.sessionNow };
         sessionNow['type'] = 'session-now';
@@ -603,6 +605,8 @@ export class SessionNowModel {
   sessionId: string;
   userAvatar: string;
   userNiveau: number;
+  postCount: 0;
+  reactionsNombre: 0;
 }
 export class PostModel {
   postedAt: string;

@@ -72,6 +72,7 @@ export class PreseancePage implements OnInit {
   }
 
   async addContenu() {
+    console.log(this.base64);
     const modal = await this.modalCtrl.create({
       component: AddPostContenuComponent,
       cssClass: 'my-custom-contenu-modal',
@@ -96,7 +97,9 @@ export class PreseancePage implements OnInit {
     const theActualPicture = image.dataUrl;
     this.base64 = theActualPicture;
     // localStorage.setItem('picture', theActualPicture);
-    this.addContenu();
+    if (this.base64) {
+      this.addContenu();
+    }
     // this.modalCtr.dismiss(this.base64Image);
   }
   start() {

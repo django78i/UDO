@@ -62,29 +62,39 @@ export class MusicFeedService {
     const table = [];
     const db = getFirestore();
     let first;
-    if (filter == 'En direct') {
-      console.log('direct');
-      first = query(
-        collection(db, 'post-session-now'),
-        where('isLive', '==', 'true'),
-        orderBy('startDate', 'desc')
-      );
-    }
-    if (filter == 'Récent') {
-      console.log('recent');
-      first = query(
-        collection(db, 'post-session-now'),
-        orderBy('startDate', 'desc')
-      );
+    switch (filter) {
+      case 'En direct':
+        console.log('direct');
+        first = query(
+          collection(db, 'post-session-now'),
+          where('isLive', '==', true),
+          orderBy('startDate', 'desc')
+        );
+        break;
+      case 'Récent':
+        first = query(
+          collection(db, 'post-session-now'),
+          orderBy('startDate', 'desc')
+        );
+        break;
     }
 
     const user = await this.userService.getCurrentUser();
 
-    const documentSnapshots = await getDocs(first);
+    let documentSnapshots;
 
-    documentSnapshots.forEach((f) => {
-      table.push(f.data());
-    });
+    if (filter == 'Mes amis') {
+      user.friends.map((fr) => {
+        table.concat(this.getPostFriend(fr.uid));
+      });
+    } else {
+      documentSnapshots = await getDocs(first);
+      console.log(documentSnapshots);
+      documentSnapshots.forEach((f) => {
+        console.log(f.data());
+        table.push(f.data());
+      });
+    }
     const lastVisible: any = documentSnapshots.docs[
       documentSnapshots.docs.length - 1
     ]
@@ -93,6 +103,21 @@ export class MusicFeedService {
     console.log(documentSnapshots.docs.length);
 
     return { table: table, last: lastVisible };
+  }
+
+  async getPostFriend(uid) {
+    const db = getFirestore();
+    const req = query(
+      collection(db, 'post-session-now'),
+      where('userId', '==', uid),
+      orderBy('startDate', 'desc')
+    );
+    const documentSnapshots = await getDocs(req);
+    let table = [];
+    documentSnapshots.forEach((f) => {
+      table.push(f.data());
+    });
+    return table;
   }
 
   async feedQuery(champUid) {
@@ -162,6 +187,7 @@ export class MusicFeedService {
     const postRef = doc(db, 'post-session-now', post.uid);
     await updateDoc(postRef, {
       reactions: post.reactions,
+      reactionsNombre : post.reactionsNombre
     });
   }
 

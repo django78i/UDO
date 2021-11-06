@@ -22,7 +22,7 @@ export class CreatePostComponent implements OnInit {
   text: string;
   base64: any;
   @ViewChild('InputArea') InputArea: IonInput;
-
+  isVisible = false;
   constructor(
     public feedService: MusicFeedService,
     public modalCtrl: ModalController
@@ -59,6 +59,8 @@ export class CreatePostComponent implements OnInit {
               // nombre: 0,
               activity: '',
               championnat: '',
+              postCount: 0,
+              reactionsNombre: 0,
             };
             this.feedService.sendPost(post);
             this.close('envoyer');
@@ -82,9 +84,9 @@ export class CreatePostComponent implements OnInit {
         text: this.text,
         activity: '',
         championnat: '',
+        postCount: 0,
       };
       await this.feedService.sendPost(post);
-      this.InputArea.ionBlur;
       this.text = '';
     }
   }
@@ -111,15 +113,23 @@ export class CreatePostComponent implements OnInit {
   }
 
   async addContenu() {
-    console.log('addContenu')
+    console.log('addContenu');
     const modal = await this.modalCtrl.create({
       component: AddContenuComponent,
       cssClass: 'my-custom-contenu-modal',
     });
     modal.onDidDismiss().then((data: any) => {
-      this.base64 = data.data;
+      this.base64 = data.data != 'Modal Closed' ? data.data : null;
     });
     return await modal.present();
+  }
+
+  active(ev) {
+    this.isVisible = true;
+  }
+
+  blur(ev) {
+    this.isVisible = false;
   }
 
   close(ev?) {

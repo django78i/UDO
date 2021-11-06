@@ -55,6 +55,7 @@ export class ResultatPage implements OnInit {
     },
   ];
   user;
+  isVisible = false;
   constructor(
     private modalCtrl: ModalController,
     private platform: Platform,
@@ -147,53 +148,69 @@ export class ResultatPage implements OnInit {
     }
   }
 
-  publier() {
-    this.upload();
+  blur(ev) {
+    this.isVisible = false;
   }
 
-  upload(): void {
+  active(ev) {
+    this.isVisible = true;
+  }
+
+  publier() {
+    this.upload();
+    this.sessionNowService.presentLoading();
+  }
+
+  async upload() {
     console.log(this.sessionNow);
-    const storage = getStorage();
-    const storageRef = ref(storage, `images/${new Date()}`);
-    const uploadTask = uploadString(storageRef, this.base64Image, 'data_url');
-    uploadTask.then((snapshot) => {
-      getDownloadURL(snapshot.ref).then((downloadURL) => {
-        if (!this.sessionNow) {
-          this.sessionNowService.dissmissLoading();
-          this.sessionNowService.show('Image chargée avec succès', 'success');
-        } else {
-          let postModel: PostModel = {
-            startDate: new Date(),
-            userName: this.user ? this.user.userName : '',
-            userId: this.user ? this.user.uid : '',
-            sessionId: this.sessionNow.uid,
-            photo: downloadURL,
-            type: 'picture',
-            reactions: [],
-            activity: this.sessionNow.activity,
-            isLive: false,
-            mode: this.sessionNow.mode,
-            userAvatar: this.user.avatar,
-            niveau: this.user.niveau,
-            metrics: this.sessionNow.metrics,
-            uid: this.sessionNow.uid,
-            comment: this.sessionNow.comment,
-            duree: this.counter,
-          };
-          console.log(postModel);
-          this.sessionNowService
-            .update(postModel, 'post-session-now')
-            .then((resPicture) => {
-              this.navCtl.navigateForward('');
-              this.sessionNowService.dissmissLoading();
-              this.sessionNowService.show(
-                'Seance publiée avec succés',
-                'success'
-              );
-            });
-        }
+    let url;
+    if (this.base64Image) {
+      const storage = getStorage();
+      const storageRef = ref(storage, `images/${new Date()}`);
+      const uploadTask = await uploadString(
+        storageRef,
+        this.base64Image,
+        'data_url'
+      );
+      url = await getDownloadURL(uploadTask.ref);
+      //  const taskPhoto =    await uploadTask
+    }
+    // uploadTask.then((snapshot) => {
+    //   getDownloadURL(snapshot.ref).then((downloadURL) => {
+    // if (!this.sessionNow) {
+    //   this.sessionNowService.dissmissLoading();
+    //   this.sessionNowService.show('Image chargée avec succès', 'success');
+    // } else {
+    let postModel: PostModel = {
+      startDate: new Date(),
+      userName: this.user ? this.user.userName : '',
+      userId: this.user ? this.user.uid : '',
+      sessionId: this.sessionNow.uid,
+      photo: url ? url : '',
+      type: 'picture',
+      reactions: this.sessionNow.reactions,
+      reactionsNombre: this.sessionNow.reactionsNombre,
+      activity: this.sessionNow.activity,
+      isLive: false,
+      mode: this.sessionNow.mode,
+      userAvatar: this.user.avatar,
+      niveau: this.user.niveau,
+      metrics: this.sessionNow.metrics,
+      uid: this.sessionNow.uid,
+      comment: this.sessionNow.comment ? this.sessionNow.comment : '',
+      duree: this.counter,
+    };
+    console.log(postModel);
+    this.sessionNowService
+      .update(postModel, 'post-session-now')
+      .then((resPicture) => {
+        this.navCtl.navigateForward('');
+        this.sessionNowService.dissmissLoading();
+        this.sessionNowService.show('Seance publiée avec succés', 'success');
       });
-    });
+    // }
+    //   });
+    // });
   }
 
   changeInput(event) {
@@ -233,7 +250,8 @@ export class ResultatPage implements OnInit {
       cssClass: 'my-custom-contenu-modal',
     });
     modal.onDidDismiss().then((data: any) => {
-      this.base64Image = data.data;
+      console.log(data.data);
+      this.base64Image = data.data != 'Modal Closed' ? data.data : null;
     });
     return await modal.present();
   }
@@ -261,6 +279,7 @@ export class PostModel {
   userAvatar: string;
   niveau: number;
   reactions: any;
+  reactionsNombre: number;
   metrics: any[];
   uid: string;
   comment: string;
