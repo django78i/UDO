@@ -40,7 +40,7 @@ export class ActivitiesPage implements OnInit {
         let children=[];
         for(let souscActivite of activite.sousAcitivite){
           let details =[
-            {name:'Corps haut',value:souscActivite.metriques['muscle haut du corps'],image:'assets/images/corps-haut.svg'},{name:'Corps bas',value:souscActivite.metriques['muscle bas du corps'],image:'assets/images/corps-bas.svg'},{name:'Cardio',value:souscActivite.metriques['cardio'],image:'assets/images/cardio.svg'},{name:'Explosivité',value:souscActivite.metriques['explosivité'],image:'assets/images/explosivite.svg'},{name:'Souplesse',value:souscActivite.metriques['souplesse'],image:'assets/images/souplesse.svg'},{name:'Gainage',value:souscActivite.metriques['muscle abdo/gainage'],image:'assets/images/gainage.svg'}
+            {name:'Corps haut',value:this.toStringValue(souscActivite.metriques['muscle haut du corps']),image:'assets/images/corps-haut.svg'},{name:'Corps bas',value:this.toStringValue(souscActivite.metriques['muscle bas du corps']),image:'assets/images/corps-bas.svg'},{name:'Cardio',value:this.toStringValue(souscActivite.metriques['cardio']),image:'assets/images/cardio.svg'},{name:'Explosivité',value:this.toStringValue(souscActivite.metriques['explosivité']),image:'assets/images/explosivite.svg'},{name:'Souplesse',value:this.toStringValue(souscActivite.metriques['souplesse']),image:'assets/images/souplesse.svg'},{name:'Gainage',value:this.toStringValue(souscActivite.metriques['muscle abdo/gainage']),image:'assets/images/gainage.svg'}
           ]
           children.push({
             image: souscActivite.icon, checked: false, name: souscActivite.nom, width: '27px', height: '24px', padding: '11px 10px',width2:'37px', padding2: '34px 34px' ,details:details
@@ -99,5 +99,9 @@ export class ActivitiesPage implements OnInit {
     item.checked =true;
     localStorage.setItem('activite', JSON.stringify(item));
     this.modalCtr.dismiss();
+  }
+
+  toStringValue(val){
+    return val.toString();
   }
 }
