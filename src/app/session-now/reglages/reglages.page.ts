@@ -75,11 +75,13 @@ export class ReglagesPage implements OnInit {
   setLandscape() {
     // set to landscape
     this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE);
+    localStorage.setItem('mode','landscape');
   }
 
   setPortrait() {
     // set to portrait
     this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
+    localStorage.setItem('mode','portrait');
   }
 
 }

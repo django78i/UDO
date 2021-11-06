@@ -130,7 +130,19 @@ ion-slides.aideSlide
   opacity: 1;
   background: #19191cab !important;
 }
+ion-slides.aideSlideLands
+  .swiper-pagination-bullets
+  .swiper-pagination-bullet-active {
+  opacity: 1;
+  background: #19191cab !important;
+}
 ion-slides.preseanceSlide
+  .swiper-pagination-bullets
+  .swiper-pagination-bullet-active {
+  opacity: 1;
+  background: #19191cab !important;
+}
+ion-slides.preseanceSlideLands
   .swiper-pagination-bullets
   .swiper-pagination-bullet-active {
   opacity: 1;

@@ -204,6 +204,52 @@ ion-content{
             height: 18px;
         }
     }
+    .demarrageLands{
+        position: absolute;
+        bottom: -200px;
+        left: 50%;
+        .param{
+            background-color: white;
+            height: 68px;    
+            width: 68px;
+            border-radius: 50%;
+            padding: 17px;
+        ion-img{
+            height: 33.87px;
+            width: 33.87px;
+        }
+    }
+        .start{
+            background-color: #E3E3E3;
+            height: 98px;
+            width: 98px;
+            border-radius: 40px;
+            padding: 33px 36px;
+            ion-img{
+                width: 27px;
+                height: 29px;
+            }
+            
+        }
+        .photo{
+            background-color: white;
+            height: 68px;
+            width: 68px;
+            border-radius: 50%;
+            padding: 22px 21px;
+            ion-img{
+                width: 28px;
+                height: 24px;
+            }
+        }
+        .feather-rose{
+            position: absolute;
+            margin-top: -70px;
+            margin-left: 80px;
+            width: 18px;
+            height: 18px;
+        }
+    }
     .row-bordure{
         // width: 220px;
         margin: 35px auto;

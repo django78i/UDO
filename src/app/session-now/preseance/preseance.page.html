@@ -9,7 +9,7 @@
       <ion-img slot="end" class="img-info" src="assets/images/feather-info.svg" (click)="information()"> </ion-img>
     </ion-item>
   </ion-toolbar>
-  <ion-slides [options]="slideOptsOne" #mySlider pager="true" class="preseanceSlide">
+  <ion-slides [options]="slideOptsOne" #mySlider pager="true" [class]="modeClasse">
 
     <ion-slide>
       <ion-grid>
@@ -115,7 +115,7 @@
     </ion-slide>
 
   </ion-slides>
-  <ion-grid class="demarrage">
+  <ion-grid [class]="demarrage">
     <ion-row class="row-demarrage">
       <ion-item lines="none">
         <span class="param" slot="start" (click)="reglage()">

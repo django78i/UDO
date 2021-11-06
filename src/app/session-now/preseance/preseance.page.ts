@@ -28,11 +28,29 @@ export class PreseancePage implements OnInit {
     padding2: '34px 40px;',
     width2: '25px',
   };
+  mode="";
+  modeClasse="";
+  demarrage="";
   constructor(
     private modalCtrl: ModalController,
     private router: Router,
     public navCtl: NavController
-  ) {}
+  ) {
+    if(localStorage.getItem('mode')){
+      if(localStorage.getItem('mode')=='landscape'){
+        this.mode = 'landscape';
+        this.modeClasse="preseanceSlideLands";
+        this.demarrage = "demarrageLands";
+      }else{
+        this.mode = 'portrait';
+        this.modeClasse="preseanceSlide";
+        this.demarrage = "demarrage";
+      }
+    }else{
+      this.modeClasse="preseanceSlide";
+      this.demarrage = "demarrage";
+    }
+  }
 
   ngOnInit() {
     let item = localStorage.getItem('activite');
