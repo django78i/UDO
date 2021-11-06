@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AlertController, Platform, LoadingController, ToastController } from '@ionic/angular';
 // import { GooglePlus } from '@ionic-native/google-plus/ngx';
+import {auth} from './fix-bug-firebase-on-mac';
+
+
 import {
   doc,
   DocumentData,
@@ -47,7 +50,7 @@ export class SessionNowService {
 
 
   async getCurrentUser(): Promise<DocumentData> {
-    const auth = getAuth();
+   // const auth = getAuth();
     const user = await auth.currentUser;
     const userDataBase = await this.find(user.uid,'users');
     return userDataBase.data();
@@ -64,7 +67,7 @@ export class SessionNowService {
     await updateDoc(doc(db, collectionName, document.uid), document);
   }
 
-  
+
   async show(message,color) {
     const toast = this.toastCtrl.create({
       message: message,

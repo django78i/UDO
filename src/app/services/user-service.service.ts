@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AlertController, Platform } from '@ionic/angular';
+import {auth} from './fix-bug-firebase-on-mac';
 import {
   doc,
   DocumentData,
@@ -19,12 +20,14 @@ import {
 } from 'firebase/auth';
 import { BehaviorSubject } from 'rxjs';
 
+
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
   db = getFirestore();
-  auth = getAuth();
+//  auth = getAuth();
+  //auth=this.whichAuth();
   errorSubject$: BehaviorSubject<string> = new BehaviorSubject(null);
   constructor(
     public platform: Platform, // private googlePlus: GooglePlus,
@@ -42,7 +45,7 @@ export class UserService {
 
   logUserWithGoogle() {
     const provider = new GoogleAuthProvider();
-    signInWithPopup(this.auth, provider)
+    signInWithPopup(auth, provider)
       .then((result) => {
         // This gives you a Google Access Token. You can use it to access the Google API.
         const credential = GoogleAuthProvider.credentialFromResult(result);
@@ -67,8 +70,10 @@ export class UserService {
       });
   }
 
+
+
   async getCurrentUser(): Promise<DocumentData> {
-    const user = await this.auth.currentUser;
+    const user = await auth.currentUser;
     const userDataBase = await this.findUser(user.uid);
     localStorage.setItem('user', JSON.stringify(userDataBase.data()));
     return userDataBase.data();
@@ -85,7 +90,8 @@ export class UserService {
 
   log(info: any) {
     console.log('log');
-    const auth = getAuth();
+    //const auth = getAuth();
+   // const auth =this.whichAuth();
     signInWithEmailAndPassword(auth, info.mail, info.password)
       .then((userCredential) => {
         // Signed in
@@ -102,7 +108,8 @@ export class UserService {
   }
 
   createUser(info) {
-    const auth = getAuth();
+   // const auth = getAuth();
+   // const auth = this.whichAuth();
     createUserWithEmailAndPassword(auth, info.mail, info.password)
       .then((userCredential) => {
         // Signed in
@@ -159,6 +166,6 @@ export class UserService {
     await updateDoc(doc(this.db, 'users', us.uid), us);
   }
   logout() {
-    this.auth.signOut();
+    auth.signOut();
   }
 }
