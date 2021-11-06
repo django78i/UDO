@@ -7,6 +7,7 @@ import {
 } from '@ionic/angular';
 import firebase from 'firebase/app';
 // import { GooglePlus } from '@ionic-native/google-plus/ngx';
+import { HttpClient } from '@angular/common/http';
 import {
   doc,
   DocumentData,
@@ -36,7 +37,8 @@ export class SessionNowService {
     public platform: Platform, // private googlePlus: GooglePlus,
     public alertController: AlertController,
     private loadingCtrl: LoadingController,
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
+    private http:HttpClient
   ) {}
 
   async create(document, collectionName) {
@@ -126,5 +128,9 @@ export class SessionNowService {
     if (this.loader) {
       await this.loader.dismiss();
     }
+  }
+
+  getActivities(){
+    return this.http.get('../../../assets/mocks/activitiesList.json').pipe();  
   }
 }
