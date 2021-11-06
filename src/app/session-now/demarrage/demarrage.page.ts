@@ -69,6 +69,9 @@ export class DemarragePage implements OnInit {
   user: any;
   reactions = 0;
   interval;
+  mode="";
+  modeClasse="";
+  demarrage="";
   constructor(
     private modalCtrl: ModalController,
     private router: Router,
@@ -79,6 +82,20 @@ export class DemarragePage implements OnInit {
     private snService: SessionNowService,
     public alertController: AlertController
   ) {
+    if(localStorage.getItem('mode')){
+      if(localStorage.getItem('mode')=='landscape'){
+        this.mode = 'landscape';
+        this.modeClasse="preseanceSlideLands";
+        this.demarrage = "demarrageLands";
+      }else{
+        this.mode = 'portrait';
+        this.modeClasse="preseanceSlide";
+        this.demarrage = "demarrage";
+      }
+    }else{
+      this.modeClasse="preseanceSlide";
+      this.demarrage = "demarrage";
+    }
     this.image = JSON.parse(localStorage.getItem('image'));
     this.platform.backButton.subscribeWithPriority(10, () => {
       console.log('Handler was called!');

@@ -111,10 +111,16 @@ ion-content{
       margin: auto;
   }
 
-  .row-demarrage{
+  .demarrage .row-demarrage{
       position: relative; 
-      left: -50%
+      left: -50%;
   }
+  .demarrageLands .row-demarrage{
+    position: relative; 
+    left: -50%;
+    margin-bottom: 20px;
+}
+
   .demarrage{
       position: absolute;
       bottom: 10px;
@@ -169,6 +175,60 @@ ion-content{
           height: 18px;
       }
   }
+  .demarrageLands{
+    position: absolute;
+    bottom: -500px;
+    left: 50%;
+    .param{
+        background: #ffffff69 0% 0% no-repeat padding-box;
+        box-shadow: 0px 13px 26px #00000029;
+        height: 68px;    
+        width: 68px;
+        border-radius: 50%;
+        padding: 17px;
+        ion-img{
+            height: 33.87px;
+            width: 33.87px;
+        }
+    }
+    .start{
+        border: 3px solid #d0cfcf;
+        border-radius: 40px;
+        height: 110px;
+        width: 110px;
+        padding: 6px 7px;
+        .contenu{
+            background-color: white;
+            border-radius: 40px;
+            height: 100%;
+            padding: 30px 31px;
+        }
+        ion-img{
+            width: 27px;
+            height: 29px;
+        }
+        
+    }
+    .photo{
+        background: #ffffff69 0% 0% no-repeat padding-box;
+        box-shadow: 0px 13px 26px #00000029;
+        height: 68px;
+        width: 68px;
+        border-radius: 50%;
+        padding: 22px 21px;
+        ion-img{
+            width: 28px;
+            height: 24px;
+        }
+    }
+    .feather-rose{
+        position: absolute;
+        margin-top: -70px;
+        margin-left: 80px;
+        width: 18px;
+        height: 18px;
+    }
+}
   .row-bordure{
       // width: 220px;
       margin: 35px auto;

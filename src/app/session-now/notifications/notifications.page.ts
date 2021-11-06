@@ -11,7 +11,20 @@ export class NotificationsPage implements OnInit {
   counter: any;
   reaction;
   listReactions = [];
+  mode="";
+  modeClasse="";
   constructor(private modalCtr: ModalController) {
+    if(localStorage.getItem('mode')){
+      if(localStorage.getItem('mode')=='landscape'){
+        this.mode = 'landscape';
+        this.modeClasse="c-text-lands";
+      }else{
+        this.mode = 'portrait';
+        this.modeClasse="c-text";
+      }
+    }else{
+      this.modeClasse="c-text";
+    }
     this.counter = JSON.parse(localStorage.getItem('counter'));
     let sessionNow = JSON.parse(localStorage.getItem('sessionNow'));
     if (sessionNow) {

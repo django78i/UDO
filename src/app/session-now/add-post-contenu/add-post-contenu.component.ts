@@ -43,12 +43,31 @@ export class AddPostContenuComponent implements OnInit {
 
   @ViewChild('textAreaZone') textAreaZone: IonInput;
   small = false;
+  mode="";
+  modeClasse="";
+  message="";
   constructor(
     private platform: Platform,
     private modalCtr: ModalController,
     private sessionNowService: SessionNowService,
     public ref: ChangeDetectorRef
   ) {
+    if(localStorage.getItem('mode')){
+      if(localStorage.getItem('mode')=='landscape'){
+        this.mode = 'landscape';
+        this.modeClasse="c-ion-fab-lands";
+        this.message = "message-lands";
+      }else{
+        this.mode = 'portrait';
+        this.modeClasse="c-ion-fab";
+        this.message = "message";
+
+      }
+    }else{
+      this.modeClasse="c-ion-fab";
+      this.message = "message";
+
+    }
     this.sessionNow = JSON.parse(localStorage.getItem('sessionNow'));
     this.user = JSON.parse(localStorage.getItem('user'));
     this.base64Image = localStorage.getItem('picture');
