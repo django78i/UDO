@@ -104,6 +104,11 @@ ion-content{
             height: 45px;
             margin-left: 12px;
         }
+        ion-input{
+            border-bottom: 2px solid #70707045;
+            height: 45px;
+            margin-left: 12px;
+        }
         .crayon{
             margin-left: -30px;
             margin-top: 14px;
@@ -256,20 +261,35 @@ ion-content{
         height: 53px;
         margin-left: 0;
     }
-}
-.c-ion-fab{
-    background: #3E4ADD 0% 0% no-repeat padding-box;
-    border-radius: 33px;
-    width: 88%;
-    margin: 0 20px;
-    height: 89px;
-    text-align: center;
-    padding-top: 30px;
-    span{
-        letter-spacing: 0px;
-        color: #FFFFFF;
-        font-size: 18px;
-        font-family: "PoppinsSemiBold" !important;
     }
-}
+    .c-ion-fab{
+        background: #3E4ADD 0% 0% no-repeat padding-box;
+        border-radius: 33px;
+        width: 88%;
+        margin: 0 20px;
+        height: 89px;
+        text-align: center;
+        padding-top: 30px;
+        span{
+            letter-spacing: 0px;
+            color: #FFFFFF;
+            font-size: 18px;
+            font-family: "PoppinsSemiBold" !important;
+        }
+    }
+    .c-ion-fab-lands{
+        background: #3E4ADD 0% 0% no-repeat padding-box;
+        border-radius: 33px;
+        width: 50%;
+        margin: 0 25%;
+        height: 89px;
+        text-align: center;
+        padding-top: 30px;
+        span{
+            letter-spacing: 0px;
+            color: #FFFFFF;
+            font-size: 18px;
+            font-family: "PoppinsSemiBold" !important;
+        }
+    }
 }

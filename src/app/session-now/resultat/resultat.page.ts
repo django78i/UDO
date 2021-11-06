@@ -56,6 +56,9 @@ export class ResultatPage implements OnInit {
   ];
   user;
   isVisible = false;
+  mode="";
+  modeClasse="";
+  message="";
   constructor(
     private modalCtrl: ModalController,
     private platform: Platform,
@@ -65,6 +68,19 @@ export class ResultatPage implements OnInit {
     public navCtl: NavController,
     public router: Router
   ) {
+    if(localStorage.getItem('mode')){
+      if(localStorage.getItem('mode')=='landscape'){
+        this.mode = 'landscape';
+        this.modeClasse="c-ion-fab-lands";
+      }else{
+        this.mode = 'portrait';
+        this.modeClasse="c-ion-fab";
+
+      }
+    }else{
+      this.modeClasse="c-ion-fab";
+
+    }
     this.platform.backButton.subscribeWithPriority(10, () => {
       console.log('Handler was called!');
       this._location.back();
