@@ -106,11 +106,10 @@ ion-content{
             font-family: "PoppinsSemiBold" !important;
         }
     }
+    
     .c-ion-fab-lands{
         background: #3E4ADD 0% 0% no-repeat padding-box;
         border-radius: 33px;
-        width: 50%;
-        margin: 0 25%;
         height: 89px;
         text-align: center;
         padding-top: 30px;
@@ -136,3 +135,12 @@ ion-content{
     }
   }
 }
+ion-footer{
+    --background:#F4F5FA !important;
+    --backdrop-opacity: 0 !important;
+}
+.landscape{
+    width: 50% !important;
+    margin: auto !important;
+}
+

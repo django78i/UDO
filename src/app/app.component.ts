@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 import * as firebase from 'firebase/app';
+import { type } from 'os';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +19,7 @@ export class AppComponent {
       appId: '1:911285735248:web:f712b9386ccd86156a6655',
       measurementId: 'G-KK1ZNG7DR0',
     };
+    this.setOrientation();
     firebase.initializeApp(config);
     let value = localStorage.getItem('reglages');
     if (value) {
@@ -31,6 +33,18 @@ export class AppComponent {
     }
   }
 
+  setOrientation(){
+    this.screenOrientation.onChange().subscribe(
+      () => {
+        let activeScreenOrt = this.screenOrientation.type;
+        if(activeScreenOrt == 'portrait-primary'){
+          this.setPortrait();
+        }else{
+          this.setLandscape();
+        }
+        
+      });
+  }
   setLandscape() {
     // set to landscape
     this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE);

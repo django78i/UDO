@@ -69,9 +69,9 @@ export class DemarragePage implements OnInit {
   user: any;
   reactions = 0;
   interval;
-  mode="";
-  modeClasse="";
-  demarrage="";
+  mode = "";
+  modeClasse = "";
+  demarrage = "";
   constructor(
     private modalCtrl: ModalController,
     private router: Router,
@@ -82,20 +82,22 @@ export class DemarragePage implements OnInit {
     private snService: SessionNowService,
     public alertController: AlertController
   ) {
-    if(localStorage.getItem('mode')){
-      if(localStorage.getItem('mode')=='landscape'){
-        this.mode = 'landscape';
-        this.modeClasse="preseanceSlideLands";
-        this.demarrage = "demarrageLands";
-      }else{
-        this.mode = 'portrait';
-        this.modeClasse="preseanceSlide";
+    setInterval(() => {
+      if (localStorage.getItem('mode')) {
+        if (localStorage.getItem('mode') == 'landscape') {
+          this.mode = 'landscape';
+          this.modeClasse = "preseanceSlideLands";
+          this.demarrage = "demarrageLands";
+        } else {
+          this.mode = 'portrait';
+          this.modeClasse = "preseanceSlide";
+          this.demarrage = "demarrage";
+        }
+      } else {
+        this.modeClasse = "preseanceSlide";
         this.demarrage = "demarrage";
       }
-    }else{
-      this.modeClasse="preseanceSlide";
-      this.demarrage = "demarrage";
-    }
+    }, 100);
     this.image = JSON.parse(localStorage.getItem('image'));
     this.platform.backButton.subscribeWithPriority(10, () => {
       console.log('Handler was called!');
@@ -317,8 +319,8 @@ export class DemarragePage implements OnInit {
       item.nombre =
         res.length > 0
           ? Math.round(
-              (parseFloat(res[res.length - 1]?.value) + Number.EPSILON) * 100
-            ) / 100
+            (parseFloat(res[res.length - 1]?.value) + Number.EPSILON) * 100
+          ) / 100
           : '0';
     }
     if (item.fieldname === 'distance') {
@@ -461,7 +463,7 @@ export class DemarragePage implements OnInit {
         },
       },
     });
-    modal.onDidDismiss().then((data: any) => {});
+    modal.onDidDismiss().then((data: any) => { });
     return await modal.present();
   }
   /**
@@ -474,7 +476,7 @@ export class DemarragePage implements OnInit {
       cssClass: 'my-custom-activite-modal',
       componentProps: {},
     });
-    modal.onDidDismiss().then((data: any) => {});
+    modal.onDidDismiss().then((data: any) => { });
     return await modal.present();
   }
 
@@ -504,7 +506,7 @@ export class DemarragePage implements OnInit {
       cssClass: 'my-custom-activite-modal',
       componentProps: {},
     });
-    modal.onDidDismiss().then((data: any) => {});
+    modal.onDidDismiss().then((data: any) => { });
     return await modal.present();
   }
 

@@ -28,28 +28,30 @@ export class PreseancePage implements OnInit {
     padding2: '34px 40px;',
     width2: '25px',
   };
-  mode="";
-  modeClasse="";
-  demarrage="";
+  mode = "";
+  modeClasse = "";
+  demarrage = "";
   constructor(
     private modalCtrl: ModalController,
     private router: Router,
     public navCtl: NavController
   ) {
-    if(localStorage.getItem('mode')){
-      if(localStorage.getItem('mode')=='landscape'){
-        this.mode = 'landscape';
-        this.modeClasse="preseanceSlideLands";
-        this.demarrage = "demarrageLands";
-      }else{
-        this.mode = 'portrait';
-        this.modeClasse="preseanceSlide";
+    setInterval(() => {
+      if (localStorage.getItem('mode')) {
+        if (localStorage.getItem('mode') == 'landscape') {
+          this.mode = 'landscape';
+          this.modeClasse = "preseanceSlideLands";
+          this.demarrage = "demarrageLands";
+        } else {
+          this.mode = 'portrait';
+          this.modeClasse = "preseanceSlide";
+          this.demarrage = "demarrage";
+        }
+      } else {
+        this.modeClasse = "preseanceSlide";
         this.demarrage = "demarrage";
       }
-    }else{
-      this.modeClasse="preseanceSlide";
-      this.demarrage = "demarrage";
-    }
+    }, 100)
   }
 
   ngOnInit() {
@@ -81,7 +83,7 @@ export class PreseancePage implements OnInit {
       cssClass: 'my-custom-activite-modal',
       componentProps: {},
     });
-    modal.onDidDismiss().then((data: any) => {});
+    modal.onDidDismiss().then((data: any) => { });
     return await modal.present();
   }
 
@@ -99,7 +101,7 @@ export class PreseancePage implements OnInit {
         activity: this.activite,
       },
     });
-    modal.onDidDismiss().then((data: any) => {});
+    modal.onDidDismiss().then((data: any) => { });
     return await modal.present();
   }
   async openCamera() {

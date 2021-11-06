@@ -26,7 +26,7 @@
 @import "~@ionic/angular/css/flex-utils.css";
 //Swiper
 @import "~swiper/swiper-bundle";
-
+$--ion-backdrop-opacity:#F4F5FA;
 ion-content,
 ion-header,
 ion-footer {
@@ -190,4 +190,7 @@ ion-slides.preseanceSlide {
   --backdrop-opacity: 0 !important;
   width: 93%;
   margin: auto;
+}
+.sc-ion-modal-ios-h:first-of-type{
+  --backdrop-opacity: 0 !important;
 }
