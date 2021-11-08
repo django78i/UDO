@@ -58,11 +58,11 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
   @ViewChildren('filterItem') filterItem: QueryList<any>;
 
   config: SwiperOptions = {
-    slidesPerView: 1.3,
+    slidesPerView: 3,
     spaceBetween: 20,
   };
   config2: SwiperOptions = {
-    slidesPerView: 3.1,
+    slidesPerView: 2.1,
     spaceBetween: 10,
   };
 
@@ -71,16 +71,16 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
       icon: '',
       name: 'Récent',
     },
-    // {
-    //   icon: '../../assets/icon/tendance.svg',
-    //   name: 'Tendance',
-    // },
     {
       icon: '../../assets/icon/live.svg',
       name: 'En direct',
     },
     {
       icon: '../../assets/icon/friends.svg',
+      name: 'les + commentés',
+    },
+    {
+      icon: '../../assets/icon/tendance.svg',
       name: 'Mes amis',
     },
   ];
@@ -95,6 +95,7 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
   lastVisible: any;
   loading: boolean = true;
   reaction: any;
+  filter: string = 'Récent';
   constructor(
     public modalController: ModalController,
     public animationCtrl: AnimationController,
@@ -119,9 +120,9 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
   }
 
   ngAfterContentChecked() {
-    if (this.swiper2) {
-      this.swiper2.map((swip) => swip.updateSwiper({}));
-    }
+    // if (this.swiper2) {
+    //   this.swiper2.map((swip) => swip.updateSwiper({}));
+    // }
     // if (this.filterItem) {
     //   this.filterItem.forEach((item, i) => {
     //     console.log(item);
@@ -142,7 +143,10 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
 
   async loadData(event) {
     const taille = await this.feedService.getFeed();
-    const feedPlus = await this.feedService.addQuery(this.lastVisible);
+    const feedPlus = await this.feedService.addQuery(
+      this.lastVisible,
+      this.filter
+    );
 
     setTimeout(() => {
       event.target.complete();
@@ -160,7 +164,7 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
   async doRefresh(event) {
     this.feeds = [];
     console.log(event);
-    const feedRefresh = await this.feedService.getFeed();
+    const feedRefresh = await this.feedService.feedFilter(this.filter);
     setTimeout(() => {
       event.target.complete();
       this.feeds = feedRefresh.table;
@@ -171,6 +175,7 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
   async clickFilter(filter: string, i) {
     this.indice = i;
     this.feeds = [];
+    this.filter = filter;
     const feedRefresh = await this.feedService.feedFilter(filter);
     console.log(feedRefresh);
     this.feeds = feedRefresh.table;
@@ -185,7 +190,9 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
     });
     modal.onDidDismiss().then((data) => {
       this.reaction = data.data;
-      this.controleReaction(i, feedLik.reactions);
+      if (data.data) {
+        this.controleReaction(i, feedLik.reactions);
+      }
       this.reaction = null;
     });
     return await modal.present();
@@ -249,10 +256,24 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
           ],
         });
       }
-      console.log(this.feeds[i].reactionsNombre)
+      console.log(this.feeds[i].reactionsNombre);
       if (userAlreadyLike != -1) {
         this.feeds[i].reactions[indice].nombre -= 1;
         this.feeds[i].reactions[indice].users.splice(userAlreadyLike, 1);
+      }
+      //post de type séanceNow
+      if (this.feeds[i].type == 'session-now') {
+        const reactionPost = {
+          ...this.reaction,
+          date: new Date(),
+          user: {
+            uid: this.user.uid,
+            name: this.user.userName,
+            avatar: this.user.avatar,
+          },
+        };
+        //Ajout réactions dans collection des réactions
+        this.feedService.createReactionSeanceNow(this.feeds[i], reactionPost);
       }
       this.feedService.updatePost(this.feeds[i]);
     }

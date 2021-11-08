@@ -173,14 +173,7 @@ export class ResultatPage implements OnInit {
         'data_url'
       );
       url = await getDownloadURL(uploadTask.ref);
-      //  const taskPhoto =    await uploadTask
     }
-    // uploadTask.then((snapshot) => {
-    //   getDownloadURL(snapshot.ref).then((downloadURL) => {
-    // if (!this.sessionNow) {
-    //   this.sessionNowService.dissmissLoading();
-    //   this.sessionNowService.show('Image chargée avec succès', 'success');
-    // } else {
     let postModel: PostModel = {
       startDate: new Date(),
       userName: this.user ? this.user.userName : '',
@@ -201,6 +194,7 @@ export class ResultatPage implements OnInit {
       duree: this.counter,
     };
     console.log(postModel);
+    this.sessionNowService.findPostLies(this.sessionNow.sessionId);
     this.sessionNowService
       .update(postModel, 'post-session-now')
       .then((resPicture) => {

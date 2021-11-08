@@ -1,13 +1,17 @@
 import {
   AfterContentChecked,
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
+  NgZone,
   OnInit,
   Output,
   QueryList,
   ViewChildren,
 } from '@angular/core';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { SwiperOptions } from 'swiper';
 import { SwiperComponent } from 'swiper/angular';
 
@@ -20,24 +24,26 @@ export class SliderChampionnatComponent implements OnInit, AfterContentChecked {
   @Input() championnats: any[];
 
   championnatList: any[] = [];
-
-  @ViewChildren('swiper') swiper: QueryList<SwiperComponent>;
-  @Output() champ: EventEmitter<any> = new EventEmitter();
-
-  constructor() {}
-
-  ngOnInit() {
-    console.log(this.championnats);
-  }
-
   config: SwiperOptions = {
     slidesPerView: 1.3,
     spaceBetween: 20,
   };
 
+  @ViewChildren('swiper') swiper: QueryList<SwiperComponent>;
+  @Output() champ: EventEmitter<any> = new EventEmitter();
+
+  constructor(public ref: ChangeDetectorRef, public zone : NgZone) {}
+
+  ngOnInit() {
+  }
+
+
   ngAfterContentChecked(): void {
     if (this.swiper) {
-      this.swiper.map((swip) => swip.updateSwiper({}));
+      // this.zone.run(()=>{
+
+        this.swiper.map((swip) => swip.updateSwiper({}));
+      // })
     }
   }
 

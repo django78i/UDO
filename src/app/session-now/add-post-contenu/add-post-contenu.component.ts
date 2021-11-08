@@ -11,6 +11,7 @@ import {
   IonInput,
   IonTextarea,
   ModalController,
+  NavParams,
   Platform,
 } from '@ionic/angular';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
@@ -47,22 +48,24 @@ export class AddPostContenuComponent implements OnInit {
     private platform: Platform,
     private modalCtr: ModalController,
     private sessionNowService: SessionNowService,
-    public ref: ChangeDetectorRef
+    public ref: ChangeDetectorRef,
+    private navParams: NavParams
   ) {
     this.sessionNow = JSON.parse(localStorage.getItem('sessionNow'));
     this.user = JSON.parse(localStorage.getItem('user'));
     this.base64Image = localStorage.getItem('picture');
     this.activite = JSON.parse(localStorage.getItem('activite'));
-    // this.platform.keyboardDidShow.subscribe((ev) => {
-    //   const { keyboardHeight } = ev;
-    //   this.isVisible = true;
-    //   // Do something with the keyboard height such as translating an input above the keyboard.
-    // });
+    this.picture = this.navParams.get('picture');
+    this.platform.keyboardDidShow.subscribe((ev) => {
+      const { keyboardHeight } = ev;
+      this.isVisible = true;
+      // Do something with the keyboard height such as translating an input above the keyboard.
+    });
 
-    // this.platform.keyboardDidHide.subscribe(() => {
-    //   // Move input back to original location
-    //   this.isVisible = false;
-    // });
+    this.platform.keyboardDidHide.subscribe(() => {
+      // Move input back to original location
+      this.isVisible = false;
+    });
   }
 
   ngOnInit() {
@@ -126,6 +129,10 @@ export class AddPostContenuComponent implements OnInit {
       // this.sessionNowService.dissmissLoading();
       // this.sessionNowService.show('Image chargée avec succès', 'success');
     } else {
+      // const session = await this.sessionNowService.find(
+      //   this.sessionNow.uid,
+      //   'post-session-now'
+      // );
       postModel = {
         startDate: new Date(),
         userName: this.user ? this.user.userName : '',

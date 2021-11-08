@@ -9,6 +9,7 @@ import { IonInput, IonTextarea, ModalController } from '@ionic/angular';
 import { ChampionnatsService } from 'src/app/services/championnats.service';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { AddContenuComponent } from 'src/app/session-now/add-contenu/add-contenu.component';
+import { PhotoDetailComponent } from '../photo-detail/photo-detail.component';
 
 @Component({
   selector: 'app-detail-post',
@@ -28,7 +29,8 @@ export class DetailPostComponent implements OnInit {
   constructor(
     public modalCtrl: ModalController,
     public ref: ChangeDetectorRef,
-    public champService: ChampionnatsService
+    public champService: ChampionnatsService,
+    public modalController: ModalController
   ) {}
 
   ngOnInit() {
@@ -70,19 +72,6 @@ export class DetailPostComponent implements OnInit {
     this.textArea.setBlur();
   }
 
-  // async addPhoto() {
-  //   const image = await Camera.getPhoto({
-  //     quality: 100,
-  //     allowEditing: false,
-  //     source: CameraSource.Photos,
-  //     resultType: CameraResultType.DataUrl,
-  //   });
-
-  //   // Here you get the image as result.
-  //   const theActualPicture = image.dataUrl;
-  //   this.picture = theActualPicture;
-  // }
-
   async addContenu() {
     console.log('addContenu');
     const modal = await this.modalCtrl.create({
@@ -91,6 +80,18 @@ export class DetailPostComponent implements OnInit {
     });
     modal.onDidDismiss().then((data: any) => {
       this.picture = data.data != 'Modal Closed' ? data.data : null;
+    });
+    return await modal.present();
+  }
+
+  async detailPhoto(photo) {
+    const modal = await this.modalController.create({
+      component: PhotoDetailComponent,
+      showBackdrop: false,
+      cssClass : "deatilPhoto",
+      componentProps: {
+        photo: photo,
+      },
     });
     return await modal.present();
   }

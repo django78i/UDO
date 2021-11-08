@@ -46,18 +46,18 @@ export class FriendsListComponent implements OnInit {
   }
 
   selectFriend(friend) {
-    this.userService.addFriend(friend, this.createur);
+    // this.userService.addFriend(friend, this.createur);
 
     // console.log(friend, this.friendsSelected);
-    // friend = { ...friend, etat: 'en attente' };
-    // const ind = this.friendsSelected.findIndex(
-    //   (fr) => fr.userName == friend.userName
-    // );
-    // ind != -1
-    //   ? this.friendsSelected.splice(ind, 1)
-    //   : this.friendsSelected.push(friend);
-    // console.log(this.friendsSelected);
-    // this.friendList.emit(this.friendsSelected);
+    friend = { ...friend, etat: 'en attente' };
+    const ind = this.friendsSelected.findIndex(
+      (fr) => fr.userName == friend.userName
+    );
+    ind != -1
+      ? this.friendsSelected.splice(ind, 1)
+      : this.friendsSelected.push(friend);
+    console.log(this.friendsSelected);
+    this.friendList.emit(this.friendsSelected);
   }
 
   clear(event) {

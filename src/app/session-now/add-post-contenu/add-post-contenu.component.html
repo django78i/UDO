@@ -20,8 +20,6 @@
   <ion-row class="message">
     <ion-input
       (keyup.enter)="publier()"
-      (ionBlur)="blur($event)"
-      (ionFocus)="active($event)"
       (ionChange)="changeInput($event)"
       class="c-textarea"
       placeholder="Commentez votre post"

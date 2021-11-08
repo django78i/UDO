@@ -89,9 +89,9 @@ ion-grid {
   --ion-grid-width: 100%;
 }
 
-:host ::ng-deep .sliderFilter .swiper-slide {
-  width: auto !important;
-}
+// :host ::ng-deep .sliderFilter .swiper-slide {
+//   width: auto !important;
+// }
 
 .sliderFilter {
   background: #f7f7fa;

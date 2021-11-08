@@ -172,29 +172,28 @@ export class FeedsComponent implements OnInit {
     this.feedService.updatePost(this.feed[i]);
   }
 
-  async loadData(event) {
-    if (this.feed.length) {
-      const taille = await this.feedService.feedQuery(this.championnat.uid);
-      const feedPlus = await this.feedService.addQuery(
-        this.lastVisible,
-        this.championnat.uid,
-        'championnat'
-      );
-      console.log(feedPlus.table.length);
+  // async loadData(event) {
+  //   if (this.feed.length) {
+  //     const taille = await this.feedService.feedQuery(this.championnat.uid);
+  //     const feedPlus = await this.feedService.addQuery(
+  //       this.lastVisible,
+  //       this.championnat.uid
+  //     );
+  //     console.log(feedPlus.table.length);
 
-      setTimeout(() => {
-        event.target.complete();
-        console.log(taille.last);
-        this.lastVisible = feedPlus.last;
-        feedPlus.table.forEach((fed) => this.feed.push(fed));
-        // App logic to determine if all data is loaded
-        // and disable the infinite scroll
-        if (taille.last <= this.feed.length) {
-          event.target.disabled = true;
-        }
-      }, 500);
-    }
-  }
+  //     setTimeout(() => {
+  //       event.target.complete();
+  //       console.log(taille.last);
+  //       this.lastVisible = feedPlus.last;
+  //       feedPlus.table.forEach((fed) => this.feed.push(fed));
+  //       // App logic to determine if all data is loaded
+  //       // and disable the infinite scroll
+  //       if (taille.last <= this.feed.length) {
+  //         event.target.disabled = true;
+  //       }
+  //     }, 500);
+  //   }
+  // }
 
   async openDetail(post) {
     const modal = await this.modalController.create({
@@ -321,7 +320,6 @@ export class FeedsComponent implements OnInit {
     this.picture = null;
     this.pictureUrl = null;
     this.boole = false;
-
   }
 
   async openProfil(contact) {
