@@ -215,9 +215,9 @@
             margin: 0 0 2px;
           "
         >
-          {{ react.user.name }}
+          {{ react.user.userName }}
         </h3>
-        <p>{{ react.user.date | timeRelative }}</p>
+        <p>{{ react.date | timeChamp }}</p>
       </ion-label>
       <ion-thumbnail slot="end">
         <img [src]="react.icon" alt="" />

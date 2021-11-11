@@ -23,7 +23,7 @@ import { TimeRelativePipe } from './pipe/time-relative.pipe';
 import { TimeChampPipe } from './pipe/time-champ.pipe';
 
 @NgModule({
-  declarations: [AppComponent, TimeChampPipe],
+  declarations: [AppComponent],
   entryComponents: [],
   imports: [
     BrowserModule,

@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { AlertController, Platform } from '@ionic/angular';
 import {
+  collection,
   doc,
   DocumentData,
   DocumentSnapshot,
   getDoc,
+  getDocs,
   getFirestore,
   setDoc,
   updateDoc,
@@ -94,6 +96,19 @@ export class UserService {
     await updateDoc(doc(this.db, 'users', user.uid), user);
   }
 
+  async getUsers(): Promise<any[]> {
+    const db = getFirestore();
+    const req = collection(db, 'users');
+    const snap = await getDocs(req);
+    let table = [];
+    snap.forEach((sn) => {
+      table.push(sn.data());
+    });
+    console.log(table);
+    localStorage.setItem('usersList', JSON.stringify(table));
+    return table;
+  }
+
   async googleSignIn() {
     const auth = getAuth();
     try {
@@ -158,7 +173,6 @@ export class UserService {
     ind != -1 ? userTemp.friends.splice(ind, 1) : '';
     await updateDoc(doc(this.db, 'users', userTemp.uid), userTemp);
   }
-
 
   sendError(error) {
     if (JSON.stringify(error).includes('auth/email-already-in-use')) {

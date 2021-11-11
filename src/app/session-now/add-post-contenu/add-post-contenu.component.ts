@@ -106,51 +106,24 @@ export class AddPostContenuComponent implements OnInit {
       url = await getDownloadURL(uploadTask.ref);
     }
     let postModel: PostModel;
-    if (!this.sessionNow) {
-      console.log('no sesionNow');
-      postModel = {
-        startDate: new Date(),
-        userName: this.user ? this.user.userName : '',
-        userId: this.user ? this.user.uid : '',
-        sessionId: '',
-        photo: url ? url : '',
-        type: 'picture',
-        reactions: [],
-        activity: this.activity,
-        isLive: true,
-        mode: 'public',
-        userAvatar: this.user.avatar,
-        niveau: this.user.niveau,
-        comment: this.comment,
-        postCount: 0,
-        reactionsNombre: 0,
-      };
-      // this.close();
-      // this.sessionNowService.dissmissLoading();
-      // this.sessionNowService.show('Image chargée avec succès', 'success');
-    } else {
-      // const session = await this.sessionNowService.find(
-      //   this.sessionNow.uid,
-      //   'post-session-now'
-      // );
-      postModel = {
-        startDate: new Date(),
-        userName: this.user ? this.user.userName : '',
-        userId: this.user ? this.user.uid : '',
-        sessionId: this.sessionNow ? this.sessionNow.uid : '',
-        photo: url ? url : '',
-        type: 'picture',
-        reactions: [],
-        activity: this.activity,
-        isLive: true,
-        mode: this.sessionNow ? this.sessionNow.mode : 'public',
-        userAvatar: this.user.avatar,
-        niveau: this.user.niveau,
-        comment: this.comment,
-        postCount: 0,
-        reactionsNombre: 0,
-      };
-    }
+    console.log('no sesionNow');
+    postModel = {
+      startDate: new Date(),
+      userName: this.user ? this.user.userName : '',
+      userId: this.user ? this.user.uid : '',
+      sessionId: this.sessionNow ? this.sessionNow.uid : '',
+      photo: url ? url : '',
+      type: 'picture',
+      reactions: [],
+      activity: this.activity,
+      isLive: this.sessionNow ? true : false,
+      mode: this.sessionNow ? this.sessionNow.mode : 'public',
+      userAvatar: this.user.avatar,
+      niveau: this.user.niveau,
+      comment: this.comment,
+      postCount: 0,
+      reactionsNombre: 0,
+    };
     this.sessionNowService
       .create(postModel, 'post-session-now')
       .then((resPicture) => {

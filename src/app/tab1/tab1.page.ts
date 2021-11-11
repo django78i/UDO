@@ -53,16 +53,11 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
   stickyVideo: HTMLVideoElement = null;
   stickyPlaying = false;
   @ViewChild('stickyplayer', { static: false }) stickyPlayer: ElementRef;
-  @ViewChildren('swiper') swiper: QueryList<SwiperComponent>;
   @ViewChildren('swiper2') swiper2: QueryList<SwiperComponent>;
   @ViewChildren('filterItem') filterItem: QueryList<any>;
 
-  config: SwiperOptions = {
-    slidesPerView: 3,
-    spaceBetween: 20,
-  };
   config2: SwiperOptions = {
-    slidesPerView: 2.1,
+    slidesPerView: 2.5,
     spaceBetween: 10,
   };
 
@@ -77,7 +72,7 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
     },
     {
       icon: '../../assets/icon/friends.svg',
-      name: 'les + commentés',
+      name: 'Populaire',
     },
     {
       icon: '../../assets/icon/tendance.svg',
@@ -111,7 +106,7 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
     this.subscription = user.subscribe((us) => {
       this.user = us;
     });
-    const feed = await this.feedService.getFeed();
+    const feed = await this.feedService.feedFilter('Récent');
     this.loading = false;
     this.feeds = feed.table;
     console.log(this.feeds);
@@ -119,17 +114,7 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
     this.indice = 0;
   }
 
-  ngAfterContentChecked() {
-    // if (this.swiper2) {
-    //   this.swiper2.map((swip) => swip.updateSwiper({}));
-    // }
-    // if (this.filterItem) {
-    //   this.filterItem.forEach((item, i) => {
-    //     console.log(item);
-    //     item.el.style.backgourndColor ="red"
-    //   });
-    // }
-  }
+  ngAfterContentChecked() {}
 
   async showMenu() {
     const modal = await this.modalController.create({
@@ -141,6 +126,7 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
     return await modal.present();
   }
 
+  //Recharger le feed
   async loadData(event) {
     const taille = await this.feedService.getFeed();
     const feedPlus = await this.feedService.addQuery(
@@ -161,6 +147,7 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
     }, 500);
   }
 
+  //Refresh du feed
   async doRefresh(event) {
     this.feeds = [];
     console.log(event);
@@ -172,6 +159,8 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
     }, 2000);
   }
 
+
+  //Choix du filtre
   async clickFilter(filter: string, i) {
     this.indice = i;
     this.feeds = [];
@@ -308,9 +297,6 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
     return await modal.present();
   }
 
-  nav() {
-    this.navCtl.navigateForward('tabs/tab3');
-  }
 
   chatPage() {
     this.navCtl.navigateForward('chat');

@@ -144,11 +144,11 @@
             <p style="font-size: 10px">Durée maximum du championnat</p>
           </ion-label>
           <ion-item lines="none" class="addSub" slot="end">
-            <ion-button (click)="sub()" slot="start" mode="ios">
+            <ion-button (click)="sub('week')" slot="start" mode="ios">
               <img src="../../../../assets/icon/minus.svg" alt="" />
             </ion-button>
             <ion-label> {{ weekCount }}</ion-label>
-            <ion-button (click)="add()" slot="end" mode="ios">
+            <ion-button (click)="add('week')" slot="end" mode="ios">
               <img src="../../../../assets/icon/plus.svg" alt="" />
             </ion-button>
           </ion-item>
@@ -162,13 +162,13 @@
             <p style="font-size: 10px">Minimum de séances par semaine</p>
           </ion-label>
           <ion-item lines="none" class="addSub" slot="end">
-            <ion-button (click)="subSeanceWeek()" slot="start" mode="ios">
+            <ion-button (click)="sub('weekSeance')" slot="start" mode="ios">
               <img src="../../../../assets/icon/minus.svg" alt="" />
             </ion-button>
             <ion-label> {{ seanceWeekCount }}</ion-label>
             <ion-button
               mode="ios"
-              (click)="addSeanceWeek()"
+              (click)="add('weekSeance')"
               slot="end"
               class="ion-activatable ripple-parent"
             >
@@ -231,26 +231,6 @@
             <p style="font-size: 10px">Sélectionnez les activités</p>
           </ion-label>
         </ion-item>
-        <!-- <ion-item
-          detail
-          lines="full"
-          class="champColor"
-          (click)="slideNext('amis')"
-        >
-          <ion-thumbnail class="thumbZone" slot="start">
-            <img
-              class="thumbIcon"
-              src="assets/icon/icons8-ajouter-un-groupe-d'utilisateurs-homme-homme.svg"
-              alt=""
-            />
-          </ion-thumbnail>
-          <ion-label>
-            <p class="sousTitre black">Inviter des participants</p>
-            <p style="font-size: 10px">
-              Consulter et gérer votre liste de contacts
-            </p>
-          </ion-label>
-        </ion-item> -->
         <div style="display: flex; justify-content: center">
           <ion-button
             shape="round"

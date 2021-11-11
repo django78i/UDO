@@ -26,6 +26,7 @@ import {
 } from 'firebase/storage';
 import { Subscription } from 'rxjs';
 import { $ } from 'protractor';
+import { SessionNowService } from 'src/app/services/session-now-service.service';
 
 @Component({
   selector: 'app-login-modal',
@@ -59,7 +60,8 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
     public userService: UserService,
     public navController: NavController,
     public loadingController: LoadingController,
-    public ref: ChangeDetectorRef
+    public ref: ChangeDetectorRef,
+    public sessionNowService: SessionNowService
   ) {}
 
   ngOnInit() {}
@@ -152,6 +154,8 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
   }
 
   async saveOnBoarding() {
+    this.sessionNowService.presentLoading();
+
     const user = await this.userService.getCurrentUser();
     const table: any[] = [
       {
@@ -183,24 +187,26 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
     this.user = {
       ...user,
       sex: this.sex,
-      activitesPratiquees: this.activitesList,
+      activitesPratiquees: this.activitesList ? this.activitesList : '',
       userName: this.pseudo,
-      physique: this.physicalParam,
+      physique: this.physicalParam ? this.physicalParam : '',
       niveau: 0,
       metrics: table,
       friends: [],
+      exp: 0,
       avatar: this.pictureURL
         ? this.pictureURL
         : 'https://img.icons8.com/ios-filled/50/000000/gender-neutral-user.png',
     };
-    const loading = await this.loadingController.create({
-      message: 'Veuillez patienter...',
-      duration: 2000,
-    });
-    await loading.present();
+    // const loading = await this.loadingController.create({
+    //   message: 'Veuillez patienter...',
+    //   duration: 2000,
+    // });
+    // await loading.present();
+    this.sessionNowService.dissmissLoading();
     this.userService.updateUser(this.user);
 
-    const { role, data } = await loading.onDidDismiss();
+    // const { role, data } = await loading.onDidDismiss();
 
     this.redirect();
   }

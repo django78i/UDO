@@ -1,5 +1,6 @@
 import {
   AfterViewInit,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   Input,
@@ -51,7 +52,8 @@ export class ModalChampComponent implements OnInit, AfterViewInit {
     private modalCtrl: ModalController,
     public alertController: AlertController,
     public champService: ChampionnatsService,
-    public navCtl: NavController
+    public navCtl: NavController,
+    public ref: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -140,6 +142,7 @@ export class ModalChampComponent implements OnInit, AfterViewInit {
       ...this.championnat,
       dateFin: this.championnat.dateFin.toDate(),
     });
+    this.ref.detectChanges();
     console.log(final);
   }
 

@@ -17,6 +17,7 @@ export class SliderNetworkComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    console.log(this.championnats)
 
   }
 

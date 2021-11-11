@@ -79,11 +79,10 @@ export class ChampionnatsService {
     const auth = getAuth();
     auth.currentUser.uid;
 
-    const docRef = query(
-      collection(this.db, 'championnats')
-    );
+    const docRef = query(collection(this.db, 'championnats'));
     const unsubscribe = onSnapshot(docRef, (querySnapshot) => {
       const champs = [];
+      const users = JSON.parse(localStorage.getItem('usersList'));
       querySnapshot.docChanges().forEach((changes) => {
         if (changes) {
           this.champSubject$.next(null);
@@ -95,14 +94,40 @@ export class ChampionnatsService {
         const bool = document.participants.some(
           (users: any) => users.uid == auth.currentUser.uid
         );
+        console.log(document);
+        const docFormat = this.formatChamp(document, users);
+        console.log(docFormat);
         if (document.status == 'en cours' && bool) {
-          this.champEnCoursSubject$.next(document);
-        } else if (document.status == 'en attente' && bool) {
-          this.champSubject$.next(document);
+          this.champEnCoursSubject$.next(docFormat);
+        } else if (
+          document.status == 'en attente' &&
+          bool &&
+          document.type == 'Friends&familly'
+        ) {
+          this.champSubject$.next(docFormat);
+        } else if (
+          document.status == 'en attente' &&
+          bool &&
+          document.type == 'Network'
+        ) {
+          this.champNetWork$.next(docFormat);
         }
-
       });
     });
+  }
+
+  formatChamp(champ, users) {
+    console.log(users);
+    const championnat = champ;
+    championnat.participants = championnat.participants.map((participant) => {
+      const partFormat = users?.find((user) => participant.uid == user.uid);
+      return { ...participant, user: partFormat };
+    });
+    championnat.createur = users?.find(
+      (user) => user.uid == championnat.createur.uid
+    );
+    console.log(championnat);
+    return championnat;
   }
 
   createId() {

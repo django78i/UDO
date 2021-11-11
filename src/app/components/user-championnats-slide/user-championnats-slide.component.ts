@@ -24,16 +24,16 @@ import { UserService } from 'src/app/services/user-service.service';
 })
 export class UserChampionnatsSlideComponent implements OnInit {
   @Input() championnats: any[];
-  @Input() championnats$: Observable<any>;
-  @Input() user: any;
-  position: any;
-  @ViewChildren('swiper') swiper: QueryList<SwiperComponent>;
   @Output() champ: EventEmitter<any> = new EventEmitter();
+
+  //slider
+  @ViewChildren('swiper') swiper: QueryList<SwiperComponent>;
   config: SwiperOptions = {
     slidesPerView: 1.3,
     spaceBetween: 20,
   };
 
+  //informations sur le user dans le championnat
   userInfo: any;
   constructor(
     public zone: NgZone,
@@ -41,32 +41,19 @@ export class UserChampionnatsSlideComponent implements OnInit {
     public userService: UserService
   ) {}
 
-  ngOnInit() {
-    console.log(this.championnats);
-    this.userService.getCurrentUser().then((user) => {
-      this.user = user;
-      if (this.championnats.length) {
-        this.championnats.map((champ, i) => {
-          console.log(champ);
-          this.userInfo = champ.participants.find(
-            (user) => user.uid == this.user.uid
-          );
-          console.log(this.user);
-          const classement = _.orderBy(champ.participants, ['points'], ['asc']);
-          this.position = classement.findIndex(
-            (user) => (user.uid = this.user.uid)
-          );
-          this.championnats[i].position = this.position;
-          console.log(this.position);
-          // this.ref.detectChanges()
-        });
-      }
-    });
-  }
+  ngOnInit() {}
 
   ngAfterContentChecked(): void {
     if (this.swiper) {
       this.swiper.map((swip) => swip.updateSwiper({}));
+      let user = JSON.parse(localStorage.getItem('user'));
+      if (this.championnats.length) {
+        this.championnats.map((champ, i) => {
+          this.userInfo = champ.participants.find(
+            (userChamp) => user.uid == userChamp.uid
+          );
+        });
+      }
     }
   }
 

@@ -44,24 +44,19 @@ export class Tab3Page implements OnInit, AfterContentChecked {
   @ViewChildren('swiper') swiper: QueryList<SwiperComponent>;
   @ViewChildren('miniature') miniature: any;
   challenges: Observable<any>;
-  userChampionnats$: Observable<any>;
-  userChampionnats: any[] = [];
-  championnats: Observable<any>;
-  championnatsList: any[] = [];
-  championnatsNetwork: any[] = [];
 
-  // championnatsNetwork: Observable<any>;
+  //championnats
+  champinonatNetwork: any[] = [];
+  championnatsList: any[] = [];
+  userChampionnats: any[] = [];
+
   bannData: any;
   affiche: BehaviorSubject<any> = new BehaviorSubject(null);
   user: any;
   user$: Observable<any>;
   userInfo: any;
 
-  userChampSubscription: Subscription;
-  userSubscription: Subscription;
-  championnatSubscription: Subscription;
-  championnatNetWorkSubscription: Subscription;
-
+  //loader
   loaderUserChamp: boolean;
   loaderChamp: boolean;
   loaderNetwork: boolean;
@@ -79,15 +74,13 @@ export class Tab3Page implements OnInit, AfterContentChecked {
   ) {}
 
   ngOnInit() {
-    //récupéerer les user
-    //Championnats en cours
-    // this.champService.getChampionnatsEnCours();
-    //Championnats en attente
+    //user en cours
+    this.userService.getCurrentUser().then((user) => (this.user = user));
+
     this.champService.getChampionnats();
     this.champService.champSubject$
       .pipe(
         tap((r) => {
-          // r ? this.championnatsList.push(r) : (this.championnatsList = []);
           console.log(this.championnatsList);
           r == null
             ? (this.championnatsList = [])
@@ -101,6 +94,16 @@ export class Tab3Page implements OnInit, AfterContentChecked {
           r == null
             ? (this.userChampionnats = [])
             : this.userChampionnats.push(r);
+        })
+      )
+      .subscribe();
+    this.champService.champNetWork$
+      .pipe(
+        tap((r) => {
+          console.log(r)
+          r == null
+            ? (this.champinonatNetwork = [])
+            : this.champinonatNetwork.push(r);
         })
       )
       .subscribe();

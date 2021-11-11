@@ -10,7 +10,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 })
 export class EmojisComponent implements OnInit {
   emojisList$: Observable<any[]>;
-  emoji: BehaviorSubject<any> = new BehaviorSubject(null);
+  emoji: any;
 
   constructor(
     public http: HttpClient,

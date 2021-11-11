@@ -23,10 +23,10 @@
   >
     <ion-card-header [ngClass]="{ notActiveContent: segmentValue != 'resume' }">
       <ion-card-subtitle *ngIf="championnat.status == 'en cours'">
-        {{ championnat.dateFin | timeRelative }}
+        {{ championnat.dateFin | timeChamp }}
       </ion-card-subtitle>
       <ion-card-subtitle *ngIf="championnat.status == 'en attente'">
-        {{ championnat.dateDemarrage | timeRelative }}
+        {{ championnat.dateDemarrage | timeChamp }}
       </ion-card-subtitle>
       <ion-card-title style="color: white">{{
         championnat.name
@@ -36,8 +36,8 @@
     <ion-card-content>
       <div style="display: flex">
         <ng-container *ngFor="let champ of participantsList; let i = index">
-          <ion-avatar style="--i : {{ i }}; --mess : {{ champ.niveau }} ">
-            <img [src]="champ.avatar" alt="" />
+          <ion-avatar style="--i : {{ i }}; --mess : {{ champ.user.niveau }} ">
+            <img [src]="champ.user.avatar" alt="" />
             <ion-badge>{{ user.niveau }}</ion-badge>
           </ion-avatar>
         </ng-container>

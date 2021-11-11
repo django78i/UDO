@@ -77,10 +77,6 @@ export class FeedsComponent implements OnInit {
     console.log(this.user);
     const feedPrime = await this.feedService.feedQuery(this.championnat.uid);
     this.feed = feedPrime.table;
-    // feedPrime.table.forEach((fee) => {
-    //   this.feed.push(fee);
-    //   console.log(this.feed);
-    // });
     this.lastVisible = feedPrime.last;
   }
 
@@ -206,32 +202,6 @@ export class FeedsComponent implements OnInit {
     });
     return await modal.present();
   }
-  async addPhoto() {
-    const image = await Camera.getPhoto({
-      quality: 100,
-      allowEditing: false,
-      source: CameraSource.Photos,
-      resultType: CameraResultType.DataUrl,
-    });
-
-    // Here you get the image as result.
-    const theActualPicture = image.dataUrl;
-    this.picture = theActualPicture;
-  }
-
-  async takePhoto() {
-    const image = await Camera.getPhoto({
-      quality: 100,
-      allowEditing: false,
-      source: CameraSource.Camera,
-      resultType: CameraResultType.DataUrl,
-    });
-
-    // Here you get the image as result.
-    const theActualPicture = image.dataUrl;
-    this.picture = theActualPicture;
-  }
-
   deletePhoto() {
     this.picture = null;
   }
@@ -250,61 +220,31 @@ export class FeedsComponent implements OnInit {
   }
 
   async send() {
+    let photo;
     if (this.picture) {
-      const tof = this.savePhoto(this.picture);
-      tof.then(
-        (snapshot) => {
-          getDownloadURL(snapshot.ref).then((downloadURL) => {
-            this.pictureUrl = downloadURL;
-            console.log(this.pictureUrl);
-            const post = {
-              userId: this.user.uid,
-              username: this.user.userName,
-              userAvatar: this.user.avatar,
-              type: 'post',
-              startDate: new Date(),
-              reactions: [],
-              photo: this.pictureUrl ? this.pictureUrl : '',
-              mode: 'public',
-              isLive: false,
-              text: this.text,
-              // nombre: 0,
-              activity: '',
-              championnat: this.championnat.uid,
-            };
-            // this.feedService.sendPost(post);
-            this.feedReinit();
-          });
-        },
-        (error) => {
-          // Handle unsuccessful uploads
-        }
-      );
-    } else {
-      const post = {
-        userUid: this.user.uid,
-        username: this.user.userName,
-        userAvatar: this.user.avatar,
-        type: 'post',
-        startDate: new Date(),
-        reactions: [],
-        photo: '',
-        mode: 'public',
-        isLive: false,
-        text: this.text,
-        activity: '',
-        championnat: this.championnat.uid,
-      };
-      // await this.feedService.sendPost(post);
-
-      this.feedReinit();
+      const tof = await this.savePhoto(this.picture);
+      photo = getDownloadURL(tof.ref);
     }
-  }
 
-  test(event) {
-    console.log(this.inputFeed);
-    this.inputFeed.color = 'red';
-    this.boole = true;
+    const post = {
+      userId: this.user.uid,
+      username: this.user.userName,
+      userAvatar: this.user.avatar,
+      type: 'post',
+      startDate: new Date(),
+      reactions: [],
+      photo: photo ? photo : '',
+      mode: 'public',
+      isLive: false,
+      text: this.text,
+      activity: '',
+      championnat: this.championnat.uid,
+    };
+    console.log(post);
+    this.feedService.sendPost(post);
+    this.feedReinit();
+
+    this.feedReinit();
   }
 
   async feedReinit() {

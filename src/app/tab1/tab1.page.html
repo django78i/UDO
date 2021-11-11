@@ -17,30 +17,6 @@
     </ion-buttons>
   </ion-toolbar>
   <section style="background: #f7f7fa; padding: 0 15px">
-    <!-- <ion-item button lines="none" class="badgeHeader" (click)="userProfil()">
-      <div>
-        <div
-          style="
-            height: 50px;
-            width: 50px;
-            border-radius: 50%;
-            border: 4px solid;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-right: 15px;
-          "
-        >
-          <ion-label>{{user?.niveau}}</ion-label>
-        </div>
-      </div>
-      <ion-label *ngIf="user">
-        <p style="color: black; font-weight: 700 !important; font-size: 16px">
-          {{user.userName}}
-        </p>
-        <p style="font-size: 12px">Consulter mon profil</p>
-      </ion-label>
-    </ion-item> -->
     <div class="iconTitle">
       <img
         src="../../assets/icon/dot.svg"
@@ -198,21 +174,6 @@
         >
       </ion-item>
     </ng-template>
-    <!-- <ng-template swiperSlide *ngFor="let filter of filters; let i = index">
-        <ion-item
-          [ngClass]="{black: i == indice, white : i !== indice}"
-          (click)="clickFilter(filter.name, i)"
-          style="width: auto"
-          lines="none"
-          class="chipFilter"
-        >
-          <ion-label
-            style="font-size: 14px; font-weight: 900"
-            [ngClass]="{whiteLabel: i == indice, blackLabel : i !== indice}"
-            >{{filter.name}}</ion-label
-          >
-        </ion-item>
-      </ng-template> -->
   </swiper>
 </ion-header>
 <ion-content>
@@ -245,18 +206,15 @@
               style="margin-right: 10px; background: grey"
               slot="start"
               (click)="
-              openProfil(item.userId ? item.userId : item.userUid)
+              openProfil(item.user.uid)
             "
             >
-              <img [src]="item.userAvatar" />
+              <img [src]="item.user.avatar" />
             </ion-avatar>
             <ion-label>
-              <div style="display: flex; align-items: center; gap: 10px">
-                <p style="margin-bottom: 0">{{ item.userName }}</p>
-                <ion-icon
-                  name="ellipse"
-                  style="font-size: 6px; margin-right: 5px"
-                ></ion-icon>
+              <div style="display: flex; align-items: center; gap: 4px">
+                <p style="margin-bottom: 0">{{ item.user.userName }}</p>
+                <ion-icon name="ellipse" style="font-size: 6px"></ion-icon>
 
                 <p style="font-size: 10px">
                   {{ item.startDate | timeRelative }}
@@ -295,20 +253,17 @@
           <ion-item lines="none" class="liveZone">
             <ion-avatar
               (click)="
-            openProfil(item.userId ? item.userId : item.userUid)
+            openProfil(item.user.uid)
           "
               style="margin-right: 10px; background: grey"
               slot="start"
             >
-              <img [src]="item.userAvatar" />
+              <img [src]="item.user.avatar" />
             </ion-avatar>
             <ion-label>
-              <div style="display: flex; align-items: center; gap: 10px">
-                <p style="margin-bottom: 0">{{ item.userName }}</p>
-                <ion-icon
-                  name="ellipse"
-                  style="font-size: 6px; margin-right: 5px"
-                ></ion-icon>
+              <div style="display: flex; align-items: center; gap: 4px">
+                <p style="margin-bottom: 0">{{ item.user.userName }}</p>
+                <ion-icon name="ellipse" style="font-size: 6px"></ion-icon>
 
                 <p style="font-size: 10px">
                   {{ item.startDate | timeRelative }}
@@ -461,57 +416,6 @@
               {{item.postCount}}
             </ion-chip>
           </ion-item>
-
-          <!-- <div
-            *ngIf="item.postCount !== 0"
-            style="
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-              background: #2a2b25;
-              border-radius: 23px;
-              padding: 10px;
-              width: 68%;
-            "
-          >
-            <ion-label
-              style="--color: white; font-size: 12px"
-              (click)="openDetail(item)"
-              >Rejoindre la conversation</ion-label
-            >
-            <span
-              style="
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-              "
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="23.519"
-                height="21.005"
-                viewBox="0 0 23.519 21.005"
-              >
-                <defs>
-                  <style>
-                    .a {
-                      fill: #ffffff;
-                      stroke: #ffffff;
-                      stroke-width: 0.5px;
-                    }
-                  </style>
-                </defs>
-                <path
-                  class="a"
-                  d="M313.56,676.9H295.593a2.54,2.54,0,0,0-2.526,2.527v15.733c0,2.236,3.058,2.856,4.4,1.511l.9-.9a1.168,1.168,0,0,1,.826-.341H313.56a2.539,2.539,0,0,0,2.526-2.527V679.431A2.538,2.538,0,0,0,313.56,676.9Zm-.281,2.807v12.914H298.2a1.146,1.146,0,0,0-.812.336l-.916.915a.35.35,0,0,1-.6-.247V679.711Z"
-                  transform="translate(-292.817 -676.654)"
-                />
-              </svg>
-              <p style="font-weight: 700; color: white; margin: 0">
-                {{item.postCount}}
-              </p>
-            </span>
-          </div> -->
         </ion-card-content>
       </ion-card>
     </ion-item>
