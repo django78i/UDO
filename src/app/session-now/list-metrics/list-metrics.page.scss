@@ -1,11 +1,11 @@
 ion-header{
-    --ion-background-color: #F4F5FA;
+    background-color: #F4F5FA !important;
     .close{
         width: 13px;
     }
 }
 ion-content{
-    --ion-background-color: #F4F5FA;
+    --background: #F4F5FA !important;
     .c-row{
         margin: auto;
         .nombre{

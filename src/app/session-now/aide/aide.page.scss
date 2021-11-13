@@ -1,15 +1,15 @@
 ion-header{
-    --background: #F4F5FA;
-    
-}
-ion-content{
+    background-color: #F4F5FA !important;
     ion-toolbar{
         ion-img{
             width: 13.26px;
             height: 13.26px;
         }
     }
-    --ion-background-color: #F4F5FA;
+}
+ion-content{
+    
+    --background: #F4F5FA !important;
     .bonHomme{
         ion-img{
             margin: 40px auto 73px auto;

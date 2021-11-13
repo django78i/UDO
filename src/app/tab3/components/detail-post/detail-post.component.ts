@@ -114,4 +114,5 @@ export class DetailPostComponent implements OnInit {
     const theActualPicture = image.dataUrl;
     this.picture = theActualPicture;
   }
+
 }

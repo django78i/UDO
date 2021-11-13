@@ -1,6 +1,6 @@
 
-ion-content{
-    --ion-background-color: #F4F5FA;
+ion-header{
+    background-color: #F4F5FA !important;
     ion-toolbar{
         --background: transparent !important;
    
@@ -13,6 +13,10 @@ ion-content{
             height: 23.14px;
         }
     }
+}
+ion-content{
+    --background: #F4F5FA !important;
+    
     .firstPart{
         text-align: center;
         margin-top: 29px;

@@ -1,7 +1,6 @@
 
-ion-content{
-
-    --ion-background-color: #F4F5FA;
+ion-header{
+    background-color: #F4F5FA !important;
     ion-toolbar{
         .img-retour{
             width: 13px;
@@ -12,6 +11,11 @@ ion-content{
             height: 19px;
         }
     }
+}
+ion-content{
+
+    --background: #F4F5FA !important;
+    
     .show{
         display: block;
         margin-top: 12px;

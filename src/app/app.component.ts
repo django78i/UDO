@@ -3,6 +3,8 @@ import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 import * as firebase from 'firebase/app';
 import { UserService } from './services/user-service.service';
 
+
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -35,6 +37,7 @@ export class AppComponent {
     }
   }
 
+
   setLandscape() {
     // set to landscape
     this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE);
@@ -45,3 +48,4 @@ export class AppComponent {
     this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
   }
 }
+

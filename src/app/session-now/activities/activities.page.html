@@ -1,4 +1,4 @@
-<ion-content>
+<ion-header>
   <ion-toolbar>
     <ion-item lines="none">
       <ion-img slot="start" class="img-retour" (click)="close()" src="assets/images/backArrow.svg"> </ion-img>
@@ -8,6 +8,9 @@
       <ion-img slot="end" class="img-search" src="assets/images/search.svg"> </ion-img>
     </ion-item>
   </ion-toolbar>
+</ion-header>
+<ion-content>
+ 
   <div *ngFor="let p of listActivites" class="c-item">
     <ion-item lines="none" >
       <div slot="start" class="activite">
