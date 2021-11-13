@@ -25,6 +25,7 @@ import { SwiperOptions } from 'swiper';
 import { SwiperComponent } from 'swiper/angular';
 import moment from 'moment';
 import { UserService } from 'src/app/services/user-service.service';
+import { SessionNowService } from 'src/app/services/session-now-service.service';
 
 @Component({
   selector: 'app-create-champ-pop-up',
@@ -43,7 +44,7 @@ export class CreateChampPopUpComponent
     type: 'Friends&familly',
   };
   ban: any = 'assets/banner/blackBanner.svg';
-  title: BehaviorSubject<any> = new BehaviorSubject(null);
+  title: any;
   @ViewChild('swiper') swiper: SwiperComponent;
   @Output() champ: EventEmitter<any> = new EventEmitter();
   @Input() user: any;
@@ -82,7 +83,8 @@ export class CreateChampPopUpComponent
     public elemRef: ElementRef,
     public champService: ChampionnatsService,
     public toastController: ToastController,
-    public userService: UserService
+    public userService: UserService,
+    public snService: SessionNowService
   ) {}
 
   ngOnInit() {
@@ -113,30 +115,28 @@ export class CreateChampPopUpComponent
     });
   }
 
-  add() {
-    this.weekCount += 1;
+  add(counter) {
+    counter == 'week' ? (this.weekCount += 1) : (this.seanceWeekCount += 1);
   }
 
-  sub() {
-    this.weekCount != 0
-      ? (this.weekCount -= 1)
-      : (this.weekCount = this.weekCount);
+  sub(counter) {
+    if (counter == 'week') {
+      this.weekCount != 1
+        ? (this.weekCount -= 1)
+        : (this.weekCount = this.weekCount);
+    } else {
+      this.seanceWeekCount != 1
+        ? (this.seanceWeekCount -= 1)
+        : (this.seanceWeekCount = this.seanceWeekCount);
+    }
   }
 
-  addSeanceWeek() {
-    this.seanceWeekCount += 1;
-  }
 
   privacy() {
     this.private.privacy = !this.private.privacy;
     this.private.type = this.private.privacy ? 'Network' : 'Friends&Familly';
   }
 
-  subSeanceWeek() {
-    this.seanceWeekCount != 0
-      ? (this.seanceWeekCount -= 1)
-      : (this.seanceWeekCount = this.seanceWeekCount);
-  }
 
   change(ev) {
     this.maxPlayer = !this.maxPlayer;
@@ -148,8 +148,8 @@ export class CreateChampPopUpComponent
   }
 
   onKey() {
-    const val = this.formChamp.get('name').value;
-    this.title.next(val);
+    // const val = this.formChamp.get('name').value;
+    // this.title.next(val);
   }
 
   slideNext(data) {
@@ -192,8 +192,14 @@ export class CreateChampPopUpComponent
   }
 
   nextFriends() {
-    this.champService.matchUser(this.range, this.activitesList);
-    this.slideNext('amis');
+    if (this.seanceWeekCount == 0) {
+      this.snService.show('erreur : 0 séance par semaine', 'warning');
+    } else if (this.weekCount == 0) {
+      this.snService.show('erreur : 0 semaine', 'warning');
+    } else {
+      this.champService.matchUser(this.range, this.activitesList);
+      this.slideNext('amis');
+    }
   }
 
   async saveChamp(ev) {

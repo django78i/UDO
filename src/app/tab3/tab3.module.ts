@@ -31,6 +31,7 @@ import { TimeFeedPipe } from '../pipe/time-feed.pipe';
 import { ChatRoomComponent } from '../components/chat-room/chat-room.component';
 import { AddContenuComponent } from '../session-now/add-contenu/add-contenu.component';
 import { PhotoDetailComponent } from './components/photo-detail/photo-detail.component';
+import { TimeChampPipe } from '../pipe/time-champ.pipe';
 
 @NgModule({
   imports: [
@@ -67,7 +68,8 @@ import { PhotoDetailComponent } from './components/photo-detail/photo-detail.com
     DetailPostComponent,
     MessagesComponent,
     PhotoDetailComponent,
-    TimeFeedPipe
+    TimeFeedPipe,
+    TimeChampPipe
     // AddContenuComponent,
   ],
 })

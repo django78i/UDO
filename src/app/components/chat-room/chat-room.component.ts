@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { IonInput, ModalController } from '@ionic/angular';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { first, last, takeLast, tap } from 'rxjs/operators';
 import { ChatService } from 'src/app/services/chat.service';
 
 @Component({
@@ -35,7 +35,6 @@ export class ChatRoomComponent implements OnInit {
     this.message$ = this.chatService.msgSubject$.pipe(
       tap((r) => {
         console.log(r);
-        this.ref.detectChanges();
       })
     );
   }

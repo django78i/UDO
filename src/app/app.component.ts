@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 import * as firebase from 'firebase/app';
 import { type } from 'os';
+import { UserService } from './services/user-service.service';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +10,9 @@ import { type } from 'os';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  constructor(private screenOrientation:ScreenOrientation) {
+  constructor(
+    private screenOrientation: ScreenOrientation,
+  ) {
     const config = {
       apiKey: 'AIzaSyCHrlvzztARn_AUL9yiVTTEtGSMdgO_XRw',
       authDomain: 'udonew-cc142.firebaseapp.com',
@@ -21,6 +24,8 @@ export class AppComponent {
     };
     this.setOrientation();
     firebase.initializeApp(config);
+
+
     let value = localStorage.getItem('reglages');
     if (value) {
       let listReglages = JSON.parse(value);
@@ -29,7 +34,6 @@ export class AppComponent {
       } else {
         this.setPortrait();
       }
-
     }
   }
 
@@ -42,7 +46,7 @@ export class AppComponent {
         }else{
           this.setLandscape();
         }
-        
+
       });
   }
   setLandscape() {

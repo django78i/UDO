@@ -29,8 +29,8 @@
           <ion-card-content>
             <div style="display: flex">
               <ion-avatar>
-                <img src="../../../../assets/mocks/6.jpg" alt="" />
-                <ion-badge>40</ion-badge>
+                <img [src]="user.avatar" alt="" />
+                <ion-badge>{{user.niveau}}</ion-badge>
               </ion-avatar>
             </div>
             <div class="iconPhoto">
@@ -42,20 +42,6 @@
           </ion-card-content>
         </ion-card>
         <form [formGroup]="formChamp">
-          <!-- <mat-form-field appearance="outline" color="warn">
-            <mat-label>Nom du championnat</mat-label>
-            <input
-              matInput
-              placeholder="Placeholder"
-              class="form-control"
-              formControlName="name"
-              (keyup)="onKey()"
-            />
-            <mat-hint
-              >Respectez les conditions d’utilisations, évitez les insultes et
-              grossièretés.</mat-hint
-            >
-          </mat-form-field> -->
           <ion-item lines="none">
             <ion-label
               position="floating"
@@ -67,6 +53,7 @@
               >Nom du championnat</ion-label
             >
             <ion-input
+
               style="
                 border: 1px solid rgba(112, 112, 112, 0.23);
                 border-radius: 5px;
@@ -74,7 +61,7 @@
               "
               class="form-control"
               formControlName="name"
-              (keyup)="onKey()"
+              (ionChange)="onKey($event)"
             ></ion-input>
             <ion-note style="font-size: 12px"
               >Respectez les conditions d’utilisations, évitez les insultes et
@@ -144,11 +131,11 @@
             <p style="font-size: 10px">Durée maximum du championnat</p>
           </ion-label>
           <ion-item lines="none" class="addSub" slot="end">
-            <ion-button (click)="sub()" slot="start" mode="ios">
+            <ion-button (click)="sub('week')" slot="start" mode="ios">
               <img src="../../../../assets/icon/minus.svg" alt="" />
             </ion-button>
             <ion-label> {{ weekCount }}</ion-label>
-            <ion-button (click)="add()" slot="end" mode="ios">
+            <ion-button (click)="add('week')" slot="end" mode="ios">
               <img src="../../../../assets/icon/plus.svg" alt="" />
             </ion-button>
           </ion-item>
@@ -162,13 +149,13 @@
             <p style="font-size: 10px">Minimum de séances par semaine</p>
           </ion-label>
           <ion-item lines="none" class="addSub" slot="end">
-            <ion-button (click)="subSeanceWeek()" slot="start" mode="ios">
+            <ion-button (click)="sub('weekSeance')" slot="start" mode="ios">
               <img src="../../../../assets/icon/minus.svg" alt="" />
             </ion-button>
             <ion-label> {{ seanceWeekCount }}</ion-label>
             <ion-button
               mode="ios"
-              (click)="addSeanceWeek()"
+              (click)="add('weekSeance')"
               slot="end"
               class="ion-activatable ripple-parent"
             >
@@ -231,26 +218,6 @@
             <p style="font-size: 10px">Sélectionnez les activités</p>
           </ion-label>
         </ion-item>
-        <!-- <ion-item
-          detail
-          lines="full"
-          class="champColor"
-          (click)="slideNext('amis')"
-        >
-          <ion-thumbnail class="thumbZone" slot="start">
-            <img
-              class="thumbIcon"
-              src="assets/icon/icons8-ajouter-un-groupe-d'utilisateurs-homme-homme.svg"
-              alt=""
-            />
-          </ion-thumbnail>
-          <ion-label>
-            <p class="sousTitre black">Inviter des participants</p>
-            <p style="font-size: 10px">
-              Consulter et gérer votre liste de contacts
-            </p>
-          </ion-label>
-        </ion-item> -->
         <div style="display: flex; justify-content: center">
           <ion-button
             shape="round"

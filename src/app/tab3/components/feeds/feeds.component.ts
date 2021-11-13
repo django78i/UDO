@@ -76,12 +76,26 @@ export class FeedsComponent implements OnInit {
   async ngOnInit() {
     console.log(this.user);
     const feedPrime = await this.feedService.feedQuery(this.championnat.uid);
+    console.log(feedPrime)
     this.feed = feedPrime.table;
-    // feedPrime.table.forEach((fee) => {
-    //   this.feed.push(fee);
-    //   console.log(this.feed);
-    // });
     this.lastVisible = feedPrime.last;
+  }
+
+  async loadData(event) {
+    const taille = await this.feedService.feedQuery(this.championnat.uid);
+    const feedPlus = await this.feedService.addFeedChamps(
+      this.lastVisible,
+      this.championnat.uid
+    );
+    setTimeout(() => {
+      event.target.complete();
+      this.lastVisible = feedPlus.last;
+      console.log(taille.last);
+      feedPlus.table.forEach((fed) => this.feed.push(fed));
+      if (taille.last.data() <= this.feed.length) {
+        event.target.disabled = true;
+      }
+    }, 500);
   }
 
   async doRefresh(event) {
@@ -95,63 +109,34 @@ export class FeedsComponent implements OnInit {
     }, 2000);
   }
 
-  async presentPopover(i: number, feedLik) {
-    const modal = await this.modalController.create({
-      component: EmojisComponent,
-      cssClass: 'modalEmojis',
-      showBackdrop: true,
-    });
-    modal.onDidDismiss().then((data) => {
-      this.reaction = data.data;
-      this.controleReaction(i, feedLik.reactions);
-      this.reaction = null;
-    });
-    return await modal.present();
-  }
-
   controleReaction(i: number, reactions?: any[], reaction?: any) {
     console.log(this.reaction);
     const react: Reaction[] = reactions;
-    let isEmojiIsToUser = -1;
     console.log(react);
     //l'émoji existe déjà
     const isEmojiExist = react.findIndex((f) =>
       this.reaction ? f.nom == this.reaction.nom : f.nom == reaction.nom
     );
 
-    //le user a déjà envoyé cet émoji
     if (isEmojiExist != -1) {
-      isEmojiIsToUser = react[isEmojiExist].users.findIndex(
-        (user) => user.uid == this.user.uid
-      );
-    }
-    let indice;
-    let userAlreadyLike = -1;
-    react.map((react, index) => {
-      //l'utiisateur a déjà un like actif
-      const ind = react.users.findIndex((us) => us.uid == this.user.uid);
-      if (ind != -1) {
-        indice = index;
-        userAlreadyLike = ind;
-      }
-    });
-    console.log(isEmojiExist, isEmojiIsToUser, userAlreadyLike);
-    if (isEmojiIsToUser != -1) {
-      console.log('ici');
-      return;
-    } else if (isEmojiExist != -1) {
       console.log('parla');
 
+      //incrémente de 1 compteur général réactions
+      this.feed[i].reactionsNombre += 1;
+
+      //incrémente de 1 compteur de la réaction
       this.feed[i].reactions[isEmojiExist].nombre += 1;
+
+      //Ajout user dans le tableau des users de la réaction
       this.feed[i].reactions[isEmojiExist].users.push({
         uid: this.user.uid,
         name: this.user.userName,
-        date: new Date(),
         avatar: this.user.avatar,
+        date: new Date(),
       });
     } else {
-      console.log('la');
-
+      //incrémente de 1 compteur général réactions
+      this.feed[i].reactionsNombre = this.feed[i].reactionsNombre += 1;
       this.feed[i].reactions.push({
         ...this.reaction,
         nombre: 1,
@@ -159,77 +144,29 @@ export class FeedsComponent implements OnInit {
           {
             uid: this.user.uid,
             name: this.user.userName,
-            date: new Date(),
             avatar: this.user.avatar,
+            date: new Date(),
           },
         ],
       });
     }
-    if (userAlreadyLike != -1) {
-      this.feed[i].reactions[indice].nombre -= 1;
-      this.feed[i].reactions[indice].users.splice(userAlreadyLike, 1);
+    console.log(this.feed[i].reactionsNombre);
+
+    //création object réactions pour le séanceNow
+    if (this.feed[i].type == 'session-now') {
+      const reactionPost = {
+        ...this.reaction,
+        user: {
+          uid: this.user.uid,
+          name: this.user.userName,
+          avatar: this.user.avatar,
+          date: new Date(),
+        },
+      };
+      //Ajout réactions dans collection des réactions du SEANCENOW
+      this.feedService.createReactionSeanceNow(this.feed[i], reactionPost);
     }
     this.feedService.updatePost(this.feed[i]);
-  }
-
-  // async loadData(event) {
-  //   if (this.feed.length) {
-  //     const taille = await this.feedService.feedQuery(this.championnat.uid);
-  //     const feedPlus = await this.feedService.addQuery(
-  //       this.lastVisible,
-  //       this.championnat.uid
-  //     );
-  //     console.log(feedPlus.table.length);
-
-  //     setTimeout(() => {
-  //       event.target.complete();
-  //       console.log(taille.last);
-  //       this.lastVisible = feedPlus.last;
-  //       feedPlus.table.forEach((fed) => this.feed.push(fed));
-  //       // App logic to determine if all data is loaded
-  //       // and disable the infinite scroll
-  //       if (taille.last <= this.feed.length) {
-  //         event.target.disabled = true;
-  //       }
-  //     }, 500);
-  //   }
-  // }
-
-  async openDetail(post) {
-    const modal = await this.modalController.create({
-      component: DetailPostComponent,
-      cssClass: 'testModal',
-      componentProps: {
-        post,
-        user: this.user,
-      },
-    });
-    return await modal.present();
-  }
-  async addPhoto() {
-    const image = await Camera.getPhoto({
-      quality: 100,
-      allowEditing: false,
-      source: CameraSource.Photos,
-      resultType: CameraResultType.DataUrl,
-    });
-
-    // Here you get the image as result.
-    const theActualPicture = image.dataUrl;
-    this.picture = theActualPicture;
-  }
-
-  async takePhoto() {
-    const image = await Camera.getPhoto({
-      quality: 100,
-      allowEditing: false,
-      source: CameraSource.Camera,
-      resultType: CameraResultType.DataUrl,
-    });
-
-    // Here you get the image as result.
-    const theActualPicture = image.dataUrl;
-    this.picture = theActualPicture;
   }
 
   deletePhoto() {
@@ -250,61 +187,31 @@ export class FeedsComponent implements OnInit {
   }
 
   async send() {
+    let photo;
     if (this.picture) {
-      const tof = this.savePhoto(this.picture);
-      tof.then(
-        (snapshot) => {
-          getDownloadURL(snapshot.ref).then((downloadURL) => {
-            this.pictureUrl = downloadURL;
-            console.log(this.pictureUrl);
-            const post = {
-              userId: this.user.uid,
-              username: this.user.userName,
-              userAvatar: this.user.avatar,
-              type: 'post',
-              startDate: new Date(),
-              reactions: [],
-              photo: this.pictureUrl ? this.pictureUrl : '',
-              mode: 'public',
-              isLive: false,
-              text: this.text,
-              // nombre: 0,
-              activity: '',
-              championnat: this.championnat.uid,
-            };
-            // this.feedService.sendPost(post);
-            this.feedReinit();
-          });
-        },
-        (error) => {
-          // Handle unsuccessful uploads
-        }
-      );
-    } else {
-      const post = {
-        userUid: this.user.uid,
-        username: this.user.userName,
-        userAvatar: this.user.avatar,
-        type: 'post',
-        startDate: new Date(),
-        reactions: [],
-        photo: '',
-        mode: 'public',
-        isLive: false,
-        text: this.text,
-        activity: '',
-        championnat: this.championnat.uid,
-      };
-      // await this.feedService.sendPost(post);
-
-      this.feedReinit();
+      const tof = await this.savePhoto(this.picture);
+      photo = getDownloadURL(tof.ref);
     }
-  }
 
-  test(event) {
-    console.log(this.inputFeed);
-    this.inputFeed.color = 'red';
-    this.boole = true;
+    const post = {
+      userId: this.user.uid,
+      // username: this.user.userName,
+      // userAvatar: this.user.avatar,
+      type: 'picture',
+      startDate: new Date(),
+      reactions: [],
+      photo: photo ? photo : '',
+      mode: 'public',
+      isLive: false,
+      text: this.text,
+      activity: '',
+      championnat: this.championnat.uid,
+    };
+    console.log(post);
+    this.feedService.sendPost(post);
+    this.feedReinit();
+
+    this.feedReinit();
   }
 
   async feedReinit() {
@@ -320,6 +227,32 @@ export class FeedsComponent implements OnInit {
     this.picture = null;
     this.pictureUrl = null;
     this.boole = false;
+  }
+
+  async openDetail(post) {
+    const modal = await this.modalController.create({
+      component: DetailPostComponent,
+      cssClass: 'testModal',
+      componentProps: {
+        post,
+        user: this.user,
+      },
+    });
+    return await modal.present();
+  }
+
+  async presentPopover(i: number, feedLik) {
+    const modal = await this.modalController.create({
+      component: EmojisComponent,
+      cssClass: 'modalEmojis',
+      showBackdrop: true,
+    });
+    modal.onDidDismiss().then((data) => {
+      this.reaction = data.data;
+      this.controleReaction(i, feedLik.reactions);
+      this.reaction = null;
+    });
+    return await modal.present();
   }
 
   async openProfil(contact) {

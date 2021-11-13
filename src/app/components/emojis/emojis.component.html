@@ -7,10 +7,10 @@
 <ion-content style="--background: white">
   <section style="display: flex; flex-wrap: wrap">
     <img
-      (click)="choice(emoji)"
-      [src]="emoji.icon"
+      (click)="choice(emojiList)"
+      [src]="emojiList.icon"
       alt=""
-      *ngFor="let emoji of emojisList$ | async"
+      *ngFor="let emojiList of emojisList$ | async"
       style="width: 50px"
     />
   </section>

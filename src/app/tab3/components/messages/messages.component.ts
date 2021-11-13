@@ -31,8 +31,19 @@ export class MessagesComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.champService.getMessage(this.post.uid);
     this.subscription = this.champService.messagesSubject$.subscribe(
-      (champ) => {
-        this.messagesList = champ;
+      (messages) => {
+        const usersList = JSON.parse(localStorage.getItem('usersList'));
+        console.log(usersList)
+        console.log(messages);
+        const msgFormat = messages?.map((message: any) => {
+          return {
+            ...message,
+            sender: usersList.find((user) => message.sender.uid == user.uid),
+          };
+        });
+
+        this.messagesList = msgFormat;
+        console.log(this.messagesList)
         this.ref.detectChanges();
       }
     );
@@ -46,11 +57,6 @@ export class MessagesComponent implements OnInit, OnDestroy {
         user: sender,
         currentUser: this.user,
       },
-    });
-    modal.onDidDismiss().then((data) => {
-      if (data.data == 'encore') {
-        this.modalController.dismiss();
-      }
     });
     return await modal.present();
   }

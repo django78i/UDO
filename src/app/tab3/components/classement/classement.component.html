@@ -25,14 +25,14 @@
           [ngClass]="{ greyBlank: !cl.avatar }"
           (click)="openProfil(cl)"
         >
-          <img [src]="cl.avatar" alt="" *ngIf="cl.avatar" />
+          <img [src]="cl.user.avatar" alt="" *ngIf="cl.user.avatar" />
           <img
             src="https://img.icons8.com/ios-filled/50/000000/gender-neutral-user.png"
-            *ngIf="!cl.avatar"
+            *ngIf="!cl.user.avatar"
             alt=""
           />
 
-          <ion-badge>{{ cl.niveau }}</ion-badge>
+          <ion-badge>{{ cl.user.niveau }}</ion-badge>
         </ion-avatar>
         <ion-label>
           <h3
@@ -43,7 +43,7 @@
               margin: 0 0 2px;
             "
           >
-            {{ cl.userName }}
+            {{ cl.user.userName }}
           </h3>
           <p
             style="font-size: 12px; font-weight: 500; color: black"

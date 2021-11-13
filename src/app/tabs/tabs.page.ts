@@ -29,7 +29,9 @@ export class TabsPage implements OnInit {
     public navController: NavController,
     private modalCtrl: ModalController,
     public userService: UserService
-  ) {}
+  ) {
+    this.userService.getUsers();
+  }
 
   ngOnInit() {
     this.userService.getCurrentUser().then((user) => {

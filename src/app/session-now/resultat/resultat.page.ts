@@ -87,9 +87,6 @@ export class ResultatPage implements OnInit {
       console.log('Handler was called!');
       this._location.back();
     });
-    // if (localStorage.getItem('picture')) {
-    //   this.base64Image = localStorage.getItem('picture');
-    // }
     this.counter = JSON.parse(localStorage.getItem('counter'));
     this.sessionNow = JSON.parse(localStorage.getItem('sessionNow'));
     this.user = JSON.parse(localStorage.getItem('user'));
@@ -104,9 +101,6 @@ export class ResultatPage implements OnInit {
     this.sessionNow = JSON.parse(localStorage.getItem('sessionNow'));
     if (this.sessionNow) {
       this.sessionNow.reactionNumber = this.listNotif?.length;
-      //if (this.isPicture)
-      // this.sessionNow.photo=this.
-      // this.activite = item;
       if (this.sessionNow) {
         let list = this.sessionNow.reactions;
         let currentSeconds, currentMinutes, currentHeures;
@@ -220,9 +214,6 @@ export class ResultatPage implements OnInit {
         this.sessionNowService.dissmissLoading();
         this.sessionNowService.show('Seance publiée avec succés', 'success');
       });
-    // }
-    //   });
-    // });
   }
 
   changeInput(event) {

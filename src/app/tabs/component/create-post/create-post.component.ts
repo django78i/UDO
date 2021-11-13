@@ -40,6 +40,7 @@ export class CreatePostComponent implements OnInit {
   }
 
   async send() {
+    console.log(this.text)
     this.sessionowService.presentLoading();
     let url;
     if (this.base64) {
@@ -47,7 +48,7 @@ export class CreatePostComponent implements OnInit {
       url = await getDownloadURL(tof.ref);
     }
     const post = {
-      userUid: this.user.uid,
+      userId: this.user.uid,
       userName: this.user.userName,
       userAvatar: this.user.avatar,
       type: 'picture',
@@ -86,6 +87,7 @@ export class CreatePostComponent implements OnInit {
       cssClass: 'my-custom-contenu-modal',
     });
     modal.onDidDismiss().then((data: any) => {
+      console.log(data)
       this.base64 = data.data != 'Modal Closed' ? data.data : null;
     });
     return await modal.present();

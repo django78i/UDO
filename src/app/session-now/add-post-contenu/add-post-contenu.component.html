@@ -12,15 +12,19 @@
     </span>
     <span class="nameActivity">{{ activite.name }}</span>
   </ion-row>
-  <ion-row [class]="message">
-    <ion-input (keyup.enter)="publier()" (ionBlur)="blur($event)" (ionFocus)="active($event)"
-      (ionChange)="changeInput($event)" class="c-textarea" placeholder="Commentez votre post">
+
+  <ion-row class="message">
+    <ion-input
+      (keyup.enter)="publier()"
+      (ionBlur)="blur($event)"
+      (ionFocus)="active($event)"
+      (ionChange)="changeInput($event)"
+      class="c-textarea"
+      placeholder="Commentez votre post"
+    >
     </ion-input>
     <ion-img class="crayon" src="assets/images/crayon.PNG"></ion-img>
   </ion-row>
-  <!-- <ion-fab *ngIf="!isVisible" [class]="modeClasse" (click)="publier()" vertical="bottom" slot="fixed">
-    <span>Publier</span>
-  </ion-fab> -->
 </ion-content>
 <ion-footer [class]="mode">
   <ion-footer>

@@ -37,35 +37,16 @@
       ></ion-icon>
     </ion-item>
   </ion-row>
-  <!-- <ion-fab
-    *ngIf="!isVisible"
-    vertical="bottom"
-    horizontal="start"
-    slot="fixed"
-    style="--ion-safe-area-left: 40px; width: 60% !important"
-  >
-  </ion-fab> -->
-  <!-- <ion-fab
-    *ngIf="isVisible"
-    vertical="bottom"
-    horizontal="end"
-    slot="fixed"
-    type="submit"
-    style="--ion-safe-area-right: 30px; width: 40% !important; height: 50px"
-  >
-    <ion-button (click)="send()">Publier</ion-button>
-  </ion-fab> -->
 </ion-content>
 <ion-footer>
-  <ion-button
-    *ngIf="!isVisible"
-    expand="block"
-    class="buttonNextSlide"
-    (click)="send()"
-    type="submit"
-    >Publier</ion-button
-  >
-  <ion-button (click)="send()" type="submit" *ngIf="isVisible" slot="end"
-    >Publier</ion-button
-  >
+  <ion-toolbar>
+    <ion-button
+      *ngIf="!isVisible"
+      expand="block"
+      class="buttonNextSlide"
+      (click)="send()"
+      type="submit"
+      >Publier</ion-button
+    >
+  </ion-toolbar>
 </ion-footer>

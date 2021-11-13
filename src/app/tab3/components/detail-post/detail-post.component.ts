@@ -34,13 +34,20 @@ export class DetailPostComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    console.log(this.post, this.user);
+    // console.log(this.post, this.user);
+    const users = JSON.parse(localStorage.getItem('usersList'));
+    console.log(users, this.post);
     this.post.reactions.map((react) => {
       if (react.users.length) {
         react.users.map((user) => {
+          console.log(user);
+          const userFind = users.find((us) => user.uid == us.uid);
+          console.log(userFind);
           this.tableReactions.push({
             icon: react.icon,
-            user: user,
+            text: react.text,
+            user: userFind,
+            date: user.date,
           });
         });
       }
@@ -69,7 +76,6 @@ export class DetailPostComponent implements OnInit {
     this.champService.sendMessage(message, this.post);
     this.message = '';
     this.picture = null;
-    this.textArea.setBlur();
   }
 
   async addContenu() {
@@ -88,7 +94,7 @@ export class DetailPostComponent implements OnInit {
     const modal = await this.modalController.create({
       component: PhotoDetailComponent,
       showBackdrop: false,
-      cssClass : "deatilPhoto",
+      cssClass: 'deatilPhoto',
       componentProps: {
         photo: photo,
       },
