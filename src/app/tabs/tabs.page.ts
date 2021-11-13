@@ -30,7 +30,6 @@ export class TabsPage implements OnInit {
     private modalCtrl: ModalController,
     public userService: UserService
   ) {
-    this.userService.getUsers();
   }
 
   ngOnInit() {
