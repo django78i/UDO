@@ -141,12 +141,12 @@
       <h4 style="font-weight: 900; margin: 0">EN COURS</h4>
     </div>
 
-      <app-user-championnats-slide
-        [championnats]="userChampionnats"
-        (champ)="champModal($event)"
-        *ngIf="userChampionnats"
-      >
-      </app-user-championnats-slide>
+    <app-user-championnats-slide
+      [championnats]="userChampionnats"
+      (champ)="champModal($event)"
+      *ngIf="userChampionnats"
+    >
+    </app-user-championnats-slide>
   </div>
   <ion-item
     button
@@ -203,10 +203,11 @@
       <h4 style="font-weight: 900; margin: 0">NETWORK</h4>
     </div>
 
-      <app-slider-network
-        [championnats]="champinonatNetwork"
-        *ngIf="champinonatNetwork "
-      ></app-slider-network>
+    <app-slider-network
+      (champ)="launchDetail($event)"
+      [championnats]="champinonatNetwork"
+      *ngIf="champinonatNetwork "
+    ></app-slider-network>
   </div>
   <ng-template #tempChamp>
     <swiper #swiper [config]="config" style="padding-left: 0">

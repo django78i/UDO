@@ -44,7 +44,7 @@ export class CreateChampPopUpComponent
     type: 'Friends&familly',
   };
   ban: any = 'assets/banner/blackBanner.svg';
-  title: BehaviorSubject<any> = new BehaviorSubject(null);
+  title: any;
   @ViewChild('swiper') swiper: SwiperComponent;
   @Output() champ: EventEmitter<any> = new EventEmitter();
   @Input() user: any;
@@ -148,8 +148,8 @@ export class CreateChampPopUpComponent
   }
 
   onKey() {
-    const val = this.formChamp.get('name').value;
-    this.title.next(val);
+    // const val = this.formChamp.get('name').value;
+    // this.title.next(val);
   }
 
   slideNext(data) {

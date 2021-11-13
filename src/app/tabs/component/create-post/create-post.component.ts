@@ -40,6 +40,7 @@ export class CreatePostComponent implements OnInit {
   }
 
   async send() {
+    console.log(this.text)
     this.sessionowService.presentLoading();
     let url;
     if (this.base64) {

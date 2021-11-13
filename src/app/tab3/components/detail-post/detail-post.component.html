@@ -19,11 +19,11 @@
 
   <ion-item lines="none" style="--background: #f4f5fa">
     <ion-avatar style="margin-right: 10px; background: grey" slot="start">
-      <img [src]="user.avatar" />
+      <img [src]="post.user.avatar" />
     </ion-avatar>
     <ion-label>
       <div style="display: flex; gap: 10px; align-items: center">
-        <p>{{ post.userName }}</p>
+        <p>{{ post.user.userName }}</p>
         <ion-note style="font-size: 10px">{{
           post.startDate | timeRelative
         }}</ion-note>

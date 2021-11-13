@@ -75,6 +75,7 @@ export class ChatService {
       const champs = [];
       querySnapshot.forEach((doc) => {
         const document = doc.data();
+        console.log(document)
         champs.push(document);
         this.msgSubject$.next(champs);
       });
@@ -97,10 +98,12 @@ export class ChatService {
       const champs = [];
       querySnapshot.forEach((doc) => {
         const document = doc.data();
+        console.log(document, uid)
         const bool = document.users.some((user: any) => user.uid == uid);
         if (bool) {
           champs.push(document);
         }
+        console.log(champs)
         this.roomSubject$.next(champs);
       });
     });

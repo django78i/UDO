@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-emojis',
@@ -18,9 +19,9 @@ export class EmojisComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.emojisList$ = this.http.get<any[]>(
-      '../../../assets/mocks/emojis.json'
-    );
+    this.emojisList$ = this.http
+      .get<any[]>('../../../assets/mocks/emojis.json')
+      .pipe(tap((r) => console.log(r)));
   }
 
   choice(ev) {

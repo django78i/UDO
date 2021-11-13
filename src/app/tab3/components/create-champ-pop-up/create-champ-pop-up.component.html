@@ -29,8 +29,8 @@
           <ion-card-content>
             <div style="display: flex">
               <ion-avatar>
-                <img src="../../../../assets/mocks/6.jpg" alt="" />
-                <ion-badge>40</ion-badge>
+                <img [src]="user.avatar" alt="" />
+                <ion-badge>{{user.niveau}}</ion-badge>
               </ion-avatar>
             </div>
             <div class="iconPhoto">
@@ -42,20 +42,6 @@
           </ion-card-content>
         </ion-card>
         <form [formGroup]="formChamp">
-          <!-- <mat-form-field appearance="outline" color="warn">
-            <mat-label>Nom du championnat</mat-label>
-            <input
-              matInput
-              placeholder="Placeholder"
-              class="form-control"
-              formControlName="name"
-              (keyup)="onKey()"
-            />
-            <mat-hint
-              >Respectez les conditions d’utilisations, évitez les insultes et
-              grossièretés.</mat-hint
-            >
-          </mat-form-field> -->
           <ion-item lines="none">
             <ion-label
               position="floating"
@@ -67,6 +53,7 @@
               >Nom du championnat</ion-label
             >
             <ion-input
+
               style="
                 border: 1px solid rgba(112, 112, 112, 0.23);
                 border-radius: 5px;
@@ -74,7 +61,7 @@
               "
               class="form-control"
               formControlName="name"
-              (keyup)="onKey()"
+              (ionChange)="onKey($event)"
             ></ion-input>
             <ion-note style="font-size: 12px"
               >Respectez les conditions d’utilisations, évitez les insultes et

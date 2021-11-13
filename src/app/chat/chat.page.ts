@@ -26,14 +26,15 @@ export class ChatPage implements OnInit, OnDestroy {
 
   async ngOnInit() {
     const auth = getAuth();
-    console.log;
-
+    
     auth.onAuthStateChanged((user) => {
+      console.log(user);
       if (user) {
         this.chatService.getUserRoom(user.uid);
         this.roomsSub = this.chatService.roomSubject$
-          .pipe(skip(1))
+          // .pipe(skip(1))
           .subscribe((room) => {
+            console.log(room)
             const roomPlace = room;
             if (roomPlace) {
               roomPlace.forEach((rooms) => {
@@ -42,7 +43,10 @@ export class ChatPage implements OnInit, OnDestroy {
                   (us) => us.uid != user.uid
                 );
                 roomTemp.users = roomTemp.users[findIndex];
-                this.roomTable.push(roomTemp);
+
+                this.roomTable.push(roomTemp);;
+                this.ref.detectChanges()
+                console.log(this.roomTable)
               });
             }
           });

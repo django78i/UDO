@@ -67,8 +67,14 @@
   </ion-refresher>
   <section class="contenu" *ngIf="feed; else showBlank">
     <ion-item
+      lines="full"
       *ngFor="let item of feed; let i = index"
-      style="margin-bottom: 10px; --inner-padding-end: 0"
+      style="
+        margin-bottom: 10px;
+        --inner-padding-end: 0;
+        --padding-start: 15px;
+        --padding-end: 15px;
+      "
     >
       <ion-card
         style="
@@ -79,85 +85,79 @@
           margin-left: 0;
         "
       >
-        <ion-card-header *ngIf="item.isLive == false">
+        <ion-card-header *ngIf="item.type == 'picture'">
           <ion-toolbar class="postZone">
-            <ion-grid>
-              <ion-row>
-                <ion-col size="10">
-                  <ion-item lines="none">
-                    <ion-avatar
-                      style="margin-right: 10px; background: grey"
-                      slot="start"
-                      (click)="
-                        openProfil(item.userId ? item.userId : item.userUid)
-                      "
-                    >
-                      <img [src]="item.userAvatar" />
-                    </ion-avatar>
-                    <ion-label>
-                      <p>{{ item.username }}</p>
-                      <div style="display: flex; gap: 5px; align-items: center">
-                        <img src="../../assets/icon/testIconCateg.svg" alt="" />
-                        <p style="font-size: 10px; font-weight: 900">
-                          {{ item.activity }}
-                        </p>
-                        <ion-note style="font-size: 10px">{{
-                          item.startDate | timeRelative
-                        }}</ion-note>
-                      </div>
-                    </ion-label>
-                  </ion-item>
-                </ion-col>
-                <ion-col size="2" style="--ion-grid-column-padding: 20px">
-                  <img
-                    src="../../assets/icon/threeDot.svg"
-                    alt=""
-                    style="height: 20px"
-                  />
-                </ion-col>
-              </ion-row>
-            </ion-grid>
+            <ion-avatar
+              style="margin-right: 10px; background: grey"
+              slot="start"
+              (click)="openProfil(item.user.uid)"
+            >
+              <img [src]="item.user.avatar" />
+            </ion-avatar>
+            <ion-label>
+              <div style="display: flex; align-items: center; gap: 4px">
+                <p style="margin-bottom: 0">{{ item.user.userName }}</p>
+                <ion-icon name="ellipse" style="font-size: 6px"></ion-icon>
+
+                <p style="font-size: 10px">
+                  {{ item.startDate | timeRelative }}
+                </p>
+              </div>
+              <div
+                style="display: flex; gap: 5px; align-items: center"
+                *ngIf="item.activity"
+              >
+                <img
+                  [src]="item.activity.image"
+                  alt=""
+                  style="width: 20px; height: 20px"
+                />
+                <p style="font-size: 10px; font-weight: 900">
+                  {{ item.activity.name }}
+                </p>
+              </div>
+            </ion-label>
+
+            <img
+              slot="end"
+              src="../../assets/icon/threeDot.svg"
+              alt=""
+              style="height: 20px"
+            />
           </ion-toolbar>
           <p
-            style="
-              padding-left: 20px;
-              margin: 5px;
-              font-size: 14px;
-              font-weight: 600;
-            "
+            style="margin: 0 12px 12px 0; font-size: 14px; font-weight: 600"
             (click)="openDetail(item)"
           >
             {{ item.text }}
           </p>
-          <!-- <div *ngIf="item.video" class="postPhoto">
-            <video playsinline preload="auto" autoplay="true" (click)="sound()">
-              <source [src]="item.video" type="video/mp4" />
-            </video>
-          </div> -->
         </ion-card-header>
-        <ion-card-header *ngIf="item.isLive == true">
+        <ion-card-header *ngIf="item.type == 'session-now'">
           <ion-item lines="none" class="liveZone">
             <ion-avatar
+              (click)="openProfil(item.user.uid)"
               style="margin-right: 10px; background: grey"
               slot="start"
             >
-              <img [src]="item.avatar" />
+              <img [src]="item.user.avatar" />
             </ion-avatar>
             <ion-label>
-              <p>
-                {{ item.user.name }}
-                <ion-icon
-                  name="ellipse"
-                  style="font-size: 6px; margin-right: 5px"
-                ></ion-icon>
-                <ion-note style="font-size: 10px">{{
-                  item.startDate | timeFeed
-                }}</ion-note>
-              </p>
+              <div style="display: flex; align-items: center; gap: 4px">
+                <p style="margin-bottom: 0">{{ item.user.userName }}</p>
+                <ion-icon name="ellipse" style="font-size: 6px"></ion-icon>
+
+                <p style="font-size: 10px">
+                  {{ item.startDate | timeRelative }}
+                </p>
+              </div>
               <div style="display: flex; gap: 5px; align-items: center">
-                <img src="../../assets/icon/testIconCateg.svg" alt="" />
+                <img
+                  [src]="item.activity.image"
+                  alt=""
+                  style="width: 20px; height: 20px"
+                />
                 <p style="font-size: 10px; font-weight: 900">
-                  {{ item.activity }}
+                  {{ item.activity.name }}
                 </p>
                 <ion-icon name="ellipse" style="font-size: 6px"></ion-icon>
                 <p class="liveIndicator">LIVE</p>
@@ -165,32 +165,65 @@
             </ion-label>
           </ion-item>
         </ion-card-header>
-        <img
-          [src]="item.photo"
-          alt=""
+        <div
           (click)="openDetail(item)"
+          *ngIf="item.type == 'picture' && item.photo"
+          [style.backgroundImage]="'url(\'' + item.photo + '\')'"
           style="
-            display: block;
-            max-width: 400px;
-            max-height: 300px;
-            width: auto;
-            height: auto;
-            margin: auto;
+            height: 300px;
+            width: 100%;
+            background-position: center;
+            background-size: cover;
             border-radius: 15px;
           "
-        />
+        ></div>
         <ion-card-content style="padding: 0">
-          <div style="display: flex; gap: 10px; margin-top: 5px">
-            <img src="../../assets/icon/Icon feather-share-2.svg" alt="" />
+          <div
+            style="
+              display: flex;
+              gap: 10px;
+              align-items: center;
+              padding-top: 9px;
+            "
+          >
             <img
               (click)="presentPopover(i, item)"
               src="../../assets/icon/Icon material-add-circle-outline.svg"
               alt=""
             />
-            <div style="overflow-x: auto">
-              <div style="display: inline-flex">
+            <div style="overflow-x: auto; padding: 10px 15px">
+              <div style="display: inline-flex; gap: 25px">
                 <ng-container *ngFor="let rect of item.reactions">
-                  <ion-chip
+                  <div
+                    style="
+                      display: flex;
+                      border-radius: 20px;
+                      width: 51px;
+                      justify-content: space-between;
+                      position: relative;
+                      box-shadow: 0px 3px 6px #00000029;
+                    "
+                    *ngIf="rect.nombre !== 0"
+                    (click)="controleReaction(i, item.reactions, rect)"
+                  >
+                    <div style="flex: 1">
+                      <img
+                        [src]="rect.icon"
+                        alt=""
+                        style="position: absolute; left: -22px; top: -14px"
+                      />
+                    </div>
+                    <span
+                      style="
+                        flex: 1;
+                        text-align: center;
+                        font-weight: 900;
+                        color: black;
+                      "
+                      >{{ rect.nombre }}</span
+                    >
+                  </div>
+                  <!-- <ion-chip
                     outline
                     *ngIf="rect.nombre > 0"
                     (click)="controleReaction(i, item.reactions, rect)"
@@ -199,11 +232,71 @@
                       <img [src]="rect.icon" alt="" />
                     </ion-avatar>
                     <ion-label>{{ rect.nombre }}</ion-label>
-                  </ion-chip>
+                  </ion-chip> -->
                 </ng-container>
               </div>
             </div>
           </div>
+          <ion-item *ngIf="item.postLast" lines="none">
+            <ion-avatar
+              style="margin-right: 10px; background: grey"
+              slot="start"
+            >
+              <img [src]="item.postLast.sender.avatar" />
+            </ion-avatar>
+            <ion-label>
+              <div style="display: flex; align-items: center; gap: 10px">
+                <p style="margin-bottom: 0; font-weight: 700">
+                  {{ item.postLast.sender.userName }}
+                </p>
+                <ion-icon
+                  name="ellipse"
+                  style="font-size: 6px; margin-right: 5px"
+                ></ion-icon>
+
+                <p style="font-size: 10px">
+                  {{ item.postLast.date | timeRelative }}
+                </p>
+              </div>
+              <p style="font-size: 12px; color: black">
+                {{ item.postLast.text }}
+              </p>
+            </ion-label>
+            <ion-chip
+              (click)="openDetail(item)"
+              slot="end"
+              style="
+                --background: white;
+                --color: black;
+                box-shadow: 0px 3px 6px #00000029;
+                font-weight: 900;
+                margin: 0;
+              "
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="23.519"
+                height="21.005"
+                viewBox="0 0 23.519 21.005"
+              >
+                <defs>
+                  <style>
+                    .a {
+                      fill: #000000;
+                      stroke: #000000;
+                      stroke-width: 0.5px;
+                    }
+                  </style>
+                </defs>
+                <path
+                  class="a"
+                  d="M313.56,676.9H295.593a2.54,2.54,0,0,0-2.526,2.527v15.733c0,2.236,3.058,2.856,4.4,1.511l.9-.9a1.168,1.168,0,0,1,.826-.341H313.56a2.539,2.539,0,0,0,2.526-2.527V679.431A2.538,2.538,0,0,0,313.56,676.9Zm-.281,2.807v12.914H298.2a1.146,1.146,0,0,0-.812.336l-.916.915a.35.35,0,0,1-.6-.247V679.711Z"
+                  transform="translate(-292.817 -676.654)"
+                />
+              </svg>
+              {{ item.postCount }}
+            </ion-chip>
+          </ion-item>
         </ion-card-content>
       </ion-card>
     </ion-item>

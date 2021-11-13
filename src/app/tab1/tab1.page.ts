@@ -128,19 +128,16 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
 
   //Recharger le feed
   async loadData(event) {
-    const taille = await this.feedService.getFeed();
+    const taille = await this.feedService.feedFilter(this.filter);
     const feedPlus = await this.feedService.addQuery(
       this.lastVisible,
       this.filter
     );
-
     setTimeout(() => {
       event.target.complete();
       this.lastVisible = feedPlus.last;
       console.log(taille.last);
       feedPlus.table.forEach((fed) => this.feeds.push(fed));
-      // App logic to determine if all data is loaded
-      // and disable the infinite scroll
       if (taille.last.data() <= this.feeds.length) {
         event.target.disabled = true;
       }
@@ -158,7 +155,6 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
       this.lastVisible = feedRefresh.last;
     }, 2000);
   }
-
 
   //Choix du filtre
   async clickFilter(filter: string, i) {
@@ -190,82 +186,61 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
   controleReaction(i: number, reactions?: any[], reaction?: any) {
     console.log(this.reaction);
     const react: Reaction[] = reactions;
-    let isEmojiIsToUser = -1;
     console.log(react);
     //l'émoji existe déjà
     const isEmojiExist = react.findIndex((f) =>
       this.reaction ? f.nom == this.reaction.nom : f.nom == reaction.nom
     );
 
-    //le user a déjà envoyé cet émoji
     if (isEmojiExist != -1) {
-      isEmojiIsToUser = react[isEmojiExist].users.findIndex(
-        (user) => user.uid == this.user.uid
-      );
-    }
-    let indice;
-    let userAlreadyLike = -1;
-    react.map((react, index) => {
-      //l'utiisateur a déjà un like actif
-      const ind = react.users.findIndex((us) => us.uid == this.user.uid);
-      if (ind != -1) {
-        indice = index;
-        userAlreadyLike = ind;
-      }
-    });
-    console.log(isEmojiExist, isEmojiIsToUser, userAlreadyLike);
-    if (isEmojiIsToUser != -1) {
-      console.log('ici');
-      return;
-    } else {
-      if (isEmojiExist != -1) {
-        console.log('parla');
-        this.feeds[i].reactionsNombre = this.feeds[i].reactionsNombre += 1;
-        this.feeds[i].reactions[isEmojiExist].nombre += 1;
-        this.feeds[i].reactions[isEmojiExist].users.push({
-          uid: this.user.uid,
-          name: this.user.userName,
-          date: new Date(),
-          avatar: this.user.avatar,
-        });
-      } else {
-        console.log('la');
-        this.feeds[i].reactionsNombre = this.feeds[i].reactionsNombre += 1;
+      console.log('parla');
 
-        this.feeds[i].reactions.push({
-          ...this.reaction,
-          nombre: 1,
-          users: [
-            {
-              uid: this.user.uid,
-              name: this.user.userName,
-              date: new Date(),
-              avatar: this.user.avatar,
-            },
-          ],
-        });
-      }
-      console.log(this.feeds[i].reactionsNombre);
-      if (userAlreadyLike != -1) {
-        this.feeds[i].reactions[indice].nombre -= 1;
-        this.feeds[i].reactions[indice].users.splice(userAlreadyLike, 1);
-      }
-      //post de type séanceNow
-      if (this.feeds[i].type == 'session-now') {
-        const reactionPost = {
-          ...this.reaction,
-          date: new Date(),
-          user: {
+      //incrémente de 1 compteur général réactions
+      this.feeds[i].reactionsNombre += 1;
+
+      //incrémente de 1 compteur de la réaction
+      this.feeds[i].reactions[isEmojiExist].nombre += 1;
+
+      //Ajout user dans le tableau des users de la réaction
+      this.feeds[i].reactions[isEmojiExist].users.push({
+        uid: this.user.uid,
+        name: this.user.userName,
+        avatar: this.user.avatar,
+        date: new Date(),
+      });
+    } else {
+      //incrémente de 1 compteur général réactions
+      this.feeds[i].reactionsNombre = this.feeds[i].reactionsNombre += 1;
+      this.feeds[i].reactions.push({
+        ...this.reaction,
+        nombre: 1,
+        users: [
+          {
             uid: this.user.uid,
             name: this.user.userName,
             avatar: this.user.avatar,
+            date: new Date(),
           },
-        };
-        //Ajout réactions dans collection des réactions
-        this.feedService.createReactionSeanceNow(this.feeds[i], reactionPost);
-      }
-      this.feedService.updatePost(this.feeds[i]);
+        ],
+      });
     }
+    console.log(this.feeds[i].reactionsNombre);
+
+    //création object réactions pour le séanceNow
+    if (this.feeds[i].type == 'session-now') {
+      const reactionPost = {
+        ...this.reaction,
+        user: {
+          uid: this.user.uid,
+          name: this.user.userName,
+          avatar: this.user.avatar,
+          date: new Date(),
+        },
+      };
+      //Ajout réactions dans collection des réactions du SEANCENOW
+      this.feedService.createReactionSeanceNow(this.feeds[i], reactionPost);
+    }
+    this.feedService.updatePost(this.feeds[i]);
   }
 
   async openDetail(post) {
@@ -296,7 +271,6 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
     });
     return await modal.present();
   }
-
 
   chatPage() {
     this.navCtl.navigateForward('chat');

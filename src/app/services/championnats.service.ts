@@ -94,9 +94,7 @@ export class ChampionnatsService {
         const bool = document.participants.some(
           (users: any) => users.uid == auth.currentUser.uid
         );
-        console.log(document);
         const docFormat = this.formatChamp(document, users);
-        console.log(docFormat);
         if (document.status == 'en cours' && bool) {
           this.champEnCoursSubject$.next(docFormat);
         } else if (
@@ -117,7 +115,6 @@ export class ChampionnatsService {
   }
 
   formatChamp(champ, users) {
-    console.log(users);
     const championnat = champ;
     championnat.participants = championnat.participants.map((participant) => {
       const partFormat = users?.find((user) => participant.uid == user.uid);
@@ -126,7 +123,6 @@ export class ChampionnatsService {
     championnat.createur = users?.find(
       (user) => user.uid == championnat.createur.uid
     );
-    console.log(championnat);
     return championnat;
   }
 
@@ -185,7 +181,6 @@ export class ChampionnatsService {
   }
 
   async sendMessage(msg, post) {
-    console.log(msg, post);
     post.postCount += 1 as Number;
     const postLast = msg;
     await addDoc(
@@ -199,16 +194,12 @@ export class ChampionnatsService {
   }
 
   async getMessage(postUid) {
-    console.log('mess');
-
     const docRef = query(
       collection(this.db, 'post-session-now', postUid, 'messages'),
       orderBy('date', 'desc')
     );
     const unsubscribe = onSnapshot(docRef, (querySnapshot) => {
       const champs = [];
-      console.log(champs);
-      console.log(querySnapshot.docs.length);
       querySnapshot.docs.length
         ? querySnapshot.forEach((doc) => {
             champs.push(doc.data());
