@@ -1,0 +1,16 @@
+<ion-content fullscreen>
+  <ion-item class="close-fake" lines="none" text-center>
+    <ion-button (click)="close()" fill="clear" color="light">
+      <ion-icon name="close" slot="start"></ion-icon>
+      Retour
+    </ion-button>
+  </ion-item>
+
+  <ion-slides [options]="sliderOpts" #slider (click)="close()">
+    <ion-slide>
+      <div class="swiper-zoom-container">
+        <img [src]="photo" />
+      </div>
+    </ion-slide>
+  </ion-slides>
+</ion-content>

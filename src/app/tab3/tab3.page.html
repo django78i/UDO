@@ -141,14 +141,12 @@
       <h4 style="font-weight: 900; margin: 0">EN COURS</h4>
     </div>
 
-    <ng-container *ngIf="champService.champEnCoursSubject$|async as champ">
       <app-user-championnats-slide
-        [user]="user"
-        [championnats]="champ"
+        [championnats]="userChampionnats"
         (champ)="champModal($event)"
+        *ngIf="userChampionnats"
       >
       </app-user-championnats-slide>
-    </ng-container>
   </div>
   <ion-item
     button
@@ -185,13 +183,11 @@
       <h4 style="font-weight: 900; margin: 0">EN ATTENTE</h4>
     </div>
 
-    <!-- <ng-template *ngIf="championnatsList"> -->
-      <app-slider-championnat
-        (champ)="launchDetail($event)"
-        [championnats]="championnatsList"
-        *ngIf="championnatsList ; else tempChamp"
-      ></app-slider-championnat>
-    <!-- </ng-template> -->
+    <app-slider-championnat
+      (champ)="launchDetail($event)"
+      [championnats]="championnatsList"
+      *ngIf="championnatsList"
+    ></app-slider-championnat>
   </div>
   <div style="width: 100%; margin-bottom: 100px; margin-top: 15px">
     <div class="iconTitle">

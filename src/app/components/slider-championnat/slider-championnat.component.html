@@ -1,61 +1,60 @@
-
-<swiper #swiper [config]="config" style="padding-left: 15px">
-  <ng-template swiperSlide *ngFor="let champ of championnats">
-    <ion-card
-      [ngStyle]="{ 'background-image': 'url(' + champ.banniere + ')' }"
-      (click)="choice(champ)"
-    >
-      <ion-card-header>
-        <ion-card-title class="cardSlide">
-          <img
-            src="assets/mocks/2.jpg"
-            alt=""
-            style="width: 34px; height: 34px; border-radius: 50%"
-          />
-          <div style="display: flex; flex-direction: column; gap: 5px">
-            <ion-label
-              style="font-size: 12px; color: white; font-weight: 700"
-              >{{ champ.name }}</ion-label
-            >
-            <ion-note style="font-size: 10px; color: white; font-weight: 700">
-              {{ champ.createur.name }}
-            </ion-note>
+  <swiper #swiper [config]="config" style="padding-left: 15px">
+    <ng-template swiperSlide *ngFor="let champ of championnats">
+      <ion-card
+        [ngStyle]="{ 'background-image': 'url(' + champ.banniere + ')' }"
+        (click)="choice(champ)"
+      >
+        <ion-card-header>
+          <ion-card-title class="cardSlide">
+            <img
+              src="assets/mocks/2.jpg"
+              alt=""
+              style="width: 34px; height: 34px; border-radius: 50%"
+            />
+            <div style="display: flex; flex-direction: column; gap: 5px">
+              <ion-label
+                style="font-size: 12px; color: white; font-weight: 700"
+                >{{ champ.name }}</ion-label
+              >
+              <ion-note style="font-size: 10px; color: white; font-weight: 700">
+                {{ champ.createur.name }}
+              </ion-note>
+            </div>
+          </ion-card-title>
+          <div class="typeLogo">
+            <img
+              src="../../../assets/icon/Icon feather-globe.svg"
+              alt=""
+              *ngIf="champ.type == 'NetWork'"
+            />
+            <img
+              src="../../../assets/icon/FriendsFamilly.svg"
+              alt=""
+              *ngIf="champ.type == 'Friends&Familly'"
+            />
           </div>
-        </ion-card-title>
-        <div class="typeLogo">
-          <img
-            src="../../../assets/icon/Icon feather-globe.svg"
-            alt=""
-            *ngIf="champ.type == 'NetWork'"
-          />
-          <img
-            src="../../../assets/icon/FriendsFamilly.svg"
-            alt=""
-            *ngIf="champ.type == 'Friends&Familly'"
-          />
-        </div>
-      </ion-card-header>
+        </ion-card-header>
 
-      <ion-card-content class="cardContentZone">
-        <ion-card-subtitle> EN ATTENTE </ion-card-subtitle>
+        <ion-card-content class="cardContentZone">
+          <ion-card-subtitle> EN ATTENTE </ion-card-subtitle>
 
-        <ion-item style="--background: transparent" lines="none">
-          <ion-img
-            src="../../../assets/icon/friends-white.svg"
-            alt=""
-            slot="start"
-            style="margin-right: 9.5px"
-          >
-          </ion-img>
-          <ion-label slot="start">
-            {{ champ.nbParticipants }} participants
-          </ion-label>
-          <ion-note slot="end">
-            <img src="../../../assets/icon/duration.svg" alt="" />
-            {{ champ.dureeMax }} sem.</ion-note
-          >
-        </ion-item>
-      </ion-card-content>
-    </ion-card>
-  </ng-template>
-</swiper>
+          <ion-item style="--background: transparent" lines="none">
+            <ion-img
+              src="../../../assets/icon/friends-white.svg"
+              alt=""
+              slot="start"
+              style="margin-right: 9.5px"
+            >
+            </ion-img>
+            <ion-label slot="start">
+              {{ champ.nbParticipants }} participants
+            </ion-label>
+            <ion-note slot="end">
+              <img src="../../../assets/icon/duration.svg" alt="" />
+              {{ champ.dureeMax }} sem.</ion-note
+            >
+          </ion-item>
+        </ion-card-content>
+      </ion-card>
+    </ng-template>
+  </swiper>

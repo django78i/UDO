@@ -30,6 +30,7 @@ import { MessagesComponent } from './components/messages/messages.component';
 import { TimeFeedPipe } from '../pipe/time-feed.pipe';
 import { ChatRoomComponent } from '../components/chat-room/chat-room.component';
 import { AddContenuComponent } from '../session-now/add-contenu/add-contenu.component';
+import { PhotoDetailComponent } from './components/photo-detail/photo-detail.component';
 
 @NgModule({
   imports: [
@@ -65,7 +66,9 @@ import { AddContenuComponent } from '../session-now/add-contenu/add-contenu.comp
     EmojisComponent,
     DetailPostComponent,
     MessagesComponent,
-    AddContenuComponent,
+    PhotoDetailComponent,
+    TimeFeedPipe
+    // AddContenuComponent,
   ],
 })
 export class Tab3PageModule {}

@@ -118,20 +118,18 @@
       flex-direction: column;
     "
   >
-    <ion-card style="height: 300px">
-      <img
-        [src]="post.photo"
-        alt=""
-        style="
-          display: block;
-          max-width: 400px;
-          max-height: 300px;
-          width: auto;
-          height: auto;
-          margin: auto;
-        "
-      />
-    </ion-card>
+    <div
+      (click)="detailPhoto(post.photo)"
+      *ngIf="post.photo"
+      [style.backgroundImage]="'url(\'' + post.photo + '\')'"
+      style="
+        height: 300px;
+        width: 100%;
+        background-position: center;
+        background-size: cover;
+        border-radius: 15px;
+      "
+    ></div>
 
     <div class="iconTitle" *ngIf="post.metrics">
       <img
@@ -197,7 +195,7 @@
     <ion-item
       *ngFor="let react of tableReactions"
       lines="none"
-      style="--background: white; border-radius: 20px"
+      style="--background: white; border-radius: 20px; margin-bottom: 10px"
     >
       <ion-avatar slot="start" (click)="openProfil(react.user.uid)">
         <img [src]="react.user.avatar" alt="" *ngIf="react.user.avatar" />

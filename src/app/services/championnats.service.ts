@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { getAuth } from '@firebase/auth';
 import {
   addDoc,
   collection,
@@ -14,12 +15,13 @@ import {
 } from 'firebase/firestore';
 import { BehaviorSubject, from, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { UserService } from './user-service.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ChampionnatsService {
-  champSubject$: BehaviorSubject<any> = new BehaviorSubject(null);
+  champSubject$: Subject<any> = new Subject();
   champEnCoursSubject$: BehaviorSubject<any> = new BehaviorSubject(null);
   champNetWork$: BehaviorSubject<any> = new BehaviorSubject(null);
   friendsListSubject$: BehaviorSubject<any> = new BehaviorSubject(null);
@@ -35,18 +37,20 @@ export class ChampionnatsService {
     await setDoc(doc(this.db, 'championnats', champ.uid), champ);
   }
 
-  getChampionnatsEnCours(user) {
+  getChampionnatsEnCours(): BehaviorSubject<any> {
     const docRef = query(
       collection(this.db, 'championnats'),
       where('status', '==', 'en cours')
     );
+    const auth = getAuth();
 
     onSnapshot(docRef, (querySnapshot) => {
       const champs = [];
       querySnapshot.forEach((doc) => {
+        console.log(doc.data());
         const document = doc.data();
         const bool = document.participants.some(
-          (users: any) => users.uid == user.uid
+          (users: any) => users.uid == auth.currentUser.uid
         );
         if (bool) {
           champs.push(doc.data());
@@ -54,12 +58,13 @@ export class ChampionnatsService {
         this.champEnCoursSubject$.next(champs);
       });
     });
+    return this.champEnCoursSubject$;
   }
 
-  getChampionnatNetwork(user) {
+  getChampionnatNetwork() {
     const docRef = query(
-      collection(this.db, 'championnats'),
-      where('type', '==', 'network')
+      collection(this.db, 'championnats')
+      // where('type', '==', 'network')
     );
     const unsubscribe = onSnapshot(docRef, (querySnapshot) => {
       const champs = [];
@@ -70,22 +75,32 @@ export class ChampionnatsService {
     });
   }
 
-  async getChampionnats(user) {
+  getChampionnats() {
+    const auth = getAuth();
+    auth.currentUser.uid;
+
     const docRef = query(
-      collection(this.db, 'championnats'),
-      where('status', '==', 'en attente')
+      collection(this.db, 'championnats')
     );
     const unsubscribe = onSnapshot(docRef, (querySnapshot) => {
       const champs = [];
+      querySnapshot.docChanges().forEach((changes) => {
+        if (changes) {
+          this.champSubject$.next(null);
+          this.champEnCoursSubject$.next(null);
+        }
+      });
       querySnapshot.forEach((doc) => {
         const document = doc.data();
         const bool = document.participants.some(
-          (users: any) => users.uid == user.uid
+          (users: any) => users.uid == auth.currentUser.uid
         );
-        if (bool) {
-          champs.push(doc.data());
+        if (document.status == 'en cours' && bool) {
+          this.champEnCoursSubject$.next(document);
+        } else if (document.status == 'en attente' && bool) {
+          this.champSubject$.next(document);
         }
-        this.champSubject$.next(champs);
+
       });
     });
   }

@@ -24,6 +24,7 @@ import { ChampionnatsService } from 'src/app/services/championnats.service';
 import { SwiperOptions } from 'swiper';
 import { SwiperComponent } from 'swiper/angular';
 import moment from 'moment';
+import { UserService } from 'src/app/services/user-service.service';
 
 @Component({
   selector: 'app-create-champ-pop-up',
@@ -80,7 +81,8 @@ export class CreateChampPopUpComponent
     public popoverController: PopoverController,
     public elemRef: ElementRef,
     public champService: ChampionnatsService,
-    public toastController: ToastController
+    public toastController: ToastController,
+    public userService: UserService
   ) {}
 
   ngOnInit() {
@@ -194,7 +196,8 @@ export class CreateChampPopUpComponent
     this.slideNext('amis');
   }
 
-  saveChamp(ev) {
+  async saveChamp(ev) {
+    this.user = await this.userService.getCurrentUser();
     const user = {
       avatar: this.user.avatar,
       etat: 'prêt',

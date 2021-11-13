@@ -11,6 +11,7 @@ import {
   IonInput,
   IonTextarea,
   ModalController,
+  NavParams,
   Platform,
 } from '@ionic/angular';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
@@ -18,7 +19,6 @@ import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { SessionNowService } from '../../services/session-now-service.service';
 import moment from 'moment';
-import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { ref } from '@firebase/storage';
 import { getDownloadURL, getStorage, uploadString } from 'firebase/storage';
 
@@ -43,31 +43,32 @@ export class AddPostContenuComponent implements OnInit {
 
   @ViewChild('textAreaZone') textAreaZone: IonInput;
   small = false;
-  mode = "";
-  modeClasse = "";
-  message = "";
+  mode = '';
+  modeClasse = '';
+  message = '';
   constructor(
     private platform: Platform,
     private modalCtr: ModalController,
     private sessionNowService: SessionNowService,
-    public ref: ChangeDetectorRef
+    public ref: ChangeDetectorRef,
+    private navParams: NavParams
   ) {
     setInterval(() => {
       if (localStorage.getItem('mode')) {
-        if (localStorage.getItem('mode') == 'landscape') {
+        if (localStorage.getItem('mode') === 'landscape') {
           this.mode = 'landscape';
-          this.modeClasse = "c-ion-fab-lands";
-          this.message = "message-lands";
+          this.modeClasse = 'c-ion-fab-lands';
+          this.message = 'message-lands';
         } else {
           this.mode = '';
-          this.modeClasse = "c-ion-fab";
-          this.message = "message";
+          this.modeClasse = 'c-ion-fab';
+          this.message = 'message';
 
         }
       } else {
-        this.mode = "";
-        this.modeClasse = "c-ion-fab";
-        this.message = "message";
+        this.mode = '';
+        this.modeClasse = 'c-ion-fab';
+        this.message = 'message';
 
       }
     }, 100);
@@ -75,16 +76,17 @@ export class AddPostContenuComponent implements OnInit {
     this.user = JSON.parse(localStorage.getItem('user'));
     this.base64Image = localStorage.getItem('picture');
     this.activite = JSON.parse(localStorage.getItem('activite'));
-    // this.platform.keyboardDidShow.subscribe((ev) => {
-    //   const { keyboardHeight } = ev;
-    //   this.isVisible = true;
-    //   // Do something with the keyboard height such as translating an input above the keyboard.
-    // });
+    this.picture = this.navParams.get('picture');
+    this.platform.keyboardDidShow.subscribe((ev) => {
+      const { keyboardHeight } = ev;
+      this.isVisible = true;
+      // Do something with the keyboard height such as translating an input above the keyboard.
+    });
 
-    // this.platform.keyboardDidHide.subscribe(() => {
-    //   // Move input back to original location
-    //   this.isVisible = false;
-    // });
+    this.platform.keyboardDidHide.subscribe(() => {
+      // Move input back to original location
+      this.isVisible = false;
+    });
   }
 
   ngOnInit() {
@@ -148,6 +150,10 @@ export class AddPostContenuComponent implements OnInit {
       // this.sessionNowService.dissmissLoading();
       // this.sessionNowService.show('Image chargée avec succès', 'success');
     } else {
+      // const session = await this.sessionNowService.find(
+      //   this.sessionNow.uid,
+      //   'post-session-now'
+      // );
       postModel = {
         startDate: new Date(),
         userName: this.user ? this.user.userName : '',

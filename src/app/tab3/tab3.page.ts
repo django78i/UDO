@@ -31,7 +31,7 @@ import { Router } from '@angular/router';
   templateUrl: 'tab3.page.html',
   styleUrls: ['tab3.page.scss'],
 })
-export class Tab3Page implements OnInit, AfterContentChecked, OnDestroy {
+export class Tab3Page implements OnInit, AfterContentChecked {
   config: SwiperOptions = {
     slidesPerView: 1.3,
     spaceBetween: 20,
@@ -72,57 +72,55 @@ export class Tab3Page implements OnInit, AfterContentChecked, OnDestroy {
     public http: HttpClient,
     public userService: UserService,
     public champService: ChampionnatsService,
-    public zone: NgZone,
     private ref: ChangeDetectorRef,
     public navController: NavController,
     public router: Router,
     public navCtl: NavController
   ) {}
 
-  async ngOnInit() {
-    console.log('ici');
-    this.user = await this.userService.getCurrentUser();
-
-    // this.userSubscription = this.user$.subscribe((user) => {
-    console.log('la :', this.user);
-    // this.user = user;
+  ngOnInit() {
+    //récupéerer les user
     //Championnats en cours
-    this.champService.getChampionnatsEnCours(this.user);
-    // this.champService.champEnCoursSubject$.subscribe((champ) => {
-    //   this.userChampionnats = champ ? champ : [];
-    //   console.log(this.userChampionnats);
-    // });
+    // this.champService.getChampionnatsEnCours();
     //Championnats en attente
-    // this.champService.getChampionnats(this.user);
-    // this.loaderChamp = true;
-    // this.championnatSubscription = this.champService.champSubject$.subscribe(
-    //   (champ) => {
-    //     this.championnatsList = champ ? champ : [];
-    //   }
-    // );
-    // this.champService.getChampionnatNetwork(this.user);
-    // this.loaderNetwork = true;
-    // this.championnatNetWorkSubscription =
-    //   this.champService.champNetWork$.subscribe((champ) => {
-    //     this.championnatsNetwork = champ ? champ : [];
-    //   });
-    // });
+    this.champService.getChampionnats();
+    this.champService.champSubject$
+      .pipe(
+        tap((r) => {
+          // r ? this.championnatsList.push(r) : (this.championnatsList = []);
+          console.log(this.championnatsList);
+          r == null
+            ? (this.championnatsList = [])
+            : this.championnatsList.push(r);
+        })
+      )
+      .subscribe();
+    this.champService.champEnCoursSubject$
+      .pipe(
+        tap((r) => {
+          r == null
+            ? (this.userChampionnats = [])
+            : this.userChampionnats.push(r);
+        })
+      )
+      .subscribe();
 
     this.challenges = this.http.get('../../assets/mocks/challenges.json').pipe(
       tap((r) => {
         this.bannData = r[0];
       })
     );
-
-    //   this.championnatsNetwork = this.http
-    //     .get('../../assets/mocks/championnats.json')
-    //     .pipe(map((r) => _.filter(r, ['type', 'Network'])));
   }
 
   ngAfterContentChecked(): void {
     if (this.swiper) {
       this.swiper.map((swip) => swip.updateSwiper({}));
     }
+  }
+
+  async getUser() {
+    const user = await this.userService.getCurrentUser();
+    return user;
   }
 
   async buttonClick() {
@@ -146,29 +144,6 @@ export class Tab3Page implements OnInit, AfterContentChecked, OnDestroy {
   }
 
   async showMenu() {
-    const enterAnimation = (baseEl: any) => {
-      const backdropAnimation = this.animationCtrl
-        .create()
-        .addElement(baseEl.querySelector('ion-backdrop')!)
-        .fromTo('opacity', '0.0', '0');
-
-      const wrapperAnimation = this.animationCtrl
-        .create()
-        .addElement(baseEl.querySelector('.modal-wrapper')!)
-        .fromTo('transform', 'translateX(-300px)', 'translateX(0px)');
-
-      return this.animationCtrl
-        .create()
-        .addElement(baseEl)
-        .easing('ease-out')
-        .duration(500)
-        .addAnimation([backdropAnimation, wrapperAnimation]);
-    };
-
-    const leaveAnimation = (baseEl: any) => {
-      return enterAnimation(baseEl).direction('reverse');
-    };
-
     const modal = await this.modalController.create({
       component: MenuUserComponent,
       componentProps: {
@@ -179,11 +154,13 @@ export class Tab3Page implements OnInit, AfterContentChecked, OnDestroy {
   }
 
   async launchDetail(ev) {
+    const user = await this.userService.getCurrentUser();
     const modal = await this.modalController.create({
       component: ModalChampComponent,
       cssClass: 'testModal',
+      backdropDismiss: true,
       componentProps: {
-        user: this.user,
+        user: user,
         championnat: ev,
       },
     });
@@ -195,10 +172,10 @@ export class Tab3Page implements OnInit, AfterContentChecked, OnDestroy {
     this.router.navigate(['chat']);
   }
 
-  ngOnDestroy() {
-    this.championnatNetWorkSubscription.unsubscribe();
-    this.userSubscription.unsubscribe();
-    this.championnatSubscription.unsubscribe();
-    this.userChampSubscription.unsubscribe();
-  }
+  // ngOnDestroy() {
+  //   this.championnatNetWorkSubscription.unsubscribe();
+  //   this.userSubscription.unsubscribe();
+  //   this.championnatSubscription.unsubscribe();
+  //   this.userChampSubscription.unsubscribe();
+  // }
 }

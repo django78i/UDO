@@ -10,10 +10,10 @@ export class TimeRelativePipe implements PipeTransform {
     moment.locale('fr');
     console.log(value)
     const time = moment(value.toDate()).fromNow();
-    // const newTime = time.split(' ');
-    // newTime.splice(0, 1);
+    const newTime = time.split(' ');
+    newTime.splice(0, 3);
     // newTime.push('restants');
-    // const lasTime = newTime.join(' ');
-    return time;
+    const lasTime = newTime.join(' ');
+    return lasTime;
   }
 }

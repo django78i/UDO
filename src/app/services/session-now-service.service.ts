@@ -8,13 +8,17 @@ import {
 import firebase from 'firebase/app';
 // import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import {
+  collection,
   doc,
   DocumentData,
   DocumentSnapshot,
   getDoc,
+  getDocs,
   getFirestore,
+  query,
   setDoc,
   updateDoc,
+  where,
 } from 'firebase/firestore';
 import {
   getAuth,
@@ -87,6 +91,7 @@ export class SessionNowService {
 
   async update(document, collectionName) {
     const db = getFirestore();
+
     await updateDoc(doc(db, collectionName, document.uid), {
       isLive: false,
       type: document.type,
@@ -96,6 +101,24 @@ export class SessionNowService {
       comment: document.comment,
       duree: document.duree,
     });
+  }
+
+  async findPostLies(postUid) {
+    const db = getFirestore();
+    const queryPost = query(
+      collection(db, 'post-session-now'),
+      where('sessionId', '==', postUid)
+    );
+    const document = await getDocs(queryPost);
+
+    let donnees = [];
+    document.forEach((doc) => (doc ? this.updatePostLies(doc.data().uid) : ''));
+    console.log(donnees);
+  }
+
+  async updatePostLies(postUid) {
+    const db = getFirestore();
+    updateDoc(doc(db, 'post-session-now', postUid), { isLive: false });
   }
 
   async show(message, color) {

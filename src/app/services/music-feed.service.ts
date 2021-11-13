@@ -62,39 +62,54 @@ export class MusicFeedService {
     const table = [];
     const db = getFirestore();
     let first;
+    const user = await this.userService.getCurrentUser();
+    console.log(user);
     switch (filter) {
       case 'En direct':
         console.log('direct');
         first = query(
           collection(db, 'post-session-now'),
           where('isLive', '==', true),
-          orderBy('startDate', 'desc')
+          orderBy('startDate', 'desc'),
+          limit(15)
         );
         break;
       case 'Récent':
         first = query(
           collection(db, 'post-session-now'),
-          orderBy('startDate', 'desc')
+          orderBy('startDate', 'desc'),
+          limit(15)
+        );
+        break;
+      case 'les + commentés':
+        first = query(
+          collection(db, 'post-session-now'),
+          // where('isLive', '==', true),
+          orderBy('postCount', 'desc'),
+          limit(15)
+        );
+        break;
+      case 'Mes amis':
+        const tableFriends: any[] = [];
+        user.friends.forEach((friend) => tableFriends.push(friend.uid));
+        first = query(
+          collection(db, 'post-session-now'),
+          where('userId', 'in', tableFriends),
+          orderBy('startDate', 'desc'),
+          limit(15)
         );
         break;
     }
 
-    const user = await this.userService.getCurrentUser();
-
     let documentSnapshots;
 
-    if (filter == 'Mes amis') {
-      user.friends.map((fr) => {
-        table.concat(this.getPostFriend(fr.uid));
-      });
-    } else {
-      documentSnapshots = await getDocs(first);
-      console.log(documentSnapshots);
-      documentSnapshots.forEach((f) => {
-        console.log(f.data());
-        table.push(f.data());
-      });
-    }
+    documentSnapshots = await getDocs(first);
+    console.log(documentSnapshots);
+    documentSnapshots.forEach((f) => {
+      console.log(f.data());
+      table.push(f.data());
+    });
+
     const lastVisible: any = documentSnapshots.docs[
       documentSnapshots.docs.length - 1
     ]
@@ -140,7 +155,6 @@ export class MusicFeedService {
     });
 
     // Get the last visible document
-    // this.lastVisible =
     const lastVisible: any = documentSnapshots.docs[
       documentSnapshots.docs.length - 1
     ]
@@ -150,26 +164,54 @@ export class MusicFeedService {
     return { table: table, last: lastVisible };
   }
 
-  async addQuery(last, champUid?, code?) {
+  async addQuery(last, filter?) {
     const db = getFirestore();
     const table = [];
-    // Construct a new query starting at this document,
-    // get the next 25 cities.
-    const next = code
-      ? query(
+    let queryColl;
+    const user = await this.userService.getCurrentUser();
+
+    //requête en fonction du filtre de feed
+    switch (filter) {
+      case 'En direct':
+        console.log('direct');
+        queryColl = query(
           collection(db, 'post-session-now'),
-          where('championnat', '==', champUid),
+          where('isLive', '==', true),
           orderBy('startDate', 'desc'),
           startAfter(last),
-          limit(18)
-        )
-      : query(
-          collection(db, 'post-session-now'),
-          orderBy('startDate', 'desc'),
-          startAfter(last),
-          limit(18)
+          limit(15)
         );
-    const documentSnapshots = await getDocs(next);
+        break;
+      case 'Récent':
+        queryColl = query(
+          collection(db, 'post-session-now'),
+          orderBy('startDate', 'desc'),
+          startAfter(last),
+          limit(15)
+        );
+        break;
+      case 'Tendance':
+        queryColl = query(
+          collection(db, 'post-session-now'),
+          // where('isLive', '==', true),
+          orderBy('reactionsNombre', 'desc'),
+          startAfter(last),
+          limit(15)
+        );
+        break;
+      case 'Mes amis':
+        const tableFriends: any[] = [];
+        user.friends.forEach((friend) => tableFriends.push(friend.uid));
+        queryColl = query(
+          collection(db, 'post-session-now'),
+          where('userId', 'in', tableFriends),
+          orderBy('reactionsNombre', 'desc'),
+          startAfter(last),
+          limit(15)
+        );
+        break;
+    }
+    const documentSnapshots = await getDocs(queryColl);
     documentSnapshots.forEach((f) => {
       table.push(f.data());
     });
@@ -182,12 +224,26 @@ export class MusicFeedService {
     return { table: table, last: lastVisible };
   }
 
+  async createReactionSeanceNow(post, reaction) {
+    const db = getFirestore();
+    const indice = this.championnatService.createId();
+    const reactionSeanceNow = {
+      ...reaction,
+      uid: indice,
+    };
+    console.log(reaction, post);
+    await setDoc(
+      doc(db, `session-now/${post.uid}/reactions/`, indice),
+      reactionSeanceNow
+    );
+  }
+
   async updatePost(post) {
     const db = getFirestore();
     const postRef = doc(db, 'post-session-now', post.uid);
     await updateDoc(postRef, {
       reactions: post.reactions,
-      reactionsNombre : post.reactionsNombre
+      reactionsNombre: post.reactionsNombre,
     });
   }
 
