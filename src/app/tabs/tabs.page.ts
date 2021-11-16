@@ -10,7 +10,7 @@ import { AddContenuComponent } from '../session-now/add-contenu/add-contenu.comp
 import { ExternalSessionNowComponent } from '../session-now/external-session-now/external-session-now.component';
 import { CreatePostComponent } from './component/create-post/create-post.component';
 import { UserService } from '../services/user-service.service';
-import { RouterOutlet, Router, ActivationStart } from '@angular/router';
+import {RouterOutlet, Router, ActivationStart, NavigationExtras} from '@angular/router';
 
 @Component({
   selector: 'app-tabs',
@@ -46,7 +46,18 @@ export class TabsPage implements OnInit {
   }
 
   launch() {
-    this.navController.navigateForward('session-now');
+    const navigationExtras: NavigationExtras = {
+      queryParams: {
+        type: 'Séance Libre',
+        // type: 'Championnat',
+        //type: 'Challenge',
+        competitionName:'Classic Tournament',
+        competitionId:'12356',
+        challengeStatus:90,
+        challengeMetric:'km'
+      }
+    };
+    this.navController.navigateForward(['session-now'],navigationExtras);
   }
 
   /**

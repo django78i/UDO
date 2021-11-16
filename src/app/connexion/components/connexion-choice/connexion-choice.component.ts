@@ -17,10 +17,10 @@ import {
 })
 export class ConnexionChoiceComponent implements OnInit {
   hide = true;
-  seg = "s'inscrire";
+  seg = 's\'inscrire';
   @Output() log: EventEmitter<[]> = new EventEmitter();
-  mdPasse: string = '';
-  email: string = '';
+  mdPasse  = '';
+  email = '';
   user: any;
   errorSub: BehaviorSubject<string> = new BehaviorSubject(null);
 
@@ -77,7 +77,7 @@ export class ConnexionChoiceComponent implements OnInit {
       mail: this.email,
       password: this.mdPasse,
     };
-    this.seg == "s'inscrire"
+    this.seg === 's\'inscrire'
       ? this.userService.createUser(formValue)
       : this.userService.log(formValue);
   }

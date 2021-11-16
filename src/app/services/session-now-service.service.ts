@@ -18,6 +18,7 @@ import {
   query,
   setDoc,
   updateDoc,
+  deleteDoc,
   where,
 } from 'firebase/firestore';
 import {
@@ -103,6 +104,39 @@ export class SessionNowService {
     });
   }
 
+  /**
+   * cette fonction permet de supprimer en cascade une seance now
+   * @param sessionId
+   */
+  async deleteSessionCascade(sessionId){
+    let canDelete=true;
+    const db = getFirestore();
+    const queryPost = query(
+      collection(db, 'post-session-now'),
+      where('sessionId', '==', sessionId)
+    );
+    const document = await getDocs(queryPost);
+
+    document.forEach((doc) => {
+      if(doc){
+          if(doc.data().reactionsNombre>0){
+            canDelete=false;
+          }
+      }
+    });
+    if(canDelete){
+      // on supprime la session now et tous les post liés
+      deleteDoc(doc(db, 'session-now', sessionId));
+      document.forEach((doc) => (doc ? this.deletePostLies(doc.data().uid,db
+      ) : ''));
+    }else{
+      // la session a un post commenté donc on supprime
+      const document = await getDocs(queryPost);
+      document.forEach((doc) => (doc ? this.updatePostLies(doc.data().uid) : ''));
+      updateDoc(doc(db, 'session-now', sessionId), { isLive: false });
+    }
+
+  }
   async findPostLies(postUid) {
     const db = getFirestore();
     const queryPost = query(
@@ -120,6 +154,11 @@ export class SessionNowService {
     const db = getFirestore();
     updateDoc(doc(db, 'post-session-now', postUid), { isLive: false });
   }
+  async deletePostLies(postUid,db) {
+   // const db = getFirestore();
+    deleteDoc(doc(db, 'post-session-now', postUid));
+  }
+
 
   async show(message, color) {
     const toast = this.toastCtrl.create({

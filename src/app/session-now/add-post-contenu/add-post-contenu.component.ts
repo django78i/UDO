@@ -74,7 +74,7 @@ export class AddPostContenuComponent implements OnInit {
     }, 100);
     this.sessionNow = JSON.parse(localStorage.getItem('sessionNow'));
     this.user = JSON.parse(localStorage.getItem('user'));
-    this.base64Image = localStorage.getItem('picture');
+    //this.base64Image = localStorage.getItem('picture');
     this.activite = JSON.parse(localStorage.getItem('activite'));
     this.picture = this.navParams.get('picture');
     this.platform.keyboardDidShow.subscribe((ev) => {
@@ -90,7 +90,8 @@ export class AddPostContenuComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.picture);
+    console.log(5);
+    //console.log(this.picture);
   }
 
   async close() {
