@@ -1,6 +1,7 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {
-  AlertController, IonSlides,
+  AlertController,
+  IonSlides,
   ModalController,
   NavController,
   ToastController,
@@ -129,7 +130,8 @@ export class DemarragePage implements OnInit {
             this.reactions = value.reactions.arrayValue.values?.length;
             this.sessionNow.reactions = value.reactions.arrayValue.values;
             if (
-              this.sessionNow.reactions.length !== sessionNow.reactions.length &&
+              this.sessionNow.reactions.length !==
+                sessionNow.reactions.length &&
               this.reactions !== 0
             ) {
               this.showNotification();
@@ -169,7 +171,7 @@ export class DemarragePage implements OnInit {
           handler: () => {
             // on quitte l'application et on supprime tous les posts
             this.destroySession();
-           // this.displayRecap();
+            // this.displayRecap();
           },
         },
       ],
@@ -177,7 +179,7 @@ export class DemarragePage implements OnInit {
 
     await alert.present();
   }
-  destroySession(){
+  destroySession() {
     this.snService.deleteSessionCascade(this.sessionNow.sessionId);
     //on supprime la session now stocké dans le locl storage
     localStorage.removeItem('sessionNow');
@@ -185,11 +187,10 @@ export class DemarragePage implements OnInit {
   }
   ngOnInit() {
     // activate background mode
-  //  this.backgroundMode.enable();
-
+    //  this.backgroundMode.enable();
 
     // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
-   /* this.backgroundMode.isScreenOff( function(bool) {
+    /* this.backgroundMode.isScreenOff( function(bool) {
       this.updateChrono();
       this.backgroundMode.wakeUp();
       this.backgroundMode.unlock();
@@ -276,7 +277,7 @@ export class DemarragePage implements OnInit {
         this.sessionNow.postCount = 0;
         this.sessionNow.reactionsNombre = 0;
 
-        const  sessionNow: SessionNowModel= { ...this.sessionNow };
+        const sessionNow: SessionNowModel = { ...this.sessionNow };
         sessionNow.type = 'session-now';
 
         this.snService.createPostSessionNow(sessionNow).then((resPost) => {
@@ -347,8 +348,8 @@ export class DemarragePage implements OnInit {
       item.nombre =
         res.length > 0
           ? Math.round(
-            (parseFloat(res[res.length - 1]?.value) + Number.EPSILON) * 100
-          ) / 100
+              (parseFloat(res[res.length - 1]?.value) + Number.EPSILON) * 100
+            ) / 100
           : '0';
     }
     if (item.fieldname === 'distance') {
@@ -371,7 +372,7 @@ export class DemarragePage implements OnInit {
    */
   // @ts-ignore
   queryMetrics(metric, item) {
-    const option = {
+    const option: any = {
       startDate: new Date(this.sessionNow.startDate), // three days ago
       endDate: new Date(), // now
       dataType: metric,
@@ -443,27 +444,30 @@ export class DemarragePage implements OnInit {
   /**
    * cette fonction permet d'ouvrir la camera
    */
-  openCamera(){
+  openCamera() {
     const options: CameraOptions = {
       quality: 100,
       destinationType: this.camera.DestinationType.DATA_URL,
       encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE
+      mediaType: this.camera.MediaType.PICTURE,
     };
 
-    this.camera.getPicture(options).then((imageData) => {
-      // imageData is either a base64 encoded string or a file URI
-      // If it's base64 (DATA_URL):
-      this.base64 = 'data:image/jpeg;base64,' + imageData;
-      if (this.base64) {
-        this.addContenu();
-        this.slides.slideTo(1);
+    this.camera.getPicture(options).then(
+      (imageData) => {
+        // imageData is either a base64 encoded string or a file URI
+        // If it's base64 (DATA_URL):
+        this.base64 = 'data:image/jpeg;base64,' + imageData;
+        if (this.base64) {
+          this.addContenu();
+          this.slides.slideTo(1);
+        }
+      },
+      (err) => {
+        // Handle error
       }
-    }, (err) => {
-      // Handle error
-    });
+    );
   }
- /* async openCamera() {
+  /* async openCamera() {
     const image = await Camera.getPhoto({
       quality: 50,
       allowEditing: false,
@@ -516,7 +520,7 @@ console.log(1);
         },
       },
     });
-    modal.onDidDismiss().then((data: any) => { });
+    modal.onDidDismiss().then((data: any) => {});
     return await modal.present();
   }
   /**
@@ -529,7 +533,7 @@ console.log(1);
       cssClass: 'my-custom-activite-modal',
       componentProps: {},
     });
-    modal.onDidDismiss().then((data: any) => { });
+    modal.onDidDismiss().then((data: any) => {});
     return await modal.present();
   }
 
@@ -546,7 +550,7 @@ console.log(1);
     // modal.onDidDismiss().then((data: any) => {
     //   this.base64 = data.data;
     // });
-    modal.onDidDismiss().then((data: any) => { });
+    modal.onDidDismiss().then((data: any) => {});
     return await modal.present();
   }
 
@@ -560,7 +564,7 @@ console.log(1);
       cssClass: 'my-custom-activite-modal',
       componentProps: {},
     });
-    modal.onDidDismiss().then((data: any) => { });
+    modal.onDidDismiss().then((data: any) => {});
     return await modal.present();
   }
 
@@ -659,17 +663,18 @@ console.log(1);
       km: (distanceMeter / timeSeconds) * 3.6,
     };
   }
-  slideChange(){
+  slideChange() {
     this.slides.getActiveIndex().then((index: number) => {
-      if(index===0)
-        {this.titleCurrentPage='Réglages';}
-      if(index===1)
-        {this.titleCurrentPage='';}
-      if(index===2){
+      if (index === 0) {
+        this.titleCurrentPage = 'Réglages';
+      }
+      if (index === 1) {
+        this.titleCurrentPage = '';
+      }
+      if (index === 2) {
         this.openCamera();
         this.slides.slideTo(1);
       }
-
     });
   }
 }
@@ -695,6 +700,7 @@ export class SessionNowModel {
   userNiveau: number;
   postCount: 0;
   reactionsNombre: 0;
+  type: string;
 }
 export class PostModel {
   postedAt: string;
