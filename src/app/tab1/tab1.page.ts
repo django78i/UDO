@@ -114,7 +114,11 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
     this.indice = 0;
   }
 
-  ngAfterContentChecked() {}
+  ngAfterContentChecked() {
+    if (this.swiper2) {
+      this.swiper2.map((swip) => swip.updateSwiper({}));
+    }
+  }
 
   async showMenu() {
     const modal = await this.modalController.create({
@@ -176,7 +180,7 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
     modal.onDidDismiss().then((data) => {
       this.reaction = data.data;
       if (data.data) {
-        this.controleReaction(i, feedLik.reactions);
+        this.controleReaction(i, feedLik.reactions, data.data);
       }
       this.reaction = null;
     });
@@ -189,7 +193,7 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
     console.log(react);
     //l'émoji existe déjà
     const isEmojiExist = react.findIndex((f) =>
-      this.reaction ? f.nom == this.reaction.nom : f.nom == reaction.nom
+      reaction ? f.nom == reaction.nom : f.nom == reaction.nom
     );
 
     if (isEmojiExist != -1) {
@@ -212,7 +216,7 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
       //incrémente de 1 compteur général réactions
       this.feeds[i].reactionsNombre = this.feeds[i].reactionsNombre += 1;
       this.feeds[i].reactions.push({
-        ...this.reaction,
+        ...reaction,
         nombre: 1,
         users: [
           {
@@ -228,8 +232,9 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
 
     //création object réactions pour le séanceNow
     if (this.feeds[i].type == 'session-now') {
+      // const reactionFilter = this.reaction ? this.reaction : reaction;
       const reactionPost = {
-        ...this.reaction,
+        reaction,
         user: {
           uid: this.user.uid,
           name: this.user.userName,

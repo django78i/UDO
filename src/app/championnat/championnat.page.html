@@ -16,34 +16,34 @@
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
-  <!-- <section> -->
   <ion-card
-    [ngStyle]="{ 'background-image': 'url(' + championnat.banniere.url + ')' }"
+    *ngIf="championnat"
+    [ngStyle]="{ 'background-image': 'url(' + championnat?.banniere.url + ')' }"
     [ngClass]="{ notActive: segmentValue != 'resume' }"
   >
     <ion-card-header [ngClass]="{ notActiveContent: segmentValue != 'resume' }">
-      <ion-card-subtitle *ngIf="championnat.status == 'en cours'">
-        {{ championnat.dateFin | timeChamp }}
+      <ion-card-subtitle *ngIf="championnat?.status == 'en cours'">
+        {{ championnat?.dateFin | timeChamp }}
       </ion-card-subtitle>
-      <ion-card-subtitle *ngIf="championnat.status == 'en attente'">
-        {{ championnat.dateDemarrage | timeChamp }}
+      <ion-card-subtitle *ngIf="championnat?.status == 'en attente'">
+        {{ championnat?.dateDemarrage | timeChamp }}
       </ion-card-subtitle>
-      <ion-card-title style="color: white">{{
-        championnat.name
-      }}</ion-card-title>
+      <ion-card-title style="color: white"
+        >{{ championnat?.name }}</ion-card-title
+      >
     </ion-card-header>
 
     <ion-card-content>
       <div style="display: flex">
         <ng-container *ngFor="let champ of participantsList; let i = index">
           <ion-avatar style="--i : {{ i }}; --mess : {{ champ.user.niveau }} ">
-            <img [src]="champ.user.avatar" alt="" />
-            <ion-badge>{{ user.niveau }}</ion-badge>
+            <img [src]="champ?.user.avatar" alt="" />
+            <ion-badge *ngIf="user">{{ user.niveau }}</ion-badge>
           </ion-avatar>
         </ng-container>
         <div class="champCarousel">
           <p style="font-size: 20px">
-            + {{ championnat.nbParticipants - participantsList.length }}
+            + {{ championnat?.nbParticipants - participantsList?.length }}
           </p>
         </div>
       </div>
@@ -65,7 +65,7 @@
     </ion-segment-button>
   </ion-segment>
 </ion-header>
-<ion-content scrollY="false">
+<ion-content scrollY="false" *ngIf="championnat && user">
   <app-classement
     *ngIf="segmentValue == 'participants'"
     [champ]="championnat"
@@ -90,36 +90,40 @@
     <ion-button
       expand="block"
       class="buttonNextSlide"
+      style=" --i : {{championnat.banniere.color}}"
       (click)="startChamp()"
       *ngIf="
         championnat.status == 'en attente' &&
         championnat.createur.uid == user.uid
       "
-      >Démarrer</ion-button
+      >{{loading? '':'Démarrer'}}<ion-spinner *ngIf="loading" name="crescent" mode="md"></ion-spinner></ion-button
     >
     <ion-button
       expand="block"
       class="buttonNextSlide"
+      style=" --i : {{championnat.banniere.color}}"
       (click)="participer()"
       *ngIf="
-        championnat.status == 'en attente' && userEncours.etat == 'en attente'
+        championnat?.status == 'en attente' && userEncours?.etat == 'en attente'
       "
       >Participer</ion-button
     >
     <ion-button
       expand="block"
       class="buttonNextSlide"
+      style=" --i : {{championnat.banniere.color}}"
       *ngIf="
-        championnat.status == 'en attente' &&
-        userEncours.etat == 'prêt' &&
-        championnat.createur.uid != user.uid
+        championnat?.status == 'en attente' &&
+        userEncours?.etat == 'prêt' &&
+        championnat?.createur.uid != user.uid
       "
-      >{{ championnat.dateDemarrage | timeRelative }}</ion-button
+      >{{ championnat?.dateDemarrage | timeRelative }}</ion-button
     >
     <ion-button
       expand="block"
+      style=" --i : {{championnat.banniere.color}}"
       (click)="seanceNow()"
-      *ngIf="championnat.status == 'en cours'"
+      *ngIf="championnat?.status == 'en cours'"
       class="buttonNextSlide"
       >Séance Now</ion-button
     >

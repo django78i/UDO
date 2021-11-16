@@ -10,6 +10,8 @@ ion-card {
   border-radius: 27px;
   transition: 0.5s ease all;
   margin-top: 0;
+  background-size: cover;
+  background-position: center;
 }
 
 ion-card-subtitle {
@@ -80,7 +82,7 @@ ion-segment {
   margin: auto;
   border-radius: 17px;
   padding: 3px;
-  --background: #D7D8DD;
+  --background: #d7d8dd;
 }
 
 ion-segment-button {
@@ -158,5 +160,7 @@ ion-avatar {
 
 .buttonNextSlide {
   height: 80px;
-  --border-radius:33px;
+  --border-radius: 33px;
+  --background: var(--i);
+  --background-activated: var(--i);
 }

@@ -7,7 +7,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { NavigationExtras } from '@angular/router';
+import { ActivatedRoute, NavigationExtras } from '@angular/router';
 import {
   AlertController,
   ModalController,
@@ -15,6 +15,7 @@ import {
 } from '@ionic/angular';
 import moment from 'moment';
 import { ChampionnatsService } from 'src/app/services/championnats.service';
+import { UserService } from 'src/app/services/user-service.service';
 
 interface ChampionnatNav {
   type: string;
@@ -46,37 +47,46 @@ interface Championnat {
 }
 
 @Component({
-  selector: 'app-modal-champ',
-  templateUrl: './modal-champ.component.html',
-  styleUrls: ['./modal-champ.component.scss'],
+  selector: 'app-championnat',
+  templateUrl: './championnat.page.html',
+  styleUrls: ['./championnat.page.scss'],
 })
-export class ModalChampComponent implements OnInit, AfterViewInit {
-  @Input() championnat: Championnat;
-  @Input() user: any;
+export class ChampionnatPage implements OnInit {
   segmentValue = 'resume';
   participantsList: any[];
   userEncours: any;
-
+  championnat: any;
+  user: any;
+  loading = false;
   constructor(
     private modalCtrl: ModalController,
     public alertController: AlertController,
     public champService: ChampionnatsService,
     public navCtl: NavController,
-    public ref: ChangeDetectorRef
+    public ref: ChangeDetectorRef,
+    public route: ActivatedRoute,
+    public userService: UserService
   ) {}
 
   ngOnInit() {
-    console.log(this.user);
-    this.participantsList = this.championnat.participants.slice(0, 4);
-    this.userEncours = this.championnat.participants.find(
-      (part) => part.uid == this.user.uid
-    );
+    this.userService.getCurrentUser().then((user) => {
+      this.user = user;
+      const uid = this.route.snapshot.params['id'];
+      this.champService.getChampionnat(uid);
+      this.champService.singleChampSub$.subscribe((champ) => {
+        this.championnat = champ;
+        this.participantsList = this.championnat.participants.slice(0, 4);
+        this.userEncours = this.championnat.participants.find(
+          (part) => part.uid == this.user.uid
+        );
+      });
+    });
   }
 
   ngAfterViewInit() {}
 
   close() {
-    this.modalCtrl.dismiss();
+    this.navCtl.navigateBack('/tabs/tab3');
   }
 
   participer() {
@@ -118,6 +128,8 @@ export class ModalChampComponent implements OnInit, AfterViewInit {
     alert.onDidDismiss().then((dat) => {
       if (dat.role == 'confirm') {
         this.loadChamp();
+      } else {
+        this.loading = false;
       }
       console.log(dat);
     });
@@ -128,6 +140,7 @@ export class ModalChampComponent implements OnInit, AfterViewInit {
     const warning = this.championnat.participants.some(
       (part: any) => part.etat == 'en attente'
     );
+    this.loading = true;
     warning ? this.presentAlertConfirm() : this.loadChamp();
   }
 
@@ -151,6 +164,8 @@ export class ModalChampComponent implements OnInit, AfterViewInit {
       ...this.championnat,
       dateFin: this.championnat.dateFin.toDate(),
     });
+    this.loading = false;
+
     this.ref.detectChanges();
     console.log(final);
   }
@@ -166,6 +181,5 @@ export class ModalChampComponent implements OnInit, AfterViewInit {
       },
     };
     this.navCtl.navigateForward('session-now', champInfo);
-    this.modalCtrl.dismiss();
   }
 }

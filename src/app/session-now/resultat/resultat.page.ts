@@ -193,6 +193,7 @@ export class ResultatPage implements OnInit {
       .update(postModel, 'post-session-now')
       .then((resPicture) => {
         this.navCtl.navigateForward('');
+        localStorage.removeItem('sessionNow')
         this.sessionNowService.dissmissLoading();
         this.sessionNowService.show('Seance publiée avec succés', 'success');
       });

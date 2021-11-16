@@ -69,7 +69,7 @@ import { TimeChampPipe } from '../pipe/time-champ.pipe';
     MessagesComponent,
     PhotoDetailComponent,
     TimeFeedPipe,
-    TimeChampPipe
+    TimeChampPipe,
     // AddContenuComponent,
   ],
 })

@@ -58,6 +58,14 @@ const routes: Routes = [
       import('./chat/chat.module').then((m) => m.ChatPageModule),
   },
   {
+    path: 'championnat/:id',
+    loadChildren: () =>
+      import('./championnat/championnat.module').then(
+        (m) => m.ChampionnatPageModule
+      ),
+  },
+
+  {
     path: '',
     redirectTo: 'tabs',
     pathMatch: 'full',
