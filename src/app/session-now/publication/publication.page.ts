@@ -8,16 +8,17 @@ import { Router } from '@angular/router';
   styleUrls: ['./publication.page.scss'],
 })
 export class PublicationPage implements OnInit {
-  listActivite = [{ name: 'Corps haut', value: '20', image: 'assets/images/corps-haut.svg' },
+ /* listActivite = [{ name: 'Corps haut', value: '20', image: 'assets/images/corps-haut.svg' },
   { name: 'Corps bas', value: '100', image: 'assets/images/corps-bas.svg' },
   { name: 'Cardio', value: '20', image: 'assets/images/cardio.svg' },
   { name: 'Explosivité', value: '20', image: 'assets/images/explosivite.svg' },
   { name: 'Souplesse', value: '20', image: 'assets/images/souplesse.svg' },
-  { name: 'Gainage', value: '20', image: 'assets/images/gainage.svg' }];
-  mode = "";
-  modeClasse = "";
-  demarrage = "";
-  modeRow="";
+  { name: 'Gainage', value: '20', image: 'assets/images/gainage.svg' }];*/
+  listActivite=[];
+  mode = '';
+  modeClasse = '';
+  demarrage = '';
+  modeRow='';
   valeur=0;
   constructor(private router: Router, private platform: Platform) {
     this.platform.backButton.subscribeWithPriority(10, () => {
@@ -26,21 +27,21 @@ export class PublicationPage implements OnInit {
     });
     setInterval(() => {
       if (localStorage.getItem('mode')) {
-        if (localStorage.getItem('mode') == 'landscape') {
+        if (localStorage.getItem('mode') === 'landscape') {
           this.mode = 'landscape';
-          this.modeClasse = "val-progess-lands";
-          this.demarrage="c-ion-fab-lands";
-          this.modeRow="c-row-lands";
+          this.modeClasse = 'val-progess-lands';
+          this.demarrage='c-ion-fab-lands';
+          this.modeRow='c-row-lands';
         } else {
           this.mode = 'portrait';
-          this.modeClasse = "val-progess";
-          this.demarrage="c-ion-fab";
-          this.modeRow="c-row";
+          this.modeClasse = 'val-progess';
+          this.demarrage='c-ion-fab';
+          this.modeRow='c-row';
         }
       } else {
-        this.modeClasse = "val-progess";
-        this.demarrage="c-ion-fab";
-        this.modeRow="c-row";
+        this.modeClasse = 'val-progess';
+        this.demarrage='c-ion-fab';
+        this.modeRow='c-row';
       }
     }, 100);
     const activite = JSON.parse(localStorage.getItem('activite'));
@@ -48,17 +49,15 @@ export class PublicationPage implements OnInit {
       this.listActivite = activite.details;
       let counter:any = JSON.parse(localStorage.getItem('counter'));
       let time=0;
-      
+
       if(counter){
         let minute =counter.mn;
-        
         let seconde = counter.s;
-        
+
         let valMinute;
         if(minute){
           valMinute = minute*60;
-          
-          valMinute +=seconde; 
+          valMinute +=seconde;
           time = valMinute/60;
           if(time>15){
             for(let act of this.listActivite){
@@ -78,7 +77,7 @@ export class PublicationPage implements OnInit {
         }
 
       }
-     
+
 
     }
   }

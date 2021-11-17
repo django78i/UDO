@@ -44,7 +44,7 @@ ion-content{
             border-radius: 20px;
             margin-top: -35px;
             margin-left: 18px;
-            
+
          }
          .rond-progress{
             width: 28px;
@@ -63,9 +63,9 @@ ion-content{
                 font-size: 12px;
             }
         }
-         
+
     }
-   
+
     .xp{
         position: absolute;
         right: 34px;
@@ -209,4 +209,17 @@ ion-content{
             font-family: "PoppinsSemiBold" !important;
         }
     }
+  .total{
+    font-size: 33px;
+    font-weight: bold;
+    letter-spacing: -2.8px;
+    font-family: "Poppins" !important;
+    padding-left: 18px;
+    padding-right: 5px;
+    margin-top: 5px;
+  }
+  .gtotal{
+    margin:20px;
+    border-top:2px solid lightgrey;
+  }
 }
