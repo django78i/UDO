@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { ModalController } from '@ionic/angular';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { SessionNowService } from '../../services/session-now-service.service';
 import moment from 'moment';
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+
 
 @Component({
   selector: 'app-add-contenu',
@@ -22,21 +23,21 @@ export class AddContenuComponent implements OnInit {
   user;
   constructor(private modalCtr: ModalController,
               private storage: AngularFireStorage,
-              private sessionNowService: SessionNowService) {
+              private sessionNowService: SessionNowService,
+              private camera: Camera
+  ) {
     this.sessionNow = JSON.parse(localStorage.getItem('sessionNow'));
     this.user = JSON.parse(localStorage.getItem('user'));
   }
 
-  ngOnInit() { 
-    console.log('openData')
-  }
+  ngOnInit() {}
 
   async close() {
     const closeModal = 'Modal Closed';
     await this.modalCtr.dismiss(closeModal);
   }
 
-  async openCamera() {
+  /* async openCamera() {
     const image = await Camera.getPhoto({
       quality: 100,
       allowEditing: false,
@@ -51,9 +52,9 @@ export class AddContenuComponent implements OnInit {
     // this.upload();
     this.modalCtr.dismiss(this.base64Image);
 
-  }
+  } */
 
-  async openGallery() {
+  /* async openGallery() {
     const image = await Camera.getPhoto({
       quality: 100,
       allowEditing: false,
@@ -67,32 +68,75 @@ export class AddContenuComponent implements OnInit {
     // this.upload();
     this.modalCtr.dismiss(this.base64Image);
 
+  } */
+
+  /**
+   * cette fonction permet d'ouvrir la gallery
+   */
+  openGallery(){
+    const options: CameraOptions = {
+      quality: 100,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE,
+      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY
+    };
+    this.camera.getPicture(options).then((imageData) => {
+      this.base64Image = 'data:image/jpeg;base64,' + imageData;
+      if (this.base64Image) {
+        this.modalCtr.dismiss(this.base64Image);
+      }
+    }, (err) => {
+      // Handle error
+    });
+  }
+  /**
+   * cette fonction permet d'ouvrir la camera
+   */
+  openCamera(){
+    const options: CameraOptions = {
+      quality: 100,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE
+    };
+
+    this.camera.getPicture(options).then((imageData) => {
+      // imageData is either a base64 encoded string or a file URI
+      // If it's base64 (DATA_URL):
+      this.base64Image = 'data:image/jpeg;base64,' + imageData;
+      if (this.base64Image) {
+        this.modalCtr.dismiss(this.base64Image);
+      }
+    }, (err) => {
+      // Handle error
+    });
   }
 
   upload(): void {
-    var currentDate = new Date().getTime();
+    const currentDate = new Date().getTime();
     const file: any = this.base64ToImage(this.base64Image);
     const filePath = `images/${currentDate}`;
     const fileRef = this.storage.ref(filePath);
     this.sessionNowService.presentLoading();
     const task = this.storage.upload(`images/${currentDate}`, file);
-    
+
     task.snapshotChanges()
       .pipe(finalize(() => {
           this.downloadURL = fileRef.getDownloadURL();
           this.downloadURL.subscribe(downloadURL => {
             if (downloadURL) {
-              let image = {
+              const image = {
                 picture: this.base64Image,
                 path: filePath
-              }
+              };
               localStorage.setItem('image', JSON.stringify(image));
               if (!this.sessionNow) {
                 this.close();
                 this.sessionNowService.dissmissLoading();
                 this.sessionNowService.show('Image chargée avec succès', 'success');
               } else {
-                let postModel: PostModel = {
+                const postModel: PostModel = {
                   startDate: moment().format('DD/MM/YYYY'),
                   userName: this.user ? this.user.userName : '',
                   userId: this.user ? this.user.uid : '',
@@ -104,13 +148,14 @@ export class AddContenuComponent implements OnInit {
                   reactions : [],
                   mode: this.sessionNow.mode,
                   userAvatar: this.sessionNow.userAvatar,
-                  niveau: this.sessionNow.userNiveau,                }
+                  niveau: this.sessionNow.userNiveau
+                };
                 this.sessionNowService.create(postModel, 'post-session-now')
                   .then(resPicture => {
                     this.close();
                     this.sessionNowService.dissmissLoading();
                     this.sessionNowService.show('Image créée avec succès', 'success');
-                  })
+                  });
               }
             }
           }, error => {
@@ -153,5 +198,5 @@ export class PostModel {
   mode: string;
   userAvatar: string;
   niveau: number;
-  reactions : []
+  reactions: [] ;
 }

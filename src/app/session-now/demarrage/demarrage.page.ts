@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {
   AlertController,
+  IonSlides,
   ModalController,
   NavController,
   ToastController,
@@ -14,8 +15,9 @@ import { Platform } from '@ionic/angular';
 import { DonneesPriveComponent } from '../donnees-prive/donnees-prive.component';
 import { SessionNowService } from '../../services/session-now-service.service';
 import { AddPostContenuComponent } from '../add-post-contenu/add-post-contenu.component';
-import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { ShowNotificationPage } from '../show-notification/show-notification.page';
+import { BackgroundMode } from '@ionic-native/background-mode/ngx';
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 
 @Component({
   selector: 'app-demarrage',
@@ -23,6 +25,13 @@ import { ShowNotificationPage } from '../show-notification/show-notification.pag
   styleUrls: ['./demarrage.page.scss'],
 })
 export class DemarragePage implements OnInit {
+  @ViewChild('mySlider') slides: IonSlides;
+  slideOptsOne = {
+    initialSlide: 1,
+    slidesPerView: 1,
+    autoplay: false,
+  };
+  titleCurrentPage: string;
   listElement: any = [];
   base64;
   t: any;
@@ -69,7 +78,11 @@ export class DemarragePage implements OnInit {
   user: any;
   reactions = 0;
   interval;
+  mode = '';
+  modeClasse = '';
+  demarrage = '';
   constructor(
+    private backgroundMode: BackgroundMode,
     private modalCtrl: ModalController,
     private router: Router,
     private toastCtrl: ToastController,
@@ -77,11 +90,27 @@ export class DemarragePage implements OnInit {
     private health: Health,
     private platform: Platform,
     private snService: SessionNowService,
-    public alertController: AlertController
+    public alertController: AlertController,
+    private camera: Camera
   ) {
+    setInterval(() => {
+      if (localStorage.getItem('mode')) {
+        if (localStorage.getItem('mode') === 'landscape') {
+          this.mode = 'landscape';
+          this.modeClasse = 'preseanceSlideLands';
+          this.demarrage = 'demarrageLands';
+        } else {
+          this.mode = 'portrait';
+          this.modeClasse = 'preseanceSlide';
+          this.demarrage = 'demarrage';
+        }
+      } else {
+        this.modeClasse = 'preseanceSlide';
+        this.demarrage = 'demarrage';
+      }
+    }, 100);
     this.image = JSON.parse(localStorage.getItem('image'));
     this.platform.backButton.subscribeWithPriority(10, () => {
-      console.log('Handler was called!');
       this.presentAlertConfirm();
     });
     this.user = JSON.parse(localStorage.getItem('user'));
@@ -93,16 +122,17 @@ export class DemarragePage implements OnInit {
    */
   async getSessionNow() {
     this.interval = setInterval(() => {
-      let sessionNow = JSON.parse(localStorage.getItem('sessionNow'));
+      const sessionNow = JSON.parse(localStorage.getItem('sessionNow'));
       if (sessionNow) {
         this.snService.find(sessionNow.uid, 'session-now').then((resp: any) => {
-          let value = resp._document.data.value.mapValue.fields;
+          const value = resp._document.data.value.mapValue.fields;
           if (value.reactions.arrayValue.values) {
             this.reactions = value.reactions.arrayValue.values?.length;
             this.sessionNow.reactions = value.reactions.arrayValue.values;
             if (
-              this.sessionNow.reactions.length != sessionNow.reactions.length &&
-              this.reactions != 0
+              this.sessionNow.reactions.length !==
+                sessionNow.reactions.length &&
+              this.reactions !== 0
             ) {
               this.showNotification();
             }
@@ -139,7 +169,9 @@ export class DemarragePage implements OnInit {
         {
           text: 'Oui',
           handler: () => {
-            this.displayRecap();
+            // on quitte l'application et on supprime tous les posts
+            this.destroySession();
+            // this.displayRecap();
           },
         },
       ],
@@ -147,12 +179,27 @@ export class DemarragePage implements OnInit {
 
     await alert.present();
   }
+  destroySession() {
+    this.snService.deleteSessionCascade(this.sessionNow.sessionId);
+    //on supprime la session now stocké dans le locl storage
+    localStorage.removeItem('sessionNow');
+    this.router.navigate(['tabs']);
+  }
   ngOnInit() {
+    // activate background mode
+    //  this.backgroundMode.enable();
+
+    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
+    /* this.backgroundMode.isScreenOff( function(bool) {
+      this.updateChrono();
+      this.backgroundMode.wakeUp();
+      this.backgroundMode.unlock();
+    });*/
     const stSettings = localStorage.getItem('reglages');
     if (stSettings) {
       this.listSettings = JSON.parse(stSettings);
     }
-    let valPause = localStorage.getItem('pause');
+    const valPause = localStorage.getItem('pause');
     if (valPause) {
       this.pause = true;
     }
@@ -189,11 +236,11 @@ export class DemarragePage implements OnInit {
         fieldname: 'calories',
       },
     ];
-    let item = JSON.parse(localStorage.getItem('activite'));
+    const item = JSON.parse(localStorage.getItem('activite'));
     if (item) {
       this.activite = item;
     }
-    let choix = localStorage.getItem('choix');
+    const choix = localStorage.getItem('choix');
     if (!choix) {
       localStorage.setItem('choix', JSON.stringify(this.listChoix));
     } else {
@@ -230,8 +277,8 @@ export class DemarragePage implements OnInit {
         this.sessionNow.postCount = 0;
         this.sessionNow.reactionsNombre = 0;
 
-        let sessionNow = { ...this.sessionNow };
-        sessionNow['type'] = 'session-now';
+        const sessionNow: SessionNowModel = { ...this.sessionNow };
+        sessionNow.type = 'session-now';
 
         this.snService.createPostSessionNow(sessionNow).then((resPost) => {
           console.log('je suis la');
@@ -270,10 +317,10 @@ export class DemarragePage implements OnInit {
    */
   getMetrics() {
     if (this.status === 'play') {
-      for (let item of this.listElement) {
+      for (const item of this.listElement) {
         this.queryMetrics(item.fieldname, item);
       }
-      let that = this;
+      const that = this;
       // this.getMetrics();
       // @ts-ignore
       setTimeout(() => {
@@ -284,6 +331,7 @@ export class DemarragePage implements OnInit {
 
   /**
    * ce callback est appelé pour procéder le resultat obtenu apres la recuperation de la metric de p
+   *
    * @param res
    * @param item
    */
@@ -318,12 +366,13 @@ export class DemarragePage implements OnInit {
 
   /**
    * cette fonction permet d'afficher les metrics
+   *
    * @param metric
    * @param item
    */
   // @ts-ignore
   queryMetrics(metric, item) {
-    let option = {
+    const option: any = {
       startDate: new Date(this.sessionNow.startDate), // three days ago
       endDate: new Date(), // now
       dataType: metric,
@@ -333,13 +382,13 @@ export class DemarragePage implements OnInit {
       if (metric === 'speed') {
         option.dataType = 'distance';
       }
-      option['bucket'] = 'hour';
+      option.bucket = 'hour';
       this.health
         .queryAggregated(option)
         .then((res) => this.processMetricResult(res, item))
         .catch((e) => console.log('error3 ', e));
     } else {
-      option['limit'] = 100;
+      option.limit = 100;
       this.health
         .query(option)
         .then((res) => this.processMetricResult(res, item))
@@ -374,7 +423,7 @@ export class DemarragePage implements OnInit {
     ];
     this.sessionNow.isLive = false;
     this.sessionNow.duration = this.mn + ':' + this.s;
-    for (let metric of this.listElement) {
+    for (const metric of this.listElement) {
       for (const metricAutorised of listMetricAuhorised) {
         if (metric.fieldname === metricAutorised) {
           this.sessionNow.metrics.push(metric);
@@ -395,22 +444,49 @@ export class DemarragePage implements OnInit {
   /**
    * cette fonction permet d'ouvrir la camera
    */
-  async openCamera() {
+  openCamera() {
+    const options: CameraOptions = {
+      quality: 100,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE,
+    };
+
+    this.camera.getPicture(options).then(
+      (imageData) => {
+        // imageData is either a base64 encoded string or a file URI
+        // If it's base64 (DATA_URL):
+        this.base64 = 'data:image/jpeg;base64,' + imageData;
+        if (this.base64) {
+          this.addContenu();
+          this.slides.slideTo(1);
+        }
+      },
+      (err) => {
+        // Handle error
+      }
+    );
+  }
+  /* async openCamera() {
     const image = await Camera.getPhoto({
       quality: 50,
       allowEditing: false,
       source: CameraSource.Camera,
       resultType: CameraResultType.DataUrl,
     });
-
+console.log(1);
     // Here you get the image as result.
     const theActualPicture = image.dataUrl;
-    localStorage.setItem('picture', theActualPicture);
-    this.addContenu(theActualPicture);
-    // this.modalCtr.dismiss(this.base64Image);
-  }
+    console.log(2);
+    this.base64=theActualPicture;
+    if (this.base64) {
+      console.log(3);
+      this.addContenu();
+    }
+  }*/
   /**
    * cette fonction permet d'afficher un toast message
+   *
    * @param message
    * @param type
    */
@@ -464,16 +540,17 @@ export class DemarragePage implements OnInit {
   /**
    * Cette methode permet d'ouvrir le modal de selection des photos
    */
-  async addContenu(picture) {
-    console.log('ouverture content');
+  async addContenu() {
+    console.log(4);
     const modal = await this.modalCtrl.create({
       component: AddPostContenuComponent,
       cssClass: 'my-custom-contenu-modal',
-      componentProps: { picture: picture, activity: this.activite },
+      componentProps: { picture: this.base64, activity: this.activite },
     });
     // modal.onDidDismiss().then((data: any) => {
     //   this.base64 = data.data;
     // });
+    modal.onDidDismiss().then((data: any) => {});
     return await modal.present();
   }
 
@@ -534,6 +611,7 @@ export class DemarragePage implements OnInit {
 
   /**
    * cette methode synchrone permet d'ouvrir sous forme de modal le composant listMetric
+   *
    * @param item
    * @param index
    */
@@ -550,7 +628,7 @@ export class DemarragePage implements OnInit {
     modal.onDidDismiss().then((data: any) => {
       if (data.data) {
         let value = data.data;
-        for (let el of this.listElement) {
+        for (const el of this.listElement) {
           if (el.name === value.name) {
             this.showMessage(
               'Cette activité est déjà dans la liste',
@@ -559,7 +637,7 @@ export class DemarragePage implements OnInit {
             return;
           }
         }
-        for (let val of this.listChoix) {
+        for (const val of this.listChoix) {
           if (value.name == val.name) {
             value = val;
             this.listElement[index] = val;
@@ -575,6 +653,7 @@ export class DemarragePage implements OnInit {
 
   /**
    * Cette méthode permet de calculer la vitesse
+   *
    * @param distanceMeter
    * @param timeSeconds
    */
@@ -583,6 +662,20 @@ export class DemarragePage implements OnInit {
       m: distanceMeter / timeSeconds,
       km: (distanceMeter / timeSeconds) * 3.6,
     };
+  }
+  slideChange() {
+    this.slides.getActiveIndex().then((index: number) => {
+      if (index === 0) {
+        this.titleCurrentPage = 'Réglages';
+      }
+      if (index === 1) {
+        this.titleCurrentPage = '';
+      }
+      if (index === 2) {
+        this.openCamera();
+        this.slides.slideTo(1);
+      }
+    });
   }
 }
 export class SessionNowModel {
@@ -607,6 +700,7 @@ export class SessionNowModel {
   userNiveau: number;
   postCount: 0;
   reactionsNombre: 0;
+  type: string;
 }
 export class PostModel {
   postedAt: string;

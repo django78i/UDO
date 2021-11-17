@@ -1,11 +1,6 @@
 <ion-content>
   <ion-toolbar>
-    <ion-img
-      slot="start"
-      (click)="close()"
-      class="close"
-      src="assets/images/closeGray.svg"
-    ></ion-img>
+    <ion-img slot="start" (click)="close()" class="close" src="assets/images/closeGray.svg"></ion-img>
     <ion-title class="name">POSTER UN MEDIA</ion-title>
   </ion-toolbar>
   <ion-row>
@@ -17,6 +12,7 @@
     </span>
     <span class="nameActivity">{{ activite.name }}</span>
   </ion-row>
+
   <ion-row class="message">
     <ion-input
       (keyup.enter)="publier()"
@@ -30,15 +26,9 @@
     <ion-img class="crayon" src="assets/images/crayon.PNG"></ion-img>
   </ion-row>
 </ion-content>
-<ion-footer>
+<ion-footer [class]="mode">
   <ion-footer>
-    <ion-button
-      *ngIf="!isVisible"
-      expand="block"
-      class="c-ion-fab"
-      (click)="publier()"
-      type="submit"
-      >Publier</ion-button
-    >
+    <ion-button *ngIf="!isVisible" expand="block" [class]="modeClasse" (click)="publier()" type="submit">Publier
+    </ion-button>
   </ion-footer>
 </ion-footer>

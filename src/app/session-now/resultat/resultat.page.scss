@@ -104,6 +104,11 @@ ion-content{
             height: 45px;
             margin-left: 12px;
         }
+        ion-input{
+            border-bottom: 2px solid #70707045;
+            height: 45px;
+            margin-left: 12px;
+        }
         .crayon{
             margin-left: -30px;
             margin-top: 14px;
@@ -256,20 +261,118 @@ ion-content{
         height: 53px;
         margin-left: 0;
     }
-}
-.c-ion-fab{
-    background: #3E4ADD 0% 0% no-repeat padding-box;
-    border-radius: 33px;
-    width: 88%;
-    margin: 0 20px;
-    height: 89px;
-    text-align: center;
-    padding-top: 30px;
-    span{
-        letter-spacing: 0px;
-        color: #FFFFFF;
-        font-size: 18px;
+    }
+    .c-row-lands{
+        margin-top: 15px;
+        margin-bottom: 150px;
+   
+    .c-item{
+        --background: #FFFFFF;
+        width: 95%;
+        margin: 7px 11px;
+        border-radius: 24px;
+    }
+    .point{
+        position: absolute;
+        width: 3px;
+        height: 3px;
+        background: #2A2A2C 0% 0% no-repeat padding-box;
+        border-radius: 50%;
+        margin-top: -28px;
+        left: 55px;
+    }
+    .c-row-first{
+        margin: 8px 0;
+    }
+    .nombre{
+        width: 30px;
+        background: white;
+        border-radius: 50%;
+        height: 30px;
+        position: absolute;
+        color: #14213A;
+        margin-left: 39px;
+        margin-top: 34px;
+        font-size: 12px;
+        padding-left: 8px;
+        padding-top: 11px;
+        font-family: "StaatlichesRegular" !important;
+        display: none;
+    }
+    .item-name{
+        --ion-background-color: transparent; 
+        margin-left: -18px;
+        width: 100%;
+    }
+    .c-grid{
+        margin-left: 15px;
+    }
+    .name{
+        color: #2A2A2C;
         font-family: "PoppinsSemiBold" !important;
+        font-size: 14px;
+        margin-top: -18px;
+    }
+    .date{
+        color: #2A2A2C;
+        font-size: 10px;
+        margin-left: 0px;
+        margin-top: -19px;
+        opacity: 50%;
+    }
+    .comment{
+        opacity: 75%;
+        margin-top: -23px;
+        font-family: "PoppinsMedium" !important;
+        color: #2A2A2C;
+        font-size: 12px;
+    }
+    .icon-end{
+        position: relative;
+        right: -15px;
+        bottom: -20px;
+        z-index: 9999999999;
+        width: 55px;
+        height: 53px;
+        margin-left: 0;
+    }
+    }
+    .c-ion-fab{
+        background: #3E4ADD 0% 0% no-repeat padding-box;
+        border-radius: 33px;
+        width: 88%;
+        margin: 0 20px;
+        height: 89px;
+        text-align: center;
+        padding-top: 30px;
+        span{
+            letter-spacing: 0px;
+            color: #FFFFFF;
+            font-size: 18px;
+            font-family: "PoppinsSemiBold" !important;
+        }
+    }
+    .c-ion-fab-lands{
+        // background: #3E4ADD 0% 0% no-repeat padding-box;
+        border-radius: 33px;
+        // width: 50%;
+        margin: 0 25%;
+        // height: 89px;
+        text-align: center;
+        padding-top: 30px;
+        span{
+            letter-spacing: 0px;
+            color: #FFFFFF;
+            font-size: 18px;
+            font-family: "PoppinsSemiBold" !important;
+        }
     }
 }
+ion-footer{
+    --background:#F4F5FA !important;
+    --backdrop-opacity: 0 !important;
+}
+.landscape{
+    width: 50% !important;
+    margin: auto !important;
 }

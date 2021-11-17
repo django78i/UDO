@@ -7,7 +7,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { NavigationExtras } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import {
   AlertController,
   ModalController,
@@ -62,7 +62,8 @@ export class ModalChampComponent implements OnInit, AfterViewInit {
     public alertController: AlertController,
     public champService: ChampionnatsService,
     public navCtl: NavController,
-    public ref: ChangeDetectorRef
+    public ref: ChangeDetectorRef,
+    public router: Router
   ) {}
 
   ngOnInit() {
@@ -157,15 +158,19 @@ export class ModalChampComponent implements OnInit, AfterViewInit {
 
   seanceNow() {
     localStorage.setItem('championnatUid', this.championnat.uid);
-
-    const champInfo: NavigationExtras = {
+    const navigationExtras: NavigationExtras = {
       queryParams: {
+        // type: 'Séance Libre',
         type: 'Championnat',
+        //type: 'Challenge',
         competitionName: this.championnat.name,
         competitionId: this.championnat.uid,
+        challengeStatus: this.userEncours,
+        // challengeMetric: 'km',
       },
     };
-    this.navCtl.navigateForward('session-now', champInfo);
+
+    this.navCtl.navigateForward('session-now');
     this.modalCtrl.dismiss();
   }
 }

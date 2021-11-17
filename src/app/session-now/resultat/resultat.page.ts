@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AddContenuComponent } from '../add-contenu/add-contenu.component';
-import { ModalController, NavController, Platform } from '@ionic/angular';
+import {AlertController, ModalController, NavController, Platform} from '@ionic/angular';
 import { Router } from '@angular/router';
 import { DonneesPriveComponent } from '../donnees-prive/donnees-prive.component';
 import { Location } from '@angular/common';
@@ -56,6 +56,9 @@ export class ResultatPage implements OnInit {
   ];
   user;
   isVisible = false;
+  mode="";
+  modeClasse="";
+  message="";
   constructor(
     private modalCtrl: ModalController,
     private platform: Platform,
@@ -63,8 +66,24 @@ export class ResultatPage implements OnInit {
     private storage: AngularFireStorage,
     private sessionNowService: SessionNowService,
     public navCtl: NavController,
-    public router: Router
+    public router: Router,
+    private alertController: AlertController
   ) {
+    setInterval(()=>{
+    if(localStorage.getItem('mode')){
+      if(localStorage.getItem('mode')=='landscape'){
+        this.mode = 'landscape';
+        this.modeClasse="c-ion-fab-lands";
+      }else{
+        this.mode = '';
+        this.modeClasse="c-ion-fab";
+
+      }
+    }else{
+      this.modeClasse="c-ion-fab";
+      this.mode="";
+    }
+    }, 100);
     this.platform.backButton.subscribeWithPriority(10, () => {
       console.log('Handler was called!');
       this._location.back();
@@ -140,8 +159,39 @@ export class ResultatPage implements OnInit {
         }
       }
     }
+    this.platform.backButton.subscribeWithPriority(10, () => {
+      this.presentAlertConfirm();
+    });
   }
+  /**
+   * cette alert permet de confirmer la sortie de l'application
+   */
+  async presentAlertConfirm() {
+    const alert = await this.alertController.create({
+      header: 'Confirmation',
+      mode: 'ios',
+      message: 'Voulez vous vraiment arreter cette seance now',
+      buttons: [
+        {
+          text: 'Non',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
 
+          },
+        },
+        {
+          text: 'Oui',
+          handler: () => {
+            // on quitte l'application et on supprime tous les posts
+            this.destroySession();
+          },
+        },
+      ],
+    });
+
+    await alert.present();
+  }
   blur(ev) {
     this.isVisible = false;
   }
@@ -249,6 +299,12 @@ export class ResultatPage implements OnInit {
     });
     modal.onDidDismiss().then((data: any) => {});
     return await modal.present();
+  }
+  destroySession(){
+    this.sessionNowService.deleteSessionCascade(this.sessionNow.sessionId);
+    //on supprime la session now stocké dans le local storage
+    localStorage.removeItem('sessionNow');
+    this.router.navigate(['tabs']);
   }
 }
 

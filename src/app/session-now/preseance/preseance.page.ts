@@ -1,10 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonSlides, ModalController, NavController } from '@ionic/angular';
 import { ReglagesPage } from '../reglages/reglages.page';
-import { Router } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { ActivitiesPage } from '../activities/activities.page';
 import { AddPostContenuComponent } from '../add-post-contenu/add-post-contenu.component';
-import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+
 
 @Component({
   selector: 'app-preseance',
@@ -14,28 +15,85 @@ import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 export class PreseancePage implements OnInit {
   @ViewChild('mySlider') slides: IonSlides;
   slideOptsOne = {
-    initialSlide: 0,
+    initialSlide: 1,
     slidesPerView: 1,
     autoplay: false,
   };
   base64: any;
   current = 90;
   max = 100;
-  isActif: boolean = false;
+  isActif = false;
+  titleCurrentPage='' ;
+  categoryId: string;
   activite = {
     name: 'Sélectionnez une activité',
     image: 'assets/images/questionmark.svg',
     padding2: '34px 40px;',
     width2: '25px',
   };
+  mode = '';
+  modeClasse = '';
+  demarrage = '';
+  type: string;
+  categoryName: string;
+  challengeStatus: number;
+  challengeUnity: string;
+
+//...
+
   constructor(
+    private route: ActivatedRoute,
     private modalCtrl: ModalController,
     private router: Router,
-    public navCtl: NavController
-  ) {}
+    public navCtl: NavController,
+    private camera: Camera
+  ) {
+    setInterval(() => {
+      if (localStorage.getItem('mode')) {
+        if (localStorage.getItem('mode') === 'landscape') {
+          this.mode = 'landscape';
+          this.modeClasse = 'preseanceSlideLands';
+          this.demarrage = 'demarrageLands';
+        } else {
+          this.mode = 'portrait';
+          this.modeClasse = 'preseanceSlide';
+          this.demarrage = 'demarrage';
+        }
+      } else {
+        this.modeClasse = 'preseanceSlide';
+        this.demarrage = 'demarrage';
+      }
+    }, 100);
+  }
 
   ngOnInit() {
-    let item = localStorage.getItem('activite');
+    this.challengeStatus=90;
+    this.challengeUnity='%';
+    this.categoryName='';
+    this.categoryId='';
+    this.route.queryParams.subscribe(params => {
+      console.log(params)
+      this.type = params.type;
+      if(params.challengeStatus){
+        this.challengeStatus = params.challengeStatus;
+      }
+      if(params.competitionName){
+        this.categoryName = params.competitionName;
+      }
+      if(params.categoryId){
+        this.categoryId = params.competitionId;
+      }
+      if(params.challengeMetric){
+        this.challengeUnity = params.challengeMetric;
+      }
+
+    });
+
+   // this.type='Challenge';
+   // this.type='Championnat';
+    // this.type='Séance Libre';
+    this.titleCurrentPage=this.type;
+    const item = localStorage.getItem('activite');
     if (item) {
       this.activite = JSON.parse(item);
       this.isActif = true;
@@ -48,7 +106,7 @@ export class PreseancePage implements OnInit {
       componentProps: {},
     });
     modal.onDidDismiss().then((data: any) => {
-      let value = JSON.parse(localStorage.getItem('activite'));
+      const value = JSON.parse(localStorage.getItem('activite'));
       if (value) {
         this.activite = value;
         this.isActif = true;
@@ -57,14 +115,16 @@ export class PreseancePage implements OnInit {
     return await modal.present();
   }
 
-  async reglage() {
-    const modal = await this.modalCtrl.create({
+  async reglage(mySlider) {
+    this.titleCurrentPage='Réglages';
+    mySlider.slideTo(0);
+    /*const modal = await this.modalCtrl.create({
       component: ReglagesPage,
       cssClass: 'my-custom-activite-modal',
       componentProps: {},
     });
-    modal.onDidDismiss().then((data: any) => {});
-    return await modal.present();
+    modal.onDidDismiss().then((data: any) => { });
+    return await modal.present();*/
   }
 
   information() {
@@ -72,8 +132,7 @@ export class PreseancePage implements OnInit {
   }
 
   async addContenu() {
-    console.log(this.base64);
-    const modal = await this.modalCtrl.create({
+     const modal = await this.modalCtrl.create({
       component: AddPostContenuComponent,
       cssClass: 'my-custom-contenu-modal',
       componentProps: {
@@ -81,9 +140,10 @@ export class PreseancePage implements OnInit {
         activity: this.activite,
       },
     });
-    modal.onDidDismiss().then((data: any) => {});
+    modal.onDidDismiss().then((data: any) => { });
     return await modal.present();
   }
+  /*
   async openCamera() {
     const image = await Camera.getPhoto({
       quality: 50,
@@ -99,15 +159,36 @@ export class PreseancePage implements OnInit {
     // localStorage.setItem('picture', theActualPicture);
     if (this.base64) {
       this.addContenu();
+      this.slides.slideTo(1);
     }
     // this.modalCtr.dismiss(this.base64Image);
+  }*/
+  openCamera(){
+    const options: CameraOptions = {
+      quality: 100,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE
+    };
+
+    this.camera.getPicture(options).then((imageData) => {
+      // imageData is either a base64 encoded string or a file URI
+      // If it's base64 (DATA_URL):
+      this.base64 = 'data:image/jpeg;base64,' + imageData;
+      if (this.base64) {
+        this.addContenu();
+        this.slides.slideTo(1);
+      }
+    }, (err) => {
+      // Handle error
+    });
   }
   start() {
     if (this.isActif) {
-      let choice = JSON.parse(localStorage.getItem('reglages'));
-      if (!choice) this.router.navigate(['/session-now/demarrage']);
+      const choice = JSON.parse(localStorage.getItem('reglages'));
+      if (!choice) {this.router.navigate(['/session-now/demarrage']);}
       else {
-        if (choice.compteRebour == true) {
+        if (choice.compteRebour === true) {
           this.router.navigate(['/session-now/counter']);
         } else {
           this.router.navigate(['/session-now/demarrage']);
@@ -115,11 +196,34 @@ export class PreseancePage implements OnInit {
       }
     }
   }
+  swipePrev(){
+    this.slides.getActiveIndex().then((index: number) => {
+      if(index===0)
+        this.titleCurrentPage= 'Réglages';
+      if(index===1)
+        this.titleCurrentPage= this.type;
 
+      if (index !== 2) {this.slides.slideNext();}
+      else {this.slides.slideTo(0);}
+    });
+  }
+  slideChange(){
+    this.slides.getActiveIndex().then((index: number) => {
+      if(index===0)
+        this.titleCurrentPage='Réglages';
+      if(index===1)
+        this.titleCurrentPage='';
+      if(index===2){
+        this.slides.slideTo(1);
+        this.openCamera();
+      }
+
+    });
+  }
   swipeNext() {
     this.slides.getActiveIndex().then((index: number) => {
-      if (index != 2) this.slides.slideNext();
-      else this.slides.slideTo(0);
+      if (index !== 2) {this.slides.slideNext();}
+      else {this.slides.slideTo(0);}
     });
   }
   retour() {

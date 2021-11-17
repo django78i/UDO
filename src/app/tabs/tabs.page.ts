@@ -51,12 +51,18 @@ export class TabsPage implements OnInit {
   }
 
   launch() {
-    let navigationExtras: NavigationExtras = {
+    const navigationExtras: NavigationExtras = {
       queryParams: {
         type: 'Séance Libre',
+        // type: 'Championnat',
+        //type: 'Challenge',
+        competitionName: 'Classic Tournament',
+        competitionId: '12356',
+        challengeStatus: 90,
+        challengeMetric: 'km',
       },
     };
-    this.navController.navigateForward('session-now', navigationExtras);
+    this.navController.navigateForward(['session-now'], navigationExtras);
   }
 
   /**
