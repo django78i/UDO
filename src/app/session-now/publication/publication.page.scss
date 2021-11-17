@@ -92,6 +92,13 @@ ion-content{
                     margin-left: 35px;
                     margin-top: -3px;
                 }
+                .val3{
+                    font-family: "StaatlichesRegular" !important;
+                    font-size: 31px;
+                    color: #040405;
+                    margin-left: 43px;
+                    margin-top: -3px;
+                }
                 .val2{
                     font-family: "StaatlichesRegular" !important;
                     font-size: 31px;
@@ -119,11 +126,78 @@ ion-content{
             }
         }
     }
+    .c-row-lands{
+        margin-top: 65px;
+        margin-bottom: 165px;
+        .c-col{
+            round-progress{
+                margin: auto;
+            }
+            .val-progess-lands{
+                top: 33px;
+                position: absolute;
+                .val{
+                    font-family: "StaatlichesRegular" !important;
+                    font-size: 31px;
+                    color: #040405;
+                    margin-left: 108px;
+                    margin-top: -3px;
+                }
+                .val3{
+                    font-family: "StaatlichesRegular" !important;
+                    font-size: 31px;
+                    color: #040405;
+                    margin-left: 116px;
+                    margin-top: -3px;
+                }
+                .val2{
+                    font-family: "StaatlichesRegular" !important;
+                    font-size: 31px;
+                    color: #040405;
+                    margin-left: 106px;
+                    margin-top: -3px;
+                }
+                .val-xp{
+                    font-family: "PoppinsSemiBold" !important;
+                    font-size: 12px;
+                    color: #040405;
+                    margin-top: -3px;
+                    margin-left: 125px;
+                }
+            }
+            .c-name{
+                .name{
+                    letter-spacing: 0px;
+                    color: #000000;
+                    font-size: 14px;
+                    font-family: "PoppinsSemiBold" !important;
+                    margin: auto;
+                    margin-top: 10px;
+                }
+            }
+        }
+    }
     .c-ion-fab{
         background: #3E4ADD 0% 0% no-repeat padding-box;
         border-radius: 33px;
         width: 88%;
         margin: 0 20px;
+        height: 89px;
+        text-align: center;
+        padding-top: 30px;
+        margin-bottom: 20px;
+        span{
+            letter-spacing: 0px;
+            color: #FFFFFF;
+            font-size: 18px;
+            font-family: "PoppinsSemiBold" !important;
+        }
+    }
+    .c-ion-fab-lands{
+        background: #3E4ADD 0% 0% no-repeat padding-box;
+        border-radius: 33px;
+        width: 50%;
+        margin: 0 25%;
         height: 89px;
         text-align: center;
         padding-top: 30px;
