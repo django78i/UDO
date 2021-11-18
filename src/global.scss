@@ -152,6 +152,18 @@ ion-slides.preseanceSlideLands
   opacity: 1;
   background: #19191cab !important;
 }
+ion-slides.slideDemarrage
+  .swiper-pagination-bullets
+  .swiper-pagination-bullet-active {
+  opacity: 1;
+  background: white !important;
+}
+ion-slides.slideDemarrage  .swiper-pagination-bullets{
+  position: absolute;
+  top: 60%;
+  text-align: left;
+  margin-left: 39px;
+}
 ion-slides.aideSlide {
   height: 92%;
 }
