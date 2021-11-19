@@ -20,7 +20,11 @@ export class ConnexionPage implements OnInit, AfterContentChecked {
   config: SwiperOptions = {
     slidesPerView: 1,
   };
-
+  slideOptsOne = {
+    initialSlide: 1,
+    slidesPerView: 1,
+    autoplay: false,
+  };
   sliders = [
     {
       titre: 'Interconnectivité',
@@ -44,20 +48,21 @@ export class ConnexionPage implements OnInit, AfterContentChecked {
       background: '#5340BC',
     },
   ];
-
+  modeClasse="slideDemarrage";
   @ViewChildren('swiper') swiper: QueryList<SwiperComponent>;
 
   constructor(
     public modalController: ModalController,
     public navController: NavController
-  ) {}
+  ) {
+  }
 
   ngOnInit() {}
 
   ngAfterContentChecked(): void {
-    if (this.swiper) {
-      this.swiper.map((swip) => swip.updateSwiper({}));
-    }
+    // if (this.swiper) {
+    //   this.swiper.map((swip) => swip.updateSwiper({}));
+    // }
   }
 
   openConnect() {

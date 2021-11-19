@@ -1,74 +1,58 @@
-<ion-header style="padding: 20px; background: #f7f7fa">
+<ion-header style="background: #f7f7fa">
+  <ion-toolbar>
+    <ion-img slot="start" slot="start" class="img-back" src="assets/images/backArrow.svg" (click)="retour()"> </ion-img>
+  </ion-toolbar>
   <section style="background: #f7f7fa; margin: 0 15px; margin-bottom: 10px">
     <ion-item lines="none">
-      <ion-label slot="start">{{ step * 100 }}%</ion-label>
-      <ion-label slot="end" style="margin: 0; font-size: 12px"
-        >{{ activeIndex + 1 }}/4 STEPS</ion-label
-      >
+      <ion-label class="label-step" slot="start">{{ step * 100 }} <span class="pourcent">%</span> </ion-label>
+      <ion-label class="text-step" slot="end" style="margin: 0"><span class="active-step"> {{ activeIndex + 1}}</span> / 4 STEPS</ion-label>
     </ion-item>
 
-    <ion-progress-bar
-      style="
+    <ion-progress-bar style="
         border-radius: 10px;
         height: 6px;
         --progress-background: #3e4add;
         --background: #ffffff;
-      "
-      [value]="step"
-    ></ion-progress-bar>
+      " [value]="step"></ion-progress-bar>
   </section>
 </ion-header>
 <ion-content>
-  <ion-slides
-    pager="false"
-    [options]="slideOpts"
-    (ionSlideDidChange)="change($event)"
-    #slider
-  >
+  <ion-slides pager="false" [options]="slideOpts" (ionSlideDidChange)="change($event)" #slider>
     <ion-slide>
       <section class="sectionZone">
         <ion-label>
-          <h3 style="text-align: center">Choisissez un pseudo</h3>
-          <p>
+          <div class="create-profil">Création du profil</div>
+          <div class="text-profil">
             In publishing and graphic design, Lorem ipsum is a placeholder text
             commonly used.
-          </p>
+          </div>
         </ion-label>
-        <div
-          style="
+        <div style="
             font-size: 12px;
             margin-top: 75px;
             display: flex;
             flex-direction: column;
             gap: 20px;
             align-items: center;
-          "
-        >
-          <ion-avatar>
-            <img
-              *ngIf="!picture"
-              style="width: 100% !important"
-              src="https://img.icons8.com/ios-filled/50/000000/gender-neutral-user.png"
-            />
-            <img [src]="picture" *ngIf="picture" alt="" />
-            <ion-badge (click)="addPhoto()">
+          ">
+          <ion-avatar (click)="addPhoto()">
+            <img class="c-picture" *ngIf="!picture"
+              src="assets/images/profile.svg" />
+            <img class="c-picture-in" [src]="picture" *ngIf="picture" alt="" />
+            <ion-badge >
               <img src="assets/icon/pen.svg" alt="" />
             </ion-badge>
           </ion-avatar>
-          <ion-item lines="none">
-            <ion-label position="floating">Identifiant</ion-label>
-            <ion-input (ionChange)="changeInput($event)"> </ion-input>
+          <ion-item lines="none" class="c-form">
+            <mat-form-field class="c-mat-form" appearance="outline" color="warn">
+              <mat-label>Identifiant</mat-label>
+              <input matInput autocomplete="off" placeholder="Choisissez un pseudo..." class="form-control" (ionChange)="changeInput($event)" />
+            </mat-form-field>
           </ion-item>
         </div>
-        <ion-fab
-          horizontal="start"
-          vertical="bottom"
-          slot="fixed"
-          style="width: 95%"
-          (click)="savePhoto()"
-        >
-          <ion-button expand="block" class="buttonNextSlide">
-            suivant
+        <ion-fab class="fab"  horizontal="start" vertical="bottom" slot="fixed" style="width: 95%" (click)="savePhoto()">
+          <ion-button [class]="fabButton" expand="block" class="buttonNextSlide">
+          <span> suivant</span>
           </ion-button>
         </ion-fab>
       </section>
@@ -76,20 +60,14 @@
     <ion-slide>
       <section class="sectionZone">
         <ion-label>
-          <h3 style="text-align: center">Choisissez un pseudo</h3>
-          <p>
+          <div class="create-profil">Indiquez votre date de naissance</div>
+          <div class="text-profil">
             In publishing and graphic design, Lorem ipsum is a placeholder text
             commonly used.
-          </p>
+          </div>
         </ion-label>
         <app-gender (choix)="choiceSex($event)"></app-gender>
-        <ion-fab
-          horizontal="start"
-          vertical="bottom"
-          slot="fixed"
-          style="width: 95%"
-          (click)="genderSlide()"
-        >
+        <ion-fab horizontal="start" vertical="bottom" slot="fixed" style="width: 95%" (click)="genderSlide()">
           <ion-button expand="block" class="buttonNextSlide">
             suivant
           </ion-button>
@@ -104,34 +82,16 @@
           commonly used.
         </p>
       </ion-label>
-      <app-physics
-        (taille)="physicParam($event)"
-        (poids)="physicParam($event)"
-      ></app-physics>
-      <ion-fab
-        horizontal="start"
-        vertical="bottom"
-        slot="fixed"
-        style="width: 95%"
-        (click)="physicSlide()"
-      >
+      <app-physics (taille)="physicParam($event)" (poids)="physicParam($event)"></app-physics>
+      <ion-fab horizontal="start" vertical="bottom" slot="fixed" style="width: 95%" (click)="physicSlide()">
         <ion-button expand="block" class="buttonNextSlide">
           suivant
         </ion-button>
       </ion-fab>
     </ion-slide>
     <ion-slide>
-      <app-activity-list
-        [header]="false"
-        (activitesEvent)="eventActivite($event)"
-      ></app-activity-list>
-      <ion-fab
-        horizontal="start"
-        vertical="bottom"
-        slot="fixed"
-        style="width: 95%"
-        (click)="validate()"
-      >
+      <app-activity-list [header]="false" (activitesEvent)="eventActivite($event)"></app-activity-list>
+      <ion-fab horizontal="start" vertical="bottom" slot="fixed" style="width: 95%" (click)="validate()">
         <ion-button expand="block" class="buttonNextSlide">
           suivant
         </ion-button>

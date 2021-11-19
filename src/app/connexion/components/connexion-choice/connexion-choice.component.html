@@ -1,91 +1,54 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-img slot="start" slot="start" class="img-back" src="assets/images/backArrow.svg" (click)="retour()"> </ion-img>
+  </ion-toolbar>
+</ion-header>
 <ion-content style="--padding-end: 15px; --padding-start: 15px">
   <h2 class="titre">Vous y êtes presque !</h2>
   <p class="grey">
     Choisissez l’une des options ci-dessous pour commencer à utiliser UDO
   </p>
-  <ion-segment
-    mode="ios"
-    (ionChange)="segmentChanged($event)"
-    [value]="seg"
-    style="--background: #dfdfe8"
-  >
-    <ion-segment-button value="s'inscrire">s'inscrire </ion-segment-button>
+  <ion-segment mode="ios" (ionChange)="segmentChanged($event)" [value]="seg" style="--background: #dfdfe8">
+    <ion-segment-button value="s'inscrire">Inscription </ion-segment-button>
     <ion-segment-button value="se connecter">
-      déjà un compte
+      Déjà membre
     </ion-segment-button>
   </ion-segment>
   <div style="margin-top: 50px; font-size: 12px">
     <mat-form-field appearance="outline" color="warn">
-      <mat-label>Mail</mat-label>
+      <mat-label>Identifiant</mat-label>
       <input matInput class="form-control" [(ngModel)]="email" />
     </mat-form-field>
     <mat-form-field appearance="outline" color="warn">
       <mat-label>Mot de passe</mat-label>
-      <input
-        [(ngModel)]="mdPasse"
-        autocomplete="off"
-        [type]="hide ? 'password' : 'text'"
-        matInput
-        class="form-control"
-      />
+      <input [(ngModel)]="mdPasse" autocomplete="off" [type]="hide ? 'password' : 'text'" matInput
+        class="form-control" />
       <mat-icon matSuffix (click)="hide = !hide">
         <ion-icon [name]="hide ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
       </mat-icon>
     </mat-form-field>
     <p *ngIf="errorSub | async as error" style="color: red">{{ error }}</p>
   </div>
-  <button
-    (click)="connexion()"
-    mat-button
-    style="
-      padding: 1.5em 0;
-      background: #3e4add;
-      color: white;
-      width: 100%;
-      border-radius: 24px;
-    "
-  >
-    Connexion
+  <button class="btn-connexion" (click)="connexion()" mat-button>
+    C'est parti !
   </button>
 
-  <div
-    style="
-      position: relative;
-      margin-top: 20px;
-      width: 92%;
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-    "
-  >
-    <ion-button
-      expand="block"
-      shape="round"
-      (click)="login()"
-      style="--background: white; --color: black"
-    >
+  <div style="position: relative;margin-top: 20px;width: 100%;display: flex;flex-direction: column;gap: 5px;">
+    <ion-button expand="block" shape="round" (click)="login()" style="--background: white; --color: black">
       <ion-icon name="logo-google" slot="start"></ion-icon>Se connecter avec
-      Google</ion-button
-    >
-    <ion-button
-      expand="block"
-      shape="round"
-      style="--background: #3e4add; --color: white"
-    >
+      Google
+    </ion-button>
+    <ion-button expand="block" shape="round" style="--background: #3e4add; --color: white">
       <ion-icon name="logo-facebook" slot="start"></ion-icon>Se connecter avec
-      Facebook</ion-button
-    >
-    <ion-button
-      expand="block"
-      shape="round"
-      style="
+      Facebook
+    </ion-button>
+    <ion-button expand="block" shape="round" style="
         --background: transparent
           linear-gradient(261deg, #d90fba 0%, #fd6b00 100%);
         --color: white;
-      "
-    >
+      ">
       <ion-icon name="logo-instagram" slot="start"></ion-icon>Se connecter avec
-      Instagram</ion-button
-    >
+      Instagram
+    </ion-button>
   </div>
 </ion-content>
