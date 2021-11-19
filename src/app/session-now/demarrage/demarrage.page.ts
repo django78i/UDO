@@ -245,6 +245,25 @@ export class DemarragePage implements OnInit {
     } else {
       this.listElement = JSON.parse(localStorage.getItem('choix'));
     }
+    const detailCompet = JSON.parse(localStorage.getItem('detailCompet'));
+    if(detailCompet){
+      if(detailCompet.competitionName){
+        this.sessionNow.championant=detailCompet.competitionName;
+        this.sessionNow.competitionName=detailCompet.competitionName;
+      }
+      if(detailCompet.competitionId){
+        this.sessionNow.competitionId=detailCompet.competitionId;
+      }
+      if(detailCompet.competitionType){
+        this.sessionNow.competitionType=detailCompet.competitionType;
+      }
+      if(detailCompet.challengeStatus) {
+        this.sessionNow.challengeStatus = detailCompet.challengeStatus;
+      }
+      if(detailCompet.challengeMetric) {
+          this.sessionNow.challengeMetric = detailCompet.challengeMetric;
+      }
+    }
     this.sessionNow.startDate = new Date();
     this.sessionNow.activity = this.activite;
     if (
@@ -674,6 +693,11 @@ console.log(1);
   }
 }
 export class SessionNowModel {
+  competitionId: string;
+  competitionName: string;
+  competitionType: string;
+  challengeStatus: string;
+  challengeMetric: string;
   uid: string;
   startDate: Date;
   endDate: string;

@@ -13,7 +13,7 @@ export class DonneesPriveComponent implements OnInit {
 
   constructor(private modalCtr:ModalController,
     private router:Router,
-    private snService:SessionNowService) { 
+    private snService:SessionNowService) {
     this.image = JSON.parse(localStorage.getItem('image'));
   }
 
@@ -29,6 +29,7 @@ export class DonneesPriveComponent implements OnInit {
     if(sessionNow){
       this.snService.update(sessionNow,'session-now');
       this.snService.update(sessionNow,'post-session-now');
+      this.snService.updateCompetition(sessionNow);
     }
     localStorage.removeItem('image');
     this.close();

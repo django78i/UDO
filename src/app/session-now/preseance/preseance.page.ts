@@ -87,7 +87,15 @@ export class PreseancePage implements OnInit {
       }
 
     });
-
+    const detailCompet=
+      {
+        competitionType: this.type,
+        competitionName:this.categoryName,
+        competitionId:this.categoryId,
+        challengeStatus:this.challengeStatus,
+        challengeMetric:this.challengeUnity
+      };
+    localStorage.setItem('detailCompet',JSON.stringify(detailCompet));
    // this.type='Challenge';
    // this.type='Championnat';
     // this.type='Séance Libre';
