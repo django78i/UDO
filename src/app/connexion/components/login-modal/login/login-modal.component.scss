@@ -1,6 +1,57 @@
 .progress::part(progress) {
   border-radius: 10px;
 }
+ion-toolbar{
+  .img-back{
+    width: 13px;
+    height: 13px;
+    margin-left: 19px;
+  }
+    --background: transparent !important;
+}
+.label-step{
+  letter-spacing: -1.2px;
+  color: #000000;
+  opacity: 1;
+  font-family: "AllRoundGothicBold" !important;
+  font-size: 40px;
+}
+.pourcent{
+  color: #000000;
+  font-size: 23px;
+  margin-top: -3px;
+  position: absolute;
+  font-family: "AllRoundGothicBold" !important;
+}
+.text-step{
+  letter-spacing: 0px;
+  text-transform: uppercase;
+  font-family: "PoppinsBold" !important;
+  font-size: 12px;
+  color: #707071;
+  .active-step{
+    color: #000000 !important;
+  }
+}
+.create-profil{
+  letter-spacing: -0.6px;
+  color: #000000;
+  text-align: left;
+  font-size: 20px;
+  font-family: "PoppinsSemiBold" !important;
+  margin-top: 35px;
+}
+.text-profil{
+  width: 365px;
+  height: 35px;
+  text-align: left;
+  font-size:12px;
+  letter-spacing: 0px;
+  color: #707070;
+  opacity: 1;
+  font-family: "PoppinsMedium" !important;
+  margin-top: 17px;
+}
 
 :host ::ng-deep {
   .mat-horizontal-stepper-header-container {
@@ -66,25 +117,64 @@ ion-item::part(detail-icon) {
 
 ion-avatar {
   position: relative;
-  height: 100px;
-  width: 100px;
-  background: #dfdfe8;
+  height: 124px;
+  width: 124px;
+  background: #DFDFE8;
+  .c-picture{
+    width: 33px;
+    height: 37px;
+    margin: 44px auto;
+    text-align: center;
+  }
+  .c-picture-in{
+    width: 100%;
+  }
   ion-badge {
-    font-size: 10px;
     position: absolute;
-    height: 30px;
-    width: 30px;
-    min-width: 26px;
-    min-height: 26px;
-    --padding-top: 8px;
+    height: 39px;
+    width: 39px;
+    --padding-top: 11px;
     --padding-bottom: 8px;
     --background: #33363b;
-    right: -11px;
+    right: 9px;
     bottom: 0;
     border-radius: 50%;
     box-shadow: 0px 3px 8px #1e1c2715;
   }
 }
+.c-form{
+  margin-top: 33px;
+}
+.c-mat-form{
+  width: 377px;
+  font-size: 12px;
+  mat-label{
+    letter-spacing: -0.1px;
+    color: #000000;
+    opacity: 0.5;
+    font-size: 10px;
+    font-family: "PoppinsSemiBold" !important;
+  }
+  input::placeholder{
+    letter-spacing: -0.14px;
+    color: #000000;
+    opacity: 1;
+    font-size: 14px;
+    font-family: "PoppinsSemiBold" !important;
+    
+  }
+  input{
+    letter-spacing: -0.14px;
+    color: #000000;
+    opacity: 1;
+    font-size: 14px;
+    font-family: "PoppinsSemiBold" !important;
+    
+  }
+
+}
+
+
 
 .photo {
   height: 200px;
@@ -143,4 +233,33 @@ ion-input {
   --padding-start: 15px !important;
   border: 1px solid black;
   border-radius: 12px;
+}
+.fab{
+  border-radius: 33px;
+}
+.c-fab{
+  --background: #DFDFE8 !important;
+  
+  opacity: 1;
+  margin-bottom: 30px;
+  letter-spacing: 0px;
+  span{
+    color: #000000;
+    opacity: 0.28;
+    font-size: 16px;
+    font-family: "PoppinsSemiBold" !important;
+  }
+}
+.c-fab-img{
+  --background: #2D2E31 !important;
+  
+  opacity: 1;
+  margin-bottom: 30px;
+  letter-spacing: 0px;
+  span{
+    color: #FFFFFF;
+    opacity: 0.28;
+    font-size: 16px;
+    font-family: "PoppinsSemiBold" !important;
+  }
 }

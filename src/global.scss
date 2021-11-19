@@ -163,6 +163,11 @@ ion-slides.slideDemarrage  .swiper-pagination-bullets{
   top: 60%;
   text-align: left;
   margin-left: 39px;
+  display: none;
+}
+ion-slides.slideDemarrage  .swiper-pagination-bullet {
+
+  background: #c3bbbb !important;
 }
 ion-slides.aideSlide {
   height: 92%;
@@ -209,4 +214,10 @@ ion-slides.preseanceSlide {
 }
 .sc-ion-modal-ios-h:first-of-type{
   --backdrop-opacity: 0 !important;
+}
+.header-ios ion-toolbar:last-of-type {
+  --border-width: 0 !important;
+}
+ion-header{
+  box-sizing: none;
 }

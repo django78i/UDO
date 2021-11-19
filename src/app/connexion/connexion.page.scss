@@ -8,23 +8,32 @@
 ion-card-header {
   height: 460px;
 }
-.c-image ion-img{
-  height: 450px;
+.c-image {
+  margin: auto;
+  ion-img{
+    height: 450px;
+    width: 336px;
+  }
+}
+.c-image1 {
+  ion-img{
+    height: 450px;
+  }
 }
 .c-slide{
   height: 100% !important;
 }
 .udoLogo{
-  margin: 30px auto 0 auto;
+  margin: 30px auto 30px auto;
   width: 82px;
-height: 25px;
+  height: 25px;
 }
 .c-slide1{
   background-color:#352D8F;
 
   .c-row-img{
     background-color:#1B1231 ;
-    height: 488px;
+    height: 513px;
   }
   .titre{
     letter-spacing: -1.9px;

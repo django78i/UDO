@@ -53,6 +53,7 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
     speed: 400,
   };
   activeIndex: number = 0;
+  fabButton="c-fab";
   constructor(
     public zone: NgZone,
     public modalCtl: ModalController,
@@ -102,6 +103,7 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
     const theActualPicture = image.dataUrl;
     var imageUrl = image.webPath;
     this.picture = theActualPicture;
+    this.fabButton="c-fab-img";
   }
 
   changeInput(event) {
@@ -239,5 +241,9 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
       this.ref.detectChanges();
     }
     this.saveOnBoarding();
+  }
+
+  retour() {
+    this.navController.navigateBack('');
   }
 }

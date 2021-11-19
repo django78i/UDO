@@ -48,13 +48,14 @@ export class ConnexionPage implements OnInit, AfterContentChecked {
       background: '#5340BC',
     },
   ];
-
+  modeClasse="slideDemarrage";
   @ViewChildren('swiper') swiper: QueryList<SwiperComponent>;
 
   constructor(
     public modalController: ModalController,
     public navController: NavController
-  ) {}
+  ) {
+  }
 
   ngOnInit() {}
 
