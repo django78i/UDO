@@ -21,7 +21,8 @@ import { MediaCapture } from '@ionic-native/media-capture/ngx';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { TimeRelativePipe } from './pipe/time-relative.pipe';
 import { TimeChampPipe } from './pipe/time-champ.pipe';
-import {BackgroundMode} from '@ionic-native/background-mode/ngx';
+import { BackgroundMode } from '@ionic-native/background-mode/ngx';
+import { Camera } from '@ionic-native/camera/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -48,7 +49,8 @@ import {BackgroundMode} from '@ionic-native/background-mode/ngx';
     VideoEditor,
     MediaCapture,
     NativeStorage,
-    BackgroundMode
+    BackgroundMode,
+    Camera,
   ],
   bootstrap: [AppComponent],
 })

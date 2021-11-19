@@ -157,6 +157,7 @@ export class ModalChampComponent implements OnInit, AfterViewInit {
   }
 
   seanceNow() {
+    console.log('test')
     localStorage.setItem('championnatUid', this.championnat.uid);
     const navigationExtras: NavigationExtras = {
       queryParams: {

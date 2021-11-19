@@ -95,6 +95,7 @@ export class ChampionnatPage implements OnInit {
     );
     this.championnat.participants[index].etat = 'prêt';
     console.log(this.championnat);
+    this.champService.updateChamp(this.championnat);
   }
 
   segmentChanged(ev) {

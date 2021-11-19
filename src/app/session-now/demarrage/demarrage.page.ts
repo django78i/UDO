@@ -277,8 +277,8 @@ export class DemarragePage implements OnInit {
         this.sessionNow.postCount = 0;
         this.sessionNow.reactionsNombre = 0;
 
-        const sessionNow: SessionNowModel = { ...this.sessionNow };
-        sessionNow.type = 'session-now';
+        const  sessionNow= { ...this.sessionNow };
+        sessionNow['type'] = 'session-now';
 
         this.snService.createPostSessionNow(sessionNow).then((resPost) => {
           console.log('je suis la');
@@ -382,13 +382,13 @@ export class DemarragePage implements OnInit {
       if (metric === 'speed') {
         option.dataType = 'distance';
       }
-      option.bucket = 'hour';
+      option['bucket'] = 'hour';
       this.health
         .queryAggregated(option)
         .then((res) => this.processMetricResult(res, item))
         .catch((e) => console.log('error3 ', e));
     } else {
-      option.limit = 100;
+      option['limit'] = 100;
       this.health
         .query(option)
         .then((res) => this.processMetricResult(res, item))
@@ -691,7 +691,7 @@ export class SessionNowModel {
   metrics = [];
   score: number;
   mode: string; // 'private or public'
-  championant: string; // nulllable true
+  championnat: string; // nulllable true
   isLive: boolean; // true or false
   duration: string;
   comment: string;

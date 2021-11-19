@@ -107,7 +107,7 @@ export class UserProfilComponent implements OnInit {
     { name: 'Souplesse', stat: 100 },
     { name: 'Gainage', stat: 200 },
   ];
-  max = 20;
+  max :number;
   donneeFormat: any[] = [];
   seg: string = 'resume';
   statTable = [];
@@ -132,8 +132,8 @@ export class UserProfilComponent implements OnInit {
 
       const tableOrder = _.orderBy(this.user.metrics, ['value'], ['desc']);
       console.log(tableOrder);
-      this.max = this.user.metrics ? tableOrder[0].value * 1.2 : 0;
-
+      this.max = this.user.metrics ? Math.round(tableOrder[0].value * 1.2) : 0;
+      console.log(this.max);
       // this.createGraph();
       // this.position = this.createStats();
       console.log(this.currentUser, this.user);
@@ -169,6 +169,7 @@ export class UserProfilComponent implements OnInit {
     if (this.user.metrics) {
       this.user.metrics.map((stat, i) => {
         const ratio = stat.value / this.max;
+        console.log(this.ratio, this.max, stat.value)
         const position = {
           x: 130 - this.doneesIniitial[i].vecteur.x * ratio,
           y: 130 - this.doneesIniitial[i].vecteur.y * ratio,
@@ -241,7 +242,6 @@ export class UserProfilComponent implements OnInit {
     let position;
     return (position = `${this.statTable[0].position.x},${this.statTable[0].position.y} ${this.statTable[1].position.x},${this.statTable[1].position.y} ${this.statTable[2].position.x},${this.statTable[2].position.y} ${this.statTable[3].position.x},${this.statTable[3].position.y} ${this.statTable[4].position.x},${this.statTable[4].position.y} ${this.statTable[5].position.x},${this.statTable[5].position.y}`);
   }
-  
 
   createGraph() {
     this.ratio.map((ratio) => {

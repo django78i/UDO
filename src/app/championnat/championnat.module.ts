@@ -11,6 +11,7 @@ import { ResumeComponent } from '../tab3/components/resume/resume.component';
 import { FeedsComponent } from '../tab3/components/feeds/feeds.component';
 import { ClassementComponent } from '../tab3/components/classement/classement.component';
 import { TimeChampPipe } from 'src/app/pipe/time-champ.pipe';
+import { TimeRelativePipe } from '../pipe/time-relative.pipe';
 
 @NgModule({
   imports: [
@@ -25,7 +26,7 @@ import { TimeChampPipe } from 'src/app/pipe/time-champ.pipe';
     FeedsComponent,
     ResumeComponent,
     TimeChampPipe,
-
+    TimeRelativePipe,
   ],
 })
 export class ChampionnatPageModule {}

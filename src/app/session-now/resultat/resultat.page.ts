@@ -206,7 +206,6 @@ export class ResultatPage implements OnInit {
   }
 
   async upload() {
-    console.log(this.sessionNow);
     let url;
     if (this.base64Image) {
       const storage = getStorage();
@@ -237,14 +236,12 @@ export class ResultatPage implements OnInit {
       comment: this.sessionNow.comment ? this.sessionNow.comment : '',
       duree: this.counter,
     };
-    console.log(postModel);
     this.sessionNowService.findPostLies(this.sessionNow.sessionId);
     this.sessionNowService
       .update(postModel, 'post-session-now')
       .then((resPicture) => {
-        this.navCtl.navigateForward('');
-        localStorage.removeItem('sessionNow')
         this.sessionNowService.dissmissLoading();
+        this.navCtl.navigateForward('session-now/felicitation');
         this.sessionNowService.show('Seance publiée avec succés', 'success');
       });
   }
@@ -286,8 +283,7 @@ export class ResultatPage implements OnInit {
       cssClass: 'my-custom-contenu-modal',
     });
     modal.onDidDismiss().then((data: any) => {
-      console.log(data.data);
-      this.base64Image = data.data != 'Modal Closed' ? data.data : null;
+      this.base64Image = data.data !== 'Modal Closed' ? data.data : null;
     });
     return await modal.present();
   }
