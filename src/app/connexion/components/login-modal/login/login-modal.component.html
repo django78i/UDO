@@ -5,7 +5,8 @@
   <section style="background: #f7f7fa; margin: 0 15px; margin-bottom: 10px">
     <ion-item lines="none">
       <ion-label class="label-step" slot="start">{{ step * 100 }} <span class="pourcent">%</span> </ion-label>
-      <ion-label class="text-step" slot="end" style="margin: 0"><span class="active-step"> {{ activeIndex + 1}}</span> / 4 STEPS</ion-label>
+      <ion-label class="text-step" slot="end" style="margin: 0"><span class="active-step"> {{ activeIndex + 1}}</span> /
+        5 STEPS</ion-label>
     </ion-item>
 
     <ion-progress-bar style="
@@ -18,6 +19,7 @@
 </ion-header>
 <ion-content>
   <ion-slides pager="false" [options]="slideOpts" (ionSlideDidChange)="change($event)" #slider>
+    
     <ion-slide>
       <section class="sectionZone">
         <ion-label>
@@ -27,32 +29,26 @@
             commonly used.
           </div>
         </ion-label>
-        <div style="
-            font-size: 12px;
-            margin-top: 75px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            align-items: center;
-          ">
+        <div
+          style="font-size: 12px;margin-top: 75px;display: flex;flex-direction: column;gap: 20px;align-items: center;">
           <ion-avatar (click)="addPhoto()">
-            <img class="c-picture" *ngIf="!picture"
-              src="assets/images/profile.svg" />
+            <img class="c-picture" *ngIf="!picture" src="assets/images/profile.svg" />
             <img class="c-picture-in" [src]="picture" *ngIf="picture" alt="" />
-            <ion-badge >
+            <ion-badge>
               <img src="assets/icon/pen.svg" alt="" />
             </ion-badge>
           </ion-avatar>
           <ion-item lines="none" class="c-form">
             <mat-form-field class="c-mat-form" appearance="outline" color="warn">
               <mat-label>Identifiant</mat-label>
-              <input matInput autocomplete="off" placeholder="Choisissez un pseudo..." class="form-control" (ionChange)="changeInput($event)" />
+              <input matInput autocomplete="off" placeholder="Choisissez un pseudo..." class="form-control"
+                [(ngModel)]="pseudo" />
             </mat-form-field>
           </ion-item>
         </div>
-        <ion-fab class="fab"  horizontal="start" vertical="bottom" slot="fixed" style="width: 95%" (click)="savePhoto()">
+        <ion-fab class="fab" horizontal="start" vertical="bottom" slot="fixed" style="width: 95%" (click)="savePhoto()">
           <ion-button [class]="fabButton" expand="block" class="buttonNextSlide">
-          <span> suivant</span>
+            <span> suivant</span>
           </ion-button>
         </ion-fab>
       </section>
@@ -66,34 +62,75 @@
             commonly used.
           </div>
         </ion-label>
+        <ion-row class="dateNaisse">
+          <ion-item lines="none">
+            <input type="text" (blur)="ckeckDate()" onKeyPress="if(this.date?.jour.length==2) return false;" numberOnly
+              [(ngModel)]="date.jour">
+            <span class="barre"></span>
+            <input type="text" (blur)="ckeckDate()" onKeyPress="if(this.date?.mois.length==2) return false;" numberOnly
+              [(ngModel)]="date.mois">
+            <span class="barre"></span>
+            <input type="text" (blur)="ckeckDate()" onKeyPress="if(this.date?.annee.length==2) return false;" numberOnly
+              [(ngModel)]="date.annee">
+          </ion-item>
+        </ion-row>
+        <ion-row class="ignore">
+          <span class="text-ignore" (click)="ignorer()">Ignorer cette étape</span>
+        </ion-row>
+        <ion-fab class="fab2" horizontal="start" vertical="bottom" slot="fixed" style="width: 95%"
+          (click)="saveDateNaiss()">
+          <ion-button [class]="fabButton" expand="block" class="buttonNextSlide">
+            Suivant
+          </ion-button>
+        </ion-fab>
+
+      </section>
+    </ion-slide>
+    <ion-slide>
+      <section class="sectionZone">
+        <ion-label>
+          <div class="create-profil">A laquelle de ces options vous identifiez-vous le plus ?</div>
+          <div class="text-profil">
+            In publishing and graphic design, Lorem ipsum is a placeholder text
+            commonly used.
+          </div>
+        </ion-label>
+        <div class="c-gender"></div>
         <app-gender (choix)="choiceSex($event)"></app-gender>
-        <ion-fab horizontal="start" vertical="bottom" slot="fixed" style="width: 95%" (click)="genderSlide()">
-          <ion-button expand="block" class="buttonNextSlide">
-            suivant
+        <div class="c-div"></div>
+        <ion-row class="ignore">
+          <span class="text-ignore" (click)="ignorer()">Ignorer cette étape</span>
+        </ion-row>
+        <ion-fab class="fab2" horizontal="start" vertical="bottom" slot="fixed" style="width: 95%"
+          (click)="genderSlide()">
+          <ion-button [class]="fabButton" expand="block" class="buttonNextSlide">
+            Suivant
           </ion-button>
         </ion-fab>
       </section>
     </ion-slide>
     <ion-slide>
-      <ion-label>
-        <h3 style="text-align: center">Choisissez un pseudo</h3>
-        <p>
-          In publishing and graphic design, Lorem ipsum is a placeholder text
-          commonly used.
-        </p>
-      </ion-label>
-      <app-physics (taille)="physicParam($event)" (poids)="physicParam($event)"></app-physics>
-      <ion-fab horizontal="start" vertical="bottom" slot="fixed" style="width: 95%" (click)="physicSlide()">
-        <ion-button expand="block" class="buttonNextSlide">
-          suivant
-        </ion-button>
-      </ion-fab>
+      <section class="sectionZone">
+        <ion-label>
+          <div class="create-profil">Indiquez votre poids et taille</div>
+          <div class="text-profil">
+            In publishing and graphic design, Lorem ipsum is a placeholder text
+            commonly used.
+          </div>
+        </ion-label>
+        <app-physics (taille)="physicParam($event)" (poids)="physicParam($event)"></app-physics>
+        <ion-fab horizontal="start" vertical="bottom" slot="fixed" style="width: 95%" (click)="physicSlide()">
+          <ion-button expand="block" class="buttonNextSlide">
+            Suivant
+          </ion-button>
+        </ion-fab>
+      </section>
     </ion-slide>
     <ion-slide>
       <app-activity-list [header]="false" (activitesEvent)="eventActivite($event)"></app-activity-list>
       <ion-fab horizontal="start" vertical="bottom" slot="fixed" style="width: 95%" (click)="validate()">
         <ion-button expand="block" class="buttonNextSlide">
-          suivant
+          Suivant
         </ion-button>
       </ion-fab>
     </ion-slide>

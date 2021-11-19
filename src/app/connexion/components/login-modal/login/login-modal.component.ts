@@ -52,6 +52,11 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
   slideOpts = {
     speed: 400,
   };
+  date ={
+    jour:'',
+    mois:'',
+    annee:''
+  }
   activeIndex: number = 0;
   fabButton="c-fab";
   constructor(
@@ -106,10 +111,28 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
     this.fabButton="c-fab-img";
   }
 
-  changeInput(event) {
-    this.pseudo = event.detail.value;
+  saveDateNaiss(){
+    if(this.fabButton == 'c-fab-img2'){
+      this.step += 0.2;
+      this.ref.detectChanges();
+      this.slideNext();
+      this.fabButton = "fab2";
+    }
   }
-
+  ignorer(){
+    this.step += 0.2;
+    this.ref.detectChanges();
+    this.slideNext();
+    this.fabButton = "c-fab";
+  }
+  
+  ckeckDate(){
+    if(this.date.jour!='' && this.date.jour.length ==2 &&this.date.mois!='' && this.date.mois.length ==2 && this.date.annee!='' && this.date.annee.length ==2  ){
+      this.fabButton = "c-fab-img2";
+    }else{
+      this.fabButton = "c-fab";
+    }
+  }
   savePhoto() {
     if (this.picture) {
       const storage = getStorage();
@@ -127,7 +150,7 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
       );
     }
     if (this.pseudo != '') {
-      this.step += 0.25;
+      this.step += 0.20;
       this.ref.detectChanges();
       this.slideNext();
     }
@@ -227,6 +250,8 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
 
   choiceSex(event) {
     this.sex = event;
+    console.log("sex",this.sex);
+    
   }
 
   eventActivite(event) {
