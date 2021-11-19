@@ -31,7 +31,9 @@ export class ConnexionChoiceComponent implements OnInit {
     public navController: NavController,
     public modalController: ModalController,
     public zone: NgZone
-  ) {}
+  ) {
+    localStorage.setItem('firstConnexion','true');
+  }
 
   ngOnInit() {
     this.errorSub = this.userService.errorSubject$;
@@ -92,5 +94,8 @@ export class ConnexionChoiceComponent implements OnInit {
 
   close() {
     this.modalController.dismiss();
+  }
+  retour() {
+    this.navController.navigateBack('');
   }
 }

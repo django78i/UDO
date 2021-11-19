@@ -3,6 +3,7 @@ import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 import * as firebase from 'firebase/app';
 import { type } from 'os';
 import { UserService } from './services/user-service.service';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-root',
@@ -12,6 +13,7 @@ import { UserService } from './services/user-service.service';
 export class AppComponent {
   constructor(
     private screenOrientation: ScreenOrientation,
+    public navController: NavController
   ) {
     const config = {
       apiKey: 'AIzaSyCHrlvzztARn_AUL9yiVTTEtGSMdgO_XRw',
@@ -25,7 +27,12 @@ export class AppComponent {
     this.setOrientation();
     firebase.initializeApp(config);
 
-
+    let firstConnexion=localStorage.getItem('firstConnexion');
+    if(firstConnexion && firstConnexion == 'true'){
+      this.navController.navigateForward('login');
+    }else{
+      this.navController.navigateForward('connexion');
+    }
     let value = localStorage.getItem('reglages');
     if (value) {
       let listReglages = JSON.parse(value);
