@@ -198,9 +198,7 @@ export class SessionNowService {
       }
     });
   }
-  async updateChallenge(){
 
-  }
   async deletePostLies(postUid,db) {
    // const db = getFirestore();
     deleteDoc(doc(db, 'post-session-now', postUid));
