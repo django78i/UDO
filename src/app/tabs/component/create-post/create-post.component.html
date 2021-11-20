@@ -7,14 +7,19 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <ion-row>
-    <img
-      *ngIf="base64"
+  <!--<ion-row>
+     <img
+      
       class="base-image"
       (click)="addContenu()"
-      [src]="base64"
-    />
+    /> 
+  </ion-row>-->
+  <ion-row
+    *ngIf="base64"
+    [ngStyle]="{ 'background-image': 'url(' + base64 + ')' }"
+  >
   </ion-row>
+
   <ion-row *ngIf="!base64" class="addMedia" (click)="addContenu()">
     <ion-img class="appareil" src="assets/images/photo2.svg"></ion-img>
     <div class="ajouter">Ajouter un média</div>

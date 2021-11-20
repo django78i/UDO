@@ -32,6 +32,9 @@ import { ChatRoomComponent } from '../components/chat-room/chat-room.component';
 import { AddContenuComponent } from '../session-now/add-contenu/add-contenu.component';
 import { PhotoDetailComponent } from './components/photo-detail/photo-detail.component';
 import { TimeChampPipe } from '../pipe/time-champ.pipe';
+import { ChampViewComponent } from './components/champ-view/champ-view.component';
+import { ChallViewComponent } from './components/chall-view/chall-view.component';
+import { BigChallSliderComponent } from '../components/big-chall-slider/big-chall-slider.component';
 
 @NgModule({
   imports: [
@@ -70,6 +73,10 @@ import { TimeChampPipe } from '../pipe/time-champ.pipe';
     PhotoDetailComponent,
     TimeFeedPipe,
     TimeChampPipe,
+    ChampViewComponent,
+    ChallViewComponent,
+    ChallViewComponent,
+    BigChallSliderComponent
     // AddContenuComponent,
   ],
 })

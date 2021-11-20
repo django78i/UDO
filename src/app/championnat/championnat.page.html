@@ -96,8 +96,12 @@
         championnat.status == 'en attente' &&
         championnat.createur.uid == user.uid
       "
-      >{{loading? '':'Démarrer'}}<ion-spinner *ngIf="loading" name="crescent" mode="md"></ion-spinner></ion-button
-    >
+      >{{loading? '':'Démarrer'}}<ion-spinner
+        *ngIf="loading"
+        name="crescent"
+        mode="md"
+      ></ion-spinner
+    ></ion-button>
     <ion-button
       expand="block"
       class="buttonNextSlide"
@@ -117,8 +121,10 @@
         userEncours?.etat == 'prêt' &&
         championnat?.createur.uid != user.uid
       "
-      >{{ championnat?.dateDemarrage | timeRelative }}</ion-button
-    >
+      ><span *ngIf="!loading">
+        {{championnat.dateDemarrage | timeChamp}}</span
+      ></ion-button
+    ><ion-spinner *ngIf="loading" name="crescent" mode="md"></ion-spinner>
     <ion-button
       expand="block"
       style=" --i : {{championnat.banniere.color}}"
@@ -128,7 +134,12 @@
       >Séance Now</ion-button
     >
   </ion-fab>
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab
+    vertical="bottom"
+    horizontal="end"
+    slot="fixed"
+    *ngIf="championnat?.createur.uid == user.uid &&championnat?.status == 'en attente' "
+  >
     <ion-fab-button color="dark">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>

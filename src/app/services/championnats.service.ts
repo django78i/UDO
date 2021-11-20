@@ -82,7 +82,7 @@ export class ChampionnatsService {
     const docData = await getDoc(doc(this.db, 'championnats', uid));
     const dataDoc = await docData.data();
     const champ = this.formatChamp(dataDoc, users);
-    console.log(champ)
+    console.log(champ);
     this.singleChampSub$.next(champ);
   }
 
@@ -98,6 +98,7 @@ export class ChampionnatsService {
         if (changes) {
           this.champSubject$.next(null);
           this.champEnCoursSubject$.next(null);
+          this.champNetWork$.next(null);
         }
       });
       querySnapshot.forEach((doc) => {

@@ -90,12 +90,18 @@ export class ChampionnatPage implements OnInit {
   }
 
   participer() {
+    this.loading = true;
+
     const index = this.championnat.participants.findIndex(
       (ind) => ind.uid == this.user.uid
     );
     this.championnat.participants[index].etat = 'prêt';
+    this.userEncours.etat ="prêt"
+    this.ref.detectChanges()
     console.log(this.championnat);
     this.champService.updateChamp(this.championnat);
+    this.loading = false;
+
   }
 
   segmentChanged(ev) {

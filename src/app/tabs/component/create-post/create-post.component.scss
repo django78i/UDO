@@ -1,9 +1,11 @@
 .base-image {
   border: 2px dashed #2a2a2c;
   border-radius: 29px;
-  width: 89%;
-  margin: 40px 23px;
-  height: 117px;
+  background-position: center;
+  background-size: cover;
+  width: 100%;
+  // margin: 40px 23px;
+  height: 182px;
 }
 
 .addMedia {
@@ -11,7 +13,7 @@
   border-radius: 29px;
   width: 89%;
   margin: 40px 23px;
-  height: 117px;
+  height: 182px;
   .appareil {
     width: 30px;
     height: 27px;

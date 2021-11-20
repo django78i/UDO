@@ -126,7 +126,7 @@ export class Tab3Page implements OnInit, AfterContentChecked {
     return user;
   }
 
-  async buttonClick() {
+  async buttonClick(ev) {
     const modal = await this.modalController.create({
       component: CreateChampPopUpComponent,
       componentProps: {
@@ -134,6 +134,10 @@ export class Tab3Page implements OnInit, AfterContentChecked {
       },
     });
     return await modal.present();
+  }
+
+  viewChange(ev) {
+    this.segmentValue = ev.detail.value;
   }
 
   challChoice(event) {
@@ -157,7 +161,6 @@ export class Tab3Page implements OnInit, AfterContentChecked {
   }
 
   async launchDetail(ev) {
-
     this.router.navigate([`/championnat/${ev.uid}`]);
   }
 
