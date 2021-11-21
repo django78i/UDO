@@ -66,11 +66,12 @@ export class PreseancePage implements OnInit {
   }
 
   ngOnInit() {
-    this.challengeStatus = 90;
-    this.challengeUnity = '%';
-    this.categoryName = '';
-    this.categoryId = '';
-    this.route.queryParams.subscribe((params) => {
+    this.challengeStatus=90;
+    this.challengeUnity='%';
+    this.categoryName='';
+    this.categoryId='';
+    this.route.queryParams.subscribe(params => {
+      console.log(params)
       this.type = params.type;
       console.log(params);
       if (params.challengeStatus) {

@@ -119,7 +119,11 @@
       </app-slider-challenge>
     </div>
   </div>
-  <ion-segment [value]="segmentValue" mode="ios">
+  <ion-segment
+    [value]="segmentValue"
+    mode="ios"
+    (ionChange)="viewChange($event)"
+  >
     <ion-segment-button value="championnats">
       <ion-label>Championnats</ion-label>
     </ion-segment-button>
@@ -127,88 +131,18 @@
       <ion-label>Challenges</ion-label>
     </ion-segment-button>
   </ion-segment>
-  <div style="width: 100%; margin-top: 15px">
-    <div class="iconTitle">
-      <img
-        src="../../assets/icon/dot.svg"
-        style="
-          background-color: rgb(233, 229, 229);
-          padding: 10px;
-          border-radius: 50%;
-        "
-        alt=""
-      />
-      <h4 style="font-weight: 900; margin: 0">EN COURS</h4>
-    </div>
-
-    <app-user-championnats-slide
-      [championnats]="userChampionnats"
-      (champ)="champModal($event)"
-      *ngIf="userChampionnats"
-    >
-    </app-user-championnats-slide>
-  </div>
-  <ion-item
-    button
-    (click)="buttonClick()"
-    lines="none"
-    style="margin-bottom: 20px; margin-top: 20px"
-  >
-    <ion-icon
-      name="trophy-outline"
-      style="
-        padding: 10px;
-        border-radius: 50%;
-        border: 1px solid grey;
-        margin-right: 10px;
-      "
-    ></ion-icon>
-
-    <ion-label>
-      <p>Nouveau championnat</p>
-      <p>Créez vos propre</p>
-    </ion-label>
-  </ion-item>
-  <div style="width: 100%">
-    <div class="iconTitle">
-      <img
-        src="../../assets/icon/dot.svg"
-        style="
-          background-color: rgb(233, 229, 229);
-          padding: 10px;
-          border-radius: 50%;
-        "
-        alt=""
-      />
-      <h4 style="font-weight: 900; margin: 0">EN ATTENTE</h4>
-    </div>
-
-    <app-slider-championnat
-      (champ)="launchDetail($event)"
-      [championnats]="championnatsList"
-      *ngIf="championnatsList"
-    ></app-slider-championnat>
-  </div>
-  <div style="width: 100%; margin-bottom: 100px; margin-top: 15px">
-    <div class="iconTitle">
-      <img
-        src="assets/icon/dot.svg"
-        style="
-          background-color: rgb(233, 229, 229);
-          padding: 10px;
-          border-radius: 50%;
-        "
-        alt=""
-      />
-      <h4 style="font-weight: 900; margin: 0">NETWORK</h4>
-    </div>
-
-    <app-slider-network
-      (champ)="launchDetail($event)"
-      [championnats]="champinonatNetwork"
-      *ngIf="champinonatNetwork "
-    ></app-slider-network>
-  </div>
+  <ng-container *ngIf="segmentValue == 'championnats'">
+    <app-champ-view
+      [userChampionnats]="userChampionnats"
+      [championnatsList]="championnatsList"
+      [champinonatNetwork]="champinonatNetwork"
+      (champChoice)="launchDetail($event)"
+      (createChamp)="buttonClick($event)"
+    ></app-champ-view>
+  </ng-container>
+  <ng-container *ngIf="segmentValue == 'challenges'">
+    <app-chall-view [challenges]="challenges|async"></app-chall-view>
+  </ng-container>
   <ng-template #tempChamp>
     <swiper #swiper [config]="config" style="padding-left: 0">
       <ng-template swiperSlide *ngFor="let chall of temporaire">

@@ -1,6 +1,7 @@
 import {
   AfterContentChecked,
   AfterViewInit,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -14,6 +15,7 @@ import {
 import { FormBuilder, FormGroup } from '@angular/forms';
 import {
   IonCheckbox,
+  IonInput,
   IonRange,
   ModalController,
   PopoverController,
@@ -26,6 +28,25 @@ import { SwiperComponent } from 'swiper/angular';
 import moment from 'moment';
 import { UserService } from 'src/app/services/user-service.service';
 import { SessionNowService } from 'src/app/services/session-now-service.service';
+
+interface Championnat {
+  dateCreation: Date;
+  dateDemarrage: Date;
+  banniere: string;
+  journeeTotale: number;
+  name: string;
+  dureeMax: number;
+  status: string;
+  description?: string;
+  seanceByWeek: number;
+  niveauMax?: number;
+  niveauMin?: number;
+  activites?: any[];
+  createur: any;
+  type: string;
+  participants?: any[];
+  nbParticipants: number;
+}
 
 @Component({
   selector: 'app-create-champ-pop-up',
@@ -43,7 +64,10 @@ export class CreateChampPopUpComponent
     privacy: false,
     type: 'Friends&familly',
   };
-  ban: any = 'assets/banner/blackBanner.svg';
+  ban: any = {
+    color: '#19191C',
+    url: 'assets/banner/blackBanner.svg',
+  };
   title: any;
   @ViewChild('swiper') swiper: SwiperComponent;
   @Output() champ: EventEmitter<any> = new EventEmitter();
@@ -62,6 +86,26 @@ export class CreateChampPopUpComponent
       color: '#2DB681',
       url: 'assets/banner/greenBanner.svg',
     },
+    {
+      color: '#0069D3',
+      url: 'assets/banner/blue.svg',
+    },
+    {
+      color: '#F8774D',
+      url: 'assets/banner/orange.svg',
+    },
+    {
+      color: '#1BAC86',
+      url: 'assets/banner/turqoise.svg',
+    },
+    {
+      color: '#6F37C3',
+      url: 'assets/banner/violet.svg',
+    },
+    {
+      color: '#FCD03B',
+      url: 'assets/banner/yellow.svg',
+    },
   ];
 
   activitesList = [];
@@ -74,7 +118,12 @@ export class CreateChampPopUpComponent
   range: any;
   loading = true;
   sliderPage: any;
+  descriptionString: string;
+  inputLength: number = 20;
+
   @ViewChildren('checkBanniere') checkBanniere: QueryList<IonCheckbox>;
+
+  seg: string = 'Friends&Familly';
 
   constructor(
     private modalCtrl: ModalController,
@@ -84,7 +133,8 @@ export class CreateChampPopUpComponent
     public champService: ChampionnatsService,
     public toastController: ToastController,
     public userService: UserService,
-    public snService: SessionNowService
+    public snService: SessionNowService,
+    public ref: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -92,6 +142,7 @@ export class CreateChampPopUpComponent
     setTimeout(() => {
       this.loading = false;
     }, 1000);
+    this.ban;
   }
 
   ngAfterContentChecked() {
@@ -131,12 +182,10 @@ export class CreateChampPopUpComponent
     }
   }
 
-
   privacy() {
     this.private.privacy = !this.private.privacy;
     this.private.type = this.private.privacy ? 'Network' : 'Friends&Familly';
   }
-
 
   change(ev) {
     this.maxPlayer = !this.maxPlayer;
@@ -147,9 +196,15 @@ export class CreateChampPopUpComponent
     this.ban = ev;
   }
 
-  onKey() {
-    // const val = this.formChamp.get('name').value;
-    // this.title.next(val);
+  onKey(ev) {
+    this.title = ev.detail.value;
+    const length = ev.detail.value.length;
+    console.log(length);
+    this.inputLength = 20 - Number(length);
+  }
+
+  description(ev) {
+    this.descriptionString = ev.detail.value;
   }
 
   slideNext(data) {
@@ -161,7 +216,12 @@ export class CreateChampPopUpComponent
     this.range = ev.detail.value;
   }
 
+  segmentChanged(ev) {
+    this.seg = ev.detail.value;
+  }
+
   focused(ev, index) {
+    console.log(ev);
     const elemStyle = document.querySelectorAll('.checkZone');
     elemStyle.forEach((elem, i) => {
       index === i
@@ -187,7 +247,6 @@ export class CreateChampPopUpComponent
   }
 
   chooseFriends(event) {
-    console.log(event);
     this.friendsList = event;
   }
 
@@ -213,7 +272,7 @@ export class CreateChampPopUpComponent
     };
     console.log(this.friendsList);
     this.friendsList.push(user);
-    const champ = {
+    const champ: Championnat = {
       dateCreation: new Date(),
       dateDemarrage: moment(new Date()).add(7, 'days').toDate(),
       banniere: this.ban,
@@ -221,6 +280,7 @@ export class CreateChampPopUpComponent
       name: this.formChamp.get('name').value,
       dureeMax: this.weekCount,
       status: 'en attente',
+      description: this.descriptionString ? this.descriptionString : '',
       seanceByWeek: this.seanceWeekCount,
       niveauMax: this.range ? this.range.upper : '',
       niveauMin: this.range ? this.range.lower : '',
@@ -230,7 +290,7 @@ export class CreateChampPopUpComponent
         uid: this.user.uid,
         avatar: user.avatar,
       },
-      type: this.private.type,
+      type: this.seg,
       participants: this.friendsList,
       nbParticipants: this.friendsList?.length,
     };

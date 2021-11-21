@@ -1,0 +1,87 @@
+<section>
+  <div style="width: 100%; margin-top: 15px">
+    <div class="iconTitle">
+      <img
+        src="../../assets/icon/dot.svg"
+        style="
+          background-color: rgb(233, 229, 229);
+          padding: 10px;
+          border-radius: 50%;
+        "
+        alt=""
+      />
+      <h4 style="font-weight: 900; margin: 0">EN COURS</h4>
+    </div>
+
+    <app-slider-challenge
+      [challenges]="challenges"
+      *ngIf="challenges"
+      (slide)="challChoice($event)"
+    >
+    </app-slider-challenge>
+  </div>
+  <!-- <ion-item
+    button
+    (click)="buttonClick()"
+    lines="none"
+    style="margin-bottom: 20px; margin-top: 20px"
+  >
+    <ion-icon
+      name="trophy-outline"
+      style="
+        padding: 10px;
+        border-radius: 50%;
+        border: 1px solid grey;
+        margin-right: 10px;
+      "
+    ></ion-icon>
+
+    <ion-label>
+      <p>Nouveau championnat</p>
+      <p>Créez vos propre</p>
+    </ion-label>
+  </ion-item> -->
+  <div style="width: 100%">
+    <div class="iconTitle">
+      <img
+        src="../../assets/icon/dot.svg"
+        style="
+          background-color: rgb(233, 229, 229);
+          padding: 10px;
+          border-radius: 50%;
+        "
+        alt=""
+      />
+      <h4 style="font-weight: 900; margin: 0">EXPLORER</h4>
+    </div>
+    <app-big-chall-slider
+      [challenges]="challenges"
+      *ngIf="challenges"
+    ></app-big-chall-slider>
+    <!-- <app-slider-championnat
+      (champ)="launchDetail($event)"
+      [championnats]="championnatsList"
+      *ngIf="championnatsList"
+    ></app-slider-championnat> -->
+  </div>
+  <div style="width: 100%; margin-bottom: 100px; margin-top: 15px">
+    <div class="iconTitle">
+      <img
+        src="assets/icon/dot.svg"
+        style="
+          background-color: rgb(233, 229, 229);
+          padding: 10px;
+          border-radius: 50%;
+        "
+        alt=""
+      />
+      <h4 style="font-weight: 900; margin: 0">TERMINES</h4>
+    </div>
+
+    <!-- <app-slider-network
+      (champ)="launchDetail($event)"
+      [championnats]="champinonatNetwork"
+      *ngIf="champinonatNetwork"
+    ></app-slider-network> -->
+  </div>
+</section>

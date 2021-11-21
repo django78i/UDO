@@ -7,6 +7,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
+import { NavigationExtras, Router } from '@angular/router';
 import {
   AlertController,
   ModalController,
@@ -14,6 +15,14 @@ import {
 } from '@ionic/angular';
 import moment from 'moment';
 import { ChampionnatsService } from 'src/app/services/championnats.service';
+
+interface ChampionnatNav {
+  type: string;
+  competitionName?: string;
+  competitionId?: string;
+  challengeStatus?: number;
+  challengeMetric?: string;
+}
 
 interface Championnat {
   uid: string;
@@ -53,7 +62,8 @@ export class ModalChampComponent implements OnInit, AfterViewInit {
     public alertController: AlertController,
     public champService: ChampionnatsService,
     public navCtl: NavController,
-    public ref: ChangeDetectorRef
+    public ref: ChangeDetectorRef,
+    public router: Router
   ) {}
 
   ngOnInit() {
@@ -147,7 +157,20 @@ export class ModalChampComponent implements OnInit, AfterViewInit {
   }
 
   seanceNow() {
+    console.log('test')
     localStorage.setItem('championnatUid', this.championnat.uid);
+    const navigationExtras: NavigationExtras = {
+      queryParams: {
+        // type: 'Séance Libre',
+        type: 'Championnat',
+        //type: 'Challenge',
+        competitionName: this.championnat.name,
+        competitionId: this.championnat.uid,
+        challengeStatus: this.userEncours,
+        // challengeMetric: 'km',
+      },
+    };
+
     this.navCtl.navigateForward('session-now');
     this.modalCtrl.dismiss();
   }

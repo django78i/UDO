@@ -24,7 +24,7 @@ import { CreateChampPopUpComponent } from './components/create-champ-pop-up/crea
 import { MenuUserComponent } from '../components/menu-user/menu-user.component';
 import { UserService as UserService } from '../services/user-service.service';
 import { ChampionnatsService } from '../services/championnats.service';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 
 @Component({
   selector: 'app-tab3',
@@ -100,7 +100,7 @@ export class Tab3Page implements OnInit, AfterContentChecked {
     this.champService.champNetWork$
       .pipe(
         tap((r) => {
-          console.log(r)
+          console.log(r);
           r == null
             ? (this.champinonatNetwork = [])
             : this.champinonatNetwork.push(r);
@@ -126,7 +126,7 @@ export class Tab3Page implements OnInit, AfterContentChecked {
     return user;
   }
 
-  async buttonClick() {
+  async buttonClick(ev) {
     const modal = await this.modalController.create({
       component: CreateChampPopUpComponent,
       componentProps: {
@@ -134,6 +134,10 @@ export class Tab3Page implements OnInit, AfterContentChecked {
       },
     });
     return await modal.present();
+  }
+
+  viewChange(ev) {
+    this.segmentValue = ev.detail.value;
   }
 
   challChoice(event) {
@@ -157,28 +161,10 @@ export class Tab3Page implements OnInit, AfterContentChecked {
   }
 
   async launchDetail(ev) {
-    const user = await this.userService.getCurrentUser();
-    const modal = await this.modalController.create({
-      component: ModalChampComponent,
-      cssClass: 'testModal',
-      backdropDismiss: true,
-      componentProps: {
-        user: user,
-        championnat: ev,
-      },
-    });
-    return await modal.present();
+    this.router.navigate([`/championnat/${ev.uid}`]);
   }
 
   chatPage() {
-    // this.navCtl.navigateForward('chat');
     this.router.navigate(['chat']);
   }
-
-  // ngOnDestroy() {
-  //   this.championnatNetWorkSubscription.unsubscribe();
-  //   this.userSubscription.unsubscribe();
-  //   this.championnatSubscription.unsubscribe();
-  //   this.userChampSubscription.unsubscribe();
-  // }
 }

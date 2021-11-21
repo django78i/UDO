@@ -397,7 +397,7 @@ export class DemarragePage implements OnInit {
    */
   // @ts-ignore
   queryMetrics(metric, item) {
-    const option = {
+    const option: any = {
       startDate: new Date(this.sessionNow.startDate), // three days ago
       endDate: new Date(), // now
       dataType: metric,
@@ -721,7 +721,7 @@ export class SessionNowModel {
   metrics = [];
   score: number;
   mode: string; // 'private or public'
-  championant: string; // nulllable true
+  championnat: string; // nulllable true
   isLive: boolean; // true or false
   duration: string;
   comment: string;
@@ -730,6 +730,7 @@ export class SessionNowModel {
   userNiveau: number;
   postCount: 0;
   reactionsNombre: 0;
+  type: string;
 }
 export class PostModel {
   postedAt: string;

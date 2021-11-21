@@ -1,11 +1,33 @@
-form {
-  padding: 0 15px;
-  margin-bottom: 10px;
-  mat-form-field {
-    width: 100%;
-    input {
-      height: 30px;
-    }
+// form {
+//   padding: 0 15px;
+//   margin-bottom: 10px;
+//   mat-form-field {
+//     width: 100%;
+//     // input {
+//     //   height: 30px;
+//     // }
+//   }
+// }
+
+ion-segment {
+  width: 80%;
+  margin-left: 15px;
+  background-color: rgb(233, 229, 229);
+  border-radius: 26px;
+  margin-top: 11px;
+  padding: 3px;
+}
+
+ion-segment-button {
+  --padding-top: 10px !important;
+  --padding-bottom: 10px !important;
+  --border-radius: 26px;
+  --color: #25252998;
+  --color-focused: #000000;
+  --color-checked: #000000;
+  ion-label {
+    font-size: 13px;
+    font-weight: 600;
   }
 }
 
@@ -25,9 +47,9 @@ form {
   width: 26px;
 }
 
-.form-control {
-  font-size: 10px;
-}
+// .form-control {
+//   font-size: 10px;
+// }
 
 ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix {
   padding: 0 0 7px;
@@ -109,6 +131,8 @@ ion-card {
   border-radius: 27px;
   transition: 0.5s ease all;
   margin-top: 0;
+  background-size: cover;
+  background-position: center;
 }
 
 ion-card-subtitle {
@@ -181,9 +205,39 @@ mat-hint {
   font-size: 10px;
 }
 
-ion-range::part(pin) {
-  font-weight: 600;
-  padding: 6px 0;
+ion-range {
+  padding-bottom: 0;
+  // padding: 0 !important;
+  .badgeRange {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: white;
+    color: black;
+  }
+
+  --pin-background: #1bac86;
+  &::part(tick) {
+    height: 3px;
+    width: 3px;
+    border-radius: 50%;
+  }
+  &::part(pin) {
+    font-weight: 600;
+  }
+  &::part(bar) {
+    background: #bdbfc63f;
+    height: 3px;
+  }
+
+  &::part(bar-active),
+  &::part(knob),
+  &::part(tick) {
+    background: #1bac86 !important;
+  }
 }
 
 ion-radio-group {
@@ -195,4 +249,3 @@ ion-radio-group {
   --color: var(--dataColor);
   --color-checked: var(--dataColor);
 }
-

@@ -12,6 +12,7 @@ import {
   setDoc,
   where,
   updateDoc,
+  getDoc,
 } from 'firebase/firestore';
 import { BehaviorSubject, from, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -27,6 +28,7 @@ export class ChampionnatsService {
   friendsListSubject$: BehaviorSubject<any> = new BehaviorSubject(null);
   db = getFirestore();
   messagesSubject$: Subject<any> = new Subject();
+  singleChampSub$: Subject<any> = new Subject();
 
   constructor() {}
 
@@ -75,6 +77,15 @@ export class ChampionnatsService {
     });
   }
 
+  async getChampionnat(uid) {
+    const users = JSON.parse(localStorage.getItem('usersList'));
+    const docData = await getDoc(doc(this.db, 'championnats', uid));
+    const dataDoc = await docData.data();
+    const champ = this.formatChamp(dataDoc, users);
+    console.log(champ);
+    this.singleChampSub$.next(champ);
+  }
+
   getChampionnats() {
     const auth = getAuth();
     auth.currentUser.uid;
@@ -87,6 +98,7 @@ export class ChampionnatsService {
         if (changes) {
           this.champSubject$.next(null);
           this.champEnCoursSubject$.next(null);
+          this.champNetWork$.next(null);
         }
       });
       querySnapshot.forEach((doc) => {
@@ -100,7 +112,7 @@ export class ChampionnatsService {
         } else if (
           document.status == 'en attente' &&
           bool &&
-          document.type == 'Friends&familly'
+          document.type == 'Friends&Familly'
         ) {
           this.champSubject$.next(docFormat);
         } else if (
@@ -158,15 +170,8 @@ export class ChampionnatsService {
       .pipe(
         map((r) => r.docs),
         map((users) => {
-          const userFilter = users.filter((user) => {
-            const activitiesTable: [] = user.data().activitesPratiquees;
-            const verif = acitivities.length
-              ? activitiesTable?.some((act) => acitivities.includes(act))
-              : true;
-            return verif;
-          });
           let tableUser = [];
-          userFilter.forEach((r) => {
+          users.forEach((r) => {
             tableUser.push(r.data());
           });
           this.friendsListSubject$.next(tableUser.length ? tableUser : null);

@@ -1,7 +1,7 @@
   <swiper #swiper [config]="config" style="padding-left: 15px">
     <ng-template swiperSlide *ngFor="let champ of championnats">
       <ion-card
-        [ngStyle]="{ 'background-image': 'url(' + champ.banniere + ')' }"
+        [ngStyle]="{ 'background-image': 'url(' + champ.banniere.url + ')' }"
         (click)="choice(champ)"
       >
         <ion-card-header>
@@ -17,7 +17,7 @@
                 >{{ champ.name }}</ion-label
               >
               <ion-note style="font-size: 10px; color: white; font-weight: 700">
-                {{ champ.createur.name }}
+                {{ champ.createur.userName }}
               </ion-note>
             </div>
           </ion-card-title>
@@ -25,12 +25,12 @@
             <img
               src="../../../assets/icon/Icon feather-globe.svg"
               alt=""
-              *ngIf="champ.type == 'NetWork'"
+              *ngIf="champ.type == 'Network'"
             />
             <img
               src="../../../assets/icon/FriendsFamilly.svg"
               alt=""
-              *ngIf="champ.type == 'Friends&familly'"
+              *ngIf="champ.type == 'Friends&Familly'"
             />
           </div>
         </ion-card-header>

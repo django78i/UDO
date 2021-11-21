@@ -25,9 +25,9 @@ export class SliderChallengeComponent implements OnInit, AfterContentChecked {
 
 
   ngAfterContentChecked(): void {
-    if (this.swiper) {
-      this.swiper.map(swip => swip.updateSwiper({}));
-    }
+    // if (this.swiper) {
+    //   this.swiper.map(swip => swip.updateSwiper({}));
+    // }
   }
 
 

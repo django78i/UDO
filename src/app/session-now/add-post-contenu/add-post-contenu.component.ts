@@ -5,6 +5,7 @@ import {
   ViewChild,
   AfterViewInit,
   ChangeDetectorRef,
+  OnDestroy,
 } from '@angular/core';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import {
@@ -15,7 +16,7 @@ import {
   Platform,
 } from '@ionic/angular';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { SessionNowService } from '../../services/session-now-service.service';
 import moment from 'moment';
@@ -27,7 +28,7 @@ import { getDownloadURL, getStorage, uploadString } from 'firebase/storage';
   templateUrl: './add-post-contenu.component.html',
   styleUrls: ['./add-post-contenu.component.scss'],
 })
-export class AddPostContenuComponent implements OnInit {
+export class AddPostContenuComponent implements OnInit, OnDestroy {
   isPicture = true;
   base64Image: any;
   selectedFile: File = null;
@@ -46,6 +47,7 @@ export class AddPostContenuComponent implements OnInit {
   mode = '';
   modeClasse = '';
   message = '';
+  sub: Subscription;
   constructor(
     private platform: Platform,
     private modalCtr: ModalController,
@@ -63,13 +65,11 @@ export class AddPostContenuComponent implements OnInit {
           this.mode = '';
           this.modeClasse = 'c-ion-fab';
           this.message = 'message';
-
         }
       } else {
         this.mode = '';
         this.modeClasse = 'c-ion-fab';
         this.message = 'message';
-
       }
     }, 100);
     this.sessionNow = JSON.parse(localStorage.getItem('sessionNow'));
@@ -77,16 +77,21 @@ export class AddPostContenuComponent implements OnInit {
     //this.base64Image = localStorage.getItem('picture');
     this.activite = JSON.parse(localStorage.getItem('activite'));
     this.picture = this.navParams.get('picture');
-    this.platform.keyboardDidShow.subscribe((ev) => {
+    this.sub = this.platform.keyboardDidShow.subscribe((ev) => {
       const { keyboardHeight } = ev;
       this.isVisible = true;
+      this.ref.detectChanges();
+
       // Do something with the keyboard height such as translating an input above the keyboard.
     });
 
-    this.platform.keyboardDidHide.subscribe(() => {
-      // Move input back to original location
-      this.isVisible = false;
-    });
+    this.sub.add(
+      this.platform.keyboardDidHide.subscribe(() => {
+        // Move input back to original location
+        this.isVisible = false;
+        this.ref.detectChanges();
+      })
+    );
   }
 
   ngOnInit() {
@@ -178,6 +183,10 @@ export class AddPostContenuComponent implements OnInit {
     }
     const blob = new Blob([arrayBuffer], { type: 'image/png' });
     return blob;
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 }
 export class PostModel {

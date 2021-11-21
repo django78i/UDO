@@ -29,10 +29,33 @@
     </div>
   </ion-item>
   <ion-item lines="full">
+    <span
+      style="
+        position: absolute;
+        left: 11px;
+        color: white;
+        font-size: 12px;
+        z-index: 1000;
+        font-weight: 700;
+      "
+      >{{ user.exp }} XP</span
+    >
     <ion-progress-bar
       style="height: 23px; border-radius: 34px; --background: #eaebef"
-      value="0.5"
-    ></ion-progress-bar>
+      [value]="ratio"
+    >
+    </ion-progress-bar>
+    <span
+      style="
+        position: absolute;
+        right: 26px;
+        color: black;
+        font-size: 12px;
+        z-index: 1000;
+        font-weight: 700;
+      "
+      >100 XP</span
+    >
   </ion-item>
 </ion-header>
 <ion-content>

@@ -1,7 +1,7 @@
 <swiper #swiper [config]="config" style="padding-left: 15px">
   <ng-template swiperSlide *ngFor="let champ of championnats">
     <ion-card
-      [ngStyle]="{ 'background-image': 'url(' + champ.banniere + ')' }"
+      [ngStyle]="{ 'background-image': 'url(' + champ.banniere.url + ')' }"
       (click)="choice(champ)"
     >
       <ion-card-header>
