@@ -1,6 +1,7 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {
-  AlertController, IonSlides,
+  AlertController,
+  IonSlides,
   ModalController,
   NavController,
   ToastController,
@@ -8,7 +9,7 @@ import {
 import { ListMetricsPage } from '../list-metrics/list-metrics.page';
 import { NotificationsPage } from '../notifications/notifications.page';
 import { ReglagesPage } from '../reglages/reglages.page';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Health } from '@ionic-native/health/ngx';
 import { Platform } from '@ionic/angular';
 import { DonneesPriveComponent } from '../donnees-prive/donnees-prive.component';
@@ -80,6 +81,7 @@ export class DemarragePage implements OnInit {
   mode = '';
   modeClasse = '';
   demarrage = '';
+  competitionId: string;
   constructor(
     private backgroundMode: BackgroundMode,
     private modalCtrl: ModalController,
@@ -90,7 +92,8 @@ export class DemarragePage implements OnInit {
     private platform: Platform,
     private snService: SessionNowService,
     public alertController: AlertController,
-    private camera: Camera
+    private camera: Camera,
+    private route: ActivatedRoute
   ) {
     setInterval(() => {
       if (localStorage.getItem('mode')) {
@@ -129,7 +132,8 @@ export class DemarragePage implements OnInit {
             this.reactions = value.reactions.arrayValue.values?.length;
             this.sessionNow.reactions = value.reactions.arrayValue.values;
             if (
-              this.sessionNow.reactions.length !== sessionNow.reactions.length &&
+              this.sessionNow.reactions.length !==
+                sessionNow.reactions.length &&
               this.reactions !== 0
             ) {
               this.showNotification();
@@ -169,7 +173,7 @@ export class DemarragePage implements OnInit {
           handler: () => {
             // on quitte l'application et on supprime tous les posts
             this.destroySession();
-           // this.displayRecap();
+            // this.displayRecap();
           },
         },
       ],
@@ -177,19 +181,21 @@ export class DemarragePage implements OnInit {
 
     await alert.present();
   }
-  destroySession(){
+  destroySession() {
     this.snService.deleteSessionCascade(this.sessionNow.sessionId);
     //on supprime la session now stocké dans le locl storage
     localStorage.removeItem('sessionNow');
     this.router.navigate(['tabs']);
   }
   ngOnInit() {
+    this.route.queryParams.subscribe((params) => {
+      this.competitionId = params ? params.championnat : ''
+    });
     // activate background mode
-  //  this.backgroundMode.enable();
-
+    //  this.backgroundMode.enable();
 
     // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
-   /* this.backgroundMode.isScreenOff( function(bool) {
+    /* this.backgroundMode.isScreenOff( function(bool) {
       this.updateChrono();
       this.backgroundMode.wakeUp();
       this.backgroundMode.unlock();
@@ -246,22 +252,23 @@ export class DemarragePage implements OnInit {
       this.listElement = JSON.parse(localStorage.getItem('choix'));
     }
     const detailCompet = JSON.parse(localStorage.getItem('detailCompet'));
-    if(detailCompet){
-      if(detailCompet.competitionName){
-        this.sessionNow.championant=detailCompet.competitionName;
-        this.sessionNow.competitionName=detailCompet.competitionName;
+    console.log(detailCompet)
+    if (detailCompet) {
+      if (detailCompet.competitionName) {
+        this.sessionNow.championant = detailCompet.competitionName;
+        this.sessionNow.competitionName = detailCompet.competitionName;
       }
-      if(detailCompet.competitionId){
-        this.sessionNow.competitionId=detailCompet.competitionId;
+      if (detailCompet.competitionId) {
+        this.sessionNow.competitionId = detailCompet.competitionId;
       }
-      if(detailCompet.competitionType){
-        this.sessionNow.competitionType=detailCompet.competitionType;
+      if (detailCompet.competitionType) {
+        this.sessionNow.competitionType = detailCompet.competitionType;
       }
-      if(detailCompet.challengeStatus) {
+      if (detailCompet.challengeStatus) {
         this.sessionNow.challengeStatus = detailCompet.challengeStatus;
       }
-      if(detailCompet.challengeMetric) {
-          this.sessionNow.challengeMetric = detailCompet.challengeMetric;
+      if (detailCompet.challengeMetric) {
+        this.sessionNow.challengeMetric = detailCompet.challengeMetric;
       }
     }
     this.sessionNow.startDate = new Date();
@@ -285,7 +292,7 @@ export class DemarragePage implements OnInit {
       .createSessionNow(this.sessionNow)
       .then((res) => {
         this.sessionNow.uid = res;
-        localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
+        // localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
         this.sessionNow.photo = this.image ? this.image.picture : '';
         this.sessionNow.userName = this.user ? this.user.userName : '';
         this.sessionNow.userId = this.user ? this.user.uid : '';
@@ -295,9 +302,9 @@ export class DemarragePage implements OnInit {
         this.sessionNow.postCount = 0;
         this.sessionNow.reactionsNombre = 0;
 
-        const  sessionNow= { ...this.sessionNow };
+        const sessionNow = { ...this.sessionNow };
         sessionNow['type'] = 'session-now';
-
+        console.log(this.sessionNow)
         this.snService.createPostSessionNow(sessionNow).then((resPost) => {
           console.log('je suis la');
           // this.sessionNow.uid = res;
@@ -305,7 +312,7 @@ export class DemarragePage implements OnInit {
         });
       })
       .catch((err) => console.error(err));
-    localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
+    // localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
   }
 
   /**
@@ -366,8 +373,8 @@ export class DemarragePage implements OnInit {
       item.nombre =
         res.length > 0
           ? Math.round(
-            (parseFloat(res[res.length - 1]?.value) + Number.EPSILON) * 100
-          ) / 100
+              (parseFloat(res[res.length - 1]?.value) + Number.EPSILON) * 100
+            ) / 100
           : '0';
     }
     if (item.fieldname === 'distance') {
@@ -462,27 +469,30 @@ export class DemarragePage implements OnInit {
   /**
    * cette fonction permet d'ouvrir la camera
    */
-  openCamera(){
+  openCamera() {
     const options: CameraOptions = {
       quality: 100,
       destinationType: this.camera.DestinationType.DATA_URL,
       encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE
+      mediaType: this.camera.MediaType.PICTURE,
     };
 
-    this.camera.getPicture(options).then((imageData) => {
-      // imageData is either a base64 encoded string or a file URI
-      // If it's base64 (DATA_URL):
-      this.base64 = 'data:image/jpeg;base64,' + imageData;
-      if (this.base64) {
-        this.addContenu();
-        this.slides.slideTo(1);
+    this.camera.getPicture(options).then(
+      (imageData) => {
+        // imageData is either a base64 encoded string or a file URI
+        // If it's base64 (DATA_URL):
+        this.base64 = 'data:image/jpeg;base64,' + imageData;
+        if (this.base64) {
+          this.addContenu();
+          this.slides.slideTo(1);
+        }
+      },
+      (err) => {
+        // Handle error
       }
-    }, (err) => {
-      // Handle error
-    });
+    );
   }
- /* async openCamera() {
+  /* async openCamera() {
     const image = await Camera.getPhoto({
       quality: 50,
       allowEditing: false,
@@ -535,7 +545,7 @@ console.log(1);
         },
       },
     });
-    modal.onDidDismiss().then((data: any) => { });
+    modal.onDidDismiss().then((data: any) => {});
     return await modal.present();
   }
   /**
@@ -548,7 +558,7 @@ console.log(1);
       cssClass: 'my-custom-activite-modal',
       componentProps: {},
     });
-    modal.onDidDismiss().then((data: any) => { });
+    modal.onDidDismiss().then((data: any) => {});
     return await modal.present();
   }
 
@@ -565,7 +575,7 @@ console.log(1);
     // modal.onDidDismiss().then((data: any) => {
     //   this.base64 = data.data;
     // });
-    modal.onDidDismiss().then((data: any) => { });
+    modal.onDidDismiss().then((data: any) => {});
     return await modal.present();
   }
 
@@ -579,7 +589,7 @@ console.log(1);
       cssClass: 'my-custom-activite-modal',
       componentProps: {},
     });
-    modal.onDidDismiss().then((data: any) => { });
+    modal.onDidDismiss().then((data: any) => {});
     return await modal.present();
   }
 
@@ -678,17 +688,18 @@ console.log(1);
       km: (distanceMeter / timeSeconds) * 3.6,
     };
   }
-  slideChange(){
+  slideChange() {
     this.slides.getActiveIndex().then((index: number) => {
-      if(index===0)
-        {this.titleCurrentPage='Réglages';}
-      if(index===1)
-        {this.titleCurrentPage='';}
-      if(index===2){
+      if (index === 0) {
+        this.titleCurrentPage = 'Réglages';
+      }
+      if (index === 1) {
+        this.titleCurrentPage = '';
+      }
+      if (index === 2) {
         this.openCamera();
         this.slides.slideTo(1);
       }
-
     });
   }
 }

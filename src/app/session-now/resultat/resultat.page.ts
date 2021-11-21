@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { AddContenuComponent } from '../add-contenu/add-contenu.component';
-import {AlertController, ModalController, NavController, Platform} from '@ionic/angular';
+import {
+  AlertController,
+  ModalController,
+  NavController,
+  Platform,
+} from '@ionic/angular';
 import { Router } from '@angular/router';
 import { DonneesPriveComponent } from '../donnees-prive/donnees-prive.component';
 import { Location } from '@angular/common';
@@ -56,9 +61,9 @@ export class ResultatPage implements OnInit {
   ];
   user;
   isVisible = false;
-  mode="";
-  modeClasse="";
-  message="";
+  mode = '';
+  modeClasse = '';
+  message = '';
   constructor(
     private modalCtrl: ModalController,
     private platform: Platform,
@@ -69,20 +74,19 @@ export class ResultatPage implements OnInit {
     public router: Router,
     private alertController: AlertController
   ) {
-    setInterval(()=>{
-    if(localStorage.getItem('mode')){
-      if(localStorage.getItem('mode')=='landscape'){
-        this.mode = 'landscape';
-        this.modeClasse="c-ion-fab-lands";
-      }else{
+    setInterval(() => {
+      if (localStorage.getItem('mode')) {
+        if (localStorage.getItem('mode') == 'landscape') {
+          this.mode = 'landscape';
+          this.modeClasse = 'c-ion-fab-lands';
+        } else {
+          this.mode = '';
+          this.modeClasse = 'c-ion-fab';
+        }
+      } else {
+        this.modeClasse = 'c-ion-fab';
         this.mode = '';
-        this.modeClasse="c-ion-fab";
-
       }
-    }else{
-      this.modeClasse="c-ion-fab";
-      this.mode="";
-    }
     }, 100);
     this.platform.backButton.subscribeWithPriority(10, () => {
       console.log('Handler was called!');
@@ -90,6 +94,7 @@ export class ResultatPage implements OnInit {
     });
     this.counter = JSON.parse(localStorage.getItem('counter'));
     this.sessionNow = JSON.parse(localStorage.getItem('sessionNow'));
+    console.log(this.sessionNow);
     this.user = JSON.parse(localStorage.getItem('user'));
     this.isPicture = localStorage.getItem('addPicture');
   }
@@ -176,9 +181,7 @@ export class ResultatPage implements OnInit {
           text: 'Non',
           role: 'cancel',
           cssClass: 'secondary',
-          handler: (blah) => {
-
-          },
+          handler: (blah) => {},
         },
         {
           text: 'Oui',
@@ -236,6 +239,9 @@ export class ResultatPage implements OnInit {
       comment: this.sessionNow.comment ? this.sessionNow.comment : '',
       duree: this.counter,
     };
+    console.log(this.sessionNow);
+    // this.sessionNowService.update(this.sessionNow,'session-now');
+    this.sessionNowService.updateCompetition(this.sessionNow);
     this.sessionNowService.findPostLies(this.sessionNow.sessionId);
     this.sessionNowService
       .update(postModel, 'post-session-now')
@@ -296,7 +302,7 @@ export class ResultatPage implements OnInit {
     modal.onDidDismiss().then((data: any) => {});
     return await modal.present();
   }
-  destroySession(){
+  destroySession() {
     this.sessionNowService.deleteSessionCascade(this.sessionNow.sessionId);
     //on supprime la session now stocké dans le local storage
     localStorage.removeItem('sessionNow');

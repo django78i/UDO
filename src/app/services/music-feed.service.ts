@@ -44,7 +44,7 @@ export class MusicFeedService {
     // Query the first page of docs
     const first = query(
       collection(db, 'post-session-now'),
-      where('championnat', '==', champUid),
+      where('competitionId', '==', champUid),
       orderBy('startDate', 'desc'),
       limit(15)
     );

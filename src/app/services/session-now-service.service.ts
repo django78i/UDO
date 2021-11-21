@@ -31,21 +31,21 @@ import {
   signInWithPopup,
 } from 'firebase/auth';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
-import {userError} from "@angular/compiler-cli/src/transformers/util";
+import { userError } from '@angular/compiler-cli/src/transformers/util';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SessionNowService {
   loader: HTMLIonLoadingElement;
-  user:any;
+  user: any;
   constructor(
     private googlePlus: GooglePlus,
     public platform: Platform, // private googlePlus: GooglePlus,
     public alertController: AlertController,
     private loadingCtrl: LoadingController,
     private toastCtrl: ToastController,
-    private http:HttpClient
+    private http: HttpClient
   ) {}
 
   async create(document, collectionName) {
@@ -112,8 +112,8 @@ export class SessionNowService {
    * cette fonction permet de supprimer en cascade une seance now
    * @param sessionId
    */
-  async deleteSessionCascade(sessionId){
-    let canDelete=true;
+  async deleteSessionCascade(sessionId) {
+    let canDelete = true;
     const db = getFirestore();
     const queryPost = query(
       collection(db, 'post-session-now'),
@@ -122,25 +122,27 @@ export class SessionNowService {
     const document = await getDocs(queryPost);
 
     document.forEach((doc) => {
-      if(doc){
-          if(doc.data().reactionsNombre>0){
-            canDelete=false;
-          }
+      if (doc) {
+        if (doc.data().reactionsNombre > 0) {
+          canDelete = false;
+        }
       }
     });
-    if(canDelete){
+    if (canDelete) {
       // on supprime la session now et tous les post liés
       deleteDoc(doc(db, 'session-now', sessionId));
       deleteDoc(doc(db, 'post-session-now', sessionId));
-      document.forEach((doc) => (doc ? this.deletePostLies(doc.data().uid,db
-      ) : ''));
-    }else{
+      document.forEach((doc) =>
+        doc ? this.deletePostLies(doc.data().uid, db) : ''
+      );
+    } else {
       // la session a un post commenté donc on supprime
       const document = await getDocs(queryPost);
-      document.forEach((doc) => (doc ? this.updatePostLies(doc.data().uid) : ''));
+      document.forEach((doc) =>
+        doc ? this.updatePostLies(doc.data().uid) : ''
+      );
       updateDoc(doc(db, 'session-now', sessionId), { isLive: false });
     }
-
   }
   async findPostLies(postUid) {
     const db = getFirestore();
@@ -154,26 +156,24 @@ export class SessionNowService {
 
   async updatePostLies(postUid) {
     const db = getFirestore();
-    updateDoc(doc(db, 'post-session-now', postUid), { isLive: false });
+    await updateDoc(doc(db, 'post-session-now', postUid), { isLive: false });
   }
-  async updateCompetition(sessionNow){
+  async updateCompetition(sessionNow) {
     this.user = JSON.parse(localStorage.getItem('user'));
 
-    if(sessionNow.competitionType==='Séance Libre'){
+    if (sessionNow.competitionType === 'Séance Libre') {
       // cas seance libre
-    }
-    else if(sessionNow.competitionType==='Championnat'){
+    } else if (sessionNow.competitionType === 'Championnat') {
       // cas seance championnat
-      this.updateChampionnat(this.user.uid,sessionNow);
-    }
-    else if(sessionNow.competitionType==='Challenge'){
+      this.updateChampionnat(this.user.uid, sessionNow);
+    } else if (sessionNow.competitionType === 'Challenge') {
       // TODO: cas Challenge
     }
   }
-  async updateChallenge(userId,sessionNow){
+  async updateChallenge(userId, sessionNow) {}
 
-  }
-  async updateChampionnat(userId,sessionNow){
+  
+  async updateChampionnat(userId, sessionNow) {
     const db = getFirestore();
     const queryPost = query(
       collection(db, 'championnats'),
@@ -181,29 +181,37 @@ export class SessionNowService {
     );
     const document = await getDocs(queryPost);
     document.forEach((doc1) => {
-      if(doc1 && doc1.data() && doc1.data().participants){
-        let participants=doc1.data().participants;
-        for(let participant of participants){
-          if(participant.uid=userId){
-            participant.point=participant.point?participant.point+3:3;
+      if (doc1 && doc1.data() && doc1.data().participants) {
+        let participants = doc1.data().participants;
+        for (let participant of participants) {
+          if ((participant.uid = userId)) {
+            participant.points =
+              participant.points != 0 ? participant.points + 3 : 3;
             // on incrémente la journee,
-            participant.point=participant.point?participant.point+3:3;
+            participant.journeeEnCours = participant.journeeEnCours = !0
+              ? participant.journeeEnCours + 1
+              : 1;
 
             // bonus
           }
         }
         // on appelle la fonction qui fait le update du participant
-        const part={  participants: participants};
-        updateDoc(doc(db, 'championnats', sessionNow.championnatId), { part });
+        const part = { participants: participants };
+         updateDoc(doc(db, 'championnats', sessionNow.championnatId), {
+          part,
+        });
       }
     });
   }
 
-  async deletePostLies(postUid,db) {
-   // const db = getFirestore();
-    deleteDoc(doc(db, 'post-session-now', postUid));
+  async champUpdate(champ){
+    
   }
 
+  async deletePostLies(postUid, db) {
+    // const db = getFirestore();
+    deleteDoc(doc(db, 'post-session-now', postUid));
+  }
 
   async show(message, color) {
     const toast = this.toastCtrl.create({
@@ -235,7 +243,7 @@ export class SessionNowService {
     }
   }
 
-  getActivities(){
+  getActivities() {
     return this.http.get('../../../assets/mocks/activitiesList.json').pipe();
   }
 }
