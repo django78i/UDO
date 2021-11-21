@@ -15,6 +15,7 @@
     /> 
   </ion-row>-->
   <ion-row
+    class="base-image"
     *ngIf="base64"
     [ngStyle]="{ 'background-image': 'url(' + base64 + ')' }"
   >
@@ -32,8 +33,6 @@
         (keyup.enter)="publier()"
         #InputArea
         (ionChange)="inputRead($event)"
-        (ionBlur)="blur($event)"
-        (ionFocus)="active($event)"
       ></ion-input>
       <ion-icon
         name="pencil-sharp"
