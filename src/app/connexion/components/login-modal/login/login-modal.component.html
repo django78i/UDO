@@ -19,9 +19,9 @@
 </ion-header>
 <ion-content>
   <ion-slides pager="false" [options]="slideOpts" (ionSlideDidChange)="change($event)" #slider>
-    
+   
     <ion-slide>
-      <section class="sectionZone">
+      <div class="sectionZone">
         <ion-label>
           <div class="create-profil">Création du profil</div>
           <div class="text-profil">
@@ -39,19 +39,17 @@
             </ion-badge>
           </ion-avatar>
           <ion-item lines="none" class="c-form">
-            <mat-form-field class="c-mat-form" appearance="outline" color="warn">
+            <mat-form-field class="c-mat-form {{invalidInput}}" appearance="outline" color="warn">
               <mat-label>Identifiant</mat-label>
-              <input matInput autocomplete="off" placeholder="Choisissez un pseudo..." class="form-control"
+              <input matInput autocomplete="off" (blur)="checkPseudo()" placeholder="Choisissez un pseudo..." class="form-control"
                 [(ngModel)]="pseudo" />
             </mat-form-field>
+            
           </ion-item>
+          
         </div>
-        <ion-fab class="fab" horizontal="start" vertical="bottom" slot="fixed" style="width: 95%" (click)="savePhoto()">
-          <ion-button [class]="fabButton" expand="block" class="buttonNextSlide">
-            <span> suivant</span>
-          </ion-button>
-        </ion-fab>
-      </section>
+        <span class="error" *ngIf="errorPseudo!= '' "> {{errorPseudo}} </span>
+      </div>
     </ion-slide>
     <ion-slide>
       <section class="sectionZone">
@@ -74,15 +72,8 @@
               [(ngModel)]="date.annee">
           </ion-item>
         </ion-row>
-        <ion-row class="ignore">
-          <span class="text-ignore" (click)="ignorer()">Ignorer cette étape</span>
-        </ion-row>
-        <ion-fab class="fab2" horizontal="start" vertical="bottom" slot="fixed" style="width: 95%"
-          (click)="saveDateNaiss()">
-          <ion-button [class]="fabButton" expand="block" class="buttonNextSlide">
-            Suivant
-          </ion-button>
-        </ion-fab>
+     
+        
 
       </section>
     </ion-slide>
@@ -98,15 +89,6 @@
         <div class="c-gender"></div>
         <app-gender (choix)="choiceSex($event)"></app-gender>
         <div class="c-div"></div>
-        <ion-row class="ignore">
-          <span class="text-ignore" (click)="ignorer()">Ignorer cette étape</span>
-        </ion-row>
-        <ion-fab class="fab2" horizontal="start" vertical="bottom" slot="fixed" style="width: 95%"
-          (click)="genderSlide()">
-          <ion-button [class]="fabButton" expand="block" class="buttonNextSlide">
-            Suivant
-          </ion-button>
-        </ion-fab>
       </section>
     </ion-slide>
     <ion-slide>
@@ -119,20 +101,28 @@
           </div>
         </ion-label>
         <app-physics (taille)="physicParam($event)" (poids)="physicParam($event)"></app-physics>
-        <ion-fab horizontal="start" vertical="bottom" slot="fixed" style="width: 95%" (click)="physicSlide()">
-          <ion-button expand="block" class="buttonNextSlide">
-            Suivant
-          </ion-button>
-        </ion-fab>
       </section>
     </ion-slide>
     <ion-slide>
       <app-activity-list [header]="false" (activitesEvent)="eventActivite($event)"></app-activity-list>
-      <ion-fab horizontal="start" vertical="bottom" slot="fixed" style="width: 95%" (click)="validate()">
-        <ion-button expand="block" class="buttonNextSlide">
-          Suivant
-        </ion-button>
-      </ion-fab>
+     
     </ion-slide>
   </ion-slides>
+ 
+  <ion-footer *ngIf="activeIndex!=4" class="fab" style="width: 95%" (click)="nextStep()">
+    <ion-button [class]="fabButton" expand="block" class="buttonNextSlide">
+      <span> Suivant</span>
+    </ion-button>
+  </ion-footer>
+  <ion-footer *ngIf="activeIndex==4" class="fab" style="width: 95%" (click)="validate()">
+    <ion-button [class]="fabButton" expand="block" class="buttonNextSlide">
+      <span> Finaliser</span>
+    </ion-button>
+  </ion-footer>
+  <ion-row class="ignore" *ngIf="activeIndex!=0 && activeIndex!=4">
+    <span class="text-ignore" (click)="ignorer()">Ignorer cette étape</span>
+  </ion-row>
+  <ion-footer class="ignore2" *ngIf="activeIndex==4">
+    <span class="text-ignore2" (click)="validate()">Plus tard</span>
+  </ion-footer>
 </ion-content>

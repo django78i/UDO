@@ -33,6 +33,19 @@ ion-item::part(detail-icon) {
 .small {
   height: 0px;
 }
+.sousTitre{
+  letter-spacing: -0.14px;
+  color: #2A2A2C;
+  font-size: 14px;
+  font-family: "PoppinsSemiBold" !important;
+}
+.activite{
+  letter-spacing: -0.1px;
+  color: #2A2A2C;
+  opacity: 0.51;
+  font-size: 10px;
+  font-family: "PoppinsMedium" !important;
+}
 
 .typeLogo {
   height: 50px;
