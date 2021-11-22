@@ -80,7 +80,7 @@ ion-card-header {
     margin: auto;
     ion-img{
       width: 336px;
-      height: 399px;
+      height: 418px;
     }
   }
   .titre{
@@ -104,25 +104,7 @@ ion-card-header {
     width: 336px;
     text-align: left;
   }
-  .row-demarrer{
-    z-index: 9999999999999999 !important;
-    border: 2px solid #d3d3de82;
-    border-radius: 33px;
-    width: 337px;
-    height: 89px;
-    margin: auto;
-    margin-top: 48px;
-    margin-bottom: 13px;
-    .demarrer{
-      text-align: center;
-      font-size: 18px;
-      font-family: "PoppinsSemiBold" !important;
-      letter-spacing: 0px;
-      color:#d3d3de82;
-      opacity: 1;
-      margin: auto;
-    }
-  }
+ 
 }
 .c-slide3{
   background-color:#121214;
@@ -130,7 +112,7 @@ ion-card-header {
     margin: auto;
     ion-img{
       width: 390px;
-      height: 421px;
+      height: 418px;
     }
   }
   .titre{
@@ -180,7 +162,7 @@ ion-card-header {
     margin: auto;
     ion-img{
       width: 413px;
-      height: 395px;
+      height: 427px;
     }
   }
   .titre{
@@ -225,5 +207,24 @@ ion-card-header {
       opacity: 1;
       margin: auto;
     }
+  }
+}
+.row-demarrer{
+  z-index: 9999999999999999 !important;
+  border: 2px solid #d3d3de82;
+  border-radius: 33px;
+  width: 337px;
+  height: 89px;
+  margin: auto;
+  margin-top: -100px;
+  position: relative;
+  .demarrer{
+    text-align: center;
+    font-size: 18px;
+    font-family: "PoppinsSemiBold" !important;
+    letter-spacing: 0px;
+    color:#d3d3de82;
+    opacity: 1;
+    margin: auto;
   }
 }
