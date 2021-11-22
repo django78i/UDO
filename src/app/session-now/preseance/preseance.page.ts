@@ -80,7 +80,7 @@ export class PreseancePage implements OnInit {
       if (params.competitionName) {
         this.categoryName = params.competitionName;
       }
-      if (params.categoryId) {
+      if (params.competitionId) {
         this.categoryId = params.competitionId;
       }
       if (params.challengeMetric) {

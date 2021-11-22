@@ -255,7 +255,6 @@ export class DemarragePage implements OnInit {
     console.log(detailCompet)
     if (detailCompet) {
       if (detailCompet.competitionName) {
-        this.sessionNow.championant = detailCompet.competitionName;
         this.sessionNow.competitionName = detailCompet.competitionName;
       }
       if (detailCompet.competitionId) {

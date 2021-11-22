@@ -158,7 +158,8 @@ export class SessionNowService {
     const db = getFirestore();
     await updateDoc(doc(db, 'post-session-now', postUid), { isLive: false });
   }
-  async updateCompetition(sessionNow) {
+  updateCompetition(sessionNow) {
+    console.log(sessionNow);
     this.user = JSON.parse(localStorage.getItem('user'));
 
     if (sessionNow.competitionType === 'Séance Libre') {
@@ -172,41 +173,35 @@ export class SessionNowService {
   }
   async updateChallenge(userId, sessionNow) {}
 
-  
   async updateChampionnat(userId, sessionNow) {
     const db = getFirestore();
     const queryPost = query(
       collection(db, 'championnats'),
-      where('uid', '==', sessionNow.championnatId)
+      where('uid', '==', sessionNow.competitionId)
     );
     const document = await getDocs(queryPost);
     document.forEach((doc1) => {
+      console.log(doc1.data());
       if (doc1 && doc1.data() && doc1.data().participants) {
         let participants = doc1.data().participants;
-        for (let participant of participants) {
-          if ((participant.uid = userId)) {
-            participant.points =
-              participant.points != 0 ? participant.points + 3 : 3;
-            // on incrémente la journee,
-            participant.journeeEnCours = participant.journeeEnCours = !0
-              ? participant.journeeEnCours + 1
-              : 1;
-
-            // bonus
-          }
-        }
+        const ind = participants.findIndex((part) => (part.uid = userId));
+        participants[ind].points =
+          participants[ind].points != 0 ? participants[ind].points + 3 : 3;
+        // on incrémente la journee,
+        participants[ind].journeeEnCours = participants[ind].journeeEnCours = !0
+          ? participants[ind].journeeEnCours + 1
+          : 1;
+        const champ = { ...doc1.data(), participants: participants };
+        console.log(champ);
+        // bonus
         // on appelle la fonction qui fait le update du participant
-        const part = { participants: participants };
-         updateDoc(doc(db, 'championnats', sessionNow.championnatId), {
-          part,
-        });
+        // const part = { participants: participants };
+        updateDoc(doc(db, 'championnats', sessionNow.competitionId), champ);
       }
     });
   }
 
-  async champUpdate(champ){
-    
-  }
+  async champUpdate(champ) {}
 
   async deletePostLies(postUid, db) {
     // const db = getFirestore();
