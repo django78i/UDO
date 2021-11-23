@@ -1,4 +1,4 @@
-<ion-header mode="ios">
+<ion-content [fullscreen]="true">
   <ion-toolbar
     style="padding: 5px 15px; --border-width: 0; --background: #f7f7fa"
     mode="ios"
@@ -16,10 +16,8 @@
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
-</ion-header>
 
-<ion-content [fullscreen]="true">
-  <div
+  <!-- <div
     class="banniere"
     *ngIf="challenges|async as chall"
     [style.background]="bannData.background"
@@ -118,7 +116,7 @@
       >
       </app-slider-challenge>
     </div>
-  </div>
+  </div> -->
   <ion-segment
     [value]="segmentValue"
     mode="ios"
@@ -141,7 +139,10 @@
     ></app-champ-view>
   </ng-container>
   <ng-container *ngIf="segmentValue == 'challenges'">
-    <app-chall-view [challenges]="challenges|async"></app-chall-view>
+    <app-chall-view
+      (createChall)="createChallenge($event)"
+      [challenges]="challengesEnAttente"
+    ></app-chall-view>
   </ng-container>
   <ng-template #tempChamp>
     <swiper #swiper [config]="config" style="padding-left: 0">

@@ -35,6 +35,8 @@ import { TimeChampPipe } from '../pipe/time-champ.pipe';
 import { ChampViewComponent } from './components/champ-view/champ-view.component';
 import { ChallViewComponent } from './components/chall-view/chall-view.component';
 import { BigChallSliderComponent } from '../components/big-chall-slider/big-chall-slider.component';
+import { CreateChallPopUpComponent } from './components/create-chall-pop-up/create-chall-pop-up.component';
+import { SessionNowService } from '../services/session-now-service.service';
 
 @NgModule({
   imports: [
@@ -76,7 +78,9 @@ import { BigChallSliderComponent } from '../components/big-chall-slider/big-chal
     ChampViewComponent,
     ChallViewComponent,
     ChallViewComponent,
-    BigChallSliderComponent
+    BigChallSliderComponent,
+    CreateChallPopUpComponent,
+    AddContenuComponent
     // AddContenuComponent,
   ],
 })

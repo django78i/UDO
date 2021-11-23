@@ -1,0 +1,145 @@
+.ripple-parent {
+  position: relative;
+  overflow: hidden;
+}
+
+.thumbIcon {
+  height: 22px;
+  width: 26px;
+  margin: 0;
+}
+
+ion-card {
+  height: 214px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 27px;
+  transition: 0.5s ease all;
+  margin-top: 0;
+  background-size: 50%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+ion-card-subtitle {
+  background: white;
+  color: black;
+  display: initial;
+  padding: 1px 8px;
+  border-radius: 7px;
+  font-size: 10px;
+}
+
+ion-card-header {
+  transition: 0.3s ease all;
+}
+
+ion-card-content {
+  display: flex;
+  justify-content: space-between;
+  ion-avatar {
+    position: relative;
+    height: 57px;
+    width: 57px;
+    ion-badge {
+      font-size: 10px;
+      position: absolute;
+      min-width: 26px;
+      min-height: 26px;
+      --padding-top: 8px;
+      --padding-end: 0;
+      --padding-bottom: 8px;
+      --padding-start: 0;
+      --background: white;
+      --color: black;
+      right: 0;
+      bottom: 0;
+      border-radius: 50%;
+    }
+  }
+}
+
+.addSub {
+  --background: #eaebef;
+  --border-radius: 13px;
+  min-width: 108px;
+  &::part(native) {
+    padding-left: 5px;
+  }
+  .button[slot="start"] {
+    margin-right: 3px;
+  }
+  .button[slot="end"] {
+    margin: 4px 0px;
+  }
+  ion-label {
+    margin-left: 9px;
+    margin-right: 0;
+    font-size: 20px;
+    font-weight: 700;
+  }
+}
+
+ion-button {
+  --background: transparent;
+  --background-activated: transparent;
+}
+
+.champColor {
+  margin-bottom: 20px;
+  margin-top: 0;
+  height: 60px;
+  --detail-icon-opacity: 1;
+  --detail-icon-color: black;
+  &::part(detail-icon) {
+    background: #e0e0e0;
+    padding: 5px;
+    width: 30px;
+    height: 31px;
+    border-radius: 11px;
+  }
+}
+
+.thumbZone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  margin-right: 8px;
+  border-radius: 50%;
+  border: 1px solid grey;
+}
+
+svg {
+  height: 14px;
+  margin-right: 9px;
+}
+
+.black {
+  --background: black;
+}
+.white {
+  --background: white;
+}
+
+.blackLabel {
+  --color: black;
+}
+.whiteLabel {
+  --color: white;
+}
+
+.blackFill {
+  fill: black;
+}
+.whiteFill {
+  fill: white;
+}
+
+.chipFilter {
+  border: 1px solid #e1e4ef;
+  border-radius: 19px;
+  --padding-start: 13px;
+}

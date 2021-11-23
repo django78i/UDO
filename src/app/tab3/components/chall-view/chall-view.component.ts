@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
@@ -11,6 +11,7 @@ import { tap } from 'rxjs/operators';
 export class ChallViewComponent implements OnInit {
   bannData: any;
   @Input() challenges: any[];
+  @Output() createChall: EventEmitter<any> = new EventEmitter();
 
   constructor(public http: HttpClient) {}
 
@@ -20,5 +21,9 @@ export class ChallViewComponent implements OnInit {
     //     this.bannData = r[0];
     //   })
     // );
+  }
+
+  buttonClick() {
+    this.createChall.emit();
   }
 }

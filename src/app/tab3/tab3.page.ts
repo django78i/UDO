@@ -25,6 +25,8 @@ import { MenuUserComponent } from '../components/menu-user/menu-user.component';
 import { UserService as UserService } from '../services/user-service.service';
 import { ChampionnatsService } from '../services/championnats.service';
 import { NavigationExtras, Router } from '@angular/router';
+import { CreateChallPopUpComponent } from './components/create-chall-pop-up/create-chall-pop-up.component';
+import { ChallengesService } from '../services/challenges.service';
 
 @Component({
   selector: 'app-tab3',
@@ -50,6 +52,9 @@ export class Tab3Page implements OnInit, AfterContentChecked {
   championnatsList: any[] = [];
   userChampionnats: any[] = [];
 
+  //Challenges
+  challengesEnAttente: any[] = [];
+
   bannData: any;
   affiche: BehaviorSubject<any> = new BehaviorSubject(null);
   user: any;
@@ -70,7 +75,8 @@ export class Tab3Page implements OnInit, AfterContentChecked {
     private ref: ChangeDetectorRef,
     public navController: NavController,
     public router: Router,
-    public navCtl: NavController
+    public navCtl: NavController,
+    public challServ: ChallengesService
   ) {}
 
   ngOnInit() {
@@ -107,7 +113,17 @@ export class Tab3Page implements OnInit, AfterContentChecked {
         })
       )
       .subscribe();
-
+    this.challServ.getChallenges();
+    this.challServ.challenges$
+      .pipe(
+        tap((r) => {
+          console.log(r);
+          r == null
+            ? (this.challengesEnAttente = [])
+            : this.challengesEnAttente.push(r);
+        })
+      )
+      .subscribe();
     this.challenges = this.http.get('../../assets/mocks/challenges.json').pipe(
       tap((r) => {
         this.bannData = r[0];
@@ -153,6 +169,16 @@ export class Tab3Page implements OnInit, AfterContentChecked {
   async showMenu() {
     const modal = await this.modalController.create({
       component: MenuUserComponent,
+      componentProps: {
+        user: this.user,
+      },
+    });
+    return await modal.present();
+  }
+
+  async createChallenge(ev) {
+    const modal = await this.modalController.create({
+      component: CreateChallPopUpComponent,
       componentProps: {
         user: this.user,
       },
