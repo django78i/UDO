@@ -2,9 +2,10 @@ import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'fr.udo.health.blueprint',
-  appName: 'UDOblank',
+  appName: 'UDO',
   webDir: 'www',
   bundledWebRuntime: false,
+
   cordova: {
     preferences: {
       ScrollEnabled: 'false',
@@ -19,7 +20,9 @@ const config: CapacitorConfig = {
   plugins: {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     SplashScreen: {
-      launchShowDuration: 0,
+      launchShowDuration: 5000,
+     backgroundColor:'#352D8F',
+      launchAutoHide: false
     },
     // eslint-disable-next-line @typescript-eslint/naming-convention
     GoogleAuth: {
