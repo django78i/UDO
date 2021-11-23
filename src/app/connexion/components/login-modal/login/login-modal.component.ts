@@ -39,6 +39,7 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
   step: number = 0;
   sex: string = '';
   activitesList: any;
+  currentSlide=0;
   physicalParam = {
     poids: 50,
     taille: 120,
@@ -59,6 +60,10 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
   }
   activeIndex: number = 0;
   fabButton="c-fab";
+  title="Suivant";
+  ignorerText="Ignorer";
+  errorPseudo="";
+  invalidInput="";
   constructor(
     public zone: NgZone,
     public modalCtl: ModalController,
@@ -68,9 +73,14 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
     public loadingController: LoadingController,
     public ref: ChangeDetectorRef,
     public sessionNowService: SessionNowService
-  ) {}
+  ) {
+    this.fabButton ="c-fab";
+  }
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log("fabbutoon",this.fabButton);
+    
+  }
 
   close() {
     this.modalCtl.dismiss();
@@ -78,14 +88,12 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
 
   async change(event) {
     this.activeIndex = await this.sliderComp.getActiveIndex();
-    console.log(this.activeIndex);
   }
 
   async ngAfterViewInit() {
     this.sliderComp.lockSwipeToNext(true);
-    console.log(this.sliderComp.getActiveIndex());
     this.activeIndex = await this.sliderComp.getActiveIndex();
-    console.log(this.activeIndex);
+    this.fabButton ="c-fab";
   }
 
   login() {
@@ -108,24 +116,52 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
     const theActualPicture = image.dataUrl;
     var imageUrl = image.webPath;
     this.picture = theActualPicture;
-    this.fabButton="c-fab-img";
+    
   }
-
+  nextStep(){
+    if(this.activeIndex == 0){
+      this.savePhoto();
+    }else if(this.activeIndex == 1){
+      this.saveDateNaiss();
+    }else if(this.activeIndex == 2){
+      this.genderSlide();
+    }else if(this.activeIndex == 3){
+      this.physicSlide();
+    }
+  }
   saveDateNaiss(){
     if(this.fabButton == 'c-fab-img2'){
       this.step += 0.2;
       this.ref.detectChanges();
       this.slideNext();
-      this.fabButton = "fab2";
+      this.fabButton = "c-fab";
     }
   }
+
   ignorer(){
     this.step += 0.2;
     this.ref.detectChanges();
     this.slideNext();
     this.fabButton = "c-fab";
   }
-  
+
+  checkPseudo(){
+    console.log("pseudo",this.pseudo);
+    
+    if(this.pseudo!='' && this.pseudo.toLowerCase() != 'admin'){
+      this.fabButton="c-fab-img";
+    }else{
+      this.fabButton="c-fab";
+    }
+    if(this.pseudo.toLocaleLowerCase() == 'admin'){
+      this.errorPseudo ="Ce pseudo est interdit";
+      this.invalidInput ="mat-form-field-invalid";
+    }else{
+      this.errorPseudo="";
+      this.invalidInput ="";
+    }
+  }
+
   ckeckDate(){
     if(this.date.jour!='' && this.date.jour.length ==2 &&this.date.mois!='' && this.date.mois.length ==2 && this.date.annee!='' && this.date.annee.length ==2  ){
       this.fabButton = "c-fab-img2";
@@ -133,6 +169,7 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
       this.fabButton = "c-fab";
     }
   }
+
   savePhoto() {
     if (this.picture) {
       const storage = getStorage();
@@ -149,10 +186,11 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
         }
       );
     }
-    if (this.pseudo != '') {
+    if (this.pseudo != '' && this.invalidInput =='') {
       this.step += 0.20;
       this.ref.detectChanges();
       this.slideNext();
+       this.fabButton ="c-fab"
     }
   }
 
@@ -161,14 +199,16 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
       this.step += 0.25;
       this.ref.detectChanges();
       this.slideNext();
+      this.fabButton = "c-fab";
     }
   }
 
   physicSlide() {
     if (this.physicalParam.taille !== 0 && this.physicalParam.poids !== 0) {
-      this.step += 0.25;
+      this.step += 0.20;
       this.ref.detectChanges();
       this.slideNext();
+      this.fabButton="c-fab";
     }
   }
 
@@ -208,7 +248,7 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
         value: 0,
       },
     ];
-
+    
     this.user = {
       ...user,
       sex: this.sex,
@@ -246,10 +286,20 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
     } else {
       this.physicalParam.taille = ev.taille;
     }
+    if(this.physicalParam.poids && this.physicalParam.taille){
+      this.fabButton ="c-fab-img";
+    }else{
+      this.fabButton ="c-fab";
+    }
   }
 
   choiceSex(event) {
     this.sex = event;
+    if(this.sex){
+      this.fabButton ="c-fab-img";
+    }else{
+      this.fabButton="c-fab";
+    }
     console.log("sex",this.sex);
     
   }
@@ -257,6 +307,11 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
   eventActivite(event) {
     console.log(event);
     this.activitesList = event;
+    if(this.activitesList){
+      this.fabButton = "c-fab-img";
+    }else{
+      this.fabButton = "c-fab";
+    }
     console.log(this.activitesList);
   }
 

@@ -21,7 +21,7 @@ export class ConnexionPage implements OnInit, AfterContentChecked {
     slidesPerView: 1,
   };
   slideOptsOne = {
-    initialSlide: 1,
+    initialSlide: 0,
     slidesPerView: 1,
     autoplay: false,
   };
