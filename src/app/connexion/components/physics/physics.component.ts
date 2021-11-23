@@ -21,10 +21,18 @@ export class PhysicsComponent implements OnInit, AfterContentChecked {
   @Output() taille: EventEmitter<any> = new EventEmitter();
 
   config: SwiperOptions = {
-    slidesPerView: 10,
+    slidesPerView: 5,
     direction: 'vertical',
     centeredSlides: true,
     spaceBetween: 10,
+    initialSlide:80
+  };
+  config2: SwiperOptions = {
+    slidesPerView: 5,
+    direction: 'vertical',
+    centeredSlides: true,
+    spaceBetween: 10,
+    initialSlide:170
   };
   valuesTailles: number[] = [];
   valuesPoids: number[] = [];
@@ -34,8 +42,6 @@ export class PhysicsComponent implements OnInit, AfterContentChecked {
   ngOnInit() {
     for (var i = 0; i < 201; i++) {
       this.valuesTailles.push(i);
-    }
-    for (var i = 0; i < 201; i++) {
       this.valuesPoids.push(i);
     }
   }

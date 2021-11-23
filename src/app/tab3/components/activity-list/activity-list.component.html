@@ -1,10 +1,6 @@
 <ion-header *ngIf="header">
   <ion-toolbar>
-    <ion-button
-      slot="start"
-      (click)="back()"
-      style="--background: transparent; --background-activated: transparent"
-    >
+    <ion-button slot="start" (click)="back()" style="--background: transparent; --background-activated: transparent">
       <img src="../../../../assets/mocks/Icon feather-arrow-left.svg" alt="" />
     </ion-button>
     <ion-title>Liste des Activités</ion-title>
@@ -13,16 +9,11 @@
 <section style="overflow: auto; height: 100%">
   <ng-container *ngIf="activites.length">
     <ng-container *ngFor="let act of activites; let i = index">
-      <ion-item
-        detail
-        lines="full"
-        class="champColor"
-        [detailIcon]="act.active == true ? 'remove-outline' : 'add-outline'"
-        (click)="activate(i)"
-      >
+      <ion-item detail lines="full" class="champColor"
+        [detailIcon]="act.active == true ? 'remove-outline' : 'add-outline'" (click)="activate(i)">
         <ion-label>
           <p class="sousTitre black">{{ act.nom }}</p>
-          <p style="font-size: 10px">{{ act.sousAcitivite.length }} Activtés</p>
+          <p class="activite">{{ act.sousAcitivite.length }} Activtés</p>
         </ion-label>
       </ion-item>
       <ng-container>
@@ -48,10 +39,7 @@
               </div>
               <ion-label>{{ sous.nom }}</ion-label>
 
-              <ion-checkbox
-                [(ngModel)]="sous.isChecked"
-                (click)="change(sous)"
-              ></ion-checkbox>
+              <ion-checkbox [(ngModel)]="sous.isChecked" (click)="change(sous)"></ion-checkbox>
             </ion-item>
           </ng-container>
         </div>

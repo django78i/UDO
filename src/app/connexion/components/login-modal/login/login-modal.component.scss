@@ -146,8 +146,9 @@ ion-avatar {
   margin-top: 33px;
 }
 .c-mat-form{
-  width: 377px;
+  width: 355px;
   font-size: 12px;
+  margin: auto;
   mat-label{
     letter-spacing: -0.1px;
     color: #000000;
@@ -206,18 +207,12 @@ ion-avatar {
 }
 
 .sectionZone {
-  height: 100%;
   padding: 0 15px;
-  position: relative;
 }
 
 .buttonNextSlide {
   height: 80px;
   border-radius: 20px;
-}
-
-ion-slides {
-  height: 100%;
 }
 
 :host ::ng-deep {
@@ -236,6 +231,7 @@ ion-input {
 }
 .fab{
   border-radius: 33px;
+  margin: auto;
   .c-fab{
     --background: #DFDFE8 !important;
     
@@ -275,7 +271,6 @@ ion-input {
   letter-spacing: 0px;
   span{
     color: #FFFFFF;
-    opacity: 0.28;
     font-size: 16px;
     font-family: "PoppinsSemiBold" !important;
   }
@@ -288,14 +283,13 @@ ion-input {
   letter-spacing: 0px;
   span{
     color: #FFFFFF;
-    opacity: 0.28;
     font-size: 16px;
     font-family: "PoppinsSemiBold" !important;
   }
 }
 .ignore{
   position: absolute;
-  bottom: 45px;
+  bottom: 8px;
   left: 50%;
   z-index: 99999;
   .text-ignore{
@@ -306,6 +300,28 @@ ion-input {
     font-family: "PoppinsSemiBold" !important;
     font-size: 16px;
   }
+}
+
+.ignore2{
+  z-index: 99999;
+  margin: auto;
+  text-align: center;
+  .text-ignore{
+    position: relative;
+    letter-spacing: 0px;
+    color: #000000;
+    font-family: "PoppinsSemiBold" !important;
+    font-size: 16px;
+  }
+}
+.error{
+  letter-spacing: 0px;
+  color: #707070;
+  font-family: "PoppinsMedium" !important;
+  font-size: 12px;
+  position: absolute;
+  left: 16px;
+  margin-top: -14px;
 }
 .c-div{
   margin-top: 50px;
@@ -333,12 +349,12 @@ ion-input {
   }
   .barre{
     width: 1px;
-    height: 44px;
+    height: 60px;
     border: 3px solid #2F3033;
     opacity: 1;
     margin: 0 13px 0 26px;
     transform: rotate(25deg);
-    margin-top: 27px;
+    margin-top: 13px;
     
   }
   input:focus-visible {
