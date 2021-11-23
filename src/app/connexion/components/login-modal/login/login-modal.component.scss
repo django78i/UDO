@@ -361,3 +361,12 @@ ion-input {
     outline: none !important;
   }
 }
+.invalidDate{
+  letter-spacing: 0px;
+  color: red;
+  font-family: "PoppinsMedium" !important;
+  font-size: 12px;
+  position: absolute;
+  left: 56px;
+  margin-top: 12px;
+}

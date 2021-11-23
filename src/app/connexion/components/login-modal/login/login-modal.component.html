@@ -41,7 +41,7 @@
           <ion-item lines="none" class="c-form">
             <mat-form-field class="c-mat-form {{invalidInput}}" appearance="outline" color="warn">
               <mat-label>Identifiant</mat-label>
-              <input matInput autocomplete="off" (blur)="checkPseudo()" placeholder="Choisissez un pseudo..." class="form-control"
+              <input matInput autocomplete="off" (keyup)="checkPseudo()" placeholder="Choisissez un pseudo..." class="form-control"
                 [(ngModel)]="pseudo" />
             </mat-form-field>
             
@@ -62,17 +62,17 @@
         </ion-label>
         <ion-row class="dateNaisse">
           <ion-item lines="none">
-            <input type="text" (blur)="ckeckDate()" onKeyPress="if(this.date?.jour.length==2) return false;" numberOnly
-              [(ngModel)]="date.jour">
+            <input type="text" (blur)="ckeckDate()" onKeyPress="if(jour.length == 2) return false;" 
+              [(ngModel)]="jour">
             <span class="barre"></span>
-            <input type="text" (blur)="ckeckDate()" onKeyPress="if(this.date?.mois.length==2) return false;" numberOnly
-              [(ngModel)]="date.mois">
+            <input type="text" (blur)="ckeckDate()" onKeyPress="if(mois.length == 2) return false;" 
+              [(ngModel)]="mois">
             <span class="barre"></span>
-            <input type="text" (blur)="ckeckDate()" onKeyPress="if(this.date?.annee.length==2) return false;" numberOnly
-              [(ngModel)]="date.annee">
+            <input type="text" (blur)="ckeckDate()" onKeyPress="if(annee == 2) return false;" 
+              [(ngModel)]="annee">
           </ion-item>
         </ion-row>
-     
+        <span class="invalidDate" *ngIf="invalidDate!= '' "> {{invalidDate}} </span>
         
 
       </section>

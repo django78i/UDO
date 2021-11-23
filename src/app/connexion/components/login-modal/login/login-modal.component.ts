@@ -53,17 +53,18 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
   slideOpts = {
     speed: 400,
   };
-  date ={
-    jour:'',
-    mois:'',
-    annee:''
-  }
+ 
+  jour ='';
+  mois =''
+  annee ='';
+  
   activeIndex: number = 0;
   fabButton="c-fab";
   title="Suivant";
   ignorerText="Ignorer";
   errorPseudo="";
   invalidInput="";
+  invalidDate="";
   constructor(
     public zone: NgZone,
     public modalCtl: ModalController,
@@ -146,8 +147,6 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
   }
 
   checkPseudo(){
-    console.log("pseudo",this.pseudo);
-    
     if(this.pseudo!='' && this.pseudo.toLowerCase() != 'admin'){
       this.fabButton="c-fab-img";
     }else{
@@ -163,10 +162,16 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
   }
 
   ckeckDate(){
-    if(this.date.jour!='' && this.date.jour.length ==2 &&this.date.mois!='' && this.date.mois.length ==2 && this.date.annee!='' && this.date.annee.length ==2  ){
+    if(this.jour!='' && this.jour.length ==2 &&this.mois!='' && this.mois.length ==2 && this.annee!='' && this.annee.length ==2  ){
       this.fabButton = "c-fab-img2";
     }else{
       this.fabButton = "c-fab";
+    }
+    if(parseInt(this.jour)>31 || parseInt(this.jour)<0){
+      this.invalidDate = "Date invalide";
+    }
+    if(parseInt(this.mois)>12 || parseInt(this.jour)<0){
+      this.invalidDate = "Date invalide";
     }
   }
 
@@ -196,13 +201,16 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
 
   genderSlide() {
     if (this.physicalParam.taille !== 0 && this.physicalParam.poids !== 0) {
-      this.step += 0.25;
+      this.step += 0.2;
       this.ref.detectChanges();
       this.slideNext();
-      this.fabButton = "c-fab";
+      this.fabButton = "c-fab-img";
     }
   }
 
+  toDoString(val){
+    return val.toString();
+  }
   physicSlide() {
     if (this.physicalParam.taille !== 0 && this.physicalParam.poids !== 0) {
       this.step += 0.20;
@@ -300,24 +308,21 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
     }else{
       this.fabButton="c-fab";
     }
-    console.log("sex",this.sex);
     
   }
 
   eventActivite(event) {
-    console.log(event);
     this.activitesList = event;
     if(this.activitesList){
       this.fabButton = "c-fab-img";
     }else{
       this.fabButton = "c-fab";
     }
-    console.log(this.activitesList);
   }
 
   validate() {
     if (this.activitesList) {
-      this.step += 0.25;
+      this.step += 0.20;
       this.ref.detectChanges();
     }
     this.saveOnBoarding();
