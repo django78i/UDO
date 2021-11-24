@@ -48,7 +48,7 @@ export class ConnexionChoiceComponent implements OnInit {
       console.log("user",user);
       
       if (user) {
-        setTimeout(() => {
+        // setTimeout(() => {
           const userDataBase = from(this.userService.findUser(user.uid));
           userDataBase
             .pipe(
@@ -57,7 +57,7 @@ export class ConnexionChoiceComponent implements OnInit {
               })
             )
             .subscribe();
-        }, 1000);
+        // }, 1000);
       }
     });
   }
