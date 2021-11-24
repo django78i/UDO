@@ -367,4 +367,7 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
   retour() {
     this.presentAlertConfirm();
   }
+  parseIntValue(value){
+    return parseInt(value);
+  }
 }
