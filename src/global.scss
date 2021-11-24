@@ -128,9 +128,7 @@ h4 {
     0.5
   ) !important;
 }
-ion-slides.slideDemarrage {
- height: 100%;
-}
+
 ion-slides.aideSlide
   .swiper-pagination-bullets
   .swiper-pagination-bullet-active {
@@ -163,7 +161,7 @@ ion-slides.slideDemarrage
 }
 ion-slides.slideDemarrage  .swiper-pagination-bullets{
   position: absolute;
-  top: 64%;
+  bottom: 25%;
   text-align: left;
   margin-left: 39px;
   z-index: 1;
