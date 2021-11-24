@@ -146,9 +146,9 @@ ion-avatar {
   margin-top: 33px;
 }
 .c-mat-form{
-  width: 377px;
+  width: 355px;
   font-size: 12px;
-  margin: auto;
+  text-align: left;
   mat-label{
     letter-spacing: -0.1px;
     color: #000000;
@@ -335,7 +335,7 @@ ion-input {
   input{
     border-bottom-color: #C0C0C7 !important;
     width: 65px;
-    background: transparent;
+    background: transparent !important;
     border-top: 4px solid #C0C0C7;
     border-color: transparent;
     letter-spacing: 1px;
@@ -368,3 +368,26 @@ ion-input {
   left: 56px;
   margin-top: 12px;
 }
+.mat-form-field-valid{
+  border: 2px solid black !important;
+}
+
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline-thick { 
+  color: black !important ;
+}
+
+::ng-deep .mat-form-field-outline-start {
+  border-radius: 14px 0 0 14px !important;
+  min-width: 14px !important;
+}
+
+::ng-deep .mat-form-field-outline-end {
+  border-radius: 0 14px 14px 0 !important;
+}
+::ng-deep .mat-form-field-label:not(.mat-form-field-empty) {
+  padding-left: 11px;
+}
+::ng-deep .mat-form-field-label {
+  padding-left: 11px;
+}
+
