@@ -1,0 +1,119 @@
+<section style="overflow: auto; height: 100%">
+  <section *ngIf="challenge?.status == 'en cours'" class="contentTotal">
+    <div class="iconTitle">
+      <img
+        src="assets/icon/dot.svg"
+        style="
+          background-color: rgb(233, 229, 229);
+          padding: 10px;
+          border-radius: 50%;
+        "
+        alt=""
+      />
+      <h4 style="font-weight: 900; margin: 0">VOS INFORMATIONS</h4>
+    </div>
+    <ion-toolbar class="barStat">
+      <ion-item slot="start" lines="none" class="itemLeft">
+        <ion-label class="titre">
+          {{ champ?.semaineEnCours }}
+        </ion-label>
+        <ion-label class="sousTitre black"> Semaines </ion-label>
+      </ion-item>
+      <ion-title>
+        <ion-item lines="none">
+          <ion-label class="titre">
+            {{ userInfo.journeeEnCours
+            }}<span style="font-weight: 500; color: #c5c6ce">/</span
+            ><span style="color: #c5c6ce">{{ champ?.journeeTotale }}</span>
+          </ion-label>
+          <ion-label class="sousTitre black">Journées</ion-label>
+        </ion-item>
+      </ion-title>
+      <ion-item slot="end" lines="none">
+        <ion-label class="titre">
+          {{ userInfo.bonus }}
+        </ion-label>
+        <ion-label class="sousTitre black"> Bonus </ion-label>
+      </ion-item>
+    </ion-toolbar>
+  </section>
+  <section class="contentTotal">
+    <div class="iconTitle">
+      <img
+        src="assets/icon/dot.svg"
+        style="
+          background-color: rgb(233, 229, 229);
+          padding: 10px;
+          border-radius: 50%;
+        "
+        alt=""
+      />
+      <h4 style="font-weight: 900; margin: 0">DETAIL</h4>
+    </div>
+    <p style="font-size: 12px">{{ challenge?.description }}</p>
+  </section>
+  <section class="contentTotal">
+    <div class="iconTitle">
+      <img
+        src="assets/icon/dot.svg"
+        style="
+          background-color: rgb(233, 229, 229);
+          padding: 10px;
+          border-radius: 50%;
+        "
+        alt=""
+      />
+      <h4 style="font-weight: 900; margin: 0">ACTIVITES</h4>
+      <ion-badge style="--background: black">{{
+        challenge?.activitiesList.length
+      }}</ion-badge>
+    </div>
+    <ion-chip *ngFor="let act of challenge?.activitiesList">
+      <ion-avatar>
+        <img [src]="act.icon" />
+      </ion-avatar>
+      <ion-label>{{ act.nom }}</ion-label>
+    </ion-chip>
+  </section>
+  <section class="contentTotal">
+    <div class="iconTitle">
+      <img
+        src="assets/icon/dot.svg"
+        style="
+          background-color: rgb(233, 229, 229);
+          padding: 10px;
+          border-radius: 50%;
+        "
+        alt=""
+      />
+      <h4 style="font-weight: 900; margin: 0">INFORMATIONS</h4>
+    </div>
+    <ion-toolbar>
+      <ion-thumbnail slot="start" style="margin-right: 10px">
+        <img src="assets/icon/lock.svg" alt="" />
+      </ion-thumbnail>
+      <ion-label>
+        <p class="sousTitre black">participants maximum</p>
+        <p class="detailTitre"></p>
+      </ion-label>
+      <ion-thumbnail class="labelRight" slot="end">
+        <ion-label>{{ challenge.participantsMax }}</ion-label>
+        <!-- <img src="../../../../assets/icon/friends-white.svg" alt=""> -->
+      </ion-thumbnail>
+    </ion-toolbar>
+    <ion-toolbar>
+      <ion-thumbnail slot="start" style="margin-right: 10px">
+        <img src="../../../../assets/icon/clock.svg" alt="" />
+      </ion-thumbnail>
+      <ion-label>
+        <p class="sousTitre black">Durée du challenge</p>
+        <p class="detailTitre">Activer la limite de participants maximum</p>
+      </ion-label>
+      <ion-thumbnail class="labelRight" slot="end">
+        <ion-label>{{ challenge.duree }}</ion-label>
+        <!-- <img src="../../../../assets/icon/friends-white.svg" alt=""> -->
+      </ion-thumbnail>
+    </ion-toolbar>
+    <div style="height: 100px; width: 100%"></div>
+  </section>
+</section>

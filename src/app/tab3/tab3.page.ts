@@ -54,6 +54,7 @@ export class Tab3Page implements OnInit, AfterContentChecked {
 
   //Challenges
   challengesEnAttente: any[] = [];
+  challengesEnCours: any[] = [];
 
   bannData: any;
   affiche: BehaviorSubject<any> = new BehaviorSubject(null);
@@ -124,11 +125,16 @@ export class Tab3Page implements OnInit, AfterContentChecked {
         })
       )
       .subscribe();
-    this.challenges = this.http.get('../../assets/mocks/challenges.json').pipe(
-      tap((r) => {
-        this.bannData = r[0];
-      })
-    );
+    this.challServ.challengeEnCours$
+      .pipe(
+        tap((r) => {
+          console.log(r);
+          r == null
+            ? (this.challengesEnCours = [])
+            : this.challengesEnCours.push(r);
+        })
+      )
+      .subscribe();
   }
 
   ngAfterContentChecked(): void {
@@ -188,6 +194,11 @@ export class Tab3Page implements OnInit, AfterContentChecked {
 
   async launchDetail(ev) {
     this.router.navigate([`/championnat/${ev.uid}`]);
+  }
+
+  async openChallenge(ev) {
+    console.log(ev);
+    this.router.navigate([`/challenge/${ev}`]);
   }
 
   chatPage() {

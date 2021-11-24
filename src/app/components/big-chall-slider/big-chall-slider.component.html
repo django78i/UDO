@@ -7,20 +7,20 @@
     <!-- <section
       style="display: flex; flex-direction: column; gap: 10px; padding: 0 15px"
     > -->
-    <div style="position: relative">
-      <span
+    <div style="position: relative" (click)="showChallenge(chall.uid)">
+      <ion-thumbnail
         style="
           width: 140px;
           position: absolute;
           z-index: 1000;
-          height: 150px;
-          right: -11px;
+          height: 230px;
+          right: -8px;
+          top: 0;
           display: flex;
-          justify-content: flex-end;
         "
       >
         <img [src]="chall.banniereImage" alt="" />
-      </span>
+      </ion-thumbnail>
       <ion-card
         [style.backgroundColor]="chall.banniereColor"
         style="background-image: url('assets/icon/udoIconFond.svg')"
@@ -53,7 +53,8 @@
                 >
                 </ion-img>
                 <ion-label slot="start" style="font-size: 10px">
-                  {{ chall.participants.length }} / {{chall.participantsMax}} participants 
+                  {{ chall.participants.length }} /
+                  {{ chall.participantsMax }} participants
                 </ion-label>
               </div>
             </div>

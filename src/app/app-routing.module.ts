@@ -70,6 +70,11 @@ const routes: Routes = [
     redirectTo: 'tabs',
     pathMatch: 'full',
   },
+  {
+    path: 'challenge/:id',
+    loadChildren: () => import('./challenges-page/challenges-page.module').then( m => m.ChallengesPagePageModule)
+  },
+
 ];
 @NgModule({
   imports: [

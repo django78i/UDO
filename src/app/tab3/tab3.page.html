@@ -142,6 +142,8 @@
     <app-chall-view
       (createChall)="createChallenge($event)"
       [challenges]="challengesEnAttente"
+      [challEncours]="challengesEnCours"
+      (challengeId)="openChallenge($event)"
     ></app-chall-view>
   </ng-container>
   <ng-template #tempChamp>

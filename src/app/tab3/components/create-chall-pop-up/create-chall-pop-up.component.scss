@@ -34,14 +34,19 @@ ion-card-subtitle {
 ion-card-header {
   transition: 0.3s ease all;
 }
+ion-avatar {
+  position: relative;
+  height: 57px;
+  width: 57px;
+}
 
 ion-card-content {
   display: flex;
   justify-content: space-between;
   ion-avatar {
-    position: relative;
-    height: 57px;
-    width: 57px;
+    // position: relative;
+    // height: 57px;
+    // width: 57px;
     ion-badge {
       font-size: 10px;
       position: absolute;

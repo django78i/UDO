@@ -18,6 +18,7 @@ import { AddPostContenuComponent } from '../add-post-contenu/add-post-contenu.co
 import { ShowNotificationPage } from '../show-notification/show-notification.page';
 import { BackgroundMode } from '@ionic-native/background-mode/ngx';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+import { from, fromEvent, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-demarrage',
@@ -82,6 +83,7 @@ export class DemarragePage implements OnInit {
   modeClasse = '';
   demarrage = '';
   competitionId: string;
+  closingApp: Observable<any>;
   constructor(
     private backgroundMode: BackgroundMode,
     private modalCtrl: ModalController,
@@ -188,8 +190,9 @@ export class DemarragePage implements OnInit {
     this.router.navigate(['tabs']);
   }
   ngOnInit() {
+    this.platform.pause.subscribe((pause) => console.log(pause));
     this.route.queryParams.subscribe((params) => {
-      this.competitionId = params ? params.championnat : ''
+      this.competitionId = params ? params.championnat : '';
     });
     // activate background mode
     //  this.backgroundMode.enable();
@@ -252,7 +255,7 @@ export class DemarragePage implements OnInit {
       this.listElement = JSON.parse(localStorage.getItem('choix'));
     }
     const detailCompet = JSON.parse(localStorage.getItem('detailCompet'));
-    console.log(detailCompet)
+    console.log(detailCompet);
     if (detailCompet) {
       if (detailCompet.competitionName) {
         this.sessionNow.competitionName = detailCompet.competitionName;
@@ -303,7 +306,7 @@ export class DemarragePage implements OnInit {
 
         const sessionNow = { ...this.sessionNow };
         sessionNow['type'] = 'session-now';
-        console.log(this.sessionNow)
+        console.log(this.sessionNow);
         this.snService.createPostSessionNow(sessionNow).then((resPost) => {
           console.log('je suis la');
           // this.sessionNow.uid = res;

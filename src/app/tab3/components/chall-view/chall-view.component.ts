@@ -11,7 +11,9 @@ import { tap } from 'rxjs/operators';
 export class ChallViewComponent implements OnInit {
   bannData: any;
   @Input() challenges: any[];
+  @Input() challEncours: any[];
   @Output() createChall: EventEmitter<any> = new EventEmitter();
+  @Output() challengeId: EventEmitter<any> = new EventEmitter();
 
   constructor(public http: HttpClient) {}
 
@@ -25,5 +27,10 @@ export class ChallViewComponent implements OnInit {
 
   buttonClick() {
     this.createChall.emit();
+  }
+
+  chooseChallenge(ev) {
+    console.log(ev)
+    this.challengeId.emit(ev);
   }
 }

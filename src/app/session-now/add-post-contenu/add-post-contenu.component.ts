@@ -132,6 +132,8 @@ export class AddPostContenuComponent implements OnInit, OnDestroy {
       );
       url = await getDownloadURL(uploadTask.ref);
     }
+    const detailCompet = JSON.parse(localStorage.getItem('detailCompet'));
+
     let postModel: PostModel;
     console.log('no sesionNow');
     postModel = {
@@ -150,6 +152,14 @@ export class AddPostContenuComponent implements OnInit, OnDestroy {
       comment: this.comment,
       postCount: 0,
       reactionsNombre: 0,
+      championnat:
+        detailCompet.competitionType == 'Championnat'
+          ? detailCompet.competitionId
+          : '',
+      challenge:
+        detailCompet.competitionType == 'Challenge'
+          ? detailCompet.competitionId
+          : '',
     };
     this.sessionNowService
       .create(postModel, 'post-session-now')
@@ -205,4 +215,6 @@ export class PostModel {
   comment: string;
   postCount: number;
   reactionsNombre: number;
+  championnat: string;
+  challenge: string;
 }

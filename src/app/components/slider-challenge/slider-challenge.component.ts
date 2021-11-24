@@ -25,7 +25,6 @@ export class SliderChallengeComponent implements OnInit, AfterContentChecked {
   constructor() {}
 
   ngOnInit() {
-    console.log(this.challenges[0].dateDemarrage);
   }
 
   config: SwiperOptions = {

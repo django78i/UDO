@@ -270,6 +270,7 @@ export class CreateChampPopUpComponent
       niveau: this.user.niveau,
       uid: this.user.uid,
     };
+    this.friendsList.push(user);
     console.log(this.friendsList);
     this.friendsList.push(user);
     const champ: Championnat = {

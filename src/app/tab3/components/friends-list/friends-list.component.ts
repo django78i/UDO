@@ -26,6 +26,7 @@ export class FriendsListComponent implements OnInit {
   @Input() range: any;
   @Input() acitivities: any;
   subscription: Subscription;
+  usersList: any[];
   constructor(
     public http: HttpClient,
     public userService: UserService,
@@ -38,6 +39,9 @@ export class FriendsListComponent implements OnInit {
         this.friendsList = friends;
       }
     );
+
+    this.usersList = JSON.parse(localStorage.getItem('usersList'));
+
     console.log(this.createur);
   }
 

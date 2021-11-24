@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { Observable } from 'rxjs';
@@ -20,6 +20,8 @@ export class AddContenuComponent implements OnInit {
   sessionNow: any;
   postModel: PostModel;
   user;
+  @Input() type: any;
+
   constructor(
     private modalCtr: ModalController,
     private storage: AngularFireStorage,
@@ -30,7 +32,9 @@ export class AddContenuComponent implements OnInit {
     this.user = JSON.parse(localStorage.getItem('user'));
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log(this.type);
+  }
 
   async close() {
     const closeModal = 'Modal Closed';
@@ -74,16 +78,23 @@ export class AddContenuComponent implements OnInit {
    * cette fonction permet d'ouvrir la gallery
    */
   openGallery() {
+    const encode = this.type
+      ? this.camera.EncodingType.PNG
+      : this.camera.EncodingType.JPEG;
+    console.log(encode);
     const options: CameraOptions = {
       quality: 100,
       destinationType: this.camera.DestinationType.DATA_URL,
-      encodingType: this.camera.EncodingType.JPEG,
+      encodingType: encode,
       mediaType: this.camera.MediaType.PICTURE,
       sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
     };
     this.camera.getPicture(options).then(
       (imageData) => {
-        this.base64Image = 'data:image/jpeg;base64,' + imageData;
+        // this.base64Image = 'data:image/jpeg;base64,' + imageData;
+        this.base64Image = this.type
+          ? 'data:image/png;base64,' + imageData
+          : 'data:image/jpeg;base64,' + imageData;
         if (this.base64Image) {
           this.modalCtr.dismiss(this.base64Image);
         }

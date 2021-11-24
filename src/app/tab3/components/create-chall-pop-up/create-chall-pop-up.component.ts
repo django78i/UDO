@@ -8,6 +8,7 @@ import {
   ViewChildren,
 } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import moment from 'moment';
 import { ChallengesService } from 'src/app/services/challenges.service';
 import { SessionNowService } from 'src/app/services/session-now-service.service';
 import { AddContenuComponent } from 'src/app/session-now/add-contenu/add-contenu.component';
@@ -70,6 +71,7 @@ export class CreateChallPopUpComponent implements OnInit, AfterContentChecked {
   maxPlayer: number;
   dateDemarrage: any;
   icon: any;
+  friendsList: any;
   constructor(
     public modalCtl: ModalController,
     public challService: ChallengesService,
@@ -112,32 +114,44 @@ export class CreateChallPopUpComponent implements OnInit, AfterContentChecked {
     this.swiper.swiperRef.slidePrev();
   }
 
+  chooseFriends(event) {
+    this.friendsList = event;
+  }
+
   add() {
     this.weekCount += 1;
   }
 
-  publier() {
+  nextFriends() {
+    this.slideNext('amis');
+  }
+
+  publier(ev) {
+    const dateFin = moment(this.dateDemarrage).add(this.weekCount, 'weeks');
     const challenge = {
       banniereColor: this.banniere.color,
       banniereImage: this.image ? this.image : '',
       name: this.challTitle,
-      desciption: this.challDescription,
+      description: this.challDescription,
       metric: this.metricChoice,
       dateDemarrage: this.dateDemarrage,
+      dateFin: dateFin,
       participantsMax: this.maxPlayer,
       activitiesList: this.activitesList,
       objectifs: this.objectifs,
+      duree: this.weekCount,
       status: 'en attente',
       completion: {
         value: 0,
         percent: '0',
       },
-      participants: [],
+      participants: this.friendsList ? this.friendsList : '',
       icon: this.icon,
+      dateCreation: new Date(),
     };
-    this.challService.createChallenge(challenge);
+    // this.challService.createChallenge(challenge);
     this.sessionNowService.show('challenge créé', 'success');
-    this.modalCtl.dismiss();
+    // this.modalCtl.dismiss();
     console.log(challenge);
   }
 
@@ -172,9 +186,13 @@ export class CreateChallPopUpComponent implements OnInit, AfterContentChecked {
 
   async addContenu() {
     console.log('addContenu');
+    const type = 'PNG';
     const modal = await this.modalCtl.create({
       component: AddContenuComponent,
       cssClass: 'my-custom-contenu-modal',
+      componentProps: {
+        type: type,
+      },
     });
     modal.onDidDismiss().then((data: any) => {
       console.log(data);

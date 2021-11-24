@@ -17,32 +17,30 @@
             />
           </ion-button>
         </ion-toolbar>
-
+        <!-- <div style="position: relative"> -->
         <ion-card
           [style.backgroundColor]="banniere.color"
           style="background-image: url('assets/icon/udoIconFond.svg')"
         >
           <span
             *ngIf="image"
-            style="
-              width: 150px;
-              height: 200px;
-              position: absolute;
-              right: 5px;
-              top: 15px;
-            "
+            style="width: 150px; position: absolute; right: 5px; top: 15px"
           >
             <img [src]="image" alt="" />
           </span>
+
           <ion-card-header>
-            <ion-card-subtitle> DEMARRAGE MANUEL </ion-card-subtitle>
+            <!-- <ion-card-subtitle> DEMARRAGE MANUEL </ion-card-subtitle> -->
+            <ion-avatar *ngIf="icon">
+              <img [src]="icon" alt="" />
+            </ion-avatar>
+
             <ion-card-title style="color: white">{{
               challTitle
             }}</ion-card-title>
           </ion-card-header>
 
           <ion-card-content>
-            <img [src]="icon" *ngIf="icon" alt="" />
             <ion-item lines="none" style="width: 100%">
               <ion-avatar slot="start">
                 <img [src]="user.avatar" alt="" />
@@ -57,7 +55,8 @@
             </ion-item>
           </ion-card-content>
         </ion-card>
-        <ion-item lines="full"> 
+        <!-- </div> -->
+        <ion-item lines="full">
           <ion-input
             type="text"
             style="padding-bottom: 0px"
@@ -77,7 +76,7 @@
           >
             {{ inputLength }}
           </ion-badge>
-        </ion-item >
+        </ion-item>
         <ion-item lines="full">
           <ion-textarea
             rows="1"
@@ -402,7 +401,7 @@
           <ion-button
             shape="round"
             style="--background: #ed2d6a; width: 50%"
-            (click)="publier()"
+            (click)="nextFriends()"
             >Publier
           </ion-button>
         </div>
@@ -418,6 +417,14 @@
             (backAction)="backSlide($event)"
             [listAct]="activitesList"
           ></app-activity-list>
+          <app-friends-list
+            (champCreate)="publier($event)"
+            [createur]="user"
+            [range]="range"
+            *ngIf="sliderPage == 'amis'"
+            (friendList)="chooseFriends($event)"
+            (backAction)="backSlide($event)"
+          ></app-friends-list>
         </div>
       </div>
     </ng-template>

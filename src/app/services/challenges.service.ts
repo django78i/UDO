@@ -23,6 +23,7 @@ export class ChallengesService {
   db = getFirestore();
   challengeEnCours$: BehaviorSubject<any> = new BehaviorSubject(null);
   challenges$: BehaviorSubject<any> = new BehaviorSubject(null);
+  singleChallSub$: BehaviorSubject<any> = new BehaviorSubject(null);
 
   constructor() {}
 
@@ -46,6 +47,15 @@ export class ChallengesService {
     return guid();
   }
 
+  async getChallenge(uid) {
+    const users = JSON.parse(localStorage.getItem('usersList'));
+    const docData = await getDoc(doc(this.db, 'challenges', uid));
+    const dataDoc = await docData.data();
+    const champ = this.formatChall(dataDoc, users);
+    console.log(champ);
+    this.singleChallSub$.next(champ);
+  }
+
   getChallenges() {
     const auth = getAuth();
     auth.currentUser.uid;
@@ -65,7 +75,7 @@ export class ChallengesService {
         const bool = document.participants.some(
           (users: any) => users.uid == auth.currentUser.uid
         );
-        const docFormat = this.formatChamp(document, users);
+        const docFormat = this.formatChall(document, users);
         console.log(docFormat);
         if (document.status == 'en cours' && bool) {
           this.challengeEnCours$.next(docFormat);
@@ -83,7 +93,7 @@ export class ChallengesService {
     });
   }
 
-  formatChamp(chall, users) {
+  formatChall(chall, users) {
     const challenge = chall;
     challenge.participants = challenge.participants.map((participant) => {
       const partFormat = users?.find((user) => participant.uid == user.uid);

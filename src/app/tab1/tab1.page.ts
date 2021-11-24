@@ -214,7 +214,7 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
       });
     } else {
       //incrémente de 1 compteur général réactions
-      this.feeds[i].reactionsNombre = this.feeds[i].reactionsNombre += 1;
+      this.feeds[i].reactionsNombre = this.feeds[i].reactionsNombre + 1;
       this.feeds[i].reactions.push({
         ...reaction,
         nombre: 1,

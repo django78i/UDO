@@ -192,7 +192,7 @@ export class FeedsComponent implements OnInit {
     let photo;
     if (this.picture) {
       const tof = await this.savePhoto(this.picture);
-      photo = getDownloadURL(tof.ref);
+      photo = await getDownloadURL(tof.ref);
     }
 
     const post = {
@@ -232,11 +232,9 @@ export class FeedsComponent implements OnInit {
     console.log(this.feed);
     const feedRefresh = await this.feedService.feedQuery(this.championnat.uid);
     console.log(feedRefresh);
-    feedRefresh.table.forEach((fee) => {
-      this.feed.push(fee);
-    });
+    this.feed = feedRefresh.table;
+    this.lastVisible = feedRefresh.last;
     this.inputFeed.value = null;
-    this.inputFeed.ionBlur;
     this.picture = null;
     this.pictureUrl = null;
     this.boole = false;

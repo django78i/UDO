@@ -74,6 +74,7 @@ export class ChampionnatPage implements OnInit {
       const uid = this.route.snapshot.params['id'];
       this.champService.getChampionnat(uid);
       this.champService.singleChampSub$.subscribe((champ) => {
+        console.log(champ)
         this.championnat = champ;
         this.participantsList = this.championnat.participants.slice(0, 4);
         this.userEncours = this.championnat.participants.find(
