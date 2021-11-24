@@ -160,8 +160,8 @@ ion-slides.slideDemarrage
   background: white !important;
 }
 ion-slides.slideDemarrage  .swiper-pagination-bullets{
-  position: absolute;
-  top: 62%;
+  // position: absolute;
+  // top: 62%;
   text-align: left;
   margin-left: 39px;
   z-index: 1;
@@ -221,7 +221,4 @@ ion-slides.preseanceSlide {
 }
 ion-header{
   box-sizing: none;
-}
-ion-footer{
-  box-sizing: none !important;
 }
