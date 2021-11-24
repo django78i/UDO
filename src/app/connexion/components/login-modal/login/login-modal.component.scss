@@ -288,13 +288,10 @@ ion-input {
   }
 }
 .ignore{
-  position: absolute;
-  bottom: 8px;
-  left: 50%;
+  margin-top: -27px;
   z-index: 99999;
+  text-align: center;
   .text-ignore{
-    position: relative;
-    left: -50%;
     letter-spacing: 0px;
     color: #000000;
     font-family: "PoppinsSemiBold" !important;

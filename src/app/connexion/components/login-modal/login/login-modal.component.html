@@ -4,7 +4,7 @@
   </ion-toolbar>
   <section style="background: #f7f7fa; margin: 0 15px; margin-bottom: 10px">
     <ion-item lines="none">
-      <ion-label class="label-step" slot="start">{{ step}} <span class="pourcent">%</span> </ion-label>
+      <ion-label class="label-step" slot="start">{{ step * 100 }} <span class="pourcent">%</span> </ion-label>
       <ion-label class="text-step" slot="end" style="margin: 0"><span class="active-step"> {{ activeIndex + 1}}</span> /
         5 STEPS</ion-label>
     </ion-item>
@@ -115,9 +115,9 @@
       <span> Finaliser</span>
     </ion-button>
   </ion-footer>
-  <ion-row class="ignore" *ngIf="activeIndex!=0 && activeIndex!=4">
+  <ion-footer class="ignore" *ngIf="activeIndex!=0 && activeIndex!=4">
     <span class="text-ignore" (click)="ignorer()">Ignorer cette étape</span>
-  </ion-row>
+  </ion-footer>
   <ion-footer class="ignore2" *ngIf="activeIndex==4">
     <span class="text-ignore2" (click)="validate()">Plus tard</span>
   </ion-footer>
