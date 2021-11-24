@@ -79,8 +79,6 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    console.log("fabbutoon",this.fabButton);
-    
   }
 
   close() {
@@ -103,6 +101,7 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
 
   redirect() {
     this.navController.navigateForward(['']);
+    localStorage.setItem('isConnected',"true");
   }
 
   async addPhoto() {
@@ -132,7 +131,7 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
   }
   saveDateNaiss(){
     if(this.fabButton == 'c-fab-img2'){
-      this.step += 0.2;
+      this.step += 20;
       this.ref.detectChanges();
       this.slideNext();
       this.fabButton = "c-fab";
@@ -140,7 +139,7 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
   }
 
   ignorer(){
-    this.step += 0.2;
+    this.step += 20;
     this.ref.detectChanges();
     this.slideNext();
     this.fabButton = "c-fab";
@@ -161,18 +160,22 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
     }
   }
 
-  ckeckDate(){
-    if(this.jour!='' && this.jour.length ==2 &&this.mois!='' && this.mois.length ==2 && this.annee!='' && this.annee.length ==2  ){
+  checkDate(){
+    if(parseInt(this.jour)>31 || parseInt(this.jour)<0){
+      this.invalidDate = "Date invalide";
+      return;
+    }
+    if(parseInt(this.mois)>12 || parseInt(this.jour)<0){
+      this.invalidDate = "Date invalide";
+      return;
+    }
+    this.invalidDate="";
+    if(this.jour!='' && this.jour.length == 2 && this.mois!='' && this.mois.length ==2 && this.annee!='' && this.annee.length ==2  ){
       this.fabButton = "c-fab-img2";
     }else{
       this.fabButton = "c-fab";
     }
-    if(parseInt(this.jour)>31 || parseInt(this.jour)<0){
-      this.invalidDate = "Date invalide";
-    }
-    if(parseInt(this.mois)>12 || parseInt(this.jour)<0){
-      this.invalidDate = "Date invalide";
-    }
+   
   }
 
   savePhoto() {
@@ -192,7 +195,7 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
       );
     }
     if (this.pseudo != '' && this.invalidInput =='') {
-      this.step += 0.20;
+      this.step += 20;
       this.ref.detectChanges();
       this.slideNext();
        this.fabButton ="c-fab"
@@ -201,7 +204,7 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
 
   genderSlide() {
     if (this.physicalParam.taille !== 0 && this.physicalParam.poids !== 0) {
-      this.step += 0.2;
+      this.step += 20;
       this.ref.detectChanges();
       this.slideNext();
       this.fabButton = "c-fab-img";
@@ -213,7 +216,7 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
   }
   physicSlide() {
     if (this.physicalParam.taille !== 0 && this.physicalParam.poids !== 0) {
-      this.step += 0.20;
+      this.step += 20;
       this.ref.detectChanges();
       this.slideNext();
       this.fabButton="c-fab";
@@ -322,7 +325,7 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
 
   validate() {
     if (this.activitesList) {
-      this.step += 0.20;
+      this.step += 20;
       this.ref.detectChanges();
     }
     this.saveOnBoarding();

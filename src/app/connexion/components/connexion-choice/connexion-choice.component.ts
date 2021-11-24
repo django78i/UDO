@@ -23,7 +23,7 @@ export class ConnexionChoiceComponent implements OnInit {
   email = '';
   user: any;
   errorSub: BehaviorSubject<string> = new BehaviorSubject(null);
-
+  isConnected="";
   constructor(
     public userService: UserService,
     public fb: FormBuilder,
@@ -33,12 +33,20 @@ export class ConnexionChoiceComponent implements OnInit {
     public zone: NgZone
   ) {
     localStorage.setItem('firstConnexion','true');
+    this.isConnected = localStorage.getItem('isConnected');
+    if(this.isConnected == "true"){
+      this.seg = "se connecter";
+    }else{
+      this.seg = 's\'inscrire';
+    }
   }
 
   ngOnInit() {
     this.errorSub = this.userService.errorSubject$;
     const auth = getAuth();
     auth.onAuthStateChanged((user) => {
+      console.log("user",user);
+      
       if (user) {
         setTimeout(() => {
           const userDataBase = from(this.userService.findUser(user.uid));
