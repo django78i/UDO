@@ -62,11 +62,11 @@
         </ion-label>
         <ion-row class="dateNaisse">
           <ion-item lines="none">
-            <input type="text" (keyup)="checkDate()" minlength="2" maxlength="2" [(ngModel)]="jour">
+            <input type="text" numberOnly (keyup)="checkDate()" minlength="2" maxlength="2" [(ngModel)]="jour">
             <span class="barre"></span>
-            <input type="text" (keyup)="checkDate()" minlength="2" maxlength="2" [(ngModel)]="mois">
+            <input type="text" numberOnly (keyup)="checkDate()" minlength="2" maxlength="2" [(ngModel)]="mois">
             <span class="barre"></span>
-            <input type="text" (keyup)="checkDate()" minlength="2" maxlength="2" [(ngModel)]="annee">
+            <input type="text" numberOnly (keyup)="checkDate()" minlength="2" maxlength="2" [(ngModel)]="annee">
           </ion-item>
         </ion-row>
         <span class="invalidDate" *ngIf="invalidDate!= '' "> {{invalidDate}} </span>

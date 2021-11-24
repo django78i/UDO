@@ -22,12 +22,11 @@ import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { TimeRelativePipe } from './pipe/time-relative.pipe';
 import { TimeChampPipe } from './pipe/time-champ.pipe';
 import {BackgroundMode} from '@ionic-native/background-mode/ngx';
-import { NumberOnlyDirective } from './directives/numberOnly.directive';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    NumberOnlyDirective],
+    AppComponent
+    ],
   entryComponents: [],
   imports: [
     BrowserModule,
