@@ -27,8 +27,8 @@ import { Camera } from '@ionic-native/camera/ngx';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    NumberOnlyDirective],
+    AppComponent
+    ],
   entryComponents: [],
   imports: [
     BrowserModule,

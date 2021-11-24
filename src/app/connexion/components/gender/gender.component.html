@@ -1,23 +1,23 @@
-<ion-grid>
-  <ion-row>
+<div>
+  <ion-row class="c-row">
     <ion-col>
       <div class="sexChoice" (click)="choice(0,'homme')" #sex>
-       <div class="c-image">
+       <ion-row class="c-image">
          <ion-img #image src="{{'assets/images/'+ icons[0] +'.svg'}}"></ion-img>
-       </div>
-       <div class="c-text">
+       </ion-row>
+       <ion-row class="c-text">
         <span #type>Homme</span>
-      </div>
+      </ion-row>
       </div>
     </ion-col>
     <ion-col>
       <div class="sexChoice" (click)="choice(1,'femme')" #sex>
-        <div class="c-image">
+        <ion-row class="c-image">
           <ion-img #image src="{{'assets/images/'+ icons[1] +'.svg'}}"></ion-img>
-        </div>
-        <div class="c-text">
+        </ion-row>
+        <ion-row class="c-text">
          <span #type>Femme</span>
-       </div>
+       </ion-row>
         <!-- <img src="assets/icon/Icon ionic-md-male.svg" alt="" /> -->
       </div>
     </ion-col>
@@ -25,23 +25,23 @@
   <ion-row>
     <ion-col>
       <div class="sexChoice" (click)="choice(2,'multi')" #sex>
-        <div class="c-image">
+        <ion-row class="c-image">
           <ion-img #image src="{{'assets/images/'+ icons[2] +'.svg'}}"></ion-img>
-        </div>
-        <div class="c-text">
+        </ion-row>
+        <ion-row class="c-text">
          <span #type>Non-binaire</span>
-       </div>
+       </ion-row>
       </div>
     </ion-col>
     <ion-col>
       <div class="sexChoice" (click)="choice(3,'autres')" #sex>
-        <div class="c-image">
+        <ion-row class="c-image">
           <ion-img #image src="{{'assets/images/'+ icons[3] +'.svg'}}"></ion-img>
-        </div>
-        <div class="c-text">
+        </ion-row>
+        <ion-row class="c-text">
          <span #type>Autres</span>
-       </div>
+       </ion-row>
       </div>
     </ion-col>
   </ion-row>
-</ion-grid>
+</div>

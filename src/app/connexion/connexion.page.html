@@ -1,13 +1,13 @@
 <ion-content fullscreen="true">
-  <ion-slides [options]="slideOptsOne" pager="true" class="slideDemarrage">
+  <ion-slides [ngStyle]="{'background':getColor(currentIndex)}" [options]="slideOptsOne" pager="true" class="slideDemarrage"  (ionSlideDidChange)="change($event)" #slider>
     <ion-slide class="c-slide1" >
       <ion-row class="c-row-img">
         <ion-img class="udoLogo" src="assets/banner/udoIconWhite.svg"></ion-img>
-      
+
       <ion-row class="c-image">
         <ion-img src="../assets/banner/no-matter.png"></ion-img>
-      </ion-row>  
-      
+      </ion-row>
+
     </ion-row>
     <ion-row class="row-titre">
       <span class="titre">No Matter What</span>
@@ -17,16 +17,16 @@
         Compatible avec toutes vos applications
       </span>
     </ion-row>
-   
+
     </ion-slide>
     <ion-slide class="c-slide2" >
       <ion-row class="c-row-img">
         <ion-img class="udoLogo" src="assets/banner/udoIconWhite.svg"></ion-img>
-      
+
       <ion-row class="c-image">
         <ion-img src="../assets/banner/bouge.png"></ion-img>
-      </ion-row>  
-      
+      </ion-row>
+
     </ion-row>
     <ion-row class="row-titre">
       <span class="titre">Bouge</span>
@@ -36,16 +36,16 @@
         Encouragez vos semblables à se mettre au sport, soutenez vos amis dans les moments difficiles
       </span>
     </ion-row>
-   
+
     </ion-slide>
     <ion-slide class="c-slide3" >
       <ion-row class="c-row-img">
         <ion-img class="udoLogo" src="assets/banner/udoIconWhite.svg"></ion-img>
-      
+
       <ion-row class="c-image">
         <ion-img src="../assets/banner/importe.png"></ion-img>
-      </ion-row>  
-      
+      </ion-row>
+
     </ion-row>
     <ion-row class="row-titre">
       <span class="titre">Importe</span>
@@ -59,11 +59,11 @@
     <ion-slide class="c-slide4" >
       <ion-row class="c-row-img">
         <ion-img class="udoLogo" src="assets/banner/udoIconWhite.svg"></ion-img>
-      
+
       <ion-row class="c-image">
         <ion-img src="../assets/banner/partager.png"></ion-img>
-      </ion-row>  
-      
+      </ion-row>
+
     </ion-row>
     <ion-row class="row-titre">
       <span class="titre">Partagez vos exploits</span>
@@ -76,9 +76,10 @@
 
     </ion-slide>
   </ion-slides>
-  <ion-row class="row-demarrer" (click)="openConnect()">
-    <span class="demarrer">
-      Démarrer
-    </span>
-  </ion-row>
+
 </ion-content>
+<ion-footer [ngStyle]="{'background':getColor(currentIndex)}" class="row-demarrer" (click)="openConnect()">
+  <span class="demarrer">
+    Démarrer
+  </span>
+</ion-footer>
