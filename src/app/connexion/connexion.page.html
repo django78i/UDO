@@ -1,5 +1,5 @@
 <ion-content fullscreen="true">
-  <ion-slides [options]="slideOptsOne" pager="true" class="slideDemarrage">
+  <ion-slides [ngStyle]="{'background':getColor(currentIndex)}" [options]="slideOptsOne" pager="true" class="slideDemarrage"  (ionSlideDidChange)="change($event)" #slider>
     <ion-slide class="c-slide1" >
       <ion-row class="c-row-img">
         <ion-img class="udoLogo" src="assets/banner/udoIconWhite.svg"></ion-img>
@@ -17,7 +17,7 @@
         Compatible avec toutes vos applications
       </span>
     </ion-row>
-   
+    
     </ion-slide>
     <ion-slide class="c-slide2" >
       <ion-row class="c-row-img">
@@ -76,9 +76,9 @@
 
     </ion-slide>
   </ion-slides>
-  <ion-row class="row-demarrer" (click)="openConnect()">
+  <ion-footer [ngStyle]="{'background':getColor(currentIndex)}" class="row-demarrer" (click)="openConnect()">
     <span class="demarrer">
       Démarrer
     </span>
-  </ion-row>
+  </ion-footer>
 </ion-content>

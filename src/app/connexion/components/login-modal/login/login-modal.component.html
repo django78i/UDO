@@ -19,7 +19,7 @@
 </ion-header>
 <ion-content>
   <ion-slides pager="false" [options]="slideOpts" (ionSlideDidChange)="change($event)" #slider>
-   
+    
     <ion-slide>
       <div class="sectionZone">
         <ion-label>
@@ -41,12 +41,12 @@
           <ion-item lines="none" class="c-form">
             <mat-form-field class="c-mat-form {{invalidInput}}" appearance="outline" color="warn">
               <mat-label>Identifiant</mat-label>
-              <input matInput autocomplete="off" (blur)="checkPseudo()" placeholder="Choisissez un pseudo..." class="form-control"
-                [(ngModel)]="pseudo" />
+              <input matInput autocomplete="off" (keyup)="checkPseudo()" placeholder="Choisissez un pseudo..."
+                class="form-control" [(ngModel)]="pseudo" />
             </mat-form-field>
-            
+
           </ion-item>
-          
+
         </div>
         <span class="error" *ngIf="errorPseudo!= '' "> {{errorPseudo}} </span>
       </div>
@@ -62,18 +62,14 @@
         </ion-label>
         <ion-row class="dateNaisse">
           <ion-item lines="none">
-            <input type="text" (blur)="ckeckDate()" onKeyPress="if(this.date?.jour.length==2) return false;" numberOnly
-              [(ngModel)]="date.jour">
+            <input type="text" (keyup)="checkDate()" minlength="2" maxlength="2" [(ngModel)]="jour">
             <span class="barre"></span>
-            <input type="text" (blur)="ckeckDate()" onKeyPress="if(this.date?.mois.length==2) return false;" numberOnly
-              [(ngModel)]="date.mois">
+            <input type="text" (keyup)="checkDate()" minlength="2" maxlength="2" [(ngModel)]="mois">
             <span class="barre"></span>
-            <input type="text" (blur)="ckeckDate()" onKeyPress="if(this.date?.annee.length==2) return false;" numberOnly
-              [(ngModel)]="date.annee">
+            <input type="text" (keyup)="checkDate()" minlength="2" maxlength="2" [(ngModel)]="annee">
           </ion-item>
         </ion-row>
-     
-        
+        <span class="invalidDate" *ngIf="invalidDate!= '' "> {{invalidDate}} </span>
 
       </section>
     </ion-slide>
@@ -105,10 +101,10 @@
     </ion-slide>
     <ion-slide>
       <app-activity-list [header]="false" (activitesEvent)="eventActivite($event)"></app-activity-list>
-     
+
     </ion-slide>
   </ion-slides>
- 
+
   <ion-footer *ngIf="activeIndex!=4" class="fab" style="width: 95%" (click)="nextStep()">
     <ion-button [class]="fabButton" expand="block" class="buttonNextSlide">
       <span> Suivant</span>
@@ -119,9 +115,9 @@
       <span> Finaliser</span>
     </ion-button>
   </ion-footer>
-  <ion-row class="ignore" *ngIf="activeIndex!=0 && activeIndex!=4">
+  <ion-footer class="ignore" *ngIf="activeIndex!=0 && activeIndex!=4">
     <span class="text-ignore" (click)="ignorer()">Ignorer cette étape</span>
-  </ion-row>
+  </ion-footer>
   <ion-footer class="ignore2" *ngIf="activeIndex==4">
     <span class="text-ignore2" (click)="validate()">Plus tard</span>
   </ion-footer>

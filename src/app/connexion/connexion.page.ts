@@ -5,11 +5,12 @@ import {
   QueryList,
   ViewChildren,
 } from '@angular/core';
-import { ModalController, NavController } from '@ionic/angular';
+import { ModalController, NavController, IonSlides } from '@ionic/angular';
 import { SwiperOptions } from 'swiper';
 import { SwiperComponent } from 'swiper/angular';
 import { ConnexionChoiceComponent } from './components/connexion-choice/connexion-choice.component';
 import { LoginModalComponent } from './components/login-modal/login/login-modal.component';
+import { ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-connexion',
@@ -17,6 +18,7 @@ import { LoginModalComponent } from './components/login-modal/login/login-modal.
   styleUrls: ['./connexion.page.scss'],
 })
 export class ConnexionPage implements OnInit, AfterContentChecked {
+  @ViewChild('slider') sliderComp: IonSlides;
   config: SwiperOptions = {
     slidesPerView: 1,
   };
@@ -48,7 +50,8 @@ export class ConnexionPage implements OnInit, AfterContentChecked {
       background: '#5340BC',
     },
   ];
-  modeClasse="slideDemarrage";
+  modeClasse = "slideDemarrage";
+  currentIndex = 0;
   @ViewChildren('swiper') swiper: QueryList<SwiperComponent>;
 
   constructor(
@@ -57,7 +60,7 @@ export class ConnexionPage implements OnInit, AfterContentChecked {
   ) {
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   ngAfterContentChecked(): void {
     // if (this.swiper) {
@@ -68,11 +71,26 @@ export class ConnexionPage implements OnInit, AfterContentChecked {
   openConnect() {
     this.navController.navigateForward('login');
   }
-
+  async change(event) {
+    this.currentIndex = await this.sliderComp.getActiveIndex();
+  }
   // async openConnect() {
   //   const modal = await this.modalController.create({
   //     component: ConnexionChoiceComponent,
   //   });
   //   return await modal.present();
   // }
+
+  getColor(index) {
+    switch (index) {
+      case 0:
+        return '#352D8F';
+      case 1:
+        return '#1F88F2';
+      case 2:
+        return '#121214';
+      case 3:
+        return '#4E31AD';
+    }
+  }
 }

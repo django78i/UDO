@@ -54,25 +54,6 @@ ion-card-header {
     width: 269px;
     text-align: left;
   }
-  .row-demarrer{
-    z-index: 9999999999999999 !important;
-    border: 2px solid #d3d3de82;
-    border-radius: 33px;
-    width: 337px;
-    height: 89px;
-    margin: auto;
-    margin-top: 48px;
-    margin-bottom: 7px;
-    .demarrer{
-      text-align: center;
-      font-size: 18px;
-      font-family: "PoppinsSemiBold" !important;
-      letter-spacing: 0px;
-      color:#d3d3de82;
-      opacity: 1;
-      margin: auto;
-    }
-  }
 }
 .c-slide2{
   background-color:#1F88F2;
@@ -80,7 +61,7 @@ ion-card-header {
     margin: auto;
     ion-img{
       width: 336px;
-      height: 418px;
+      height: 399px;
     }
   }
   .titre{
@@ -112,7 +93,7 @@ ion-card-header {
     margin: auto;
     ion-img{
       width: 390px;
-      height: 418px;
+      height: 421px;
     }
   }
   .titre{
@@ -136,25 +117,7 @@ ion-card-header {
     width: 336px;
     text-align: left;
   }
-  .row-demarrer{
-    z-index: 9999999999999999 !important;
-    border: 2px solid #d3d3de82;
-    border-radius: 33px;
-    width: 337px;
-    height: 89px;
-    margin: auto;
-    margin-top: 48px;
-    margin-bottom: 15px;
-    .demarrer{
-      text-align: center;
-      font-size: 18px;
-      font-family: "PoppinsSemiBold" !important;
-      letter-spacing: 0px;
-      color:#d3d3de82;
-      opacity: 1;
-      margin: auto;
-    }
-  }
+  
 }
 .c-slide4{
   background-color:#4E31AD;
@@ -162,7 +125,7 @@ ion-card-header {
     margin: auto;
     ion-img{
       width: 413px;
-      height: 427px;
+      height: 450px;
     }
   }
   .titre{
@@ -189,36 +152,17 @@ ion-card-header {
     width: 336px;
     text-align: left;
   }
-  .row-demarrer{
-    z-index: 9999999999999999 !important;
-    border: 2px solid #d3d3de82;
-    border-radius: 33px;
-    width: 337px;
-    height: 89px;
-    margin: auto;
-    margin-top: 48px;
-    margin-bottom: 16px;
-    .demarrer{
-      text-align: center;
-      font-size: 18px;
-      font-family: "PoppinsSemiBold" !important;
-      letter-spacing: 0px;
-      color:#d3d3de82;
-      opacity: 1;
-      margin: auto;
-    }
-  }
+  
 }
 .row-demarrer{
   z-index: 9999999999999999 !important;
-  border: 2px solid #d3d3de82;
-  border-radius: 33px;
-  width: 337px;
-  height: 89px;
-  margin: auto;
-  margin-top: -100px;
-  position: relative;
+  height: 111px;
+  text-align: center;
+  padding-top: 30px;
   .demarrer{
+    border: 2px solid #d3d3de82;
+    border-radius: 33px;
+    padding: 23px 110px;
     text-align: center;
     font-size: 18px;
     font-family: "PoppinsSemiBold" !important;

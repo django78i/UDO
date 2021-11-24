@@ -10,11 +10,13 @@ import {
 } from '@angular/core';
 import { MatStepper } from '@angular/material/stepper';
 import {
+  AlertController,
   IonSlides,
   LoadingController,
   ModalController,
   NavController,
   PickerController,
+  Platform,
 } from '@ionic/angular';
 import { UserService as UserService } from 'src/app/services/user-service.service';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
@@ -27,6 +29,7 @@ import {
 import { Subscription } from 'rxjs';
 import { $ } from 'protractor';
 import { SessionNowService } from 'src/app/services/session-now-service.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-modal',
@@ -53,35 +56,64 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
   slideOpts = {
     speed: 400,
   };
-  date ={
-    jour:'',
-    mois:'',
-    annee:''
-  }
+ 
+  jour ='';
+  mois =''
+  annee ='';
+  
   activeIndex: number = 0;
   fabButton="c-fab";
   title="Suivant";
   ignorerText="Ignorer";
   errorPseudo="";
   invalidInput="";
+  invalidDate="";
   constructor(
-    public zone: NgZone,
+    public zone: NgZone,private router: Router,
     public modalCtl: ModalController,
     public picker: PickerController,
     public userService: UserService,
     public navController: NavController,
     public loadingController: LoadingController,
     public ref: ChangeDetectorRef,
-    public sessionNowService: SessionNowService
+    public sessionNowService: SessionNowService,
+    private platform:Platform, private alertController:AlertController
   ) {
     this.fabButton ="c-fab";
+    this.platform.backButton.subscribeWithPriority(10, () => {
+      this.presentAlertConfirm();
+    });
   }
 
   ngOnInit() {
-    console.log("fabbutoon",this.fabButton);
-    
   }
 
+  async presentAlertConfirm() {
+    const alert = await this.alertController.create({
+      header: 'Confirmation',
+      mode: 'ios',
+      message: "Voulez vous vraiment arreter l'inscription",
+      buttons: [
+        {
+          text: 'Non',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+          },
+        },
+        {
+          text: 'Oui',
+          handler: () => {
+            // on quitte l'application et on supprime tous les posts
+            this.router.navigate(['login']);
+           // this.displayRecap();
+          },
+        },
+      ],
+    });
+
+    await alert.present();
+  }
   close() {
     this.modalCtl.dismiss();
   }
@@ -102,6 +134,7 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
 
   redirect() {
     this.navController.navigateForward(['']);
+    localStorage.setItem('isConnected',"true");
   }
 
   async addPhoto() {
@@ -146,8 +179,6 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
   }
 
   checkPseudo(){
-    console.log("pseudo",this.pseudo);
-    
     if(this.pseudo!='' && this.pseudo.toLowerCase() != 'admin'){
       this.fabButton="c-fab-img";
     }else{
@@ -162,12 +193,22 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
     }
   }
 
-  ckeckDate(){
-    if(this.date.jour!='' && this.date.jour.length ==2 &&this.date.mois!='' && this.date.mois.length ==2 && this.date.annee!='' && this.date.annee.length ==2  ){
+  checkDate(){
+    if(parseInt(this.jour)>31 || parseInt(this.jour)<0){
+      this.invalidDate = "Date invalide";
+      return;
+    }
+    if(parseInt(this.mois)>12 || parseInt(this.jour)<0){
+      this.invalidDate = "Date invalide";
+      return;
+    }
+    this.invalidDate="";
+    if(this.jour!='' && this.jour.length == 2 && this.mois!='' && this.mois.length ==2 && this.annee!='' && this.annee.length ==2  ){
       this.fabButton = "c-fab-img2";
     }else{
       this.fabButton = "c-fab";
     }
+   
   }
 
   savePhoto() {
@@ -187,7 +228,7 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
       );
     }
     if (this.pseudo != '' && this.invalidInput =='') {
-      this.step += 0.20;
+      this.step += 0.2;
       this.ref.detectChanges();
       this.slideNext();
        this.fabButton ="c-fab"
@@ -196,16 +237,19 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
 
   genderSlide() {
     if (this.physicalParam.taille !== 0 && this.physicalParam.poids !== 0) {
-      this.step += 0.25;
+      this.step =0.6;
       this.ref.detectChanges();
       this.slideNext();
-      this.fabButton = "c-fab";
+      this.fabButton = "c-fab-img";
     }
   }
 
+  toDoString(val){
+    return val.toString();
+  }
   physicSlide() {
     if (this.physicalParam.taille !== 0 && this.physicalParam.poids !== 0) {
-      this.step += 0.20;
+      this.step += 0.2;
       this.ref.detectChanges();
       this.slideNext();
       this.fabButton="c-fab";
@@ -300,30 +344,27 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
     }else{
       this.fabButton="c-fab";
     }
-    console.log("sex",this.sex);
     
   }
 
   eventActivite(event) {
-    console.log(event);
     this.activitesList = event;
     if(this.activitesList){
       this.fabButton = "c-fab-img";
     }else{
       this.fabButton = "c-fab";
     }
-    console.log(this.activitesList);
   }
 
   validate() {
     if (this.activitesList) {
-      this.step += 0.25;
+      this.step += 0.2;
       this.ref.detectChanges();
     }
     this.saveOnBoarding();
   }
 
   retour() {
-    this.navController.navigateBack('');
+    this.presentAlertConfirm();
   }
 }
