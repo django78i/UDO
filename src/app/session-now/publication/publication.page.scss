@@ -177,49 +177,53 @@ ion-content{
             }
         }
     }
-    .c-ion-fab{
-        background: #3E4ADD 0% 0% no-repeat padding-box;
-        border-radius: 33px;
-        width: 88%;
-        margin: 0 20px;
-        height: 89px;
-        text-align: center;
-        padding-top: 30px;
-        margin-bottom: 20px;
-        span{
-            letter-spacing: 0px;
-            color: #FFFFFF;
-            font-size: 18px;
-            font-family: "PoppinsSemiBold" !important;
-        }
-    }
-    .c-ion-fab-lands{
-        background: #3E4ADD 0% 0% no-repeat padding-box;
-        border-radius: 33px;
-        width: 50%;
-        margin: 0 25%;
-        height: 89px;
-        text-align: center;
-        padding-top: 30px;
-        margin-bottom: 20px;
-        span{
-            letter-spacing: 0px;
-            color: #FFFFFF;
-            font-size: 18px;
-            font-family: "PoppinsSemiBold" !important;
-        }
-    }
+
   .total{
     font-size: 33px;
     font-weight: bold;
     letter-spacing: -2.8px;
-    font-family: "Poppins" !important;
-    padding-left: 18px;
+    font-family: "PoppinsBold" !important;
+    //padding-left: 18px;
     padding-right: 5px;
     margin-top: 5px;
   }
   .gtotal{
     margin:20px;
     border-top:2px solid lightgrey;
+  }
+}
+ion-footer{
+  background: #f7f7fa !important;
+  .c-ion-fab{
+    background: #3E4ADD 0% 0% no-repeat padding-box;
+    border-radius: 33px;
+    width: 88%;
+    margin: 0 20px;
+    height: 89px;
+    text-align: center;
+    padding-top: 30px;
+    margin-bottom: 20px;
+    span{
+      letter-spacing: 0px;
+      color: #FFFFFF;
+      font-size: 18px;
+      font-family: "PoppinsSemiBold" !important;
+    }
+  }
+  .c-ion-fab-lands{
+    background: #3E4ADD 0% 0% no-repeat padding-box;
+    border-radius: 33px;
+    width: 50%;
+    margin: 0 25%;
+    height: 89px;
+    text-align: center;
+    padding-top: 30px;
+    margin-bottom: 20px;
+    span{
+      letter-spacing: 0px;
+      color: #FFFFFF;
+      font-size: 18px;
+      font-family: "PoppinsSemiBold" !important;
+    }
   }
 }

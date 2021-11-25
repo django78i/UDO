@@ -92,9 +92,7 @@
     </ion-item>
   </ion-row>
 </ion-content>
-<ion-footer [class]="mode">
-  <ion-footer>
-    <ion-button *ngIf="!isVisible" expand="block" class="c-ion-fab" (click)="publier()" type="submit">Publier
-    </ion-button>
-  </ion-footer>
+<ion-footer >
+    <div *ngIf="!isVisible" expand="block" class="c-ion-fab" (click)="publier()" type="submit">Publier
+    </div>
 </ion-footer>

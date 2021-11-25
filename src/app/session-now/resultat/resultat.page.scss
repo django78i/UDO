@@ -25,7 +25,7 @@ ion-content{
         }
         .taille{
             font-size: 10px;
-            font-family: "PoppinsMedium" !important; 
+            font-family: "PoppinsMedium" !important;
             letter-spacing: -0.1px;
             color: #2A2A2C;
             opacity: 0.6;
@@ -182,7 +182,7 @@ ion-content{
             font-size: 14px;
             margin: auto;
         }
-    
+
         .c-col{
             margin: auto;
         }
@@ -190,7 +190,7 @@ ion-content{
     .c-row{
         margin-top: 15px;
         margin-bottom: 120px;
-   
+
     .c-item{
         --background: #FFFFFF;
         width: 95%;
@@ -225,7 +225,7 @@ ion-content{
         display: none;
     }
     .item-name{
-        --ion-background-color: transparent; 
+        --ion-background-color: transparent;
         margin-left: -18px;
         width: 100%;
     }
@@ -265,7 +265,7 @@ ion-content{
     .c-row-lands{
         margin-top: 15px;
         margin-bottom: 150px;
-   
+
     .c-item{
         --background: #FFFFFF;
         width: 95%;
@@ -300,7 +300,7 @@ ion-content{
         display: none;
     }
     .item-name{
-        --ion-background-color: transparent; 
+        --ion-background-color: transparent;
         margin-left: -18px;
         width: 100%;
     }
@@ -337,40 +337,44 @@ ion-content{
         margin-left: 0;
     }
     }
-    .c-ion-fab{
-        background: #3E4ADD 0% 0% no-repeat padding-box;
-        border-radius: 33px;
-        width: 88%;
-        margin: 0 20px;
-        height: 89px;
-        text-align: center;
-        padding-top: 30px;
-        span{
-            letter-spacing: 0px;
-            color: #FFFFFF;
-            font-size: 18px;
-            font-family: "PoppinsSemiBold" !important;
-        }
-    }
-    .c-ion-fab-lands{
-        // background: #3E4ADD 0% 0% no-repeat padding-box;
-        border-radius: 33px;
-        // width: 50%;
-        margin: 0 25%;
-        // height: 89px;
-        text-align: center;
-        padding-top: 30px;
-        span{
-            letter-spacing: 0px;
-            color: #FFFFFF;
-            font-size: 18px;
-            font-family: "PoppinsSemiBold" !important;
-        }
-    }
+
 }
 ion-footer{
-    --background:#F4F5FA !important;
-    --backdrop-opacity: 0 !important;
+  background: #f7f7fa !important;
+  .c-ion-fab{
+    background: #3E4ADD 0% 0% no-repeat padding-box;
+    border-radius: 33px;
+    width: 88%;
+    margin: 0 20px;
+    height: 89px;
+    text-align: center;
+    padding-top: 30px;
+    margin-bottom: 20px !important;
+    color: white;
+    span{
+      letter-spacing: 0px;
+      color: #FFFFFF;
+      font-size: 18px;
+      font-family: "PoppinsSemiBold" !important;
+    }
+  }
+  .c-ion-fab-lands{
+    background: #3E4ADD 0% 0% no-repeat padding-box;
+    border-radius: 33px;
+    // width: 50%;
+    margin: 0 25%;
+    // height: 89px;
+    text-align: center;
+    padding-top: 30px;
+    margin-bottom: 20px !important;
+    color: white;
+    span{
+      letter-spacing: 0px;
+      color: #FFFFFF;
+      font-size: 18px;
+      font-family: "PoppinsSemiBold" !important;
+    }
+  }
 }
 .landscape{
     width: 50% !important;
