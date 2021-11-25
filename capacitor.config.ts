@@ -11,7 +11,7 @@ const config: CapacitorConfig = {
       ScrollEnabled: 'false',
       BackupWebStorage: 'none',
       SplashMaintainAspectRatio: 'true',
-      FadeSplashScreenDuration: '300',
+      FadeSplashScreenDuration: '5000',
       SplashShowOnlyFirstTime: 'false',
       SplashScreen: 'screen',
       SplashScreenDelay: '5000',
@@ -21,7 +21,8 @@ const config: CapacitorConfig = {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     SplashScreen: {
       launchShowDuration: 5000,
-      backgroundColor:'#352D8F'
+      backgroundColor:'#352D8F',
+      launchAutoHide:false
     },
     // eslint-disable-next-line @typescript-eslint/naming-convention
     GoogleAuth: {

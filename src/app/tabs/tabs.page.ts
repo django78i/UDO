@@ -3,7 +3,7 @@ import { MusicFeedService } from '../services/music-feed.service';
 import {
   ModalController,
   AnimationController,
-  NavController,
+  NavController, Platform, AlertController,
 } from '@ionic/angular';
 import { MenuUserComponent } from '../components/menu-user/menu-user.component';
 import { AddContenuComponent } from '../session-now/add-contenu/add-contenu.component';
@@ -11,6 +11,8 @@ import { ExternalSessionNowComponent } from '../session-now/external-session-now
 import { CreatePostComponent } from './component/create-post/create-post.component';
 import { UserService } from '../services/user-service.service';
 import {RouterOutlet, Router, ActivationStart, NavigationExtras} from '@angular/router';
+import {Plugins} from "@capacitor/core";
+const { App } = Plugins;
 
 @Component({
   selector: 'app-tabs',
@@ -28,8 +30,13 @@ export class TabsPage implements OnInit {
     public msService: MusicFeedService,
     public navController: NavController,
     private modalCtrl: ModalController,
-    public userService: UserService
+    public userService: UserService,
+    private platform: Platform,
+    public alertController: AlertController
   ) {
+    this.platform.backButton.subscribeWithPriority(10, () => {
+      this.presentAlertConfirm();
+    });
     this.userService.getUsers();
   }
 
@@ -82,5 +89,36 @@ export class TabsPage implements OnInit {
     });
     modal.onDidDismiss().then((data: any) => {});
     return await modal.present();
+  }
+  /**
+   * cette alert permet de confirmer la sortie de l'application
+   */
+  async presentAlertConfirm() {
+
+    const alert = await this.alertController.create({
+      header: 'Confirmation',
+      mode: 'ios',
+      message: 'Voulez vous vraiment quitter cette application',
+      buttons: [
+        {
+          text: 'Non',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+          },
+        },
+        {
+          text: 'Oui',
+          handler: () => {
+            App.exitApp();
+            // on quitte l'application et on supprime tous les posts
+            //this.destroySession();
+            // this.displayRecap();
+          },
+        },
+      ],
+    });
+
+    await alert.present();
   }
 }
