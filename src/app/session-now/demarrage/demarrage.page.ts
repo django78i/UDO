@@ -42,7 +42,7 @@ export class DemarragePage implements OnInit {
   activite: any;
   pause = false;
   image: any;
-  listChoix = [
+  /* listChoix = [
     {
       img: 'assets/images/distance_m.svg',
       nombre: '0',
@@ -71,7 +71,7 @@ export class DemarragePage implements OnInit {
       exposant: 'CAL',
       fieldname: 'calories',
     },
-  ];
+  ];*/
   sessionNow = new SessionNowModel();
   listSettings = [];
   user: any;
@@ -234,17 +234,31 @@ export class DemarragePage implements OnInit {
         exposant: 'CAL',
         fieldname: 'calories',
       },
-    ];
+      {
+        name:'Vitesse',
+        fieldname:'speed',
+        img:'assets/images/speed_m.svg',
+        nombre:'0',
+        exposant: '',
+      },
+      {
+        name:'Réactions',
+        fieldname:'reaction',
+        img:'assets/images/reaction_m.svg',
+        nombre:'0',
+        exposant: ''
+      }
+  ];
     const item = JSON.parse(localStorage.getItem('activite'));
     if (item) {
       this.activite = item;
     }
     const choix = localStorage.getItem('choix');
-    if (!choix) {
-      localStorage.setItem('choix', JSON.stringify(this.listChoix));
+    /*if (!choix) {
+     // localStorage.setItem('choix', JSON.stringify(this.listElement));
     } else {
       this.listElement = JSON.parse(localStorage.getItem('choix'));
-    }
+    }*/
     const detailCompet = JSON.parse(localStorage.getItem('detailCompet'));
     if(detailCompet){
       if(detailCompet.competitionName){
@@ -336,7 +350,10 @@ export class DemarragePage implements OnInit {
   getMetrics() {
     if (this.status === 'play') {
       for (const item of this.listElement) {
-        this.queryMetrics(item.fieldname, item);
+        if(item.fieldname!=='reaction'){
+          this.queryMetrics(item.fieldname, item);
+        }
+
       }
       const that = this;
       // this.getMetrics();
@@ -438,12 +455,17 @@ export class DemarragePage implements OnInit {
       'activity',
       'height',
       'weight',
+      'speed',
+      'reaction'
     ];
     this.sessionNow.isLive = false;
     this.sessionNow.duration = this.mn + ':' + this.s;
     for (const metric of this.listElement) {
       for (const metricAutorised of listMetricAuhorised) {
         if (metric.fieldname === metricAutorised) {
+          if(metric.fieldname==='reaction'){
+            metric.nombre=this.sessionNow.reactions?.length;
+          }
           this.sessionNow.metrics.push(metric);
         }
       }
@@ -455,6 +477,7 @@ export class DemarragePage implements OnInit {
       new Date().toISOString().split('T')[1].split('.')[0];
     localStorage.setItem('counter', JSON.stringify({ mn: this.mn, s: this.s }));
     localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
+    localStorage.setItem('choix', JSON.stringify( this.sessionNow.metrics));
     // redirection vers le composant qui affiche le recapitulatif
     this.router.navigate(['session-now/resultat']);
   }
@@ -643,8 +666,8 @@ console.log(1);
     modal.onDidDismiss().then((data: any) => {
       if (data.data) {
         let value = data.data;
-        for (const el of this.listElement) {
-          if (el.name === value.name) {
+        for (let i=0; i<4; i++) {
+          if (this.listElement[i].name === value.name) {
             this.showMessage(
               'Cette activité est déjà dans la liste',
               'warning'
@@ -652,12 +675,12 @@ console.log(1);
             return;
           }
         }
-        for (const val of this.listChoix) {
-          if (value.name == val.name) {
-            value = val;
-            this.listElement[index] = val;
-          } else {
-            this.listElement[index] = value;
+        console.log("value",value);
+        const temp= {...this.listElement[index]};
+        for(let itemMetric of this.listElement){
+          if(itemMetric.name===value.name){
+            this.listElement[index]=itemMetric;
+            itemMetric=temp;
           }
         }
         localStorage.setItem('choix', JSON.stringify(this.listElement));

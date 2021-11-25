@@ -56,9 +56,9 @@ export class ResultatPage implements OnInit {
   ];
   user;
   isVisible = false;
-  mode="";
-  modeClasse="";
-  message="";
+  mode='';
+  modeClasse='';
+  message='';
   constructor(
     private modalCtrl: ModalController,
     private platform: Platform,
@@ -71,17 +71,16 @@ export class ResultatPage implements OnInit {
   ) {
     setInterval(()=>{
     if(localStorage.getItem('mode')){
-      if(localStorage.getItem('mode')=='landscape'){
+      if(localStorage.getItem('mode')==='landscape'){
         this.mode = 'landscape';
-        this.modeClasse="c-ion-fab-lands";
+        this.modeClasse='c-ion-fab-lands';
       }else{
         this.mode = '';
-        this.modeClasse="c-ion-fab";
-
+        this.modeClasse='c-ion-fab';
       }
     }else{
-      this.modeClasse="c-ion-fab";
-      this.mode="";
+      this.modeClasse='c-ion-fab';
+      this.mode='';
     }
     }, 100);
     this.platform.backButton.subscribeWithPriority(10, () => {
@@ -95,11 +94,11 @@ export class ResultatPage implements OnInit {
   }
 
   ngOnInit() {
-    this.listNotif = [];
     this.activite = JSON.parse(localStorage.getItem('activite'));
     this.listElement = JSON.parse(localStorage.getItem('choix'));
-
+    console.log('list',this.listElement);
     this.sessionNow = JSON.parse(localStorage.getItem('sessionNow'));
+    this.listNotif = this.sessionNow.reactions;
     if (this.sessionNow) {
       this.sessionNow.reactionNumber = this.listNotif?.length;
       if (this.sessionNow) {

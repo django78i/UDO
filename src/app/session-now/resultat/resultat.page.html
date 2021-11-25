@@ -42,22 +42,22 @@
   </ion-grid>
   <ion-grid class="choice">
     <ion-row>
-      <ion-col class="c-col" size="6" *ngFor="let item of listElement ; let i=index">
+      <ion-col class="c-col" size="6" *ngFor="let j of [0,1,2,3]  ; let i=index">
         <ion-row>
           <ion-img class="c-image"
-            [ngStyle]="{'width': item.width ? item.width : item.width,'height' : item.height ? item.height : item.height}"
-            [src]="item.img"></ion-img>
+            [ngStyle]="{'width': listElement[j].width ? listElement[j].width : listElement[j].width,'height' : listElement[j].height ? listElement[j].height : listElement[j].height}"
+            [src]="listElement[j].img"></ion-img>
         </ion-row>
         <ion-row>
           <div class="element">
-            <ion-label class="nombre"> {{item.nombre}} </ion-label>
-            <span class="exposant" *ngIf="item.exposant">
-              {{item.exposant}}
+            <ion-label class="nombre"> {{listElement[j].nombre}} </ion-label>
+            <span class="exposant" *ngIf="listElement[j].exposant">
+              {{listElement[j].exposant}}
             </span>
           </div>
         </ion-row>
         <ion-row>
-          <ion-label class="name"> {{item.name}} </ion-label>
+          <ion-label class="name"> {{listElement[j].name}} </ion-label>
         </ion-row>
       </ion-col>
     </ion-row>
