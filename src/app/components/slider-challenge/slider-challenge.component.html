@@ -6,6 +6,7 @@
 >
   <ng-template swiperSlide *ngFor="let chall of challenges">
     <ion-card
+    (click)="showChallenge(chall.uid)"
       [style.backgroundColor]="chall.banniereColor"
       style="background-image: url('assets/icon/udoIconFond.svg')"
     >

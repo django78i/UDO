@@ -7,6 +7,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class ResumeChallengeComponent implements OnInit {
   @Input() challenge: any;
+  @Input() userEncours: any;
 
   constructor() {}
 

@@ -21,6 +21,7 @@ export class SliderChallengeComponent implements OnInit, AfterContentChecked {
 
   @ViewChildren('swiper') swiper: QueryList<SwiperComponent>;
   @Output() slide: EventEmitter<any> = new EventEmitter();
+  @Output() challengeId: EventEmitter<any> = new EventEmitter();
 
   constructor() {}
 
@@ -42,4 +43,10 @@ export class SliderChallengeComponent implements OnInit, AfterContentChecked {
     const chall = this.challenges[ev.activeIndex];
     this.slide.emit(chall);
   }
+
+  showChallenge(uid) {
+    console.log(uid);
+    this.challengeId.emit(uid);
+  }
+
 }

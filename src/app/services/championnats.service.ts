@@ -13,6 +13,7 @@ import {
   where,
   updateDoc,
   getDoc,
+  Unsubscribe,
 } from 'firebase/firestore';
 import { BehaviorSubject, from, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -29,6 +30,7 @@ export class ChampionnatsService {
   db = getFirestore();
   messagesSubject$: Subject<any> = new Subject();
   singleChampSub$: Subject<any> = new Subject();
+  unsubscribe: Unsubscribe;
 
   constructor() {}
 
@@ -68,7 +70,7 @@ export class ChampionnatsService {
       collection(this.db, 'championnats')
       // where('type', '==', 'network')
     );
-    const unsubscribe = onSnapshot(docRef, (querySnapshot) => {
+    this.unsubscribe = onSnapshot(docRef, (querySnapshot) => {
       const champs = [];
       querySnapshot.forEach((doc) => {
         const document = doc.data();

@@ -15,26 +15,22 @@
     <ion-toolbar class="barStat">
       <ion-item slot="start" lines="none" class="itemLeft">
         <ion-label class="titre">
-          {{ champ?.semaineEnCours }}
+          {{ challenge?.semaineEnCours }}
         </ion-label>
         <ion-label class="sousTitre black"> Semaines </ion-label>
       </ion-item>
       <ion-title>
         <ion-item lines="none">
           <ion-label class="titre">
-            {{ userInfo.journeeEnCours
+            {{ userEncours.value
             }}<span style="font-weight: 500; color: #c5c6ce">/</span
-            ><span style="color: #c5c6ce">{{ champ?.journeeTotale }}</span>
+            ><span style="color: #c5c6ce">{{ challenge?.objectifs }}</span>
           </ion-label>
-          <ion-label class="sousTitre black">Journées</ion-label>
+          <ion-label class="sousTitre black">{{
+            challenge.metric.metric
+          }}</ion-label>
         </ion-item>
       </ion-title>
-      <ion-item slot="end" lines="none">
-        <ion-label class="titre">
-          {{ userInfo.bonus }}
-        </ion-label>
-        <ion-label class="sousTitre black"> Bonus </ion-label>
-      </ion-item>
     </ion-toolbar>
   </section>
   <section class="contentTotal">

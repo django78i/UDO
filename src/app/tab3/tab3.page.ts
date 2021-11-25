@@ -85,6 +85,8 @@ export class Tab3Page implements OnInit, AfterContentChecked {
     this.userService.getCurrentUser().then((user) => (this.user = user));
 
     this.champService.getChampionnats();
+    this.challServ.getChallenges();
+
     this.champService.champSubject$
       .pipe(
         tap((r) => {
@@ -114,7 +116,6 @@ export class Tab3Page implements OnInit, AfterContentChecked {
         })
       )
       .subscribe();
-    this.challServ.getChallenges();
     this.challServ.challenges$
       .pipe(
         tap((r) => {
@@ -135,6 +136,7 @@ export class Tab3Page implements OnInit, AfterContentChecked {
         })
       )
       .subscribe();
+    this.ref.detectChanges();
   }
 
   ngAfterContentChecked(): void {

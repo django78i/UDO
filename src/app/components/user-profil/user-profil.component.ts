@@ -13,6 +13,7 @@ import { ChatService } from 'src/app/services/chat.service';
 import { UserService } from 'src/app/services/user-service.service';
 import { ChatRoomComponent } from '../chat-room/chat-room.component';
 import * as _ from 'lodash';
+import { SessionNowService } from 'src/app/services/session-now-service.service';
 
 interface User {
   activitesPratiquees: any[];
@@ -107,7 +108,7 @@ export class UserProfilComponent implements OnInit {
     { name: 'Souplesse', stat: 100 },
     { name: 'Gainage', stat: 200 },
   ];
-  max :number;
+  max: number;
   donneeFormat: any[] = [];
   seg: string = 'resume';
   statTable = [];
@@ -122,7 +123,8 @@ export class UserProfilComponent implements OnInit {
     public modalController: ModalController,
     public userService: UserService,
     public navController: NavController,
-    public chatService: ChatService
+    public chatService: ChatService,
+    public sessionNowService: SessionNowService
   ) {}
 
   ngOnInit() {
@@ -169,7 +171,7 @@ export class UserProfilComponent implements OnInit {
     if (this.user.metrics) {
       this.user.metrics.map((stat, i) => {
         const ratio = stat.value / this.max;
-        console.log(this.ratio, this.max, stat.value)
+        console.log(this.ratio, this.max, stat.value);
         const position = {
           x: 130 - this.doneesIniitial[i].vecteur.x * ratio,
           y: 130 - this.doneesIniitial[i].vecteur.y * ratio,
@@ -263,11 +265,13 @@ export class UserProfilComponent implements OnInit {
   addFriend() {
     this.userService.addFriend(this.user, this.currentUser);
     this.friendBool = true;
+    this.sessionNowService.show('Ajouté avec succès', 'success');
   }
 
   removeFriend() {
     this.userService.removeFriend(this.user, this.currentUser);
     this.friendBool = false;
+    this.sessionNowService.show('supprimer des amis', 'warning');
   }
 
   controlRoom(): Promise<any> {

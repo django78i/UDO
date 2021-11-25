@@ -40,9 +40,10 @@ export class FriendsListComponent implements OnInit {
       }
     );
 
-    this.usersList = JSON.parse(localStorage.getItem('usersList'));
-
-    console.log(this.createur);
+    const list: any[] = JSON.parse(localStorage.getItem('usersList'));
+    const userList = list.filter((user) => user.uid != this.createur.uid);
+    this.usersList = userList;
+    console.log(this.usersList);
   }
 
   back() {

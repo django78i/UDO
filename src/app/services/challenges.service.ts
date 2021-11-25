@@ -13,6 +13,7 @@ import {
   where,
   updateDoc,
   getDoc,
+  Unsubscribe,
 } from 'firebase/firestore';
 import { BehaviorSubject } from 'rxjs';
 
@@ -24,6 +25,7 @@ export class ChallengesService {
   challengeEnCours$: BehaviorSubject<any> = new BehaviorSubject(null);
   challenges$: BehaviorSubject<any> = new BehaviorSubject(null);
   singleChallSub$: BehaviorSubject<any> = new BehaviorSubject(null);
+  unsubscribe: Unsubscribe;
 
   constructor() {}
 
@@ -60,12 +62,12 @@ export class ChallengesService {
     const auth = getAuth();
     auth.currentUser.uid;
 
-    const docRef = query(collection(this.db, 'challenges'));
-    const unsubscribe = onSnapshot(docRef, (querySnapshot) => {
-      const champs = [];
+    const docRef = collection(this.db, 'challenges');
+    this.unsubscribe = onSnapshot(docRef, (querySnapshot) => {
       const users = JSON.parse(localStorage.getItem('usersList'));
       querySnapshot.docChanges().forEach((changes) => {
         if (changes) {
+          console.log('ici', changes);
           this.challengeEnCours$.next(null);
           this.challenges$.next(null);
         }
@@ -82,15 +84,12 @@ export class ChallengesService {
         } else if (document.status == 'en attente') {
           this.challenges$.next(docFormat);
         }
-        // else if (
-        //   document.status == 'en attente' &&
-        //   bool &&
-        //   document.type == 'Network'
-        // ) {
-        //   this.champNetWork$.next(docFormat);
-        // }
       });
     });
+  }
+
+  async updateChall(chall) {
+    await updateDoc(doc(this.db, 'challenges', chall.uid), chall);
   }
 
   formatChall(chall, users) {

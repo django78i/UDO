@@ -17,6 +17,7 @@
       [challenges]="challEncours"
       *ngIf="challEncours"
       (slide)="challChoice($event)"
+      (challengeId)="chooseChallenge($event)"
     >
     </app-slider-challenge>
   </div>
@@ -39,7 +40,7 @@
         height: 40px;
         padding: 10px;
         border-radius: 50%;
-        border: 1px solid #F2F2F4;
+        border: 1px solid #f2f2f4;
         margin-right: 10px;
       "
       alt=""

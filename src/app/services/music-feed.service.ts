@@ -81,7 +81,7 @@ export class MusicFeedService {
         first = query(
           collection(db, 'post-session-now'),
           // where('isLive', '==', true),
-          orderBy('postCount', 'desc'),
+          orderBy('reactionsNombre', 'desc'),
           limit(15)
         );
         break;
@@ -130,7 +130,7 @@ export class MusicFeedService {
           limit(15)
         );
         break;
-      case 'Tendance':
+      case 'Populaire':
         queryColl = query(
           collection(db, 'post-session-now'),
           orderBy('reactionsNombre', 'desc'),

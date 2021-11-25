@@ -1,11 +1,7 @@
 import {
-  AfterViewInit,
   ChangeDetectorRef,
   Component,
-  ElementRef,
-  Input,
   OnInit,
-  ViewChild,
 } from '@angular/core';
 import { ActivatedRoute, NavigationExtras } from '@angular/router';
 import {
@@ -74,7 +70,7 @@ export class ChampionnatPage implements OnInit {
       const uid = this.route.snapshot.params['id'];
       this.champService.getChampionnat(uid);
       this.champService.singleChampSub$.subscribe((champ) => {
-        console.log(champ)
+        console.log(champ);
         this.championnat = champ;
         this.participantsList = this.championnat.participants.slice(0, 4);
         this.userEncours = this.championnat.participants.find(
@@ -97,12 +93,11 @@ export class ChampionnatPage implements OnInit {
       (ind) => ind.uid == this.user.uid
     );
     this.championnat.participants[index].etat = 'prêt';
-    this.userEncours.etat ="prêt"
-    this.ref.detectChanges()
+    this.userEncours.etat = 'prêt';
+    this.ref.detectChanges();
     console.log(this.championnat);
     this.champService.updateChamp(this.championnat);
     this.loading = false;
-
   }
 
   segmentChanged(ev) {
@@ -190,4 +185,5 @@ export class ChampionnatPage implements OnInit {
     };
     this.navCtl.navigateForward('session-now', champInfo);
   }
+
 }

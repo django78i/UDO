@@ -127,7 +127,18 @@ export class CreateChallPopUpComponent implements OnInit, AfterContentChecked {
   }
 
   publier(ev) {
-    const dateFin = moment(this.dateDemarrage).add(this.weekCount, 'weeks');
+    const dateFin = moment(this.dateDemarrage)
+      .add(this.weekCount, 'weeks')
+      .toDate();
+    const user = {
+      avatar: this.user.avatar,
+      etat: 'prêt',
+      userName: this.user.userName,
+      niveau: this.user.niveau,
+      uid: this.user.uid,
+    };
+    this.friendsList.push(user);
+
     const challenge = {
       banniereColor: this.banniere.color,
       banniereImage: this.image ? this.image : '',
@@ -149,9 +160,9 @@ export class CreateChallPopUpComponent implements OnInit, AfterContentChecked {
       icon: this.icon,
       dateCreation: new Date(),
     };
-    // this.challService.createChallenge(challenge);
+    this.challService.createChallenge(challenge);
     this.sessionNowService.show('challenge créé', 'success');
-    // this.modalCtl.dismiss();
+    this.modalCtl.dismiss();
     console.log(challenge);
   }
 

@@ -8,10 +8,9 @@
 }
 
 .cardSlide {
-    display: flex;
-    gap: 7px;
-  }
-
+  display: flex;
+  gap: 7px;
+}
 
 ion-card {
   height: 214px;
@@ -93,4 +92,11 @@ ion-card-content {
       border-radius: 50%;
     }
   }
+}
+
+.buttonNextSlide {
+  height: 80px;
+  --border-radius: 33px;
+  --background: var(--i);
+  --background-activated: var(--i);
 }
