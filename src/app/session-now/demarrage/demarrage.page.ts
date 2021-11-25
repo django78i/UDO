@@ -365,14 +365,30 @@ export class DemarragePage implements OnInit {
   }
 
   /**
+   *
+   */
+  calculAgregated(res){
+    let agregate=0;
+    if(res!==null && res!==undefined){
+      // eslint-disable-next-line @typescript-eslint/prefer-for-of
+      for (let i=0;i<res.length; i++ ){
+        agregate=agregate+res[i]?.value;
+      }
+    }
+    return agregate;
+  }
+  /**
    * ce callback est appelé pour procéder le resultat obtenu apres la recuperation de la metric de p
    *
    * @param res
    * @param item
    */
   processMetricResult(res, item) {
+
     if (item.fieldname === 'speed') {
-      const distance = res.length > 0 ? res[res.length - 1]?.value : 0;
+     // const distance = res.length > 0 ? res[res.length - 1]?.value : 0;
+      const distance = res.length > 0 ? this.calculAgregated(res) : 0;
+
       if (distance !== 0) {
         const speed = this.calculSpeed(distance, this.mn * 60 + this.s);
         item.nombre =
@@ -380,12 +396,19 @@ export class DemarragePage implements OnInit {
           100;
       }
     } else {
-      item.nombre =
+      /* item.nombre =
         res.length > 0
           ? Math.round(
             (parseFloat(res[res.length - 1]?.value) + Number.EPSILON) * 100
           ) / 100
+          : '0';*/
+      item.nombre =
+        res.length > 0
+          ? Math.round(
+          (parseFloat(this.calculAgregated(res).toString()) + Number.EPSILON) * 100
+        ) / 100
           : '0';
+
     }
     if (item.fieldname === 'distance') {
       if (
@@ -417,9 +440,9 @@ export class DemarragePage implements OnInit {
       if (metric === 'speed') {
         option.dataType = 'distance';
       }
-      option['bucket'] = 'hour';
+    //  option['bucket'] = 'hour';
       this.health
-        .queryAggregated(option)
+        .query(option)
         .then((res) => this.processMetricResult(res, item))
         .catch((e) => console.log('error3 ', e));
     } else {
