@@ -40,9 +40,10 @@
     <ion-col class="c-col total" size="7"><span>TOTAL</span></ion-col>
     <ion-col class="c-col total" size="5"><span>+{{valeur}}XP</span></ion-col>
   </ion-row>
-  <ion-fab [class]="demarrage" (click)="fermer()" vertical="bottom" slot="fixed">
-    <!-- <ion-fab-button> -->
-    <span>Fermer</span>
-    <!-- </ion-fab-button> -->
-  </ion-fab>
+  
 </ion-content>
+<ion-footer >
+  <ion-button [class]="demarrage" (click)="fermer()">
+  <span>Fermer</span>
+  </ion-button>
+</ion-footer>
