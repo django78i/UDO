@@ -5,8 +5,8 @@
 //   justify-content: center;
 // }
 ion-content{
-  height: 100% !important;
   --offset-bottom: 0 !important;
+  overflow-x: scroll !important;
 }
 ion-card-header {
   height: 460px;
