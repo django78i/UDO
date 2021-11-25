@@ -1,5 +1,5 @@
-<ion-content fullscreen="true">
-  <ion-slides [ngStyle]="{'background':getColor(currentIndex)}" [options]="slideOptsOne" pager="true" class="slideDemarrage"  (ionSlideDidChange)="change($event)" #slider>
+<ion-content fullscreen="true" [ngStyle]="{'background':getColor(currentIndex)}">
+  <ion-slides  [options]="slideOptsOne" pager="true" class="slideDemarrage"  (ionSlideDidChange)="change($event)" #slider>
     <ion-slide class="c-slide1" >
       <ion-row class="c-row-img">
         <ion-img class="udoLogo" src="assets/banner/udoIconWhite.svg"></ion-img>
