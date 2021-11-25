@@ -418,6 +418,7 @@
             [listAct]="activitesList"
           ></app-activity-list>
           <app-friends-list
+          [competition]="'challenge'"
             (champCreate)="publier($event)"
             [createur]="user"
             [range]="range"

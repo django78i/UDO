@@ -124,7 +124,7 @@ export class CreateChampPopUpComponent
   @ViewChildren('checkBanniere') checkBanniere: QueryList<IonCheckbox>;
 
   seg: string = 'Friends&Familly';
-
+  
   constructor(
     private modalCtrl: ModalController,
     public fb: FormBuilder,

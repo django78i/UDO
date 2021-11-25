@@ -66,24 +66,29 @@ export class PreseancePage implements OnInit {
   }
 
   ngOnInit() {
-    this.challengeStatus=90;
-    this.challengeUnity='%';
-    this.categoryName='';
-    this.categoryId='';
-    this.route.queryParams.subscribe(params => {
-      console.log(params)
+    this.challengeStatus = 0;
+    this.challengeUnity = '%';
+    this.categoryName = '';
+    this.categoryId = '';
+    this.route.queryParams.subscribe((params) => {
+      console.log(params);
       this.type = params.type;
       console.log(params);
       if (params.challengeStatus) {
+        console.log('status');
         this.challengeStatus = params.challengeStatus;
       }
       if (params.competitionName) {
+        console.log('NAme');
         this.categoryName = params.competitionName;
       }
       if (params.competitionId) {
+        console.log('Id');
+
         this.categoryId = params.competitionId;
       }
       if (params.challengeMetric) {
+        console.log('metric');
         this.challengeUnity = params.challengeMetric;
       }
     });

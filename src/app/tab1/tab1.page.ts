@@ -22,6 +22,7 @@ import { UserService } from '../services/user-service.service';
 import { EmojisComponent } from '../components/emojis/emojis.component';
 import { DetailPostComponent } from '../tab3/components/detail-post/detail-post.component';
 import { UserProfilComponent } from '../components/user-profil/user-profil.component';
+import { SessionNowService } from '../services/session-now-service.service';
 
 interface Reaction {
   icon: string;
@@ -98,13 +99,15 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
     public http: HttpClient,
     public navCtl: NavController,
     public userService: UserService,
-    public ref: ElementRef
+    public ref: ElementRef,
+    public snsService: SessionNowService
   ) {}
 
   async ngOnInit() {
     const user = from(this.userService.getCurrentUser());
     this.subscription = user.subscribe((us) => {
       this.user = us;
+      this.snsService.controlLive(this.user.uid);
     });
     const feed = await this.feedService.feedFilter('Récent');
     this.loading = false;

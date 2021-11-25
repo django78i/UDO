@@ -21,6 +21,7 @@ import {
   updateDoc,
   deleteDoc,
   where,
+  QuerySnapshot,
 } from 'firebase/firestore';
 import {
   getAuth,
@@ -55,6 +56,7 @@ export class SessionNowService {
     await setDoc(doc(db, collectionName, document.uid), document);
     return id;
   }
+
   async createSessionNow(document) {
     const db = getFirestore();
     const id = this.createId();
@@ -62,6 +64,46 @@ export class SessionNowService {
     await setDoc(doc(db, 'session-now', document.uid), document);
     return id;
   }
+
+  async controlLive(uid) {
+    console.log('control');
+    //récupération des posts de l'utilisateur
+    const postList = await this.getSessionNow(uid);
+    if (postList) {
+      postList.forEach((post) => {
+        const postData = post.data();
+        console.log(postData);
+        //update du post si il est toujours en live
+        if (postData.isLive == true) {
+          console.log(postData);
+          //suppression du post de type sessionNow si aucune réaction pendant la séance
+          if (postData.type == 'session-now') {
+            this.deleteSessionCascade(postData.sessionId);
+          } else {
+            //update status du post
+            this.updatePostLies(postData);
+          }
+        }
+      });
+    }
+  }
+
+  async updatePostSeanceNow(post) {
+    const db = getFirestore();
+    await updateDoc(doc(db, 'post-session-now', post.uid), post);
+  }
+
+  async getSessionNow(uid): Promise<QuerySnapshot<DocumentData>> {
+    console.log('now');
+    const db = getFirestore();
+    const querySelect = query(
+      collection(db, 'post-session-now'),
+      where('userId', '==', uid)
+    );
+    const document = await getDocs(querySelect);
+    return document;
+  }
+
   async createPostSessionNow(document) {
     const db = getFirestore();
     // const id = this.createId();
@@ -144,6 +186,7 @@ export class SessionNowService {
       updateDoc(doc(db, 'session-now', sessionId), { isLive: false });
     }
   }
+
   async findPostLies(postUid) {
     const db = getFirestore();
     const queryPost = query(
@@ -156,8 +199,12 @@ export class SessionNowService {
 
   async updatePostLies(postUid) {
     const db = getFirestore();
-    await updateDoc(doc(db, 'post-session-now', postUid), { isLive: false });
+    await updateDoc(doc(db, 'post-session-now', postUid), {
+      type: 'picture',
+      isLive: false,
+    });
   }
+
   updateCompetition(sessionNow) {
     console.log(sessionNow);
     this.user = JSON.parse(localStorage.getItem('user'));
@@ -171,6 +218,7 @@ export class SessionNowService {
       // TODO: cas Challenge
     }
   }
+
   async updateChallenge(userId, sessionNow) {}
 
   async updateChampionnat(userId, sessionNow) {
@@ -183,28 +231,34 @@ export class SessionNowService {
     document.forEach((doc1) => {
       console.log(doc1.data());
       if (doc1 && doc1.data() && doc1.data().participants) {
+        let championnat = doc1.data();
+        //Calcul journée en cours
+        const journeeEnCours = Number(
+          championnat.semaineEnCours + championnat.seanceByWeek
+        );
         let participants = doc1.data().participants;
+        //recherche du user parmis les participants
         const ind = participants.findIndex((part) => (part.uid = userId));
+        //on ajoute 3 points au participants
         participants[ind].points =
           participants[ind].points != 0 ? participants[ind].points + 3 : 3;
         // on incrémente la journee,
         participants[ind].journeeEnCours = participants[ind].journeeEnCours = !0
           ? participants[ind].journeeEnCours + 1
           : 1;
+        //La séance du user est une séance bonus
+        if (participants[ind].journeeEnCours > journeeEnCours) {
+          participants[ind].bonus += 1;
+        }
         const champ = { ...doc1.data(), participants: participants };
         console.log(champ);
-        // bonus
         // on appelle la fonction qui fait le update du participant
-        // const part = { participants: participants };
         updateDoc(doc(db, 'championnats', sessionNow.competitionId), champ);
       }
     });
   }
 
-  async champUpdate(champ) {}
-
   async deletePostLies(postUid, db) {
-    // const db = getFirestore();
     deleteDoc(doc(db, 'post-session-now', postUid));
   }
 
@@ -219,6 +273,7 @@ export class SessionNowService {
       toastData.present();
     });
   }
+
   async presentLoading() {
     this.loader = await this.loadingCtrl
       .create({

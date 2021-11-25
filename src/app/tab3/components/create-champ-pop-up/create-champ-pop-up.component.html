@@ -282,6 +282,7 @@
             [listAct]="activitesList"
           ></app-activity-list>
           <app-friends-list
+            [competition]="'championnat'"
             (champCreate)="saveChamp($event)"
             [createur]="user"
             [type]="private.type"
