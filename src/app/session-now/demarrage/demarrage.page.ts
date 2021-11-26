@@ -44,6 +44,7 @@ export class DemarragePage implements OnInit {
   activite: any;
   pause = false;
   image: any;
+  pausedTime: any;
   /* listChoix = [
     {
       img: 'assets/images/distance_m.svg',
@@ -190,7 +191,28 @@ export class DemarragePage implements OnInit {
     this.router.navigate(['tabs']);
   }
   ngOnInit() {
-    this.platform.pause.subscribe((pause) => console.log(pause));
+    this.platform.resume.subscribe(async () => {
+     // alert('Resume event detected');
+      // on recupere l'heure à laquelle l'utilisateur est revenu sur de l'application
+      //let pauseInterval= - ;
+      const diff=this.dateDiff(this.pausedTime,Date.now());
+      if(diff){
+        if((this.s+diff.sec)>60){
+          this.s=diff.sec+this.s-60;
+          this.mn=this.mn+1;
+        }else{
+          this.s=diff.sec+this.s;
+        }
+        this.mn=this.mn+diff.min;
+      }
+    });
+    this.platform.pause.subscribe(async () => {
+     // alert('Resume event detected');
+      // on recupere l'heure à laquelle nous sommes sortit de l'application
+      this.pausedTime = Date.now();
+    });
+
+    //this.platform.pause.subscribe((pause) => console.log(pause));
     this.route.queryParams.subscribe((params) => {
       this.competitionId = params ? params.championnat : '';
     });
@@ -750,6 +772,24 @@ console.log(1);
         this.slides.slideTo(1);
       }
     });
+  }
+  dateDiff(date1, date2){
+    let diff = {sec:0,min:0,hour:0,day:0}    ;                       // Initialisation du retour
+    let tmp = date2 - date1;
+
+    tmp = Math.floor(tmp/1000);             // Nombre de secondes entre les 2 dates
+    diff.sec = tmp % 60;                    // Extraction du nombre de secondes
+
+    tmp = Math.floor((tmp-diff.sec)/60);    // Nombre de minutes (partie entière)
+    diff.min = tmp % 60;                    // Extraction du nombre de minutes
+
+    tmp = Math.floor((tmp-diff.min)/60);    // Nombre d'heures (entières)
+    diff.hour = tmp % 24;                   // Extraction du nombre d'heures
+
+    tmp = Math.floor((tmp-diff.hour)/24);   // Nombre de jours restants
+    diff.day = tmp;
+
+    return diff;
   }
 }
 export class SessionNowModel {
