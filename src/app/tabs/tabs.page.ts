@@ -12,15 +12,11 @@ import { CreatePostComponent } from './component/create-post/create-post.compone
 import { UserService } from '../services/user-service.service';
 
 import {RouterOutlet, Router, ActivationStart, NavigationExtras} from '@angular/router';
-import {Plugins} from "@capacitor/core";
+import {Plugins} from '@capacitor/core';
+// eslint-disable-next-line @typescript-eslint/naming-convention
 const { App } = Plugins;
 
-import {
-  RouterOutlet,
-  Router,
-  ActivationStart,
-  NavigationExtras,
-} from '@angular/router';
+
 
 
 @Component({
@@ -58,7 +54,7 @@ export class TabsPage implements OnInit {
   }
 
   changeTab(event) {
-    event.tab != 'tab1'
+    event.tab !== 'tab1'
       ? this.msService.currentPlay$.next(false)
       : this.msService.currentPlay$.next(true);
   }
