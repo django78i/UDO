@@ -1,38 +1,41 @@
 [
-    {
-        "id": 0,
-        "name": "Sidaction Challenge",
-        "dateFin": "2021-08-17T10:20:30Z",
-        "completion": {
-            "percent": 0.9,
-            "value": 90
-        },
-        "icon": "../assets/icon/Image 33.png",
-        "background": " transparent linear-gradient(180deg, #FA6190 0%, #E32966 100%)",
-        "participants" : 45
+  {
+    "id": 0,
+    "name": "Sidaction Challenge",
+    "dateFin": "2021-08-17T10:20:30Z",
+    "completion": {
+      "percent": 0.9,
+      "value": 90
     },
-    {
-        "id": 0,
-        "name": "Le Grand Défi",
-        "dateFin": "2021-08-19T10:20:30Z",
-        "completion": {
-            "percent": 0.7,
-            "value": 70
-        },
-        "icon": "../assets/icon/Icon material-whatshot.svg",
-        "background": "transparent linear-gradient(180deg, #53545C 0%, #1A1718 100%)",
-        "participants" : 30
+    "icon": "../assets/icon/Image 33.png",
+    "background": " transparent linear-gradient(180deg, #FA6190 0%, #E32966 100%)",
+    "participants": 45,
+    "image": "../assets/mocks/soccer.png"
+  },
+  {
+    "id": 0,
+    "name": "Le Grand Défi",
+    "dateFin": "2021-08-19T10:20:30Z",
+    "completion": {
+      "percent": 0.7,
+      "value": 70
     },
-    {
-        "id": 0,
-        "name": "Lemon Pastel",
-        "dateFin": "2021-08-16T10:20:30Z",
-        "completion": {
-            "percent": 0.27,
-            "value": 27
-        },
-        "icon": "../assets/icon/triangle.svg",
-        "background": "transparent linear-gradient(180deg, #5BA9F7 0%, #2642DD 100%)",
-        "participants" : 50
-    }
+    "icon": "../assets/icon/Icon material-whatshot.svg",
+    "background": "transparent linear-gradient(180deg, #53545C 0%, #1A1718 100%)",
+    "participants": 30,
+    "image": "../assets/mocks/thumbBasket.png"
+  },
+  {
+    "id": 0,
+    "name": "Lemon Pastel",
+    "dateFin": "2021-08-16T10:20:30Z",
+    "completion": {
+      "percent": 0.27,
+      "value": 27
+    },
+    "icon": "../assets/icon/triangle.svg",
+    "background": "transparent linear-gradient(180deg, #5BA9F7 0%, #2642DD 100%)",
+    "participants": 50,
+    "image": "../assets/mocks/gifts.png"
+  }
 ]

@@ -1,6 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { AddContenuComponent } from '../add-contenu/add-contenu.component';
-import {AlertController, ModalController, NavController, Platform} from '@ionic/angular';
+import {
+  AlertController,
+  ModalController,
+  NavController,
+  Platform,
+} from '@ionic/angular';
 import { Router } from '@angular/router';
 import { DonneesPriveComponent } from '../donnees-prive/donnees-prive.component';
 import { Location } from '@angular/common';
@@ -8,7 +13,7 @@ import { SessionNowModel } from '../demarrage/demarrage.page';
 import moment from 'moment';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { SessionNowService } from '../../services/session-now-service.service';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import {
@@ -23,7 +28,7 @@ import {
   templateUrl: './resultat.page.html',
   styleUrls: ['./resultat.page.scss'],
 })
-export class ResultatPage implements OnInit {
+export class ResultatPage implements OnInit, OnDestroy {
   sessionNow: SessionNowModel;
   selectedFile: File = null;
   downloadURL: Observable<string>;
@@ -56,9 +61,11 @@ export class ResultatPage implements OnInit {
   ];
   user;
   isVisible = false;
-  mode='';
-  modeClasse='';
-  message='';
+
+  mode = '';
+  modeClasse = '';
+  message = '';
+  sub: Subscription;
   constructor(
     private modalCtrl: ModalController,
     private platform: Platform,
@@ -67,8 +74,10 @@ export class ResultatPage implements OnInit {
     private sessionNowService: SessionNowService,
     public navCtl: NavController,
     public router: Router,
-    private alertController: AlertController
+    private alertController: AlertController,
+    public ref: ChangeDetectorRef
   ) {
+
     setInterval(()=>{
     if(localStorage.getItem('mode')){
       if(localStorage.getItem('mode')==='landscape'){
@@ -82,6 +91,7 @@ export class ResultatPage implements OnInit {
       this.modeClasse='c-ion-fab';
       this.mode='';
     }
+
     }, 100);
     this.platform.backButton.subscribeWithPriority(10, () => {
       console.log('Handler was called!');
@@ -89,11 +99,30 @@ export class ResultatPage implements OnInit {
     });
     this.counter = JSON.parse(localStorage.getItem('counter'));
     this.sessionNow = JSON.parse(localStorage.getItem('sessionNow'));
+    console.log(this.sessionNow);
     this.user = JSON.parse(localStorage.getItem('user'));
     this.isPicture = localStorage.getItem('addPicture');
   }
 
   ngOnInit() {
+
+    this.sub = this.platform.keyboardDidShow.subscribe((ev) => {
+      const { keyboardHeight } = ev;
+      this.isVisible = true;
+      this.ref.detectChanges();
+
+      // Do something with the keyboard height such as translating an input above the keyboard.
+    });
+    this.sub.add(
+      this.platform.keyboardDidHide.subscribe(() => {
+        // Move input back to original location
+        this.isVisible = false;
+        this.ref.detectChanges();
+      })
+    );
+
+    this.listNotif = [];
+
     this.activite = JSON.parse(localStorage.getItem('activite'));
     this.listElement = JSON.parse(localStorage.getItem('choix'));
     console.log('list',this.listElement);
@@ -175,9 +204,7 @@ export class ResultatPage implements OnInit {
           text: 'Non',
           role: 'cancel',
           cssClass: 'secondary',
-          handler: (blah) => {
-
-          },
+          handler: (blah) => {},
         },
         {
           text: 'Oui',
@@ -235,12 +262,15 @@ export class ResultatPage implements OnInit {
       comment: this.sessionNow.comment ? this.sessionNow.comment : '',
       duree: this.counter,
     };
+    console.log(this.sessionNow);
+    // this.sessionNowService.update(this.sessionNow,'session-now');
+    this.sessionNowService.updateCompetition(this.sessionNow);
     this.sessionNowService.findPostLies(this.sessionNow.sessionId);
     this.sessionNowService
       .update(postModel, 'post-session-now')
       .then((resPicture) => {
-        this.navCtl.navigateForward('session-now/felicitation');
         this.sessionNowService.dissmissLoading();
+        this.navCtl.navigateForward('session-now/felicitation');
         this.sessionNowService.show('Seance publiée avec succés', 'success');
       });
   }
@@ -295,11 +325,15 @@ export class ResultatPage implements OnInit {
     modal.onDidDismiss().then((data: any) => {});
     return await modal.present();
   }
-  destroySession(){
+  destroySession() {
     this.sessionNowService.deleteSessionCascade(this.sessionNow.sessionId);
     //on supprime la session now stocké dans le local storage
     localStorage.removeItem('sessionNow');
     this.router.navigate(['tabs']);
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 }
 

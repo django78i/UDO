@@ -1,0 +1,433 @@
+<ion-content>
+  <swiper #swiper [config]="config" style="height: 100%">
+    <ng-template swiperSlide>
+      <div style="height: 100%; overflow-y: auto">
+        <ion-toolbar>
+          <ion-button
+            slot="start"
+            (click)="close()"
+            style="
+              --background: transparent;
+              --background-activated: transparent;
+            "
+          >
+            <img
+              src="../../../../assets/mocks/Icon feather-arrow-left.svg"
+              alt=""
+            />
+          </ion-button>
+        </ion-toolbar>
+        <!-- <div style="position: relative"> -->
+        <ion-card
+          [style.backgroundColor]="banniere.color"
+          style="background-image: url('assets/icon/udoIconFond.svg')"
+        >
+          <span
+            *ngIf="image"
+            style="width: 150px; position: absolute; right: 5px; top: 15px"
+          >
+            <img [src]="image" alt="" />
+          </span>
+
+          <ion-card-header>
+            <!-- <ion-card-subtitle> DEMARRAGE MANUEL </ion-card-subtitle> -->
+            <ion-avatar *ngIf="icon">
+              <img [src]="icon" alt="" />
+            </ion-avatar>
+
+            <ion-card-title style="color: white">{{
+              challTitle
+            }}</ion-card-title>
+          </ion-card-header>
+
+          <ion-card-content>
+            <ion-item lines="none" style="width: 100%">
+              <ion-avatar slot="start">
+                <img [src]="user.avatar" alt="" />
+                <ion-badge>{{ user.niveau }}</ion-badge>
+              </ion-avatar>
+              <ion-icon
+                style="color: white"
+                name="camera-outline"
+                (click)="addContenu()"
+                slot="end"
+              ></ion-icon>
+            </ion-item>
+          </ion-card-content>
+        </ion-card>
+        <!-- </div> -->
+        <ion-item lines="full">
+          <ion-input
+            type="text"
+            style="padding-bottom: 0px"
+            placeholder="Nom du challenge"
+            maxLength="20"
+            (ionChange)="changeTitle($event)"
+          ></ion-input>
+          <ion-badge
+            slot="end"
+            style="
+              --padding-bottom: 5px;
+              --padding-top: 5px;
+              border-radius: 5px;
+              --background: #cfccd5;
+              --color: black;
+            "
+          >
+            {{ inputLength }}
+          </ion-badge>
+        </ion-item>
+        <ion-item lines="full">
+          <ion-textarea
+            rows="1"
+            type="text"
+            style="padding-bottom: 0px"
+            placeholder="description du challenge"
+            (ionChange)="changeDescription($event)"
+          ></ion-textarea>
+          <ion-thumbnail
+            slot="end"
+            style="width: 20px; height: 20px; margin-bottom: 0px"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="17.086"
+              height="17.339"
+              viewBox="0 0 17.086 17.339"
+            >
+              <path
+                id="Tracé_32244"
+                data-name="Tracé 32244"
+                d="M1273.189,232.175c-1.831.611-4.275-1.832-3.662-3.664m.751-.752-6.43,6.686a13.357,13.357,0,0,0-3.524,6.221l-.19.763a.325.325,0,0,0,.4.393l.76-.19a13.343,13.343,0,0,0,6.219-3.522l6.43-6.686a2.59,2.59,0,1,0-3.662-3.664Z"
+                transform="translate(-1258.865 -225.75)"
+                fill="none"
+                stroke="#000000"
+                stroke-width="2.5"
+              />
+            </svg>
+          </ion-thumbnail>
+        </ion-item>
+        <ion-item lines="full">
+          <ion-label>Icône</ion-label>
+          <ion-icon
+            name="camera-outline"
+            (click)="addIcon()"
+            slot="end"
+          ></ion-icon>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-grid style="padding-right: 0">
+            <ion-row style="align-items: center">
+              <ion-col size="10" style="padding-left: 0">
+                <ion-item lines="full">
+                  <ion-label slot="start">Couleur</ion-label>
+                  <ion-label>{{ banniere.color }}</ion-label>
+                </ion-item>
+              </ion-col>
+              <ion-col size="2">
+                <ion-input
+                  [(ngModel)]="banniere.color"
+                  [value]="banniere.color"
+                  style="
+                    --padding-bottom: 0;
+                    --padding-top: 0;
+                    --padding-start: 0;
+                    --padding-end: 0;
+                    width: 30px;
+                    border-radius: 50%;
+                  "
+                  type="color"
+                ></ion-input
+              ></ion-col> </ion-row
+          ></ion-grid>
+        </ion-item>
+        <!-- Slider choix des métriques de championnat -->
+        <swiper #swiper2 [config]="config2" class="sliderFilter">
+          <ng-template swiperSlide>
+            <ion-item
+              [ngClass]="{ black: indice == 0, white: indice !== 0 }"
+              (click)="clickFilter(filters[0], 0)"
+              style="width: auto"
+              lines="none"
+              class="chipFilter"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 15.6 15.6"
+                [ngClass]="{ whiteFill: indice == 0, blackFill: indice !== 0 }"
+              >
+                <g id="Layer_2" data-name="Layer 2">
+                  <g id="Layer_1-2" data-name="Layer 1">
+                    <g id="Icon_feather-clock" data-name="Icon feather-clock">
+                      <g id="Tracé_32399" data-name="Tracé 32399">
+                        <path
+                          d="M7.8,15.6a7.8,7.8,0,1,1,7.8-7.8A7.81,7.81,0,0,1,7.8,15.6Zm0-13.1A5.3,5.3,0,1,0,13.1,7.8,5.31,5.31,0,0,0,7.81,2.5Z"
+                        />
+                      </g>
+                      <g id="Tracé_32400" data-name="Tracé 32400">
+                        <path
+                          d="M9.6,10a1.23,1.23,0,0,1-.55-.13L6.56,8.57V4.8a1.25,1.25,0,0,1,2.5,0V7l1.1.55A1.25,1.25,0,0,1,9.6,10Z"
+                        />
+                      </g>
+                    </g>
+                  </g>
+                </g>
+              </svg>
+
+              <ion-label
+                style="font-size: 12px; font-weight: 500"
+                [ngClass]="{
+                  whiteLabel: indice == 0,
+                  blackLabel: indice !== 0
+                }"
+                >{{ filters[0].name }}</ion-label
+              >
+            </ion-item>
+          </ng-template>
+          <ng-template swiperSlide>
+            <ion-item
+              [ngClass]="{ black: indice == 1, white: indice !== 1 }"
+              (click)="clickFilter(filters[1], 1)"
+              style="width: auto"
+              lines="none"
+              class="chipFilter"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 13.78 15.07"
+                [ngClass]="{ whiteFill: indice == 1, blackFill: indice !== 1 }"
+              >
+                <g id="Layer_2" data-name="Layer 2">
+                  <g id="Layer_1-2" data-name="Layer 1">
+                    <path
+                      d="M10.78,7.53a.41.41,0,0,0-.22-.37L3.66,3.07a.41.41,0,0,0-.43,0A.39.39,0,0,0,3,3.44v8.18a.4.4,0,0,0,.22.38.39.39,0,0,0,.43,0l6.9-4.09a.38.38,0,0,0,.22-.37m3,0a3.4,3.4,0,0,1-1.68,3L5.19,14.58a3.44,3.44,0,0,1-5.19-3V3.44A3.44,3.44,0,0,1,5.19.49L12.1,4.57A3.42,3.42,0,0,1,13.78,7.53Z"
+                    />
+                  </g>
+                </g>
+              </svg>
+
+              <ion-label
+                style="font-size: 12px; font-weight: 500"
+                [ngClass]="{
+                  whiteLabel: indice == 1,
+                  blackLabel: indice !== 1
+                }"
+                >{{ filters[1].name }}</ion-label
+              >
+            </ion-item>
+          </ng-template>
+          <ng-template swiperSlide>
+            <ion-item
+              [ngClass]="{ black: indice == 2, white: indice !== 2 }"
+              (click)="clickFilter(filters[2], 2)"
+              style="width: auto"
+              lines="none"
+              class="chipFilter"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 14.37 16.42"
+                [ngClass]="{ whiteFill: indice == 2, blackFill: indice !== 2 }"
+              >
+                <g id="Layer_2" data-name="Layer 2">
+                  <g id="Layer_1-2" data-name="Layer 1">
+                    <path
+                      d="M8.7,3.54l-.1.12-.1-.13A25.08,25.08,0,0,0,5.36,0C2.25,2.92,0,6.69,0,9a7.31,7.31,0,0,0,7.19,7.4A7.31,7.31,0,0,0,14.37,9c0-1.72-1.67-5.2-3.93-7.35A18.09,18.09,0,0,0,8.7,3.54Zm1.93,3.35c.14.23.26.45.37.66a4,4,0,0,1-1.13,5.17h0a4.48,4.48,0,0,1-2.58.81H7A4.15,4.15,0,0,1,2.89,9.66c0-.12,0-.23,0-.34C2.88,8.06,3.59,7,5.29,5l.09-.11.1.11c.2.24,2.62,3.32,3.14,4l1.92-2.2Z"
+                    />
+                  </g>
+                </g>
+              </svg>
+              <ion-label
+                style="font-size: 12px; font-weight: 500"
+                [ngClass]="{
+                  whiteLabel: indice == 2,
+                  blackLabel: indice !== 2
+                }"
+                >{{ filters[2].name }}</ion-label
+              >
+            </ion-item>
+          </ng-template>
+          <ng-template swiperSlide>
+            <ion-item
+              [ngClass]="{ black: indice == 3, white: indice !== 3 }"
+              (click)="clickFilter(filters[3], 3)"
+              style="width: auto"
+              lines="none"
+              class="chipFilter"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 17.71 14.95"
+                [ngClass]="{ whiteFill: indice == 3, blackFill: indice !== 3 }"
+              >
+                <g id="Layer_2" data-name="Layer 2">
+                  <g id="Layer_1-2" data-name="Layer 1">
+                    <g id="Icon_feather-users" data-name="Icon feather-users">
+                      <g id="Tracé_31927" data-name="Tracé 31927">
+                        <path
+                          d="M12.31,15a1.25,1.25,0,0,1-1.25-1.25V12.32A1.52,1.52,0,0,0,9.55,10.8H4A1.52,1.52,0,0,0,2.5,12.32V13.7a1.25,1.25,0,0,1-2.5,0V12.32a4,4,0,0,1,4-4H9.55a4,4,0,0,1,4,4V13.7A1.25,1.25,0,0,1,12.31,15Z"
+                        />
+                      </g>
+                      <g id="Tracé_31928" data-name="Tracé 31928">
+                        <path
+                          d="M6.78,8a4,4,0,1,1,4-4h0A4,4,0,0,1,6.78,8Zm0-5.53A1.52,1.52,0,1,0,8.3,4h0A1.5,1.5,0,0,0,6.78,2.5Z"
+                        />
+                      </g>
+                      <g id="Tracé_31929" data-name="Tracé 31929">
+                        <path
+                          d="M16.46,15a1.25,1.25,0,0,1-1.25-1.25V12.31a1.52,1.52,0,0,0-1.13-1.46,1.25,1.25,0,0,1,.62-2.42,4,4,0,0,1,3,3.88V13.7A1.25,1.25,0,0,1,16.46,15Z"
+                        />
+                      </g>
+                      <g id="Tracé_31930" data-name="Tracé 31930">
+                        <path
+                          d="M11.62,8a1.25,1.25,0,0,1-.31-2.46,1.5,1.5,0,0,0,1.1-1.09,1.52,1.52,0,0,0-1.1-1.84A1.25,1.25,0,0,1,11.93.13a4,4,0,0,1,0,7.79A1.63,1.63,0,0,1,11.62,8Z"
+                        />
+                      </g>
+                    </g>
+                  </g>
+                </g>
+              </svg>
+              <ion-label
+                style="font-size: 12px; font-weight: 500"
+                [ngClass]="{
+                  whiteLabel: indice == 3,
+                  blackLabel: indice !== 3
+                }"
+                >{{ filters[3].name }}</ion-label
+              >
+            </ion-item>
+          </ng-template>
+        </swiper>
+        <!-- Input objectifs -->
+        <ion-item lines="full">
+          <ion-label slot="start"> Objectif</ion-label>
+          <ion-input
+            type="number"
+            (ionChange)="objectifChoice($event)"
+          ></ion-input>
+          <ion-label slot="end" style="color: #00000031">{{
+            metricChoice.metric
+          }}</ion-label>
+        </ion-item>
+        <!-- Input nombre participants -->
+        <ion-item lines="full">
+          <ion-label slot="start"> Nombre participants</ion-label>
+          <ion-input type="number" (ionChange)="playerMax($event)"></ion-input>
+          <ion-label slot="end"></ion-label>
+        </ion-item>
+        <ion-item lines="full" style="margin-bottom: 10px">
+          <ion-label>Date de démarrage</ion-label>
+          <ion-datetime
+            (ionChange)="dateChoise($event)"
+            displayFormat="MM/DD/YYYY"
+            placeholder=""
+          ></ion-datetime>
+        </ion-item>
+        <ion-item lines="none" class="champColor">
+          <ion-thumbnail slot="start" class="thumbZone">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 12.02 12.02"
+              class="thumbIcon"
+            >
+              <defs>
+                <style>
+                  .cls-1 {
+                    fill: #000000;
+                  }
+                </style>
+              </defs>
+              <g id="Layer_2" data-name="Layer 2">
+                <g id="Layer_1-2" data-name="Layer 1">
+                  <path
+                    id="Icon_material-timelapse"
+                    data-name="Icon material-timelapse"
+                    class="cls-1"
+                    d="M8.55,3.46A3.57,3.57,0,0,0,6,2.4V6L3.46,8.56a3.6,3.6,0,0,0,5.09-5.1ZM6,0a6,6,0,1,0,6,6A6,6,0,0,0,6,0ZM6,10.81A4.81,4.81,0,1,1,10.81,6,4.8,4.8,0,0,1,6,10.81Z"
+                  />
+                </g>
+              </g>
+            </svg>
+          </ion-thumbnail>
+          <ion-label>
+            <p class="sousTitre black">Nombre de semaines</p>
+            <p style="font-size: 10px">Durée maximum du championnat</p>
+          </ion-label>
+          <ion-item lines="none" class="addSub" slot="end">
+            <ion-button (click)="sub()" slot="start" mode="ios">
+              <img src="../../../../assets/icon/minus.svg" alt="" />
+            </ion-button>
+            <ion-label> {{ weekCount }}</ion-label>
+            <ion-button (click)="add()" slot="end" mode="ios">
+              <img src="../../../../assets/icon/plus.svg" alt="" />
+            </ion-button>
+          </ion-item>
+        </ion-item>
+
+        <ion-item
+          detail
+          lines="full"
+          class="champColor"
+          (click)="slideNext('activity')"
+        >
+          <ion-thumbnail
+            class="thumbZone"
+            slot="start"
+            style="position: relative"
+          >
+            <img class="thumbIcon" src="assets/icon/icons8-course.svg" alt="" />
+            <ion-badge
+              style="
+                position: absolute;
+                top: -5px;
+                right: -8px;
+                height: 25px;
+                width: 25px;
+                display: flex;
+                border-radius: 50%;
+                --background: black;
+                align-items: center;
+                justify-content: center;
+              "
+              >{{ activitesList.length }}</ion-badge
+            >
+          </ion-thumbnail>
+          <ion-label>
+            <p class="sousTitre black">Liste des activités</p>
+            <p style="font-size: 10px">Sélectionnez les activités :</p>
+          </ion-label>
+        </ion-item>
+        <div style="display: flex; justify-content: center">
+          <ion-button
+            shape="round"
+            style="--background: #ed2d6a; width: 50%"
+            (click)="nextFriends()"
+            >Publier
+          </ion-button>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template swiperSlide>
+      <div style="height: 100%; overflow-y: auto">
+        <div id="top">
+          <app-activity-list
+            *ngIf="sliderPage == 'activity'"
+            [header]="true"
+            (activitesEvent)="eventActivite($event)"
+            (backAction)="backSlide($event)"
+            [listAct]="activitesList"
+          ></app-activity-list>
+          <app-friends-list
+          [competition]="'challenge'"
+            (champCreate)="publier($event)"
+            [createur]="user"
+            [range]="range"
+            *ngIf="sliderPage == 'amis'"
+            (friendList)="chooseFriends($event)"
+            (backAction)="backSlide($event)"
+          ></app-friends-list>
+        </div>
+      </div>
+    </ng-template>
+  </swiper>
+</ion-content>

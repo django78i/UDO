@@ -1,0 +1,90 @@
+<section>
+  <div style="width: 100%; margin-top: 15px">
+    <div class="iconTitle">
+      <img
+        src="../../assets/icon/dot.svg"
+        style="
+          background-color: rgb(233, 229, 229);
+          padding: 10px;
+          border-radius: 50%;
+        "
+        alt=""
+      />
+      <h4 style="font-weight: 900; margin: 0">EN COURS</h4>
+    </div>
+
+    <app-slider-challenge
+      [challenges]="challEncours"
+      *ngIf="challEncours"
+      (slide)="challChoice($event)"
+      (challengeId)="chooseChallenge($event)"
+    >
+    </app-slider-challenge>
+  </div>
+  <ion-item
+    button
+    (click)="buttonClick()"
+    lines="none"
+    style="
+      width: 90%;
+      margin: 20px auto;
+      box-shadow: 0px 13px 56px #00000029;
+      border-radius: 18px;
+    "
+    class="challengeCreate"
+  >
+    <img
+      src="assets/icon/challenge.svg"
+      style="
+        width: 40px;
+        height: 40px;
+        padding: 10px;
+        border-radius: 50%;
+        border: 1px solid #f2f2f4;
+        margin-right: 10px;
+      "
+      alt=""
+    />
+    <ion-label>
+      <p style="font-weight: 800; font-size: 14px; color: black">
+        Nouveau challenge
+      </p>
+      <p style="font-weight: 500; font-size: 10px; color: grey">
+        Créez vos propre challenge
+      </p>
+    </ion-label>
+  </ion-item>
+  <div style="width: 100%">
+    <div class="iconTitle">
+      <img
+        src="../../assets/icon/dot.svg"
+        style="
+          background-color: rgb(233, 229, 229);
+          padding: 10px;
+          border-radius: 50%;
+        "
+        alt=""
+      />
+      <h4 style="font-weight: 900; margin: 0">EXPLORER</h4>
+    </div>
+    <app-big-chall-slider
+      [challenges]="challenges"
+      *ngIf="challenges"
+      (challengeId)="chooseChallenge($event)"
+    ></app-big-chall-slider>
+  </div>
+  <div style="width: 100%; margin-bottom: 100px; margin-top: 15px">
+    <div class="iconTitle">
+      <img
+        src="assets/icon/dot.svg"
+        style="
+          background-color: rgb(233, 229, 229);
+          padding: 10px;
+          border-radius: 50%;
+        "
+        alt=""
+      />
+      <h4 style="font-weight: 900; margin: 0">TERMINES</h4>
+    </div>
+  </div>
+</section>

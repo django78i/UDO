@@ -18,7 +18,7 @@
   </ion-toolbar>
   <!-- <section> -->
   <ion-card
-    [ngStyle]="{ 'background-image': 'url(' + championnat.banniere + ')' }"
+    [ngStyle]="{ 'background-image': 'url(' + championnat.banniere.url + ')' }"
     [ngClass]="{ notActive: segmentValue != 'resume' }"
   >
     <ion-card-header [ngClass]="{ notActiveContent: segmentValue != 'resume' }">
@@ -128,5 +128,20 @@
     <ion-fab-button color="dark">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button color="primary" (click)="addFriend()" *ngIf="!friendBool">
+        <img src="assets/icon/friends-white.svg" alt="" />
+      </ion-fab-button>
+      <ion-fab-button
+        color="warning"
+        (click)="removeFriend()"
+        *ngIf="friendBool"
+      >
+        <img src="assets/icon/friends-white.svg" alt="" />
+      </ion-fab-button>
+      <ion-fab-button color="success" (click)="chat()">
+        <img src="assets/icon/chat_white.svg" alt="" />
+      </ion-fab-button>
+    </ion-fab-list>
   </ion-fab>
 </ion-content>

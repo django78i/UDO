@@ -31,7 +31,7 @@
     </div>
   </section>
 
-  <swiper [config]="config2" class="sliderFilter">
+  <swiper #swiper2 [config]="config2" class="sliderFilter">
     <ng-template swiperSlide>
       <ion-item
         [ngClass]="{black: indice == 0, white :  indice !==0}"

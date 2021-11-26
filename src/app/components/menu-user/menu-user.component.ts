@@ -10,13 +10,17 @@ import { UserProfilComponent } from '../user-profil/user-profil.component';
 })
 export class MenuUserComponent implements OnInit {
   @Input() user: any;
+  ratio: number = 0;
 
   constructor(
     public modalController: ModalController,
     public userService: UserService
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    const xpMAx = Number(this.user.niveau * 100);
+    this.ratio = this.user.exp / xpMAx;
+  }
 
   async openProfil() {
     this.close();

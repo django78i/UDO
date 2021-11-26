@@ -1,5 +1,12 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Output,
+  EventEmitter,
+  Input,
+  OnDestroy,
+} from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { ChampionnatsService } from 'src/app/services/championnats.service';
@@ -10,7 +17,7 @@ import { UserService } from 'src/app/services/user-service.service';
   templateUrl: './friends-list.component.html',
   styleUrls: ['./friends-list.component.scss'],
 })
-export class FriendsListComponent implements OnInit {
+export class FriendsListComponent implements OnInit, OnDestroy {
   @Output() backAction: EventEmitter<any> = new EventEmitter();
   @Output() friendList: EventEmitter<any> = new EventEmitter();
   @Output() champCreate: EventEmitter<any> = new EventEmitter();
@@ -25,7 +32,10 @@ export class FriendsListComponent implements OnInit {
   @Input() type: any;
   @Input() range: any;
   @Input() acitivities: any;
+  @Input() competition: any;
+
   subscription: Subscription;
+  usersList: any[];
   constructor(
     public http: HttpClient,
     public userService: UserService,
@@ -33,12 +43,26 @@ export class FriendsListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.subscription = this.champService.friendsListSubject$.subscribe(
-      (friends) => {
-        this.friendsList = friends;
-      }
-    );
-    console.log(this.createur);
+    const list: any[] = JSON.parse(localStorage.getItem('usersList'));
+    if (this.competition == 'championnat') {
+      console.log(this.competition, 'champ');
+      // this.champService.matchUser();
+      this.subscription = this.champService.friendsListSubject$.subscribe(
+        (friends) => {
+          this.usersList = friends;
+          // this.usersList = this.friendsList.filter(
+          //   (user) => user.uid != this.createur.uid
+          // );
+        }
+      );
+    } else {
+      console.log(this.competition, 'chall');
+      this.usersList = list.filter((user) => user.uid != this.createur.uid);
+    }
+
+    // const userList = this.friendsList.filter((user) => user.uid != this.createur.uid);
+    // this.usersList = userList;
+    console.log(this.usersList);
   }
 
   back() {
@@ -83,5 +107,11 @@ export class FriendsListComponent implements OnInit {
 
   create() {
     this.champCreate.emit('true');
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 }

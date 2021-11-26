@@ -1,11 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonSlides, ModalController, NavController } from '@ionic/angular';
 import { ReglagesPage } from '../reglages/reglages.page';
-import {ActivatedRoute, Router} from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ActivitiesPage } from '../activities/activities.page';
 import { AddPostContenuComponent } from '../add-post-contenu/add-post-contenu.component';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
-
 
 @Component({
   selector: 'app-preseance',
@@ -23,7 +22,7 @@ export class PreseancePage implements OnInit {
   current = 90;
   max = 100;
   isActif = false;
-  titleCurrentPage='' ;
+  titleCurrentPage = '';
   categoryId: string;
   activite = {
     name: 'Sélectionnez une activité',
@@ -39,7 +38,7 @@ export class PreseancePage implements OnInit {
   challengeStatus: number;
   challengeUnity: string;
 
-//...
+  //...
 
   constructor(
     private route: ActivatedRoute,
@@ -67,39 +66,44 @@ export class PreseancePage implements OnInit {
   }
 
   ngOnInit() {
-    this.challengeStatus=90;
-    this.challengeUnity='%';
-    this.categoryName='';
-    this.categoryId='';
-    this.route.queryParams.subscribe(params => {
+    this.challengeStatus = 0;
+    this.challengeUnity = '%';
+    this.categoryName = '';
+    this.categoryId = '';
+    this.route.queryParams.subscribe((params) => {
+      console.log(params);
       this.type = params.type;
-      if(params.challengeStatus){
+      console.log(params);
+      if (params.challengeStatus) {
+        console.log('status');
         this.challengeStatus = params.challengeStatus;
       }
-      if(params.competitionName){
+      if (params.competitionName) {
+        console.log('NAme');
         this.categoryName = params.competitionName;
       }
-      if(params.categoryId){
+      if (params.competitionId) {
+        console.log('Id');
+
         this.categoryId = params.competitionId;
       }
-      if(params.challengeMetric){
+      if (params.challengeMetric) {
+        console.log('metric');
         this.challengeUnity = params.challengeMetric;
       }
-
     });
-    const detailCompet=
-      {
-        competitionType: this.type,
-        competitionName:this.categoryName,
-        competitionId:this.categoryId,
-        challengeStatus:this.challengeStatus,
-        challengeMetric:this.challengeUnity
-      };
-    localStorage.setItem('detailCompet',JSON.stringify(detailCompet));
-   // this.type='Challenge';
-   // this.type='Championnat';
+    const detailCompet = {
+      competitionType: this.type,
+      competitionName: this.categoryName,
+      competitionId: this.categoryId,
+      challengeStatus: this.challengeStatus,
+      challengeMetric: this.challengeUnity,
+    };
+    localStorage.setItem('detailCompet', JSON.stringify(detailCompet));
+    // this.type='Challenge';
+    // this.type='Championnat';
     // this.type='Séance Libre';
-    this.titleCurrentPage=this.type;
+    this.titleCurrentPage = this.type;
     const item = localStorage.getItem('activite');
     if (item) {
       this.activite = JSON.parse(item);
@@ -123,7 +127,7 @@ export class PreseancePage implements OnInit {
   }
 
   async reglage(mySlider) {
-    this.titleCurrentPage='Réglages';
+    this.titleCurrentPage = 'Réglages';
     mySlider.slideTo(0);
     /*const modal = await this.modalCtrl.create({
       component: ReglagesPage,
@@ -139,7 +143,7 @@ export class PreseancePage implements OnInit {
   }
 
   async addContenu() {
-     const modal = await this.modalCtrl.create({
+    const modal = await this.modalCtrl.create({
       component: AddPostContenuComponent,
       cssClass: 'my-custom-contenu-modal',
       componentProps: {
@@ -147,7 +151,7 @@ export class PreseancePage implements OnInit {
         activity: this.activite,
       },
     });
-    modal.onDidDismiss().then((data: any) => { });
+    modal.onDidDismiss().then((data: any) => {});
     return await modal.present();
   }
   /*
@@ -170,31 +174,35 @@ export class PreseancePage implements OnInit {
     }
     // this.modalCtr.dismiss(this.base64Image);
   }*/
-  openCamera(){
+  openCamera() {
     const options: CameraOptions = {
       quality: 100,
       destinationType: this.camera.DestinationType.DATA_URL,
       encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE
+      mediaType: this.camera.MediaType.PICTURE,
     };
 
-    this.camera.getPicture(options).then((imageData) => {
-      // imageData is either a base64 encoded string or a file URI
-      // If it's base64 (DATA_URL):
-      this.base64 = 'data:image/jpeg;base64,' + imageData;
-      if (this.base64) {
-        this.addContenu();
-        this.slides.slideTo(1);
+    this.camera.getPicture(options).then(
+      (imageData) => {
+        // imageData is either a base64 encoded string or a file URI
+        // If it's base64 (DATA_URL):
+        this.base64 = 'data:image/jpeg;base64,' + imageData;
+        if (this.base64) {
+          this.addContenu();
+          this.slides.slideTo(1);
+        }
+      },
+      (err) => {
+        // Handle error
       }
-    }, (err) => {
-      // Handle error
-    });
+    );
   }
   start() {
     if (this.isActif) {
       const choice = JSON.parse(localStorage.getItem('reglages'));
-      if (!choice) {this.router.navigate(['/session-now/demarrage']);}
-      else {
+      if (!choice) {
+        this.router.navigate(['/session-now/demarrage']);
+      } else {
         if (choice.compteRebour === true) {
           this.router.navigate(['/session-now/counter']);
         } else {
@@ -203,34 +211,35 @@ export class PreseancePage implements OnInit {
       }
     }
   }
-  swipePrev(){
+  swipePrev() {
     this.slides.getActiveIndex().then((index: number) => {
-      if(index===0)
-        this.titleCurrentPage= 'Réglages';
-      if(index===1)
-        this.titleCurrentPage= this.type;
+      if (index === 0) this.titleCurrentPage = 'Réglages';
+      if (index === 1) this.titleCurrentPage = this.type;
 
-      if (index !== 2) {this.slides.slideNext();}
-      else {this.slides.slideTo(0);}
+      if (index !== 2) {
+        this.slides.slideNext();
+      } else {
+        this.slides.slideTo(0);
+      }
     });
   }
-  slideChange(){
+  slideChange() {
     this.slides.getActiveIndex().then((index: number) => {
-      if(index===0)
-        this.titleCurrentPage='Réglages';
-      if(index===1)
-        this.titleCurrentPage='';
-      if(index===2){
+      if (index === 0) this.titleCurrentPage = 'Réglages';
+      if (index === 1) this.titleCurrentPage = '';
+      if (index === 2) {
         this.slides.slideTo(1);
         this.openCamera();
       }
-
     });
   }
   swipeNext() {
     this.slides.getActiveIndex().then((index: number) => {
-      if (index !== 2) {this.slides.slideNext();}
-      else {this.slides.slideTo(0);}
+      if (index !== 2) {
+        this.slides.slideNext();
+      } else {
+        this.slides.slideTo(0);
+      }
     });
   }
   retour() {

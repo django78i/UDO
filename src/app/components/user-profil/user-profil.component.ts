@@ -13,6 +13,7 @@ import { ChatService } from 'src/app/services/chat.service';
 import { UserService } from 'src/app/services/user-service.service';
 import { ChatRoomComponent } from '../chat-room/chat-room.component';
 import * as _ from 'lodash';
+import { SessionNowService } from 'src/app/services/session-now-service.service';
 
 interface User {
   activitesPratiquees: any[];
@@ -107,7 +108,7 @@ export class UserProfilComponent implements OnInit {
     { name: 'Souplesse', stat: 100 },
     { name: 'Gainage', stat: 200 },
   ];
-  max = 20;
+  max: number;
   donneeFormat: any[] = [];
   seg: string = 'resume';
   statTable = [];
@@ -122,7 +123,8 @@ export class UserProfilComponent implements OnInit {
     public modalController: ModalController,
     public userService: UserService,
     public navController: NavController,
-    public chatService: ChatService
+    public chatService: ChatService,
+    public sessionNowService: SessionNowService
   ) {}
 
   ngOnInit() {
@@ -132,8 +134,8 @@ export class UserProfilComponent implements OnInit {
 
       const tableOrder = _.orderBy(this.user.metrics, ['value'], ['desc']);
       console.log(tableOrder);
-      this.max = this.user.metrics ? tableOrder[0].value * 1.2 : 0;
-
+      this.max = this.user.metrics ? Math.round(tableOrder[0].value * 1.2) : 0;
+      console.log(this.max);
       // this.createGraph();
       // this.position = this.createStats();
       console.log(this.currentUser, this.user);
@@ -169,6 +171,7 @@ export class UserProfilComponent implements OnInit {
     if (this.user.metrics) {
       this.user.metrics.map((stat, i) => {
         const ratio = stat.value / this.max;
+        console.log(this.ratio, this.max, stat.value);
         const position = {
           x: 130 - this.doneesIniitial[i].vecteur.x * ratio,
           y: 130 - this.doneesIniitial[i].vecteur.y * ratio,
@@ -241,7 +244,6 @@ export class UserProfilComponent implements OnInit {
     let position;
     return (position = `${this.statTable[0].position.x},${this.statTable[0].position.y} ${this.statTable[1].position.x},${this.statTable[1].position.y} ${this.statTable[2].position.x},${this.statTable[2].position.y} ${this.statTable[3].position.x},${this.statTable[3].position.y} ${this.statTable[4].position.x},${this.statTable[4].position.y} ${this.statTable[5].position.x},${this.statTable[5].position.y}`);
   }
-  
 
   createGraph() {
     this.ratio.map((ratio) => {
@@ -263,11 +265,13 @@ export class UserProfilComponent implements OnInit {
   addFriend() {
     this.userService.addFriend(this.user, this.currentUser);
     this.friendBool = true;
+    this.sessionNowService.show('Ajouté avec succès', 'success');
   }
 
   removeFriend() {
     this.userService.removeFriend(this.user, this.currentUser);
     this.friendBool = false;
+    this.sessionNowService.show('supprimer des amis', 'warning');
   }
 
   controlRoom(): Promise<any> {

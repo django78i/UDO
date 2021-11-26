@@ -9,7 +9,7 @@ import { UserProfilComponent } from 'src/app/components/user-profil/user-profil.
   styleUrls: ['./classement.component.scss'],
 })
 export class ClassementComponent implements OnInit {
-  @Input() champ: any;
+  @Input() challenge: any;
   @Input() user: any;
 
   classement: any[];
@@ -17,8 +17,8 @@ export class ClassementComponent implements OnInit {
   constructor(public modalController: ModalController) {}
 
   ngOnInit() {
-    console.log(this.champ);
-    this.classement = _.orderBy(this.champ.participants, ['points'], ['desc']);
+    console.log(this.challenge);
+    this.classement = _.orderBy(this.challenge.participants, ['points'], ['desc']);
   }
 
   async openProfil(contact) {

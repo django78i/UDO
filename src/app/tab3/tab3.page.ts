@@ -24,7 +24,9 @@ import { CreateChampPopUpComponent } from './components/create-champ-pop-up/crea
 import { MenuUserComponent } from '../components/menu-user/menu-user.component';
 import { UserService as UserService } from '../services/user-service.service';
 import { ChampionnatsService } from '../services/championnats.service';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
+import { CreateChallPopUpComponent } from './components/create-chall-pop-up/create-chall-pop-up.component';
+import { ChallengesService } from '../services/challenges.service';
 
 @Component({
   selector: 'app-tab3',
@@ -50,6 +52,10 @@ export class Tab3Page implements OnInit, AfterContentChecked {
   championnatsList: any[] = [];
   userChampionnats: any[] = [];
 
+  //Challenges
+  challengesEnAttente: any[] = [];
+  challengesEnCours: any[] = [];
+
   bannData: any;
   affiche: BehaviorSubject<any> = new BehaviorSubject(null);
   user: any;
@@ -70,7 +76,8 @@ export class Tab3Page implements OnInit, AfterContentChecked {
     private ref: ChangeDetectorRef,
     public navController: NavController,
     public router: Router,
-    public navCtl: NavController
+    public navCtl: NavController,
+    public challServ: ChallengesService
   ) {}
 
   ngOnInit() {
@@ -78,6 +85,8 @@ export class Tab3Page implements OnInit, AfterContentChecked {
     this.userService.getCurrentUser().then((user) => (this.user = user));
 
     this.champService.getChampionnats();
+    this.challServ.getChallenges();
+
     this.champService.champSubject$
       .pipe(
         tap((r) => {
@@ -100,19 +109,34 @@ export class Tab3Page implements OnInit, AfterContentChecked {
     this.champService.champNetWork$
       .pipe(
         tap((r) => {
-          console.log(r)
+          console.log(r);
           r == null
             ? (this.champinonatNetwork = [])
             : this.champinonatNetwork.push(r);
         })
       )
       .subscribe();
-
-    this.challenges = this.http.get('../../assets/mocks/challenges.json').pipe(
-      tap((r) => {
-        this.bannData = r[0];
-      })
-    );
+    this.challServ.challenges$
+      .pipe(
+        tap((r) => {
+          console.log(r);
+          r == null
+            ? (this.challengesEnAttente = [])
+            : this.challengesEnAttente.push(r);
+        })
+      )
+      .subscribe();
+    this.challServ.challengeEnCours$
+      .pipe(
+        tap((r) => {
+          console.log(r);
+          r == null
+            ? (this.challengesEnCours = [])
+            : this.challengesEnCours.push(r);
+        })
+      )
+      .subscribe();
+    this.ref.detectChanges();
   }
 
   ngAfterContentChecked(): void {
@@ -126,7 +150,7 @@ export class Tab3Page implements OnInit, AfterContentChecked {
     return user;
   }
 
-  async buttonClick() {
+  async buttonClick(ev) {
     const modal = await this.modalController.create({
       component: CreateChampPopUpComponent,
       componentProps: {
@@ -134,6 +158,10 @@ export class Tab3Page implements OnInit, AfterContentChecked {
       },
     });
     return await modal.present();
+  }
+
+  viewChange(ev) {
+    this.segmentValue = ev.detail.value;
   }
 
   challChoice(event) {
@@ -156,29 +184,26 @@ export class Tab3Page implements OnInit, AfterContentChecked {
     return await modal.present();
   }
 
-  async launchDetail(ev) {
-    const user = await this.userService.getCurrentUser();
+  async createChallenge(ev) {
     const modal = await this.modalController.create({
-      component: ModalChampComponent,
-      cssClass: 'testModal',
-      backdropDismiss: true,
+      component: CreateChallPopUpComponent,
       componentProps: {
-        user: user,
-        championnat: ev,
+        user: this.user,
       },
     });
     return await modal.present();
   }
 
-  chatPage() {
-    // this.navCtl.navigateForward('chat');
-    this.router.navigate(['chat']);
+  async launchDetail(ev) {
+    this.router.navigate([`/championnat/${ev.uid}`]);
   }
 
-  // ngOnDestroy() {
-  //   this.championnatNetWorkSubscription.unsubscribe();
-  //   this.userSubscription.unsubscribe();
-  //   this.championnatSubscription.unsubscribe();
-  //   this.userChampSubscription.unsubscribe();
-  // }
+  async openChallenge(ev) {
+    console.log(ev);
+    this.router.navigate([`/challenge/${ev}`]);
+  }
+
+  chatPage() {
+    this.router.navigate(['chat']);
+  }
 }

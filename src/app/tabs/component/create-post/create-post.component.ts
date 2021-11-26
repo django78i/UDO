@@ -1,4 +1,11 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  ViewChild,
+  ChangeDetectorRef,
+  OnDestroy,
+} from '@angular/core';
 import { MusicFeedService } from 'src/app/services/music-feed.service';
 import {
   getStorage,
@@ -7,16 +14,17 @@ import {
   uploadString,
 } from 'firebase/storage';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
-import { IonInput, ModalController } from '@ionic/angular';
+import { IonInput, ModalController, Platform } from '@ionic/angular';
 import { AddContenuComponent } from 'src/app/session-now/add-contenu/add-contenu.component';
 import { SessionNowService } from 'src/app/services/session-now-service.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-create-post',
   templateUrl: './create-post.component.html',
   styleUrls: ['./create-post.component.scss'],
 })
-export class CreatePostComponent implements OnInit {
+export class CreatePostComponent implements OnInit, OnDestroy {
   @Input() user: any;
   picture: any;
   pictureUrl: any;
@@ -24,14 +32,31 @@ export class CreatePostComponent implements OnInit {
   base64: any;
   @ViewChild('InputArea') InputArea: IonInput;
   isVisible = false;
+  sub: Subscription;
   constructor(
     public feedService: MusicFeedService,
     public modalCtrl: ModalController,
-    public sessionowService: SessionNowService
+    public sessionowService: SessionNowService,
+    public platform: Platform,
+    public ref: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
     console.log(this.user);
+    this.sub = this.platform.keyboardDidShow.subscribe((ev) => {
+      const { keyboardHeight } = ev;
+      this.isVisible = true;
+      this.ref.detectChanges();
+      // Do something with the keyboard height such as translating an input above the keyboard.
+    });
+
+    this.sub.add(
+      this.platform.keyboardDidHide.subscribe(() => {
+        // Move input back to original location
+        this.isVisible = false;
+        this.ref.detectChanges();
+      })
+    );
   }
 
   inputRead(event) {
@@ -40,7 +65,7 @@ export class CreatePostComponent implements OnInit {
   }
 
   async send() {
-    console.log(this.text)
+    console.log(this.text);
     this.sessionowService.presentLoading();
     let url;
     if (this.base64) {
@@ -79,7 +104,6 @@ export class CreatePostComponent implements OnInit {
     return await uploadTask;
   }
 
-
   async addContenu() {
     console.log('addContenu');
     const modal = await this.modalCtrl.create({
@@ -87,7 +111,7 @@ export class CreatePostComponent implements OnInit {
       cssClass: 'my-custom-contenu-modal',
     });
     modal.onDidDismiss().then((data: any) => {
-      console.log(data)
+      console.log(data);
       this.base64 = data.data != 'Modal Closed' ? data.data : null;
     });
     return await modal.present();
@@ -103,5 +127,9 @@ export class CreatePostComponent implements OnInit {
 
   close(ev?) {
     this.modalCtrl.dismiss(ev ? ev : []);
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 }
