@@ -3,100 +3,107 @@
 </ion-header> -->
 
 <ion-content>
-   <ion-toolbar>
+  <ion-toolbar>
     <ion-item lines="none">
-      <ion-img slot="start" slot="start"  class="img-back" src="assets/images/backArrow.svg" (click)="retour()"> </ion-img>
+      <ion-img slot="start" slot="start" class="img-back" src="assets/images/backArrow.svg" (click)="retour()">
+      </ion-img>
       <ion-title>{{titleCurrentPage}}</ion-title>
       <ion-img slot="end" class="img-info" src="assets/images/feather-info.svg" (click)="information()"> </ion-img>
     </ion-item>
   </ion-toolbar>
   <ion-slides [options]="slideOptsOne" #mySlider pager="true" (ionSlideWillChange)="slideChange()" [class]="modeClasse">
-<ion-slide>
-  <app-reglages></app-reglages>
-</ion-slide>
     <ion-slide>
-       <!-- <ion-row>
+      <app-reglages></app-reglages>
+    </ion-slide>
+    <ion-slide>
+      <!-- <ion-row>
          <ion-item>
            <ion-label style="text-align:center;font: Poppins 20px  " >
              <span>Sélectionner votre Activité</span>
            </ion-label>
          </ion-item>
        </ion-row> -->
-        <!-- start championnat block -->
-          <ion-row class="firstPart" *ngIf="type==='Championnat'">
-            <span [ngStyle]="{'padding' : activite?.padding2 ? activite?.padding2 : '0' }" class="rond" (click)="choisirActivite()">
-              <ion-img [ngStyle]="{'width': activite?.width2 ? activite?.width2 : activite?.width2}" [src]="activite?.image"></ion-img>
-              <span class="single">
-                <ion-img src="assets/images/swap.svg"></ion-img>
-              </span>
-            </span>
+      <!-- start championnat block -->
+      <ion-row class="firstPart" *ngIf="type==='Championnat'">
+        <span [ngStyle]="{'padding' : activite?.padding2 ? activite?.padding2 : '0' }" class="rond"
+          (click)="choisirActivite()">
+          <ion-img [ngStyle]="{'width': activite?.width2 ? activite?.width2 : activite?.width2}"
+            [src]="activite?.image"></ion-img>
+          <span class="single">
+            <ion-img src="assets/images/swap.svg"></ion-img>
+          </span>
+        </span>
 
-          </ion-row>
-          <ion-row class="row-activite" *ngIf="type==='Championnat'">
-            <ion-label class="activite" >
-             {{activite?.name}}
-            </ion-label>
-          </ion-row>
-          <ion-row class="classic-item" *ngIf="type==='Championnat'">
-            <ion-item lines="none" >
-              <!-- end Championnat -->
-              <span class="trace" >
-                <ion-img src="assets/images/trace.svg" ></ion-img>
-              </span>
-              <span class="rondV"  ></span>
+      </ion-row>
+      <ion-row class="row-activite" *ngIf="type==='Championnat'">
+        <ion-label class="activite">
+          {{activite?.name}}
+        </ion-label>
+      </ion-row>
+      <ion-row class="classic-item" *ngIf="type==='Championnat'">
+        <ion-item lines="none">
+          <!-- end Championnat -->
+          <span class="trace">
+            <ion-img src="assets/images/trace.svg"></ion-img>
+          </span>
+          <span class="rondV"></span>
 
 
-              <ion-label class="classic2" >
-                {{categoryName}}
-              </ion-label>
-            </ion-item>
-          </ion-row>
-
-        <!-- end Championnat block -->
-        <!-- start Challenge Block-->
-
-        <ion-row class="firstPart3" *ngIf="type==='Challenge' ">
-            <span [ngStyle]="{'padding' : activite?.padding2 ? activite?.padding2 : '0' }" class="rond" (click)="choisirActivite()">
-              <ion-img [ngStyle]="{'width': activite?.width2 ? activite?.width2 : activite?.width2}" [src]="activite?.image"></ion-img>
-              <span class="single">
-                <ion-img src="assets/images/swap.svg"></ion-img>
-              </span>
-            </span>
-        </ion-row>
-        <ion-row class="row-activite" *ngIf="type==='Challenge' ">
-          <ion-label class="activite" >
-            {{activite?.name}}
+          <ion-label class="classic2">
+            {{categoryName}}
           </ion-label>
+        </ion-item>
+      </ion-row>
+
+      <!-- end Championnat block -->
+      <!-- start Challenge Block-->
+
+      <ion-row class="firstPart3" *ngIf="type==='Challenge' ">
+        <span [ngStyle]="{'padding' : activite?.padding2 ? activite?.padding2 : '0' }" class="rond"
+          (click)="choisirActivite()">
+          <ion-img [ngStyle]="{'width': activite?.width2 ? activite?.width2 : activite?.width2}"
+            [src]="activite?.image"></ion-img>
+          <span class="single">
+            <ion-img src="assets/images/swap.svg"></ion-img>
+          </span>
+        </span>
+      </ion-row>
+      <ion-row class="row-activite" *ngIf="type==='Challenge' ">
+        <ion-label class="activite">
+          {{activite?.name}}
+        </ion-label>
+      </ion-row>
+      <ion-row class="classic-item" *ngIf="type==='Challenge' ">
+        <ion-item lines="none">
+          <span class="trace">
+            <ion-img src="assets/images/sidactionIcon.svg"></ion-img>
+          </span>
+          <ion-label class="classic2">
+            {{categoryName}}
+          </ion-label>
+        </ion-item>
+      </ion-row>
+
+      <ion-grid class="c-compt" *ngIf="type==='Challenge' ">
+        <ion-row>
+          <round-progress [current]="challengeStatus" [max]="max" [color]="'#F9608F'"
+            [background]="'rgb(150, 149, 149)'" [radius]="125" [stroke]="7">
+          </round-progress>
+          <div class="percentageValue">
+            {{challengeStatus}} <span> {{challengeUnity}}</span>
+          </div>
         </ion-row>
-        <ion-row class="classic-item" *ngIf="type==='Challenge' ">
-          <ion-item lines="none">
-              <span class="trace">
-                <ion-img src="assets/images/sidactionIcon.svg"></ion-img>
-              </span>
-            <ion-label class="classic2">
-              {{categoryName}}
-            </ion-label>
-          </ion-item>
-        </ion-row>
 
-        <ion-grid class="c-compt" *ngIf="type==='Challenge' ">
-          <ion-row >
-            <round-progress [current]="challengeStatus" [max]="max" [color]="'#F9608F'" [background]="'rgb(150, 149, 149)'"
-                            [radius]="125" [stroke]="7">
-            </round-progress>
-            <div class="percentageValue">
-              {{challengeStatus}} <span> %</span>
-            </div>
-          </ion-row>
-
-        </ion-grid>
+      </ion-grid>
 
 
-        <!-- end Challenge Block-->
+      <!-- end Challenge Block-->
       <!-- start seance libre -->
       <ion-row class="firstPart2" *ngIf="type==='Séance Libre'">
-        <span [ngStyle]="{'padding' : activite.padding2 ? activite.padding2 : activite.padding2 }" class="rond" (click)="choisirActivite()">
-          <ion-img [ngStyle]="{'width': activite?.width2 ? activite?.width2 : activite?.width2}" [src]="activite?.image"></ion-img>
+        <span [ngStyle]="{'padding' : activite.padding2 ? activite.padding2 : activite.padding2 }" class="rond"
+          (click)="choisirActivite()">
+          <ion-img [ngStyle]="{'width': activite?.width2 ? activite?.width2 : activite?.width2}"
+            [src]="activite?.image"></ion-img>
           <span class="single">
             <ion-img src="assets/images/swap.svg"></ion-img>
           </span>
@@ -104,7 +111,7 @@
       </ion-row>
 
       <ion-row class="row-activite" *ngIf="type==='Séance Libre'">
-        <ion-label class="activite" >
+        <ion-label class="activite">
           {{activite?.name}}
         </ion-label>
       </ion-row>
@@ -129,29 +136,31 @@
       </ion-row> -->
       <!-- start championnat block -->
       <ion-row class="firstPart" *ngIf="type==='Championnat'">
-            <span [ngStyle]="{'padding' : activite?.padding2 ? activite?.padding2 : '0' }" class="rond" (click)="choisirActivite()">
-              <ion-img [ngStyle]="{'width': activite?.width2 ? activite?.width2 : activite?.width2}" [src]="activite?.image"></ion-img>
-              <span class="single">
-                <ion-img src="assets/images/swap.svg"></ion-img>
-              </span>
-            </span>
+        <span [ngStyle]="{'padding' : activite?.padding2 ? activite?.padding2 : '0' }" class="rond"
+          (click)="choisirActivite()">
+          <ion-img [ngStyle]="{'width': activite?.width2 ? activite?.width2 : activite?.width2}"
+            [src]="activite?.image"></ion-img>
+          <span class="single">
+            <ion-img src="assets/images/swap.svg"></ion-img>
+          </span>
+        </span>
 
       </ion-row>
       <ion-row class="row-activite" *ngIf="type==='Championnat'">
-        <ion-label class="activite" >
+        <ion-label class="activite">
           {{activite?.name}}
         </ion-label>
       </ion-row>
       <ion-row class="classic-item" *ngIf="type==='Championnat'">
-        <ion-item lines="none" >
+        <ion-item lines="none">
           <!-- end Championnat -->
-          <span class="trace" >
-                <ion-img src="assets/images/trace.svg" ></ion-img>
-              </span>
-          <span class="rondV"  ></span>
+          <span class="trace">
+            <ion-img src="assets/images/trace.svg"></ion-img>
+          </span>
+          <span class="rondV"></span>
 
 
-          <ion-label class="classic2" >
+          <ion-label class="classic2">
             {{categoryName}}
           </ion-label>
         </ion-item>
@@ -161,23 +170,25 @@
       <!-- start Challenge Block-->
 
       <ion-row class="firstPart3" *ngIf="type==='Challenge' ">
-            <span [ngStyle]="{'padding' : activite?.padding2 ? activite?.padding2 : '0' }" class="rond" (click)="choisirActivite()">
-              <ion-img [ngStyle]="{'width': activite?.width2 ? activite?.width2 : activite?.width2}" [src]="activite?.image"></ion-img>
-              <span class="single">
-                <ion-img src="assets/images/swap.svg"></ion-img>
-              </span>
-            </span>
+        <span [ngStyle]="{'padding' : activite?.padding2 ? activite?.padding2 : '0' }" class="rond"
+          (click)="choisirActivite()">
+          <ion-img [ngStyle]="{'width': activite?.width2 ? activite?.width2 : activite?.width2}"
+            [src]="activite?.image"></ion-img>
+          <span class="single">
+            <ion-img src="assets/images/swap.svg"></ion-img>
+          </span>
+        </span>
       </ion-row>
       <ion-row class="row-activite" *ngIf="type==='Challenge' ">
-        <ion-label class="activite" >
+        <ion-label class="activite">
           {{activite?.name}}
         </ion-label>
       </ion-row>
       <ion-row class="classic-item" *ngIf="type==='Challenge' ">
         <ion-item lines="none">
-              <span class="trace">
-                <ion-img src="assets/images/sidactionIcon.svg"></ion-img>
-              </span>
+          <span class="trace">
+            <ion-img src="assets/images/sidactionIcon.svg"></ion-img>
+          </span>
           <ion-label class="classic2">
             {{categoryName}}
           </ion-label>
@@ -185,9 +196,9 @@
       </ion-row>
 
       <ion-grid class="c-compt" *ngIf="type==='Challenge' ">
-        <ion-row >
-          <round-progress [current]="challengeStatus" [max]="max" [color]="'#F9608F'" [background]="'rgb(150, 149, 149)'"
-                          [radius]="125" [stroke]="7">
+        <ion-row>
+          <round-progress [current]="challengeStatus" [max]="max" [color]="'#F9608F'"
+            [background]="'rgb(150, 149, 149)'" [radius]="125" [stroke]="7">
           </round-progress>
           <div class="percentageValue">
             {{challengeStatus}} <span> %</span>
@@ -200,8 +211,10 @@
       <!-- end Challenge Block-->
       <!-- start seance libre -->
       <ion-row class="firstPart2" *ngIf="type==='Séance Libre'">
-        <span [ngStyle]="{'padding' : activite.padding2 ? activite.padding2 : activite.padding2 }" class="rond" (click)="choisirActivite()">
-          <ion-img [ngStyle]="{'width': activite?.width2 ? activite?.width2 : activite?.width2}" [src]="activite?.image"></ion-img>
+        <span [ngStyle]="{'padding' : activite.padding2 ? activite.padding2 : activite.padding2 }" class="rond"
+          (click)="choisirActivite()">
+          <ion-img [ngStyle]="{'width': activite?.width2 ? activite?.width2 : activite?.width2}"
+            [src]="activite?.image"></ion-img>
           <span class="single">
             <ion-img src="assets/images/swap.svg"></ion-img>
           </span>
@@ -209,7 +222,7 @@
       </ion-row>
 
       <ion-row class="row-activite" *ngIf="type==='Séance Libre'">
-        <ion-label class="activite" >
+        <ion-label class="activite">
           {{activite?.name}}
         </ion-label>
       </ion-row>
@@ -224,25 +237,25 @@
       <!-- end seance libre block -->
 
     </ion-slide>
-      </ion-slides>
-      <ion-grid [class]="demarrage">
-        <ion-row class="row-demarrage">
-          <ion-item lines="none">
-            <span class="param" slot="start" (click)="reglage(mySlider)">
-              <ion-img src="assets/images/settings.svg"></ion-img>
-            </span>
-            <ion-img class="feather-rose" *ngIf="!isActif" src="assets/images/warning.svg"></ion-img>
+  </ion-slides>
+  <ion-grid [class]="demarrage">
+    <ion-row class="row-demarrage">
+      <ion-item lines="none">
+        <span class="param" slot="start" (click)="reglage(mySlider)">
+          <ion-img src="assets/images/settings.svg"></ion-img>
+        </span>
+        <ion-img class="feather-rose" *ngIf="!isActif" src="assets/images/warning.svg"></ion-img>
 
-            <span class="start" (click)="start()">
-              <ion-img  src="assets/images/play.svg"></ion-img>
-            </span>
+        <span class="start" (click)="start()">
+          <ion-img src="assets/images/play.svg"></ion-img>
+        </span>
 
-            <span class="photo" slot="end" (click)="openCamera()">
-              <ion-img src="assets/images/photo.svg"></ion-img>
-            </span>
-          </ion-item>
-        </ion-row>
-      </ion-grid>
+        <span class="photo" slot="end" (click)="openCamera()">
+          <ion-img src="assets/images/photo.svg"></ion-img>
+        </span>
+      </ion-item>
+    </ion-row>
+  </ion-grid>
 
 
-    </ion-content>
+</ion-content>

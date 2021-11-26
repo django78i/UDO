@@ -18,6 +18,7 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { environment } from '../../../environments/environment.prod';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { Camera } from '@ionic-native/camera/ngx';
+import {AddPostContenuComponent} from '../add-post-contenu/add-post-contenu.component';
 
 
 @NgModule({
@@ -30,7 +31,7 @@ import { Camera } from '@ionic-native/camera/ngx';
         RoundProgressModule,
         AngularFireModule.initializeApp(environment.firebaseConfig),
     ],
-  declarations: [PreseancePage,ActivitiesPage,ListMetricsPage,ReglagesPage],
+  declarations: [PreseancePage,ActivitiesPage,ListMetricsPage,ReglagesPage,AddPostContenuComponent],
   entryComponents: [ReglagesPage],
   providers: [Camera,Keyboard,{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },Health],
 

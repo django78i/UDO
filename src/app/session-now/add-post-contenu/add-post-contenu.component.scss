@@ -1,145 +1,154 @@
-ion-content {
-  --ion-background-color: #f4f5fa;
 
-  ion-toolbar {
-    .close {
+ion-content{
+  --ion-background-color: #F4F5FA;
+
+  ion-toolbar{
+    .close{
       width: 22px;
       height: 22px;
     }
-    ion-title {
+    ion-title{
       text-align: center;
-      color: #2a2a2c;
+      color: #2A2A2C;
       font-family: "PoppinsBold" !important;
       font-size: 13px;
     }
   }
-  .c-img {
+  .c-img{
     border-radius: 29px;
     height: 224px;
     width: 85%;
     margin: auto;
     margin-top: 45px;
-    background-position: center;
-    background-size: cover;
   }
-  .activite {
+  .activite{
     margin-top: 50px;
-    .rond {
+    .rond{
       width: 38px;
       height: 38px;
-      background: #ffffff;
+      background: #FFFFFF;
       border-radius: 50%;
       margin-left: 30px;
       padding: 10px 12px;
-      ion-img {
+      ion-img{
         width: 14px;
         height: 15px;
       }
     }
-    .nameActivity {
+    .nameActivity{
       letter-spacing: -0.18px;
       color: #000000;
       font-size: 18px;
       font-family: "PoppinsSemiBold" !important;
       margin-left: 15px;
       margin-top: 6px;
+
     }
   }
-  .message {
+  .message{
     margin: 0 20px;
-    ion-textarea {
+    ion-textarea{
       border-bottom: 2px solid #70707045;
       height: 45px;
       margin-left: 12px;
     }
-    .crayon {
+    ion-input{
+      border-bottom: 2px solid #70707045 !important;
+      height: 45px;
+      margin-left: 12px;
+    }
+    .crayon{
       margin-left: -30px;
       margin-top: 14px;
     }
-    .sc-ion-textarea-md-h {
+    .sc-ion-textarea-md-h{
       letter-spacing: -0.14px !important;
-      color: #26272b !important;
+      color: #26272B !important;
       opacity: 0.58 !important;
       font-size: 14px !important;
       font-family: "PoppinsMedium" !important;
       --padding-start: 0px;
     }
   }
-  .message-lands {
+  .message-lands{
     margin: 0 35px;
-    margin-bottom: 120px;
-    ion-textarea {
+    margin-bottom: 120px !important;
+    ion-textarea{
       border-bottom: 2px solid #70707045 !important;
       height: 45px;
       margin-left: 12px;
     }
-    ion-input {
+    ion-input{
       border-bottom: 2px solid #70707045 !important;
       height: 45px;
       margin-left: 12px;
     }
-    .crayon {
+    .crayon{
       margin-left: -30px;
       margin-top: 14px;
     }
-    .sc-ion-textarea-md-h {
+    .sc-ion-textarea-md-h{
       letter-spacing: -0.14px !important;
-      color: #26272b !important;
+      color: #26272B !important;
       opacity: 0.58 !important;
       font-size: 14px !important;
       font-family: "PoppinsMedium" !important;
       --padding-start: 0px;
     }
   }
-  .c-ion-fab {
-    background: #3e4add 0% 0% no-repeat padding-box;
+
+  .publier-bt{
+    background: #3E4ADD 0% 0% no-repeat padding-box !important;
     border-radius: 33px;
     width: 88%;
     margin: 0 20px;
     height: 89px;
     text-align: center;
-    padding-top: 30px;
-    span {
+    span{
       letter-spacing: 0px;
-      color: #ffffff;
+      color: #FFFFFF;
+      font-size: 18px;
+      font-family: "PoppinsSemiBold" !important;
+    }
+  }
+}
+ion-footer{
+  background: #f7f7fa !important;
+  .c-ion-fab{
+    background: #3E4ADD 0% 0% no-repeat padding-box;
+    border-radius: 33px;
+    width: 88%;
+    margin: 0 20px;
+    height: 89px;
+    margin-bottom: 20px !important;
+    text-align: center;
+    padding-top: 30px;
+    color: white;
+    span{
+      letter-spacing: 0px;
+      color: #FFFFFF;
       font-size: 18px;
       font-family: "PoppinsSemiBold" !important;
     }
   }
 
-  .c-ion-fab-lands {
-    background: #3e4add 0% 0% no-repeat padding-box;
+  .c-ion-fab-lands{
+    background: #3E4ADD 0% 0% no-repeat padding-box;
     border-radius: 33px;
     height: 89px;
     text-align: center;
     padding-top: 30px;
-    span {
+    margin-bottom: 20px !important;
+    color: white;
+    span{
       letter-spacing: 0px;
-      color: #ffffff;
-      font-size: 18px;
-      font-family: "PoppinsSemiBold" !important;
-    }
-  }
-  .publier-bt {
-    background: #3e4add 0% 0% no-repeat padding-box !important;
-    border-radius: 33px;
-    width: 88%;
-    margin: 0 20px;
-    height: 89px;
-    text-align: center;
-    span {
-      letter-spacing: 0px;
-      color: #ffffff;
+      color: #FFFFFF;
       font-size: 18px;
       font-family: "PoppinsSemiBold" !important;
     }
   }
 }
-ion-footer {
-  --background: #f4f5fa !important;
-  --backdrop-opacity: 0 !important;
-}
-.landscape {
+.landscape{
   width: 50% !important;
   margin: auto !important;
 }

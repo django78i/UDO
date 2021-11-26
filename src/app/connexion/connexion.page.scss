@@ -5,7 +5,8 @@
 //   justify-content: center;
 // }
 ion-content{
-  overflow: hidden !important;
+  --offset-bottom: 0 !important;
+  overflow-x: scroll !important;
 }
 ion-card-header {
   height: 460px;
@@ -25,8 +26,8 @@ ion-card-header {
   background-color:#352D8F;
   .c-image {
     ion-img{
-      width: 414px;
       height: 461px;
+      width: 100%;
     }
   }
   .c-row-img{
@@ -60,8 +61,8 @@ ion-card-header {
   .c-image {
     margin: auto;
     ion-img{
-      width: 336px;
-      height: 399px;
+      width: 100%;
+      height: 408px;
     }
   }
   .titre{
@@ -92,8 +93,8 @@ ion-card-header {
   .c-image {
     margin: auto;
     ion-img{
-      width: 390px;
-      height: 421px;
+      width: 100%;
+      height: 408px;
     }
   }
   .titre{
@@ -124,8 +125,8 @@ ion-card-header {
   .c-image {
     margin: auto;
     ion-img{
-      width: 413px;
-      height: 440px;
+      width: 100%;
+      height: 390px;
     }
   }
   .titre{

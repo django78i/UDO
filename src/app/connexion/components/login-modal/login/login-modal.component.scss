@@ -162,7 +162,7 @@ ion-avatar {
     opacity: 1;
     font-size: 14px;
     font-family: "PoppinsSemiBold" !important;
-    
+
   }
   input{
     letter-spacing: -0.14px;
@@ -170,7 +170,7 @@ ion-avatar {
     opacity: 1;
     font-size: 14px;
     font-family: "PoppinsSemiBold" !important;
-    
+
   }
 
 }
@@ -262,7 +262,7 @@ ion-input {
   }
 }
 .fab2{
-  
+
   z-index: 1;
   .c-fab{
     --background: #DFDFE8 !important;
@@ -283,7 +283,7 @@ ion-input {
 
 .c-fab-img{
   --background: #2D2E31 !important;
-  
+
   opacity: 1;
   margin-bottom: 30px;
   letter-spacing: 0px;
@@ -298,6 +298,7 @@ ion-input {
   z-index: 1;
   opacity: 1;
   letter-spacing: 0px;
+  margin-bottom: 30px;
   span{
     color: #FFFFFF;
     font-size: 16px;
@@ -375,7 +376,7 @@ ion-input {
     margin: 0 13px 0 26px;
     transform: rotate(25deg);
     margin-top: 13px;
-    
+
   }
   input:focus-visible {
     outline: none !important;
@@ -394,10 +395,10 @@ ion-input {
   border: 2px solid black !important;
 }
 
-::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline-thick { 
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline-thick {
   color: black !important ;
 }
-::ng-deep .mat-form-field-appearance-outline:not(.mat-form-field-empty) { 
+::ng-deep .mat-form-field-appearance-outline:not(.mat-form-field-empty) {
   color: black !important ;
 }
 ::ng-deep .mat-form-field-outline-start {

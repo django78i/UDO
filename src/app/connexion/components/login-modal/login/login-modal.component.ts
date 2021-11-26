@@ -56,11 +56,11 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
   slideOpts = {
     speed: 400,
   };
- 
+
   jour ='';
   mois =''
   annee ='';
-  
+
   activeIndex: number = 0;
   fabButton="c-fab";
   title="Suivant";
@@ -133,6 +133,7 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
   }
 
   redirect() {
+    this.sliderComp.lockSwipes(true);
     this.navController.navigateForward(['']);
     localStorage.setItem('isConnected',"true");
   }
@@ -149,7 +150,7 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
     const theActualPicture = image.dataUrl;
     var imageUrl = image.webPath;
     this.picture = theActualPicture;
-    
+
   }
   nextStep(){
     if(this.activeIndex == 0){
@@ -176,6 +177,10 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
     this.ref.detectChanges();
     this.slideNext();
     this.fabButton = "c-fab";
+   /* if(this.activeIndex===4){
+      this.sliderComp.lockSwipeToPrev(true);
+    }*/
+
   }
 
   checkPseudo(){
@@ -208,7 +213,7 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
     }else{
       this.fabButton = "c-fab";
     }
-   
+
   }
 
   savePhoto() {
@@ -292,7 +297,7 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
         value: 0,
       },
     ];
-    
+
     this.user = {
       ...user,
       sex: this.sex,
@@ -344,19 +349,21 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
     }else{
       this.fabButton="c-fab";
     }
-    
+
   }
 
   eventActivite(event) {
     this.activitesList = event;
     if(this.activitesList){
-      this.fabButton = "c-fab-img";
+      this.fabButton = 'c-fab-img';
     }else{
-      this.fabButton = "c-fab";
+      this.fabButton = 'c-fab';
     }
   }
 
   validate() {
+    this.sliderComp.lockSwipeToPrev(true);
+    this.sliderComp.lockSwipes(true);
     if (this.activitesList) {
       this.step += 0.2;
       this.ref.detectChanges();
