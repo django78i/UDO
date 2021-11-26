@@ -3,7 +3,7 @@ import { MusicFeedService } from '../services/music-feed.service';
 import {
   ModalController,
   AnimationController,
-  NavController, Platform, AlertController,
+  NavController, Platform, AlertController, IonRouterOutlet,
 } from '@ionic/angular';
 import { MenuUserComponent } from '../components/menu-user/menu-user.component';
 import { AddContenuComponent } from '../session-now/add-contenu/add-contenu.component';
@@ -32,7 +32,8 @@ export class TabsPage implements OnInit {
     private modalCtrl: ModalController,
     public userService: UserService,
     private platform: Platform,
-    public alertController: AlertController
+    public alertController: AlertController,
+    private routerOutlet: IonRouterOutlet
   ) {
     this.platform.backButton.subscribeWithPriority(10, () => {
       this.presentAlertConfirm();
@@ -41,6 +42,7 @@ export class TabsPage implements OnInit {
   }
 
   ngOnInit() {
+    this.routerOutlet.swipeGesture = false;
     this.userService.getCurrentUser().then((user) => {
       this.user = user;
     });
@@ -111,9 +113,6 @@ export class TabsPage implements OnInit {
           text: 'Oui',
           handler: () => {
             App.exitApp();
-            // on quitte l'application et on supprime tous les posts
-            //this.destroySession();
-            // this.displayRecap();
           },
         },
       ],
@@ -121,4 +120,5 @@ export class TabsPage implements OnInit {
 
     await alert.present();
   }
+
 }
