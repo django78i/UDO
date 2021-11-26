@@ -25,6 +25,7 @@ import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { BehaviorSubject } from 'rxjs';
 import { UserProfilComponent } from 'src/app/components/user-profil/user-profil.component';
 import * as _ from 'lodash';
+import { AddContenuComponent } from 'src/app/session-now/add-contenu/add-contenu.component';
 
 const MEDIA_FILES_KEY = 'mediaFiles';
 interface Reaction {
@@ -70,13 +71,14 @@ export class FeedsComponent implements OnInit {
     public navCtl: NavController,
     public popoverController: PopoverController,
     public modalController: ModalController,
-    public ref: ChangeDetectorRef
+    public ref: ChangeDetectorRef,
+    public modalCtrl: ModalController
   ) {}
 
   async ngOnInit() {
     console.log(this.user);
     const feedPrime = await this.feedService.feedQuery(this.championnat.uid);
-    console.log(feedPrime)
+    console.log(feedPrime);
     this.feed = feedPrime.table;
     this.lastVisible = feedPrime.last;
   }
@@ -190,7 +192,7 @@ export class FeedsComponent implements OnInit {
     let photo;
     if (this.picture) {
       const tof = await this.savePhoto(this.picture);
-      photo = getDownloadURL(tof.ref);
+      photo = await getDownloadURL(tof.ref);
     }
 
     const post = {
@@ -214,16 +216,25 @@ export class FeedsComponent implements OnInit {
     this.feedReinit();
   }
 
+  async addContenu() {
+    const modal = await this.modalCtrl.create({
+      component: AddContenuComponent,
+      cssClass: 'my-custom-contenu-modal',
+    });
+    modal.onDidDismiss().then((data: any) => {
+      this.picture = data.data !== 'Modal Closed' ? data.data : null;
+    });
+    return await modal.present();
+  }
+
   async feedReinit() {
     this.feed = [];
     console.log(this.feed);
     const feedRefresh = await this.feedService.feedQuery(this.championnat.uid);
     console.log(feedRefresh);
-    feedRefresh.table.forEach((fee) => {
-      this.feed.push(fee);
-    });
+    this.feed = feedRefresh.table;
+    this.lastVisible = feedRefresh.last;
     this.inputFeed.value = null;
-    this.inputFeed.ionBlur;
     this.picture = null;
     this.pictureUrl = null;
     this.boole = false;

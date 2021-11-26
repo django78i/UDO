@@ -18,87 +18,108 @@
           </ion-button>
         </ion-toolbar>
 
-        <ion-card [ngStyle]="{ 'background-image': 'url(' + ban + ')' }">
+        <ion-card [ngStyle]="{ 'background-image': 'url(' + ban.url + ')' }">
           <ion-card-header>
             <ion-card-subtitle> DEMARRAGE MANUEL </ion-card-subtitle>
-            <ion-card-title style="color: white">{{
-              title | async
-            }}</ion-card-title>
+            <ion-card-title style="color: white">{{ title }}</ion-card-title>
           </ion-card-header>
 
           <ion-card-content>
             <div style="display: flex">
               <ion-avatar>
                 <img [src]="user.avatar" alt="" />
-                <ion-badge>{{user.niveau}}</ion-badge>
+                <ion-badge>{{ user.niveau }}</ion-badge>
               </ion-avatar>
-            </div>
-            <div class="iconPhoto">
-              <ion-icon
-                name="camera"
-                style="color: rgb(0, 0, 0); font-size: 25px"
-              ></ion-icon>
             </div>
           </ion-card-content>
         </ion-card>
         <form [formGroup]="formChamp">
-          <ion-item lines="none">
-            <ion-label
-              position="floating"
-              style="
-                padding-left: 13px;
-                font-size: 14px;
-                --color: rgb(112 112 112);
-              "
-              >Nom du championnat</ion-label
-            >
+          <ion-item>
             <ion-input
-
-              style="
-                border: 1px solid rgba(112, 112, 112, 0.23);
-                border-radius: 5px;
-                --padding-start: 10px;
-              "
+              type="text"
+              style="padding-bottom: 0px"
+              placeholder="Nom du championnat"
+              maxLength="20"
               class="form-control"
               formControlName="name"
               (ionChange)="onKey($event)"
             ></ion-input>
-            <ion-note style="font-size: 12px"
-              >Respectez les conditions d’utilisations, évitez les insultes et
-              grossièretés.</ion-note
+            <ion-badge
+              slot="end"
+              style="
+                --padding-bottom: 5px;
+                --padding-top: 5px;
+                border-radius: 5px;
+                --background: #cfccd5;
+                --color: black;
+              "
             >
+              {{ inputLength }}
+            </ion-badge>
           </ion-item>
         </form>
+        <ion-segment
+          (ionChange)="segmentChanged($event)"
+          [value]="seg"
+          style="--background: #dfdfe8"
+        >
+          <ion-segment-button value="Friends&Familly">
+            <ion-label> Friends & Familly </ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="Network"
+            ><ion-label> Network</ion-label>
+          </ion-segment-button>
+        </ion-segment>
 
-        <ion-item lines="none">
-          <ion-label slot="start" style="font-size: 14px; font-weight: 600"
-            >Couleur</ion-label
+        <ion-grid style="padding-right: 0">
+          <ion-row style="align-items: center">
+            <ion-col size="3">
+              <ion-label style="font-size: 14px; font-weight: 600"
+                >Couleur</ion-label
+              >
+            </ion-col>
+            <ion-col
+              size="9"
+              style="justify-content: space-between; display: flex"
+            >
+              <ng-container *ngFor="let bann of bannieres; let i = index">
+                <ion-checkbox
+                  mode="ios"
+                  class="checkZone"
+                  style="--dataColor:{{ bann.color }};"
+                  #checkBanniere
+                  (click)="focused(bann, i)"
+                ></ion-checkbox>
+              </ng-container>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        <ion-item>
+          <ion-textarea
+            rows="1"
+            placeholder="En quoi consiste votre championnat"
+            (ionChange)="description($event)"
+          ></ion-textarea>
+          <div
+            style="display: flex; justify-content: center; align-items: center"
           >
-          <ng-container *ngFor="let bann of bannieres; let i = index">
-            <ion-checkbox
-              mode="ios"
-              class="checkZone"
-              style="--dataColor:{{ bann.color }};"
-              #checkBanniere
-              (click)="focused(bann.url, i)"
-            ></ion-checkbox>
-          </ng-container>
-        </ion-item>
-        <ion-item lines="none" class="champColor">
-          <ion-icon
-            name="trophy-outline"
-            style="
-              padding: 10px;
-              border-radius: 50%;
-              border: 1px solid grey;
-              margin-right: 10px;
-            "
-          ></ion-icon>
-          <ion-label>
-            <p class="sousTitre black">Ouvrir au public</p>
-            <p style="font-size: 10px">Mode actuel :{{ private.type }}</p>
-          </ion-label>
-          <ion-toggle slot="end" (ionChange)="privacy()"></ion-toggle>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="17.086"
+              height="17.339"
+              viewBox="0 0 17.086 17.339"
+            >
+              <path
+                id="Tracé_32244"
+                data-name="Tracé 32244"
+                d="M1273.189,232.175c-1.831.611-4.275-1.832-3.662-3.664m.751-.752-6.43,6.686a13.357,13.357,0,0,0-3.524,6.221l-.19.763a.325.325,0,0,0,.4.393l.76-.19a13.343,13.343,0,0,0,6.219-3.522l6.43-6.686a2.59,2.59,0,1,0-3.662-3.664Z"
+                transform="translate(-1258.865 -225.75)"
+                fill="none"
+                stroke="#000000"
+                stroke-width="2.5"
+              />
+            </svg>
+          </div>
         </ion-item>
         <ion-item lines="none" class="champColor">
           <ion-thumbnail slot="start" class="thumbZone">
@@ -191,7 +212,6 @@
             id="dual-range"
             dual-knobs
             pin="true"
-            color="dark"
             min="0"
             max="200"
             step="20"
@@ -200,8 +220,12 @@
             #ranger
             (ionChange)="changement($event)"
           >
-            <ion-label slot="start" *ngIf="range">{{ range.lower }}</ion-label>
-            <ion-label slot="end" *ngIf="range">{{ range.upper }}</ion-label>
+            <ion-badge slot="start" *ngIf="range" class="badgeRange">{{
+              range.lower
+            }}</ion-badge>
+            <ion-badge slot="end" *ngIf="range" class="badgeRange">{{
+              range.upper
+            }}</ion-badge>
           </ion-range>
         </ion-item>
         <ion-item
@@ -210,12 +234,31 @@
           class="champColor"
           (click)="slideNext('activity')"
         >
-          <ion-thumbnail class="thumbZone" slot="start">
+          <ion-thumbnail
+            class="thumbZone"
+            slot="start"
+            style="position: relative"
+          >
             <img class="thumbIcon" src="assets/icon/icons8-course.svg" alt="" />
+            <ion-badge
+              style="
+                position: absolute;
+                top: -5px;
+                right: -8px;
+                height: 25px;
+                width: 25px;
+                display: flex;
+                border-radius: 50%;
+                --background: black;
+                align-items: center;
+                justify-content: center;
+              "
+              >{{ activitesList.length }}</ion-badge
+            >
           </ion-thumbnail>
           <ion-label>
             <p class="sousTitre black">Liste des activités</p>
-            <p style="font-size: 10px">Sélectionnez les activités</p>
+            <p style="font-size: 10px">Sélectionnez les activités :</p>
           </ion-label>
         </ion-item>
         <div style="display: flex; justify-content: center">
@@ -239,6 +282,7 @@
             [listAct]="activitesList"
           ></app-activity-list>
           <app-friends-list
+            [competition]="'championnat'"
             (champCreate)="saveChamp($event)"
             [createur]="user"
             [type]="private.type"

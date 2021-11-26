@@ -44,17 +44,21 @@ export class UserChampionnatsSlideComponent implements OnInit {
   ngOnInit() {}
 
   ngAfterContentChecked(): void {
-    if (this.swiper) {
-      this.swiper.map((swip) => swip.updateSwiper({}));
-      let user = JSON.parse(localStorage.getItem('user'));
-      if (this.championnats.length) {
-        this.championnats.map((champ, i) => {
-          this.userInfo = champ.participants.find(
-            (userChamp) => user.uid == userChamp.uid
-          );
-        });
-      }
+    // if (this.swiper) {
+    //   this.swiper.map((swip) => swip.updateSwiper({}));
+    let user = JSON.parse(localStorage.getItem('user'));
+    if (this.championnats.length) {
+      this.championnats.forEach((champ, i) => {
+        this.userInfo = champ.participants.find(
+          (userChamp) => user.uid == userChamp.uid
+        );
+        // console.log(this.userInfo);
+        champ.userInfo = this.userInfo;
+        // this.ref.detectChanges()
+      });
+      console.log(this.championnats);
     }
+    // }
   }
 
   choice(champ) {

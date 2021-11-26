@@ -304,7 +304,7 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
       activitesPratiquees: this.activitesList ? this.activitesList : '',
       userName: this.pseudo,
       physique: this.physicalParam ? this.physicalParam : '',
-      niveau: 0,
+      niveau: 1,
       metrics: table,
       friends: [],
       exp: 0,

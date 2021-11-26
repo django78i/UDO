@@ -12,6 +12,8 @@ import {
   setDoc,
   where,
   updateDoc,
+  getDoc,
+  Unsubscribe,
 } from 'firebase/firestore';
 import { BehaviorSubject, from, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -27,8 +29,10 @@ export class ChampionnatsService {
   friendsListSubject$: BehaviorSubject<any> = new BehaviorSubject(null);
   db = getFirestore();
   messagesSubject$: Subject<any> = new Subject();
+  singleChampSub$: Subject<any> = new Subject();
+  unsubscribe: Unsubscribe;
 
-  constructor() {}
+  constructor(public userService: UserService) {}
 
   async createChampionnat(champ) {
     console.log(champ);
@@ -66,13 +70,22 @@ export class ChampionnatsService {
       collection(this.db, 'championnats')
       // where('type', '==', 'network')
     );
-    const unsubscribe = onSnapshot(docRef, (querySnapshot) => {
+    this.unsubscribe = onSnapshot(docRef, (querySnapshot) => {
       const champs = [];
       querySnapshot.forEach((doc) => {
         const document = doc.data();
         this.champNetWork$.next(document);
       });
     });
+  }
+
+  async getChampionnat(uid) {
+    const users = JSON.parse(localStorage.getItem('usersList'));
+    const docData = await getDoc(doc(this.db, 'championnats', uid));
+    const dataDoc = await docData.data();
+    const champ = this.formatChamp(dataDoc, users);
+    console.log(champ);
+    this.singleChampSub$.next(champ);
   }
 
   getChampionnats() {
@@ -87,6 +100,7 @@ export class ChampionnatsService {
         if (changes) {
           this.champSubject$.next(null);
           this.champEnCoursSubject$.next(null);
+          this.champNetWork$.next(null);
         }
       });
       querySnapshot.forEach((doc) => {
@@ -100,7 +114,7 @@ export class ChampionnatsService {
         } else if (
           document.status == 'en attente' &&
           bool &&
-          document.type == 'Friends&familly'
+          document.type == 'Friends&Familly'
         ) {
           this.champSubject$.next(docFormat);
         } else if (
@@ -139,41 +153,48 @@ export class ChampionnatsService {
     return guid();
   }
 
-  matchUser(niveau?, acitivities?: any[]) {
-    const userRef = collection(this.db, 'users');
-    const querySnapshot =
-      niveau != undefined
-        ? from(
-            getDocs(
-              query(
-                userRef,
-                where('niveau', '<=', niveau.upper),
-                where('niveau', '>=', niveau.lower)
-              )
-            )
-          )
-        : from(getDocs(userRef));
+  async matchUser(niveau?, acitivities?: any[]) {
+    const user = await this.userService.getCurrentUser();
+    const friendsTable: any[] = user.friends;
 
-    querySnapshot
-      .pipe(
-        map((r) => r.docs),
-        map((users) => {
-          const userFilter = users.filter((user) => {
-            const activitiesTable: [] = user.data().activitesPratiquees;
-            const verif = acitivities.length
-              ? activitiesTable?.some((act) => acitivities.includes(act))
-              : true;
-            return verif;
-          });
-          let tableUser = [];
-          userFilter.forEach((r) => {
-            tableUser.push(r.data());
-          });
-          this.friendsListSubject$.next(tableUser.length ? tableUser : null);
-          return tableUser;
-        })
-      )
-      .subscribe();
+    //Filtrage des amis si limite niveau active
+    if (niveau != undefined) {
+      const friendsFilter = friendsTable.filter(
+        (friend) => friend.niveau > niveau.lower && friend.niveau < niveau.upper
+      );
+      console.log(friendsFilter, 'niveau on');
+      this.friendsListSubject$.next(friendsFilter);
+    } else {
+      console.log(friendsTable, 'niveau off');
+      this.friendsListSubject$.next(friendsTable);
+    }
+
+    // const querySnapshot =
+    //   niveau != undefined
+    //     ? from(
+    //         getDocs(
+    //           query(
+    //             userRef,
+    //             where('niveau', '<=', niveau.upper),
+    //             where('niveau', '>=', niveau.lower)
+    //           )
+    //         )
+    //       )
+    //     : from(getDocs(userRef));
+
+    // querySnapshot
+    //   .pipe(
+    //     map((r) => r.docs),
+    //     map((users) => {
+    //       let tableUser = [];
+    //       users.forEach((r) => {
+    //         tableUser.push(r.data());
+    //       });
+    //       this.friendsListSubject$.next(tableUser.length ? tableUser : null);
+    //       return tableUser;
+    //     })
+    //   )
+    //   .subscribe();
   }
 
   async updateChamp(champ) {

@@ -1,5 +1,5 @@
 <section style="overflow: auto; height: 100%">
-  <section *ngIf="champ.status == 'en cours'" class="contentTotal">
+  <section *ngIf="champ?.status == 'en cours'" class="contentTotal">
     <div class="iconTitle">
       <img
         src="../../../../assets/icon/dot.svg"
@@ -15,7 +15,7 @@
     <ion-toolbar class="barStat">
       <ion-item slot="start" lines="none" class="itemLeft">
         <ion-label class="titre">
-          {{ champ.semaineEnCours }}
+          {{ champ?.semaineEnCours }}
         </ion-label>
         <ion-label class="sousTitre black"> Semaines </ion-label>
       </ion-item>
@@ -24,7 +24,7 @@
           <ion-label class="titre">
             {{ userInfo.journeeEnCours
             }}<span style="font-weight: 500; color: #c5c6ce">/</span
-            ><span style="color: #c5c6ce">{{ champ.journeeTotale }}</span>
+            ><span style="color: #c5c6ce">{{ champ?.journeeTotale }}</span>
           </ion-label>
           <ion-label class="sousTitre black">Journées</ion-label>
         </ion-item>
@@ -49,8 +49,11 @@
         alt=""
       />
       <h4 style="font-weight: 900; margin: 0">DETAIL</h4>
+      <ion-badge style="--background: black">{{
+        champ?.activites.length
+      }}</ion-badge>
     </div>
-    <p style="font-size: 12px">{{ champ.text }}</p>
+    <p style="font-size: 12px">{{ champ?.description }}</p>
   </section>
   <section class="contentTotal">
     <div class="iconTitle">
@@ -65,7 +68,7 @@
       />
       <h4 style="font-weight: 900; margin: 0">ACTIVITES</h4>
     </div>
-    <ion-chip *ngFor="let act of champ.activites">
+    <ion-chip *ngFor="let act of champ?.activites">
       <ion-avatar>
         <img [src]="act.icon" />
       </ion-avatar>
@@ -91,7 +94,7 @@
       </ion-thumbnail>
       <ion-label>
         <p class="sousTitre black">Confidentialité</p>
-        <p class="detailTitre">Mode actuel : {{ champ.type }}</p>
+        <p class="detailTitre">Mode actuel : {{ champ?.type }}</p>
       </ion-label>
       <ion-thumbnail slot="end" class="friends">
         <img src="../../../../assets/icon/friends-white.svg" alt="" />
@@ -102,11 +105,11 @@
         <img src="../../../../assets/icon/clock.svg" alt="" />
       </ion-thumbnail>
       <ion-label>
-        <p class="sousTitre black">Durée de championnat</p>
+        <p class="sousTitre black">Durée de champ?ionnat</p>
         <p class="detailTitre">Activer la limite de participants maximum</p>
       </ion-label>
       <ion-thumbnail class="labelRight" slot="end">
-        <ion-label>{{ champ.dureeMax }}</ion-label>
+        <ion-label>{{ champ?.dureeMax }}</ion-label>
         <!-- <img src="../../../../assets/icon/friends-white.svg" alt=""> -->
       </ion-thumbnail>
     </ion-toolbar>
@@ -119,7 +122,7 @@
         <p class="detailTitre">Minimum de séances par semaine</p>
       </ion-label>
       <ion-thumbnail slot="end" class="labelRight">
-        <ion-label>{{ champ.seanceByWeek }}</ion-label>
+        <ion-label>{{ champ?.seanceByWeek }}</ion-label>
       </ion-thumbnail>
     </ion-toolbar>
     <div style="height: 100px; width: 100%"></div>

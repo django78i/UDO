@@ -2,7 +2,6 @@
   width: 100%;
 }
 
-
 ion-card {
   height: 214px;
   display: flex;
@@ -23,7 +22,7 @@ ion-card-subtitle {
 }
 
 ion-header {
-  --background: #f7f7fa;
+  background: #f7f7fa;
 }
 ion-card-header {
   transition: 0.3s ease all;
@@ -74,6 +73,28 @@ ion-card-content {
 
 ion-toolbar {
   --background: #f7f7fa;
+}
+
+ion-segment {
+  width: 95%;
+  margin: auto;
+  border-radius: 17px;
+  padding: 3px;
+  --background: #D7D8DD;
+}
+
+ion-segment-button {
+  --padding-top: 10px !important;
+  --padding-bottom: 10px !important;
+  --border-radius: 14px;
+
+  --color: #25252998;
+  --color-focused: #000000;
+  --color-checked: #000000;
+  ion-label {
+    font-size: 14px;
+    font-weight: 600;
+  }
 }
 
 .champCarousel {
@@ -137,6 +158,5 @@ ion-avatar {
 
 .buttonNextSlide {
   height: 80px;
-  --border-radius: 22px;
+  --border-radius:33px;
 }
-
