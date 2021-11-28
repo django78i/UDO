@@ -33,6 +33,7 @@ export class FriendsListComponent implements OnInit, OnDestroy {
   @Input() range: any;
   @Input() acitivities: any;
   @Input() competition: any;
+  @Input() boutton: string;
 
   subscription: Subscription;
   usersList: any[];
@@ -46,13 +47,11 @@ export class FriendsListComponent implements OnInit, OnDestroy {
     const list: any[] = JSON.parse(localStorage.getItem('usersList'));
     if (this.competition == 'championnat') {
       console.log(this.competition, 'champ');
-      // this.champService.matchUser();
+      this.champService.matchUser();
       this.subscription = this.champService.friendsListSubject$.subscribe(
         (friends) => {
           this.usersList = friends;
-          // this.usersList = this.friendsList.filter(
-          //   (user) => user.uid != this.createur.uid
-          // );
+          console.log(this.usersList);
         }
       );
     } else {
@@ -60,8 +59,6 @@ export class FriendsListComponent implements OnInit, OnDestroy {
       this.usersList = list.filter((user) => user.uid != this.createur.uid);
     }
 
-    // const userList = this.friendsList.filter((user) => user.uid != this.createur.uid);
-    // this.usersList = userList;
     console.log(this.usersList);
   }
 
@@ -70,9 +67,6 @@ export class FriendsListComponent implements OnInit, OnDestroy {
   }
 
   selectFriend(friend) {
-    // this.userService.addFriend(friend, this.createur);
-
-    // console.log(friend, this.friendsSelected);
     friend = { ...friend, etat: 'en attente' };
     const ind = this.friendsSelected.findIndex(
       (fr) => fr.userName == friend.userName

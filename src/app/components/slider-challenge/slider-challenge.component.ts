@@ -22,10 +22,12 @@ export class SliderChallengeComponent implements OnInit, AfterContentChecked {
   @ViewChildren('swiper') swiper: QueryList<SwiperComponent>;
   @Output() slide: EventEmitter<any> = new EventEmitter();
   @Output() challengeId: EventEmitter<any> = new EventEmitter();
+  countDownChallenge : number
 
   constructor() {}
 
   ngOnInit() {
+    // this.countDownChallenge = (this.challenges.completion.value /chall.objectifs)*100
   }
 
   config: SwiperOptions = {

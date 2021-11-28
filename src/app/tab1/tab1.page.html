@@ -1,21 +1,6 @@
 <ion-header mode="ios" style="--background: #f7f7fa">
-  <ion-toolbar
-    style="padding: 5px 15px; --border-width: 0; --background: #f7f7fa"
-    mode="ios"
-  >
-    <ion-avatar slot="start" class="big" *ngIf="user" (click)="showMenu()">
-      <img [src]="user.avatar" alt="" />
-      <ion-badge>{{ user?.niveau }}</ion-badge>
-    </ion-avatar>
-    <ion-title>
-      <img src="../../assets/icon/udoIcon.svg" alt="" />
-    </ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="chatPage()">
-        <img src="../../assets/icon/chat.svg" alt="" />
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
+  <app-header></app-header>
+
   <section style="background: #f7f7fa; padding: 0 15px">
     <div class="iconTitle">
       <img
@@ -212,11 +197,20 @@
               <img [src]="item.user.avatar" />
             </ion-avatar>
             <ion-label>
-              <div style="display: flex; align-items: center; gap: 4px">
-                <p style="margin-bottom: 0">{{ item.user.userName }}</p>
+              <div
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 4px;
+                  margin-bottom: 10px;
+                "
+              >
+                <p style="margin-bottom: 0; font-weight: 700">
+                  {{ item.user.userName }}
+                </p>
                 <ion-icon name="ellipse" style="font-size: 6px"></ion-icon>
 
-                <p style="font-size: 10px">
+                <p style="font-size: 10px; opacity: 0.5; font-weight: 600">
                   {{ item.startDate | timeRelative }}
                 </p>
               </div>
@@ -224,14 +218,42 @@
                 style="display: flex; gap: 5px; align-items: center"
                 *ngIf="item.activity"
               >
-                <img
-                  [src]="item.activity.image"
-                  alt=""
-                  style="width: 20px; height: 20px"
-                />
-                <p style="font-size: 10px; font-weight: 900">
-                  {{ item.activity.name }}
-                </p>
+                <div style="display: flex; gap: 5px; align-items: center">
+                  <img
+                    style="
+                      padding: 5px;
+                      border-radius: 50%;
+                      background: #eaebef;
+                    "
+                    src="assets/icon/FriendsFamilly.svg"
+                    alt=""
+                    *ngIf="item.championnatType == 'Friends&Familly'"
+                  />
+                  <img
+                    style="
+                      padding: 5px;
+                      border-radius: 50%;
+                      background: #eaebef;
+                    "
+                    src="assets/icon/Icon feather-globe.svg"
+                    alt=""
+                    *ngIf="item.championnatType == 'Network'"
+                  />
+                  <p style="color: #6f99f7; font-size: 10px; font-weight: 600">
+                    {{item.competitionName}}
+                  </p>
+                </div>
+
+                <div style="display: flex; gap: 5px; align-items: center">
+                  <img
+                    [src]="item.activity.image"
+                    alt=""
+                    style="width: 20px; height: 20px"
+                  />
+                  <p style="font-size: 10px; font-weight: 900">
+                    {{ item.activity.name }}
+                  </p>
+                </div>
               </div>
             </ion-label>
 
@@ -296,6 +318,39 @@
             border-radius: 15px;
           "
         ></div>
+        <ng-container *ngIf="item.photo =='' && item.comment ==''">
+          <div
+            style="
+              height: 300px;
+              width: 100%;
+              border-radius: 15px;
+              display: flex;
+              flex-wrap: wrap;
+              justify-content: center;
+            "
+            (click)="openDetail(item)"
+          >
+            <div
+              *ngFor="let metric of item.metrics"
+              style="
+                min-width: 100px;
+                width: 130px;
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
+                align-items: center;
+              "
+            >
+              <img [src]="metric.img" style="height: 10px" alt="" />
+              <p style="font-size: 23px; margin: 0; font-weight: 600">
+                {{ metric.nombre }}
+              </p>
+              <p style="margin: 0; font-weight: 600; color: #00000070">
+                {{ metric.name }}
+              </p>
+            </div>
+          </div>
+        </ng-container>
         <ion-card-content style="padding: 0">
           <div
             style="

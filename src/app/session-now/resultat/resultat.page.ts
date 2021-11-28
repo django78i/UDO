@@ -77,21 +77,19 @@ export class ResultatPage implements OnInit, OnDestroy {
     private alertController: AlertController,
     public ref: ChangeDetectorRef
   ) {
-
-    setInterval(()=>{
-    if(localStorage.getItem('mode')){
-      if(localStorage.getItem('mode')==='landscape'){
-        this.mode = 'landscape';
-        this.modeClasse='c-ion-fab-lands';
-      }else{
+    setInterval(() => {
+      if (localStorage.getItem('mode')) {
+        if (localStorage.getItem('mode') === 'landscape') {
+          this.mode = 'landscape';
+          this.modeClasse = 'c-ion-fab-lands';
+        } else {
+          this.mode = '';
+          this.modeClasse = 'c-ion-fab';
+        }
+      } else {
+        this.modeClasse = 'c-ion-fab';
         this.mode = '';
-        this.modeClasse='c-ion-fab';
       }
-    }else{
-      this.modeClasse='c-ion-fab';
-      this.mode='';
-    }
-
     }, 100);
     this.platform.backButton.subscribeWithPriority(10, () => {
       console.log('Handler was called!');
@@ -105,7 +103,6 @@ export class ResultatPage implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-
     this.sub = this.platform.keyboardDidShow.subscribe((ev) => {
       const { keyboardHeight } = ev;
       this.isVisible = true;
@@ -125,7 +122,7 @@ export class ResultatPage implements OnInit, OnDestroy {
 
     this.activite = JSON.parse(localStorage.getItem('activite'));
     this.listElement = JSON.parse(localStorage.getItem('choix'));
-    console.log('list',this.listElement);
+    console.log('list', this.listElement);
     this.sessionNow = JSON.parse(localStorage.getItem('sessionNow'));
     this.listNotif = this.sessionNow.reactions;
     if (this.sessionNow) {
@@ -243,6 +240,8 @@ export class ResultatPage implements OnInit, OnDestroy {
       );
       url = await getDownloadURL(uploadTask.ref);
     }
+    const detailCompet = JSON.parse(localStorage.getItem('detailCompet'));
+    console.log(detailCompet);
     let postModel: PostModel = {
       startDate: new Date(),
       userName: this.user ? this.user.userName : '',
@@ -254,6 +253,7 @@ export class ResultatPage implements OnInit, OnDestroy {
       reactionsNombre: this.sessionNow.reactionsNombre,
       activity: this.sessionNow.activity,
       isLive: false,
+      championnatType: this.sessionNow.championnatType,
       mode: this.sessionNow.mode,
       userAvatar: this.user.avatar,
       niveau: this.user.niveau,
@@ -354,5 +354,6 @@ export class PostModel {
   metrics: any[];
   uid: string;
   comment: string;
+  championnatType: any;
   duree: any;
 }

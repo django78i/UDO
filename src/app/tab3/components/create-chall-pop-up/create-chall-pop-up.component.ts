@@ -45,7 +45,7 @@ export class CreateChallPopUpComponent implements OnInit, AfterContentChecked {
     },
     {
       name: 'Calories',
-      metric: 'KCAL',
+      metric: 'CAL',
     },
     {
       name: 'Distance',

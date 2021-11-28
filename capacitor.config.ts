@@ -5,7 +5,7 @@ const config: CapacitorConfig = {
   appName: 'UDO',
   webDir: 'www',
   bundledWebRuntime: false,
-  backgroundColor:'#352D8F',
+  backgroundColor: '#352D8F',
   cordova: {
     preferences: {
       ScrollEnabled: 'false',
@@ -21,14 +21,14 @@ const config: CapacitorConfig = {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     SplashScreen: {
       launchShowDuration: 5000,
-      backgroundColor:'#352D8F',
-      launchAutoHide:false
+      backgroundColor: '#352D8F',
+      launchAutoHide: false,
     },
     // eslint-disable-next-line @typescript-eslint/naming-convention
     GoogleAuth: {
       scopes: ['profile', 'email'],
       serverClientId:
-        '911285735248-p38u0egepsqdnjc0stbmepg11g1cf4bc.apps.googleusercontent.com',
+        '911285735248-p38u0egepsqdnjc0stbmepg11g1cf4bc.apps.googleusercontent.com.apps.googleusercontent.com',
       forceCodeForRefreshToken: true,
     },
   },

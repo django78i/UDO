@@ -1,6 +1,23 @@
 .buttonNextSlide {
   height: 80px;
   border-radius: 20px;
-  --background: #1bac86;
+  --background: #000000;
   --border-radius: 33px;
+  padding: 0 15px;
+  margin-bottom: 10px;
+}
+
+.imgIcon{
+  width: 50px;
+  max-width: 100%;
+  border: 0;
+  border-radius: 50%;
+
+}
+
+.black {
+  background: black;
+}
+.white {
+  background: #f1ecec;
 }

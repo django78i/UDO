@@ -152,6 +152,7 @@ export class AddPostContenuComponent implements OnInit, OnDestroy {
       comment: this.comment,
       postCount: 0,
       reactionsNombre: 0,
+      competitionInfo: detailCompet,
       championnat:
         detailCompet.competitionType == 'Championnat'
           ? detailCompet.competitionId
@@ -216,5 +217,6 @@ export class PostModel {
   postCount: number;
   reactionsNombre: number;
   championnat: string;
+  competitionInfo: any;
   challenge: string;
 }

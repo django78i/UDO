@@ -1,4 +1,4 @@
-<section>
+<section style="padding-bottom: 86px">
   <div style="width: 100%; margin-top: 15px">
     <div class="iconTitle">
       <img
@@ -24,21 +24,33 @@
     button
     (click)="buttonClick()"
     lines="none"
-    style="margin-bottom: 20px; margin-top: 20px"
+    style="
+      width: 90%;
+      margin: 20px auto;
+      box-shadow: 0px 13px 56px #00000029;
+      border-radius: 18px;
+    "
+    class="challengeCreate"
   >
-    <ion-icon
-      name="trophy-outline"
+    <img
+      src="assets/icon/championnatCoupe.svg"
+      alt=""
       style="
+        width: 40px;
+        height: 40px;
         padding: 10px;
         border-radius: 50%;
-        border: 1px solid grey;
+        border: 1px solid #f2f2f4;
         margin-right: 10px;
       "
-    ></ion-icon>
-
+    />
     <ion-label>
-      <p>Nouveau championnat</p>
-      <p>Créez vos propre</p>
+      <p style="font-weight: 800; font-size: 14px; color: black">
+        Nouveau championnat
+      </p>
+      <p style="font-weight: 500; font-size: 10px; color: grey">
+        Créez vos propre championnats
+      </p>
     </ion-label>
   </ion-item>
   <div style="width: 100%">
@@ -81,4 +93,37 @@
       *ngIf="champinonatNetwork"
     ></app-slider-network>
   </div>
+  <ion-item
+    button
+    (click)="openCompetitionList()"
+    lines="none"
+    style="
+      width: 90%;
+      margin: 20px auto;
+      box-shadow: 0px 13px 56px #00000029;
+      border-radius: 18px;
+    "
+    class="challengeCreate"
+  >
+    <img
+      src="assets/icon/Icon feather-search.svg"
+      alt=""
+      style="
+        width: 40px;
+        height: 40px;
+        padding: 10px;
+        border-radius: 50%;
+        border: 1px solid #f2f2f4;
+        margin-right: 10px;
+      "
+    />
+    <ion-label>
+      <p style="font-weight: 800; font-size: 14px; color: black">
+        Explorer toutes les compétitions
+      </p>
+      <p style="font-weight: 500; font-size: 10px; color: grey">
+        Recherchez un championnat selon vos critères
+      </p>
+    </ion-label>
+  </ion-item>
 </section>

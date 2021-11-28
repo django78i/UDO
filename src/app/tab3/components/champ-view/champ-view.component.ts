@@ -1,5 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
+import { ModalController } from '@ionic/angular';
+import { CompetitionsListComponent } from 'src/app/components/competitions-list/competitions-list.component';
 
 @Component({
   selector: 'app-champ-view',
@@ -14,7 +16,7 @@ export class ChampViewComponent implements OnInit {
   @Output() champChoice: EventEmitter<any> = new EventEmitter();
   @Output() createChamp: EventEmitter<any> = new EventEmitter();
 
-  constructor(public router: Router) {}
+  constructor(public router: Router, public modalController : ModalController) {}
 
   ngOnInit() {}
 
@@ -25,5 +27,15 @@ export class ChampViewComponent implements OnInit {
 
   buttonClick() {
     this.createChamp.emit();
+  }
+
+  async openCompetitionList() {
+    const modal = await this.modalController.create({
+      component: CompetitionsListComponent,
+      // componentProps: {
+      //   user: this.user,
+      // },
+    });
+    return await modal.present();
   }
 }

@@ -69,6 +69,7 @@ export class ModalChampComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     console.log(this.user);
     this.participantsList = this.championnat.participants.slice(0, 4);
+    console.log(this.championnat)
     this.userEncours = this.championnat.participants.find(
       (part) => part.uid == this.user.uid
     );

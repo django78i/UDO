@@ -263,16 +263,15 @@ export class CreateChampPopUpComponent
 
   async saveChamp(ev) {
     this.user = await this.userService.getCurrentUser();
-    const user = {
+    const userOne = {
       avatar: this.user.avatar,
       etat: 'prêt',
       userName: this.user.userName,
       niveau: this.user.niveau,
       uid: this.user.uid,
     };
-    this.friendsList.push(user);
+    this.friendsList.push(userOne);
     console.log(this.friendsList);
-    this.friendsList.push(user);
     const champ: Championnat = {
       dateCreation: new Date(),
       dateDemarrage: moment(new Date()).add(7, 'days').toDate(),
@@ -289,7 +288,7 @@ export class CreateChampPopUpComponent
       createur: {
         name: this.user.userName,
         uid: this.user.uid,
-        avatar: user.avatar,
+        avatar: userOne.avatar,
       },
       type: this.seg,
       participants: this.friendsList,

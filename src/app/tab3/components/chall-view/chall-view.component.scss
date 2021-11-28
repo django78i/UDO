@@ -6,6 +6,10 @@
 }
 
 .challengeCreate {
+  --padding-top: 10px;
+  --padding-bottom: 10px;
+  --padding-end: 10px;
+
   &::part(detail-icon) {
     background-color: #f2f2f4;
     --detail-icon-opacity: 1;

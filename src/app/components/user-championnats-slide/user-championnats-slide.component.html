@@ -1,7 +1,8 @@
 <swiper #swiper [config]="config" style="padding-left: 15px">
   <ng-template swiperSlide *ngFor="let champ of championnats; let i = index">
     <ion-card
-      [ngStyle]="{ 'background-image': 'url(' + champ.banniere.url + ')' }"
+      [style.backgroundColor]="champ.banniere.color"
+      style="background-image: url('assets/icon/udoIconFond.svg')"
       (click)="choice(champ)"
     >
       <ion-card-header>
@@ -27,8 +28,11 @@
             alt=""
             *ngIf="champ.type == 'Network'"
           />
-          <img src="../../../assets/icon/FriendsFamilly.svg" alt=""
-          *ngIf="champ.type == 'Friends&Familly'" />
+          <img
+            src="../../../assets/icon/FriendsFamilly.svg"
+            alt=""
+            *ngIf="champ.type == 'Friends&Familly'"
+          />
         </div>
       </ion-card-header>
 
@@ -39,7 +43,9 @@
           </ion-label>
           <div style="display: flex; gap: 5px; flex-direction: column">
             <ion-note>{{ champ.dateFin | timeChamp | uppercase }}</ion-note>
-            <ion-note style="font-size: 12px; color: white; font-weight: 700" *ngIf="userInfo"
+            <ion-note
+              style="font-size: 12px; color: white; font-weight: 700"
+              *ngIf="userInfo"
               >J. {{ champ.userInfo.journeeEnCours }}
               <ion-chip> + {{ userInfo.bonus }} </ion-chip>
             </ion-note>

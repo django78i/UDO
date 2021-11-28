@@ -192,22 +192,22 @@ export class DemarragePage implements OnInit {
   }
   ngOnInit() {
     this.platform.resume.subscribe(async () => {
-     // alert('Resume event detected');
+      // alert('Resume event detected');
       // on recupere l'heure à laquelle l'utilisateur est revenu sur de l'application
       //let pauseInterval= - ;
-      const diff=this.dateDiff(this.pausedTime,Date.now());
-      if(diff){
-        if((this.s+diff.sec)>60){
-          this.s=diff.sec+this.s-60;
-          this.mn=this.mn+1;
-        }else{
-          this.s=diff.sec+this.s;
+      const diff = this.dateDiff(this.pausedTime, Date.now());
+      if (diff) {
+        if (this.s + diff.sec > 60) {
+          this.s = diff.sec + this.s - 60;
+          this.mn = this.mn + 1;
+        } else {
+          this.s = diff.sec + this.s;
         }
-        this.mn=this.mn+diff.min;
+        this.mn = this.mn + diff.min;
       }
     });
     this.platform.pause.subscribe(async () => {
-     // alert('Resume event detected');
+      // alert('Resume event detected');
       // on recupere l'heure à laquelle nous sommes sortit de l'application
       this.pausedTime = Date.now();
     });
@@ -266,20 +266,20 @@ export class DemarragePage implements OnInit {
         fieldname: 'calories',
       },
       {
-        name:'Vitesse',
-        fieldname:'speed',
-        img:'assets/images/speed_m.svg',
-        nombre:'0',
+        name: 'Vitesse',
+        fieldname: 'speed',
+        img: 'assets/images/speed_m.svg',
+        nombre: '0',
         exposant: '',
       },
       {
-        name:'Réactions',
-        fieldname:'reaction',
-        img:'assets/images/reaction_m.svg',
-        nombre:'0',
-        exposant: ''
-      }
-  ];
+        name: 'Réactions',
+        fieldname: 'reaction',
+        img: 'assets/images/reaction_m.svg',
+        nombre: '0',
+        exposant: '',
+      },
+    ];
     const item = JSON.parse(localStorage.getItem('activite'));
     if (item) {
       this.activite = item;
@@ -307,6 +307,10 @@ export class DemarragePage implements OnInit {
       }
       if (detailCompet.challengeMetric) {
         this.sessionNow.challengeMetric = detailCompet.challengeMetric;
+      }
+      if (detailCompet.championnatType) {
+        console.log('metric');
+        this.sessionNow.championnatType = detailCompet.championnatType;
       }
     }
     this.sessionNow.startDate = new Date();
@@ -339,7 +343,6 @@ export class DemarragePage implements OnInit {
         this.sessionNow.userNiveau = this.user.niveau;
         this.sessionNow.postCount = 0;
         this.sessionNow.reactionsNombre = 0;
-
         const sessionNow = { ...this.sessionNow };
         sessionNow['type'] = 'session-now';
         console.log(this.sessionNow);
@@ -381,10 +384,9 @@ export class DemarragePage implements OnInit {
   getMetrics() {
     if (this.status === 'play') {
       for (const item of this.listElement) {
-        if(item.fieldname!=='reaction'){
+        if (item.fieldname !== 'reaction') {
           this.queryMetrics(item.fieldname, item);
         }
-
       }
       const that = this;
       // this.getMetrics();
@@ -398,12 +400,12 @@ export class DemarragePage implements OnInit {
   /**
    *
    */
-  calculAgregated(res){
-    let agregate=0;
-    if(res!==null && res!==undefined){
+  calculAgregated(res) {
+    let agregate = 0;
+    if (res !== null && res !== undefined) {
       // eslint-disable-next-line @typescript-eslint/prefer-for-of
-      for (let i=0;i<res.length; i++ ){
-        agregate=agregate+res[i]?.value;
+      for (let i = 0; i < res.length; i++) {
+        agregate = agregate + res[i]?.value;
       }
     }
     return agregate;
@@ -415,9 +417,8 @@ export class DemarragePage implements OnInit {
    * @param item
    */
   processMetricResult(res, item) {
-
     if (item.fieldname === 'speed') {
-     // const distance = res.length > 0 ? res[res.length - 1]?.value : 0;
+      // const distance = res.length > 0 ? res[res.length - 1]?.value : 0;
       const distance = res.length > 0 ? this.calculAgregated(res) : 0;
 
       if (distance !== 0) {
@@ -437,10 +438,11 @@ export class DemarragePage implements OnInit {
       item.nombre =
         res.length > 0
           ? Math.round(
-          (parseFloat(this.calculAgregated(res).toString()) + Number.EPSILON) * 100
-        ) / 100
+              (parseFloat(this.calculAgregated(res).toString()) +
+                Number.EPSILON) *
+                100
+            ) / 100
           : '0';
-
     }
     if (item.fieldname === 'distance') {
       if (
@@ -472,7 +474,7 @@ export class DemarragePage implements OnInit {
       if (metric === 'speed') {
         option.dataType = 'distance';
       }
-    //  option['bucket'] = 'hour';
+      //  option['bucket'] = 'hour';
       this.health
         .query(option)
         .then((res) => this.processMetricResult(res, item))
@@ -511,15 +513,15 @@ export class DemarragePage implements OnInit {
       'height',
       'weight',
       'speed',
-      'reaction'
+      'reaction',
     ];
     this.sessionNow.isLive = false;
     this.sessionNow.duration = this.mn + ':' + this.s;
     for (const metric of this.listElement) {
       for (const metricAutorised of listMetricAuhorised) {
         if (metric.fieldname === metricAutorised) {
-          if(metric.fieldname==='reaction'){
-            metric.nombre=this.sessionNow.reactions?.length;
+          if (metric.fieldname === 'reaction') {
+            metric.nombre = this.sessionNow.reactions?.length;
           }
           this.sessionNow.metrics.push(metric);
         }
@@ -532,7 +534,7 @@ export class DemarragePage implements OnInit {
       new Date().toISOString().split('T')[1].split('.')[0];
     localStorage.setItem('counter', JSON.stringify({ mn: this.mn, s: this.s }));
     localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
-    localStorage.setItem('choix', JSON.stringify( this.sessionNow.metrics));
+    localStorage.setItem('choix', JSON.stringify(this.sessionNow.metrics));
     // redirection vers le composant qui affiche le recapitulatif
     this.router.navigate(['session-now/resultat']);
   }
@@ -724,7 +726,7 @@ console.log(1);
     modal.onDidDismiss().then((data: any) => {
       if (data.data) {
         let value = data.data;
-        for (let i=0; i<4; i++) {
+        for (let i = 0; i < 4; i++) {
           if (this.listElement[i].name === value.name) {
             this.showMessage(
               'Cette activité est déjà dans la liste',
@@ -733,12 +735,12 @@ console.log(1);
             return;
           }
         }
-        console.log("value",value);
-        const temp= {...this.listElement[index]};
-        for(let itemMetric of this.listElement){
-          if(itemMetric.name===value.name){
-            this.listElement[index]=itemMetric;
-            itemMetric=temp;
+        console.log('value', value);
+        const temp = { ...this.listElement[index] };
+        for (let itemMetric of this.listElement) {
+          if (itemMetric.name === value.name) {
+            this.listElement[index] = itemMetric;
+            itemMetric = temp;
           }
         }
         localStorage.setItem('choix', JSON.stringify(this.listElement));
@@ -773,20 +775,20 @@ console.log(1);
       }
     });
   }
-  dateDiff(date1, date2){
-    let diff = {sec:0,min:0,hour:0,day:0}    ;                       // Initialisation du retour
+  dateDiff(date1, date2) {
+    let diff = { sec: 0, min: 0, hour: 0, day: 0 }; // Initialisation du retour
     let tmp = date2 - date1;
 
-    tmp = Math.floor(tmp/1000);             // Nombre de secondes entre les 2 dates
-    diff.sec = tmp % 60;                    // Extraction du nombre de secondes
+    tmp = Math.floor(tmp / 1000); // Nombre de secondes entre les 2 dates
+    diff.sec = tmp % 60; // Extraction du nombre de secondes
 
-    tmp = Math.floor((tmp-diff.sec)/60);    // Nombre de minutes (partie entière)
-    diff.min = tmp % 60;                    // Extraction du nombre de minutes
+    tmp = Math.floor((tmp - diff.sec) / 60); // Nombre de minutes (partie entière)
+    diff.min = tmp % 60; // Extraction du nombre de minutes
 
-    tmp = Math.floor((tmp-diff.min)/60);    // Nombre d'heures (entières)
-    diff.hour = tmp % 24;                   // Extraction du nombre d'heures
+    tmp = Math.floor((tmp - diff.min) / 60); // Nombre d'heures (entières)
+    diff.hour = tmp % 24; // Extraction du nombre d'heures
 
-    tmp = Math.floor((tmp-diff.hour)/24);   // Nombre de jours restants
+    tmp = Math.floor((tmp - diff.hour) / 24); // Nombre de jours restants
     diff.day = tmp;
 
     return diff;
@@ -820,6 +822,7 @@ export class SessionNowModel {
   postCount: 0;
   reactionsNombre: 0;
   type: string;
+  championnatType: string;
 }
 export class PostModel {
   postedAt: string;

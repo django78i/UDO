@@ -1,14 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ModalController, Platform } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user-service.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-publication',
   templateUrl: './publication.page.html',
   styleUrls: ['./publication.page.scss'],
 })
-export class PublicationPage implements OnInit {
+export class PublicationPage implements OnInit, OnDestroy {
   /* listActivite = [{ name: 'Corps haut', value: '20', image: 'assets/images/corps-haut.svg' },
   { name: 'Corps bas', value: '100', image: 'assets/images/corps-bas.svg' },
   { name: 'Cardio', value: '20', image: 'assets/images/cardio.svg' },
@@ -21,15 +22,25 @@ export class PublicationPage implements OnInit {
   demarrage = '';
   modeRow = '';
   valeur = 0;
+  subscription: Subscription;
+  max: number;
+  user: any;
+  xpMax: number = 0;
+  newxp: number;
+  xpNewOnTotal: number;
+  xpUserOnTotal: number;
   constructor(
     private router: Router,
     private platform: Platform,
     public userService: UserService
   ) {
-    this.platform.backButton.subscribeWithPriority(10, () => {
-      console.log('Handler was called!');
-      // this.presentAlertConfirm();
-    });
+    this.subscription = this.platform.backButton.subscribeWithPriority(
+      10,
+      () => {
+        console.log('Handler was called!');
+        // this.presentAlertConfirm();
+      }
+    );
     setInterval(() => {
       if (localStorage.getItem('mode')) {
         if (localStorage.getItem('mode') === 'landscape') {
@@ -87,25 +98,45 @@ export class PublicationPage implements OnInit {
     }
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.userService.getCurrentUser().then((user) => {
+      this.user = user;
+      this.max = this.user.niveau * 100;
+      console.log(this.user.exp + this.valeur);
+      if (this.user.exp >= this.max) {
+        this.user.niveau += 1;
+      } else if (this.user.exp + this.valeur >= this.max) {
+        this.user.niveau += 1;
+      }
+      this.max = this.user.niveau * 100;
+      console.log(this.max);
 
-  async fermer() {
-    const user = await this.userService.getCurrentUser();
-    let xpMax = 0;
-    user.metrics.forEach((metrics, i) => {
-      console.log(metrics.value, this.listActivite[i].value);
-      const metricFormat = (metrics.value =
-        metrics.value + Number(this.listActivite[i].value));
-      xpMax += Number(this.listActivite[i].value);
-      return { ...metrics, value: metricFormat };
+      this.user.metrics.forEach((metrics, i) => {
+        const metricFormat = (metrics.value =
+          metrics.value + Number(this.listActivite[i].value));
+        this.xpMax += Number(this.listActivite[i].value);
+        return { ...metrics, value: metricFormat };
+      });
+      console.log(this.xpMax, this.user.exp);
+      this.newxp = this.user.exp + this.xpMax;
+      this.xpUserOnTotal = this.user.exp / this.max;
+      this.user.exp += this.xpMax;
+      console.log(this.user);
+      this.xpNewOnTotal = this.newxp / this.max;
+      this.updateUser();
     });
-    console.log(xpMax, user.exp);
-    user.exp += xpMax;
-    console.log(user);
-    this.userService.updateUser(user);
-    console.log(JSON.parse(localStorage.getItem('sessionNow')));
-    if (JSON.parse(localStorage.getItem('sessionNow')).championnat) {
-    }
+  }
+
+  updateUser() {
+    console.log(this.user);
+    this.userService.updateUser(this.user);
+  }
+
+  fermer() {
     this.router.navigate(['tabs']);
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }

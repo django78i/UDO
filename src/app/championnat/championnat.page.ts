@@ -1,8 +1,4 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationExtras } from '@angular/router';
 import {
   AlertController,
@@ -10,8 +6,11 @@ import {
   NavController,
 } from '@ionic/angular';
 import moment from 'moment';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { ChampionnatsService } from 'src/app/services/championnats.service';
 import { UserService } from 'src/app/services/user-service.service';
+import { FriendPageListComponent } from '../components/friend-page-list/friend-page-list.component';
 
 interface ChampionnatNav {
   type: string;
@@ -54,6 +53,7 @@ export class ChampionnatPage implements OnInit {
   championnat: any;
   user: any;
   loading = false;
+  championnat$: Observable<any>;
   constructor(
     private modalCtrl: ModalController,
     public alertController: AlertController,
@@ -69,14 +69,16 @@ export class ChampionnatPage implements OnInit {
       this.user = user;
       const uid = this.route.snapshot.params['id'];
       this.champService.getChampionnat(uid);
-      this.champService.singleChampSub$.subscribe((champ) => {
-        console.log(champ);
-        this.championnat = champ;
-        this.participantsList = this.championnat.participants.slice(0, 4);
-        this.userEncours = this.championnat.participants.find(
-          (part) => part.uid == this.user.uid
-        );
-      });
+      this.championnat$ = this.champService.singleChampSub$.pipe(
+        tap((champ) => {
+          console.log(champ);
+          this.championnat = champ;
+          this.participantsList = this.championnat.participants.slice(0, 4);
+          this.userEncours = this.championnat.participants.find(
+            (part) => part.uid == this.user.uid
+          );
+        })
+      );
     });
   }
 
@@ -169,7 +171,7 @@ export class ChampionnatPage implements OnInit {
     });
     this.loading = false;
 
-    this.ref.detectChanges();
+    this.champService.getChampionnat(this.championnat.uid);
     console.log(final);
   }
 
@@ -178,6 +180,7 @@ export class ChampionnatPage implements OnInit {
 
     const champInfo: NavigationExtras = {
       queryParams: {
+        championnatType : this.championnat.type,
         type: 'Championnat',
         competitionName: this.championnat.name,
         competitionId: this.championnat.uid,
@@ -186,4 +189,20 @@ export class ChampionnatPage implements OnInit {
     this.navCtl.navigateForward('session-now', champInfo);
   }
 
+  async addFriend() {
+    console.log(this.championnat);
+    const modal = await this.modalCtrl.create({
+      component: FriendPageListComponent,
+      componentProps: {
+        user: this.user,
+        competition: this.championnat,
+      },
+    });
+    modal.onDidDismiss().then((data: any) => {
+      this.champService.getChampionnat(this.championnat.uid);
+    });
+
+    this.champService.getChampionnat(this.championnat.uid);
+    return await modal.present();
+  }
 }

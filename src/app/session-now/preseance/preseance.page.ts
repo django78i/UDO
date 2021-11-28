@@ -1,5 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { IonSlides, ModalController, NavController } from '@ionic/angular';
+import {
+  IonSlides,
+  ModalController,
+  NavController,
+  NavParams,
+} from '@ionic/angular';
 import { ReglagesPage } from '../reglages/reglages.page';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ActivitiesPage } from '../activities/activities.page';
@@ -37,6 +42,7 @@ export class PreseancePage implements OnInit {
   categoryName: string;
   challengeStatus: number;
   challengeUnity: string;
+  championnatType: string;
 
   //...
 
@@ -91,8 +97,13 @@ export class PreseancePage implements OnInit {
         console.log('metric');
         this.challengeUnity = params.challengeMetric;
       }
+      if (params.championnatType) {
+        console.log('metric');
+        this.championnatType = params.championnatType;
+      }
     });
     const detailCompet = {
+      championnatType: this.championnatType,
       competitionType: this.type,
       competitionName: this.categoryName,
       competitionId: this.categoryId,

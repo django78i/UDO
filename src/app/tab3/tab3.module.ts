@@ -37,6 +37,8 @@ import { ChallViewComponent } from './components/chall-view/chall-view.component
 import { BigChallSliderComponent } from '../components/big-chall-slider/big-chall-slider.component';
 import { CreateChallPopUpComponent } from './components/create-chall-pop-up/create-chall-pop-up.component';
 import { SessionNowService } from '../services/session-now-service.service';
+import { HeaderComponent } from '../components/header/header.component';
+import { CompetitionsListComponent } from '../components/competitions-list/competitions-list.component';
 
 @NgModule({
   imports: [
@@ -80,8 +82,9 @@ import { SessionNowService } from '../services/session-now-service.service';
     ChallViewComponent,
     BigChallSliderComponent,
     CreateChallPopUpComponent,
-    AddContenuComponent
-    // AddContenuComponent,
+    AddContenuComponent,
+    HeaderComponent,
+    CompetitionsListComponent
   ],
 })
 export class Tab3PageModule {}

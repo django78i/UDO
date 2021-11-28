@@ -56,3 +56,54 @@ ion-avatar {
     background-color: #2b2d2f;
   }
 }
+
+.progress {
+  ion-progress-bar.one {
+    width: 90%;
+    --progress-background: #eaebef 0% 0% no-repeat padding-box;
+    height: 35px;
+    margin: auto;
+    border-radius: 20px;
+    --background: #46464626;
+  }
+  ion-progress-bar.two {
+    width: 90%;
+    --progress-background: #3e4add 0% 0% no-repeat padding-box;
+    height: 35px;
+    margin: auto;
+    border-radius: 20px;
+    --background: #46464626;
+  }
+}
+
+.xp {
+  position: absolute;
+  right: 34px;
+  letter-spacing: -0.12px;
+  color: #040405;
+  opacity: 0.35;
+  font-size: 12px;
+  font-family: "PoppinsSemiBold" !important;
+  margin-top: 10px;
+}
+
+.rond-progress {
+  width: 28px;
+  height: 28px;
+  background: #f5f7fd 0% 0% no-repeat padding-box;
+  box-shadow: 0px 4px 26px #1415174e;
+  border-radius: 50%;
+  position: absolute;
+  left: 24px;
+  margin-top: 3px;
+  padding: 0px 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .valeur {
+    letter-spacing: 0px;
+    color: #18181c;
+    font-family: "PoppinsBold" !important;
+    font-size: 12px;
+  }
+}

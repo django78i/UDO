@@ -6,10 +6,12 @@ video {
   border-radius: 20px;
 }
 
-// ion-content {
-//   --padding-start: 15px;
-//   --padding-end: 15px;
-// }
+ion-col {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
 
 ion-card-header {
   padding: 0;

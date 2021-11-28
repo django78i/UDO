@@ -20,11 +20,67 @@
     "icon": "../assets/emojis/Claps.png"
   },
   {
-    "nom": "festive",
+    "nom": "Festive",
     "icon": "../assets/emojis/Festive.png"
   },
   {
-    "nom": "happy",
+    "nom": "Happy",
     "icon": "../assets/emojis/Happy.png"
+  },
+  {
+    "nom": "Energy Pills",
+    "icon": "../assets/emojis/EnergyPills.png"
+  },
+  {
+    "nom": "Cool",
+    "icon": "../assets/emojis/Cool.png"
+  },
+  {
+    "nom": "Crying Out Loud",
+    "icon": "../assets/emojis/CryingWithLaughter.png"
+  },
+  {
+    "nom": "Heart Eyes",
+    "icon": "../assets/emojis/HeartEyes.png"
+  },
+  {
+    "nom": "Horns",
+    "icon": "../assets/emojis/Horns.png"
+  },
+  {
+    "nom": "Like",
+    "icon": "../assets/emojis/Like.png"
+  },
+  {
+    "nom": "Raised Fist",
+    "icon": "../assets/emojis/RaisedFist.png"
+  },
+  {
+    "nom": "Sad",
+    "icon": "../assets/emojis/Sad.png"
+  },
+  {
+    "nom": "Selfie",
+    "icon": "../assets/emojis/Selfie.png"
+  },
+  {
+    "nom": "Star Eyes",
+    "icon": "../assets/emojis/StarEyes.png"
+  },
+  {
+    "nom": "Sweat",
+    "icon": "../assets/emojis/SweatGrinning.png"
+  },
+  {
+    "nom": "Unamused",
+    "icon": "../assets/emojis/Unamused.png"
+  },
+  {
+    "nom": "Surprised",
+    "icon": "../assets/emojis/Surprised.png"
+  },
+  {
+    "nom": "Wink",
+    "icon": "../assets/emojis/Wink.png"
   }
 ]

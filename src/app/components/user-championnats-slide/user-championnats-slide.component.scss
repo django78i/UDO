@@ -1,84 +1,87 @@
 * {
-    padding: 0;
+  padding: 0;
 }
 
 swiper ion-card {
-    width: 100%;
-    height: 170px;
-    border-radius: 30px;
-    display: flex;
-    margin: 0;
-    flex-direction: column;
-    justify-content: space-between;
-    background-size: cover;
-    background-position: center;
-    .cardSlide {
-        display: flex;
-        gap: 7px;
-    }
-    ion-label {
-        color: white;
-        font-size: 24px;
-        font-weight: 900;
-    }
-    ion-note {
-        color: white;
-        font-size: 9px;
-        font-weight: 700;
-    }
-    ion-card-header {
-        padding: 20px;
-        display: flex;
-        justify-content: space-between;
-        ion-note::before {
-            content: "créé par ";
-            font-weight: 400;
-        }
-        img {
-            height: 13px;
-            width: 24px;
-        }
-        .typeLogo {
-            background-color: white;
-            height: 25px;
-            width: 25px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 50%;
-        }
-    }
+  width: 100%;
+  height: 170px;
+  border-radius: 30px;
+  display: flex;
+  margin: 0;
+  flex-direction: column;
+  justify-content: space-between;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 50%;
 
-    ion-card-content {
-        padding-right: 10px;
-        ion-label{
-            font-size: 40px;
-        }
-        ion-label::after {
-            content: "POINTS";
-            position: absolute;
-            font-size: 12px;
-            top: 16px;
-            margin-left: 5px;
-        }
+  .cardSlide {
+    display: flex;
+    gap: 7px;
+  }
+  ion-label {
+    color: white;
+    font-size: 24px;
+    font-weight: 900;
+  }
+  ion-note {
+    color: white;
+    font-size: 9px;
+    font-weight: 700;
+  }
+  ion-card-header {
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    ion-note::before {
+      content: "créé par ";
+      font-weight: 400;
     }
+    img {
+      height: 13px;
+      width: 24px;
+    }
+    .typeLogo {
+      background-color: white;
+      height: 25px;
+      width: 25px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
+    }
+  }
+
+  ion-card-content {
+    padding-right: 10px;
+    ion-label {
+      font-size: 40px;
+    }
+    ion-label::after {
+      content: "POINTS";
+      position: absolute;
+      font-size: 12px;
+      top: 16px;
+      margin-left: 5px;
+    }
+  }
 }
 
 ion-chip {
-    --color: black;
-    --background: white;
-    padding: 5px 7px 5px 5px;
-    border-radius: 20px;
-    height: 16px;
-    font-size: 8px;
-    font-weight: 900;
+  --color: black;
+  --background: white;
+  padding: 5px 7px 5px 5px;
+  border-radius: 20px;
+  height: 16px;
+  font-size: 8px;
+  font-weight: 900;
 }
 
 .iconTitle {
-    display: flex;
-    gap: 5px;
-    align-items: center;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    padding-left: 15px;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding-left: 15px;
 }

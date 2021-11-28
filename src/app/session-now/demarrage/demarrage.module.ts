@@ -21,6 +21,7 @@ import 'firebase/storage';
 import { ShowNotificationPage } from '../show-notification/show-notification.page';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { Camera } from '@ionic-native/camera/ngx';
+import { AddPostContenuComponent } from '../add-post-contenu/add-post-contenu.component';
 
 @NgModule({
   imports: [
@@ -37,6 +38,7 @@ import { Camera } from '@ionic-native/camera/ngx';
     AidePage,
     ReglagesPage,
     ShowNotificationPage,
+    AddPostContenuComponent
   ],
   providers: [
     Camera,

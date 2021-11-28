@@ -17,20 +17,18 @@
     </ion-buttons>
   </ion-toolbar>
   <ion-card
-    *ngIf="championnat"
-    [ngStyle]="{ 'background-image': 'url(' + championnat?.banniere.url + ')' }"
+    *ngIf="championnat$|async as champ"
+    [ngStyle]="{ 'background-image': 'url(' + champ?.banniere.url + ')' }"
     [ngClass]="{ notActive: segmentValue != 'resume' }"
   >
     <ion-card-header [ngClass]="{ notActiveContent: segmentValue != 'resume' }">
-      <ion-card-subtitle *ngIf="championnat?.status == 'en cours'">
-        {{ championnat?.dateFin | timeChamp }}
+      <ion-card-subtitle *ngIf="champ?.status == 'en cours'">
+        {{ champ?.dateFin | timeChamp }}
       </ion-card-subtitle>
-      <ion-card-subtitle *ngIf="championnat?.status == 'en attente'">
-        {{ championnat?.dateDemarrage | timeChamp }}
+      <ion-card-subtitle *ngIf="champ?.status == 'en attente'">
+        {{ champ?.dateDemarrage | timeChamp }}
       </ion-card-subtitle>
-      <ion-card-title style="color: white"
-        >{{ championnat?.name }}</ion-card-title
-      >
+      <ion-card-title style="color: white">{{ champ?.name }}</ion-card-title>
     </ion-card-header>
 
     <ion-card-content>
@@ -41,9 +39,12 @@
             <ion-badge *ngIf="user">{{ user.niveau }}</ion-badge>
           </ion-avatar>
         </ng-container>
-        <div class="champCarousel">
+        <div
+          class="champCarousel"
+          *ngIf="champ?.participants.length - participantsList?.length !=0"
+        >
           <p style="font-size: 20px">
-            + {{ championnat?.nbParticipants - participantsList?.length }}
+            + {{ champ?.participants.length - participantsList?.length }}
           </p>
         </div>
       </div>
@@ -65,98 +66,103 @@
     </ion-segment-button>
   </ion-segment>
 </ion-header>
-<ion-content scrollY="false" *ngIf="championnat && user">
-  <app-classement
-    *ngIf="segmentValue == 'participants'"
-    [champ]="championnat"
-    [user]="user"
-  ></app-classement>
-  <app-feeds
-    *ngIf="segmentValue == 'feed'"
-    [user]="user"
-    [championnat]="championnat"
-  ></app-feeds>
-  <app-resume
-    *ngIf="segmentValue == 'resume'"
-    [champ]="championnat"
-  ></app-resume>
+<ion-content scrollY="false">
+  <ng-container *ngIf="championnat$|async as championnat">
+    <app-classement
+      *ngIf="segmentValue == 'participants'"
+      [championnat]="championnat"
+      [user]="user"
+    ></app-classement>
+    <app-feeds
+      *ngIf="segmentValue == 'feed'"
+      [user]="user"
+      [championnat]="championnat"
+    ></app-feeds>
+    <app-resume
+      *ngIf="segmentValue == 'resume' "
+      [championnat]="championnat"
+    ></app-resume>
 
-  <ion-fab
-    vertical="bottom"
-    horizontal="start"
-    slot="fixed"
-    style="--ion-safe-area-left: 40px; width: 60% !important"
-  >
-    <ion-button
-      expand="block"
-      class="buttonNextSlide"
-      style=" --i : {{championnat.banniere.color}}"
-      (click)="startChamp()"
-      *ngIf="
+    <ion-fab
+      vertical="bottom"
+      horizontal="start"
+      slot="fixed"
+      style="--ion-safe-area-left: 40px; width: 60% !important"
+    >
+      <ion-button
+        expand="block"
+        class="buttonNextSlide"
+        style=" --i : {{championnat.banniere.color}}"
+        (click)="startChamp()"
+        *ngIf="
         championnat.status == 'en attente' &&
         championnat.createur.uid == user.uid
       "
-      >{{loading? '':'Démarrer'}}<ion-spinner
-        *ngIf="loading"
-        name="crescent"
-        mode="md"
-      ></ion-spinner
-    ></ion-button>
-    <ion-button
-      expand="block"
-      class="buttonNextSlide"
-      style=" --i : {{championnat.banniere.color}}"
-      (click)="participer()"
-      *ngIf="
+        >{{loading? '':'Démarrer'}}<ion-spinner
+          *ngIf="loading"
+          name="crescent"
+          mode="md"
+        ></ion-spinner
+      ></ion-button>
+      <ion-button
+        expand="block"
+        class="buttonNextSlide"
+        style=" --i : {{championnat.banniere.color}}"
+        (click)="participer()"
+        *ngIf="
         championnat?.status == 'en attente' && userEncours?.etat == 'en attente'
       "
-      >Participer</ion-button
-    >
-    <ion-button
-      expand="block"
-      class="buttonNextSlide"
-      style=" --i : {{championnat.banniere.color}}"
-      *ngIf="
+        >Participer</ion-button
+      >
+      <ion-button
+        expand="block"
+        class="buttonNextSlide"
+        style=" --i : {{championnat.banniere.color}}"
+        *ngIf="
         championnat?.status == 'en attente' &&
         userEncours?.etat == 'prêt' &&
         championnat?.createur.uid != user.uid
       "
-      ><span *ngIf="!loading">
-        {{championnat.dateDemarrage | timeChamp}}</span
-      ></ion-button
-    ><ion-spinner *ngIf="loading" name="crescent" mode="md"></ion-spinner>
-    <ion-button
-      expand="block"
-      style=" --i : {{championnat.banniere.color}}"
-      (click)="seanceNow()"
-      *ngIf="championnat?.status == 'en cours'"
-      class="buttonNextSlide"
-      >Séance Now</ion-button
-    >
-  </ion-fab>
-  <ion-fab
-    vertical="bottom"
-    horizontal="end"
-    slot="fixed"
-    *ngIf="championnat?.createur.uid == user.uid &&championnat?.status == 'en attente' "
-  >
-    <ion-fab-button color="dark">
-      <ion-icon name="add"></ion-icon>
-    </ion-fab-button>
-    <ion-fab-list side="top">
-      <ion-fab-button color="primary" (click)="addFriend()" *ngIf="!friendBool">
-        <img src="assets/icon/friends-white.svg" alt="" />
-      </ion-fab-button>
-      <ion-fab-button
-        color="warning"
-        (click)="removeFriend()"
-        *ngIf="friendBool"
+        ><span *ngIf="!loading">
+          {{championnat.dateDemarrage | timeChamp}}</span
+        ></ion-button
+      ><ion-spinner *ngIf="loading" name="crescent" mode="md"></ion-spinner>
+      <ion-button
+        expand="block"
+        style=" --i : {{championnat.banniere.color}}"
+        (click)="seanceNow()"
+        *ngIf="championnat?.status == 'en cours'"
+        class="buttonNextSlide"
+        >Séance Now</ion-button
       >
-        <img src="assets/icon/friends-white.svg" alt="" />
+    </ion-fab>
+    <ion-fab
+      vertical="bottom"
+      horizontal="end"
+      slot="fixed"
+      *ngIf="championnat?.createur.uid == user.uid &&championnat?.status == 'en attente' "
+    >
+      <ion-fab-button color="dark">
+        <ion-icon name="add"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button color="success" (click)="chat()">
-        <img src="assets/icon/chat_white.svg" alt="" />
-      </ion-fab-button>
-    </ion-fab-list>
-  </ion-fab>
-</ion-content>
+      <ion-fab-list side="top">
+        <ion-fab-button
+          color="primary"
+          (click)="addFriend()"
+          *ngIf="!friendBool"
+        >
+          <img src="assets/icon/friends-white.svg" alt="" />
+        </ion-fab-button>
+        <ion-fab-button
+          color="warning"
+          (click)="removeFriend()"
+          *ngIf="friendBool"
+        >
+          <img src="assets/icon/friends-white.svg" alt="" />
+        </ion-fab-button>
+        <ion-fab-button color="success" (click)="chat()">
+          <img src="assets/icon/chat_white.svg" alt="" />
+        </ion-fab-button>
+      </ion-fab-list>
+    </ion-fab> </ng-container
+></ion-content>

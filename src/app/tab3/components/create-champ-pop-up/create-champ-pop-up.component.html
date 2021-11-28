@@ -18,7 +18,10 @@
           </ion-button>
         </ion-toolbar>
 
-        <ion-card [ngStyle]="{ 'background-image': 'url(' + ban.url + ')' }">
+        <ion-card
+          [style.backgroundColor]="ban.color"
+          style="background-image: url('assets/icon/udoIconFond.svg')"
+        >
           <ion-card-header>
             <ion-card-subtitle> DEMARRAGE MANUEL </ion-card-subtitle>
             <ion-card-title style="color: white">{{ title }}</ion-card-title>
@@ -291,6 +294,7 @@
             *ngIf="sliderPage == 'amis'"
             (friendList)="chooseFriends($event)"
             (backAction)="backSlide($event)"
+            [boutton]="'Démarrer'"
           ></app-friends-list>
         </div>
       </div>

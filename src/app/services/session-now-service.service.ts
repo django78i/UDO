@@ -23,16 +23,9 @@ import {
   where,
   QuerySnapshot,
 } from 'firebase/firestore';
-import {
-  getAuth,
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  signInWithCredential,
-  GoogleAuthProvider,
-  signInWithPopup,
-} from 'firebase/auth';
+import { getAuth } from 'firebase/auth';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
-import { userError } from '@angular/compiler-cli/src/transformers/util';
+import { MusicFeedService } from './music-feed.service';
 
 @Injectable({
   providedIn: 'root',
@@ -46,7 +39,8 @@ export class SessionNowService {
     public alertController: AlertController,
     private loadingCtrl: LoadingController,
     private toastCtrl: ToastController,
-    private http: HttpClient
+    private http: HttpClient,
+    public mFeed: MusicFeedService
   ) {}
 
   async create(document, collectionName) {
@@ -67,6 +61,7 @@ export class SessionNowService {
 
   async controlLive(uid) {
     console.log('control');
+    this.presentLoading();
     //récupération des posts de l'utilisateur
     const postList = await this.getSessionNow(uid);
     if (postList) {
@@ -83,9 +78,11 @@ export class SessionNowService {
             //update status du post
             this.updatePostLies(postData);
           }
+          this.mFeed.feedFilter('Récent');
         }
       });
     }
+    this.dissmissLoading();
   }
 
   async updatePostSeanceNow(post) {
@@ -208,7 +205,7 @@ export class SessionNowService {
   updateCompetition(sessionNow) {
     console.log(sessionNow);
     this.user = JSON.parse(localStorage.getItem('user'));
-
+    console.log(sessionNow);
     if (sessionNow.competitionType === 'Séance Libre') {
       // cas seance libre
     } else if (sessionNow.competitionType === 'Championnat') {
@@ -216,10 +213,45 @@ export class SessionNowService {
       this.updateChampionnat(this.user.uid, sessionNow);
     } else if (sessionNow.competitionType === 'Challenge') {
       // TODO: cas Challenge
+      this.updateChallenge(this.user.uid, sessionNow);
     }
   }
 
-  async updateChallenge(userId, sessionNow) {}
+  async updateChallenge(userId, sessionNow) {
+    const db = getFirestore();
+    const queryPost = query(
+      collection(db, 'challenges'),
+      where('uid', '==', sessionNow.competitionId)
+    );
+    const document = await getDocs(queryPost);
+    console.log(sessionNow.metrics);
+    document.forEach((doc1) => {
+      if (doc1 && doc1.data() && doc1.data().participants) {
+        let challenge = doc1.data();
+
+        //recherche user en cours
+        const ind = challenge.participants.findIndex(
+          (part) => (part.uid = userId)
+        );
+        //on ajoute 1 seance au participant
+        challenge.participants[ind].seance =
+          challenge.participants[ind].seance != 0
+            ? challenge.participants[ind].seance + 1
+            : 1;
+        //recherche de la métrique à incrémenter
+        const metricValue = sessionNow.metrics.find(
+          (sess) => challenge.metric.metric == sess.exposant
+        );
+
+        //on incémente l'avancé du participant
+        challenge.participants[ind].value += metricValue.nombre;
+        //on ajoute incémente l'avancé du challenge
+        challenge.completion.value += metricValue.nombre;
+        //MAJ du challenge
+        updateDoc(doc(db, 'challenges', sessionNow.competitionId), challenge);
+      }
+    });
+  }
 
   async updateChampionnat(userId, sessionNow) {
     const db = getFirestore();
@@ -233,8 +265,8 @@ export class SessionNowService {
       if (doc1 && doc1.data() && doc1.data().participants) {
         let championnat = doc1.data();
         //Calcul journée en cours
-        const journeeEnCours = Number(
-          championnat.semaineEnCours + championnat.seanceByWeek
+        const journeeEnChamp = Number(
+          championnat.semaineEnCours * championnat.seanceByWeek
         );
         let participants = doc1.data().participants;
         //recherche du user parmis les participants
@@ -242,13 +274,17 @@ export class SessionNowService {
         //on ajoute 3 points au participants
         participants[ind].points =
           participants[ind].points != 0 ? participants[ind].points + 3 : 3;
-        // on incrémente la journee,
-        participants[ind].journeeEnCours = participants[ind].journeeEnCours = !0
-          ? participants[ind].journeeEnCours + 1
-          : 1;
         //La séance du user est une séance bonus
-        if (participants[ind].journeeEnCours > journeeEnCours) {
+        const journey = Number(
+          participants[ind].journeeEnCours + participants[ind].bonus
+        );
+        if (journey >= journeeEnChamp) {
+          console.log('==');
           participants[ind].bonus += 1;
+        } else {
+          // on incrémente la journee,
+          participants[ind].journeeEnCours = participants[ind].journeeEnCours =
+            !0 ? participants[ind].journeeEnCours + 1 : 1;
         }
         const champ = { ...doc1.data(), participants: participants };
         console.log(champ);

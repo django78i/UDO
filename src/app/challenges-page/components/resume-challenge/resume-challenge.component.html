@@ -22,7 +22,7 @@
       <ion-title>
         <ion-item lines="none">
           <ion-label class="titre">
-            {{ userEncours.value
+            {{ userEncours.value | number: "1.1-1"
             }}<span style="font-weight: 500; color: #c5c6ce">/</span
             ><span style="color: #c5c6ce">{{ challenge?.objectifs }}</span>
           </ion-label>

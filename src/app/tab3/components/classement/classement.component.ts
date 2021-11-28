@@ -1,4 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+} from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import * as _ from 'lodash';
 import { UserProfilComponent } from 'src/app/components/user-profil/user-profil.component';
@@ -8,17 +14,33 @@ import { UserProfilComponent } from 'src/app/components/user-profil/user-profil.
   templateUrl: './classement.component.html',
   styleUrls: ['./classement.component.scss'],
 })
-export class ClassementComponent implements OnInit {
-  @Input() challenge: any;
+export class ClassementComponent implements OnInit, OnChanges {
+  @Input() championnat: any;
   @Input() user: any;
 
   classement: any[];
 
-  constructor(public modalController: ModalController) {}
+  constructor(
+    public modalController: ModalController,
+    public ref: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
-    console.log(this.challenge);
-    this.classement = _.orderBy(this.challenge.participants, ['points'], ['desc']);
+    console.log(this.championnat);
+    this.classement = _.orderBy(
+      this.championnat.participants,
+      ['points'],
+      ['desc']
+    );
+    console.log(this.classement);
+    this.ref.detectChanges();
+  }
+  ngOnChanges() {
+    this.classement = _.orderBy(
+      this.championnat.participants,
+      ['points'],
+      ['desc']
+    );
   }
 
   async openProfil(contact) {

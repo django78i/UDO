@@ -39,21 +39,17 @@
           >
         </div>
       </ion-card-title>
-
-      <!-- <ion-avatar>
-        <img [src]="challenge.icon" alt="" />
-      </ion-avatar>
-      <ion-card-title style="color: white">{{ challenge.name }}</ion-card-title> -->
     </ion-card-header>
 
     <ion-card-content>
       <ion-item style="--background: transparent" lines="none">
         <ion-label slot="start">
-          {{ challenge.completion.value }} %
-          <!-- <img src="../../assets/icon/Icon feather-percent.svg" alt="" /> -->
+          {{ (challenge.completion.value / challenge.objectifs) * 100 | number:'1.1-2'
+          }} %
         </ion-label>
         <ion-label style="font-size: 14px; text-align: end"
-          >0/{{ challenge.objectifs }} {{ challenge.metric.metric }}</ion-label
+          >{{challenge.completion.value | number:'1.1-1'}}/{{ challenge.objectifs }} {{
+          challenge.metric.metric }}</ion-label
         >
       </ion-item>
       <ion-progress-bar
