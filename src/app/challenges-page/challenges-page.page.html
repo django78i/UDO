@@ -76,8 +76,8 @@
 </ion-header>
 <ion-content scrollY="false">
   <app-resume-challenge
+  [user]="user"
     [challenge]="challenge"
-    [userEncours]="userEncours"
     *ngIf="challenge && segmentValue == 'resume'"
   ></app-resume-challenge>
   <app-classement-challenge

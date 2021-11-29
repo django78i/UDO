@@ -1,7 +1,7 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'fr.udo.health.blueprint',
+  appId: 'com.UDO.app',
   appName: 'UDO',
   webDir: 'www',
   bundledWebRuntime: false,

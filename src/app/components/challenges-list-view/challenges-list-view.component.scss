@@ -11,7 +11,7 @@ swiper {
   height: 100%;
 }
 
-swiper ion-card {
+ ion-card {
   width: 100%;
   height: 170px;
   border-radius: 30px;
@@ -23,6 +23,7 @@ swiper ion-card {
   background-position: center;
   background-repeat: no-repeat;
   background-size: 50%;
+  margin-bottom: 20px;
   .cardSlide {
     display: flex;
     gap: 7px;

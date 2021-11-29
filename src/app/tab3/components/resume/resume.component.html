@@ -1,4 +1,4 @@
-<section style="overflow: auto; height: 100%" *ngIf="championnat ">
+<section style="overflow: auto; height: 100%" *ngIf="championnat">
   <section *ngIf="championnat?.status == 'en cours'" class="contentTotal">
     <div class="iconTitle">
       <img
@@ -12,7 +12,7 @@
       />
       <h4 style="font-weight: 900; margin: 0">VOS INFORMATIONS</h4>
     </div>
-    <ion-toolbar class="barStat">
+    <ion-toolbar class="barStat" *ngIf="userInfo">
       <ion-item slot="start" lines="none" class="itemLeft">
         <ion-label class="titre">
           {{ championnat?.semaineEnCours }}
