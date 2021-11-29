@@ -14,6 +14,7 @@ import {
   updateDoc,
   getDoc,
   Unsubscribe,
+  limit,
 } from 'firebase/firestore';
 import { BehaviorSubject } from 'rxjs';
 
@@ -25,6 +26,7 @@ export class ChallengesService {
   challengeEnCours$: BehaviorSubject<any> = new BehaviorSubject(null);
   challenges$: BehaviorSubject<any> = new BehaviorSubject(null);
   singleChallSub$: BehaviorSubject<any> = new BehaviorSubject(null);
+  challengesList$: BehaviorSubject<any> = new BehaviorSubject(null);
   unsubscribe: Unsubscribe;
 
   constructor() {}
@@ -56,6 +58,22 @@ export class ChallengesService {
     const champ = this.formatChall(dataDoc, users);
     console.log(champ);
     this.singleChallSub$.next(champ);
+  }
+
+  async getChallengesList() {
+    this.challengesList$ = new BehaviorSubject(null);
+
+    const docRef = query(collection(this.db, 'challenges'), limit(15));
+    const documentSnapshots = await getDocs(docRef);
+    let table = [];
+    documentSnapshots.forEach((doc) => {
+      if (doc) {
+        console.log(doc.data());
+        this.challengesList$.next(doc.data());
+        // table.push(doc.data());
+      }
+    });
+    console.log(table);
   }
 
   getChallenges() {

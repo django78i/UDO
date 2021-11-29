@@ -16,7 +16,7 @@ export class ChampViewComponent implements OnInit {
   @Output() champChoice: EventEmitter<any> = new EventEmitter();
   @Output() createChamp: EventEmitter<any> = new EventEmitter();
 
-  constructor(public router: Router, public modalController : ModalController) {}
+  constructor(public router: Router, public modalController: ModalController) {}
 
   ngOnInit() {}
 
@@ -32,9 +32,9 @@ export class ChampViewComponent implements OnInit {
   async openCompetitionList() {
     const modal = await this.modalController.create({
       component: CompetitionsListComponent,
-      // componentProps: {
-      //   user: this.user,
-      // },
+      componentProps: {
+        segmentSelected: 'championnats',
+      },
     });
     return await modal.present();
   }

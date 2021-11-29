@@ -14,6 +14,7 @@ import {
   updateDoc,
   getDoc,
   Unsubscribe,
+  limit,
 } from 'firebase/firestore';
 import { BehaviorSubject, from, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -26,6 +27,7 @@ export class ChampionnatsService {
   champSubject$: Subject<any> = new Subject();
   champEnCoursSubject$: BehaviorSubject<any> = new BehaviorSubject(null);
   champNetWork$: BehaviorSubject<any> = new BehaviorSubject(null);
+  champNetWorkList$: BehaviorSubject<any> = new BehaviorSubject(null);
   friendsListSubject$: BehaviorSubject<any> = new BehaviorSubject(null);
   db = getFirestore();
   messagesSubject$: Subject<any> = new Subject();
@@ -65,24 +67,32 @@ export class ChampionnatsService {
     return this.champEnCoursSubject$;
   }
 
-  getChampionnatNetwork() {
+  async getChampionnatNetwork() {
+    this.champNetWorkList$ = new BehaviorSubject(null);
+
     const docRef = query(
-      collection(this.db, 'championnats')
-      // where('type', '==', 'network')
+      collection(this.db, 'championnats'),
+      where('type', '==', 'Network'),
+      limit(15)
     );
-    this.unsubscribe = onSnapshot(docRef, (querySnapshot) => {
-      const champs = [];
-      querySnapshot.forEach((doc) => {
-        const document = doc.data();
-        this.champNetWork$.next(document);
-      });
+    const documentSnapshots = await getDocs(docRef);
+    let table = [];
+    documentSnapshots.forEach((doc) => {
+      if (doc && doc.data().status == 'en attente') {
+        console.log(doc.data());
+        this.champNetWorkList$.next(doc.data());
+        // table.push(doc.data());
+      }
     });
+    console.log(table);
   }
 
   async getChampionnat(uid) {
+    console.log(uid);
     const users = JSON.parse(localStorage.getItem('usersList'));
     const docData = await getDoc(doc(this.db, 'championnats', uid));
-    const dataDoc = await docData.data();
+    const dataDoc = docData.data();
+    console.log(dataDoc);
     const champ = this.formatChamp(dataDoc, users);
     console.log(champ);
     this.singleChampSub$.next(champ);
@@ -93,7 +103,7 @@ export class ChampionnatsService {
     auth.currentUser.uid;
 
     const docRef = query(collection(this.db, 'championnats'));
-    const unsubscribe = onSnapshot(docRef, (querySnapshot) => {
+    this.unsubscribe = onSnapshot(docRef, (querySnapshot) => {
       const champs = [];
       const users = JSON.parse(localStorage.getItem('usersList'));
       querySnapshot.docChanges().forEach((changes) => {
@@ -130,10 +140,13 @@ export class ChampionnatsService {
 
   formatChamp(champ, users) {
     const championnat = champ;
-    championnat.participants = championnat.participants.map((participant) => {
-      const partFormat = users?.find((user) => participant.uid == user.uid);
-      return { ...participant, user: partFormat };
-    });
+    console.log(champ);
+    if (championnat.participants) {
+      championnat.participants = championnat.participants.map((participant) => {
+        const partFormat = users?.find((user) => participant.uid == user.uid);
+        return { ...participant, user: partFormat };
+      });
+    }
     championnat.createur = users?.find(
       (user) => user.uid == championnat.createur.uid
     );
@@ -168,33 +181,6 @@ export class ChampionnatsService {
       console.log(friendsTable, 'niveau off');
       this.friendsListSubject$.next(friendsTable);
     }
-
-    // const querySnapshot =
-    //   niveau != undefined
-    //     ? from(
-    //         getDocs(
-    //           query(
-    //             userRef,
-    //             where('niveau', '<=', niveau.upper),
-    //             where('niveau', '>=', niveau.lower)
-    //           )
-    //         )
-    //       )
-    //     : from(getDocs(userRef));
-
-    // querySnapshot
-    //   .pipe(
-    //     map((r) => r.docs),
-    //     map((users) => {
-    //       let tableUser = [];
-    //       users.forEach((r) => {
-    //         tableUser.push(r.data());
-    //       });
-    //       this.friendsListSubject$.next(tableUser.length ? tableUser : null);
-    //       return tableUser;
-    //     })
-    //   )
-    //   .subscribe();
   }
 
   async updateChamp(champ) {

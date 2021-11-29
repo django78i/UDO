@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { CompetitionsListComponent } from 'src/app/components/competitions-list/competitions-list.component';
 
 @Component({
   selector: 'app-chall-view',
@@ -15,7 +17,10 @@ export class ChallViewComponent implements OnInit {
   @Output() createChall: EventEmitter<any> = new EventEmitter();
   @Output() challengeId: EventEmitter<any> = new EventEmitter();
 
-  constructor(public http: HttpClient) {}
+  constructor(
+    public http: HttpClient,
+    public modalController: ModalController
+  ) {}
 
   ngOnInit() {
     // this.challenges = this.http.get('../../assets/mocks/challenges.json').pipe(
@@ -30,7 +35,17 @@ export class ChallViewComponent implements OnInit {
   }
 
   chooseChallenge(ev) {
-    console.log(ev)
+    console.log(ev);
     this.challengeId.emit(ev);
+  }
+
+  async openCompetitionList() {
+    const modal = await this.modalController.create({
+      component: CompetitionsListComponent,
+      componentProps : {
+        segmentSelected : 'challenges'
+      }
+    });
+    return await modal.present();
   }
 }

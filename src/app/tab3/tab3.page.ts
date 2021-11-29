@@ -33,7 +33,7 @@ import { ChallengesService } from '../services/challenges.service';
   templateUrl: 'tab3.page.html',
   styleUrls: ['tab3.page.scss'],
 })
-export class Tab3Page implements OnInit, AfterContentChecked {
+export class Tab3Page implements OnInit, AfterContentChecked, OnDestroy {
   config: SwiperOptions = {
     slidesPerView: 1.3,
     spaceBetween: 20,
@@ -205,5 +205,9 @@ export class Tab3Page implements OnInit, AfterContentChecked {
 
   chatPage() {
     this.router.navigate(['chat']);
+  }
+
+  ngOnDestroy() {
+    this.champService.unsubscribe();
   }
 }

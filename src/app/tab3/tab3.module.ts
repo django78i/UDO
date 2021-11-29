@@ -39,6 +39,7 @@ import { CreateChallPopUpComponent } from './components/create-chall-pop-up/crea
 import { SessionNowService } from '../services/session-now-service.service';
 import { HeaderComponent } from '../components/header/header.component';
 import { CompetitionsListComponent } from '../components/competitions-list/competitions-list.component';
+import { ChallengesListViewComponent } from '../components/challenges-list-view/challenges-list-view.component';
 
 @NgModule({
   imports: [
@@ -84,7 +85,8 @@ import { CompetitionsListComponent } from '../components/competitions-list/compe
     CreateChallPopUpComponent,
     AddContenuComponent,
     HeaderComponent,
-    CompetitionsListComponent
+    CompetitionsListComponent,
+    ChallengesListViewComponent
   ],
 })
 export class Tab3PageModule {}
