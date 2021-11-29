@@ -94,8 +94,12 @@ export class ChallengesPagePage implements OnInit {
     const index = this.challenge.participants.findIndex(
       (ind) => ind.uid == this.user.uid
     );
-    this.challenge.participants[index].etat = 'prêt';
+    this.userEncours.seance = 0;
+    this.userEncours.value = 0;
     this.userEncours.etat = 'prêt';
+    index != -1
+      ? (this.challenge.participants[index].etat = 'prêt')
+      : this.challenge.participants.push(this.userEncours);
     this.ref.detectChanges();
     console.log(this.challenge);
     this.challService.updateChall(this.challenge);

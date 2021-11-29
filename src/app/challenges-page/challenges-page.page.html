@@ -44,12 +44,12 @@
     <ion-card-content>
       <ion-item style="--background: transparent" lines="none">
         <ion-label slot="start">
-          {{ (challenge.completion.value / challenge.objectifs) * 100 | number:'1.1-2'
-          }} %
+          {{ (challenge.completion.value / challenge.objectifs) * 100 |
+          number:'1.1-2' }} %
         </ion-label>
         <ion-label style="font-size: 14px; text-align: end"
-          >{{challenge.completion.value | number:'1.1-1'}}/{{ challenge.objectifs }} {{
-          challenge.metric.metric }}</ion-label
+          >{{challenge.completion.value | number:'1.1-1'}}/{{
+          challenge.objectifs }} {{ challenge.metric.metric }}</ion-label
         >
       </ion-item>
       <ion-progress-bar
@@ -76,7 +76,7 @@
 </ion-header>
 <ion-content scrollY="false">
   <app-resume-challenge
-  [user]="user"
+    [user]="user"
     [challenge]="challenge"
     *ngIf="challenge && segmentValue == 'resume'"
   ></app-resume-challenge>
@@ -109,9 +109,7 @@
       style=" --i : {{championnat.banniereColor}}"
       (click)="participer()"
       *ngIf="
-      challenge &&
-      challenge?.status == 'en attente' && userEncours?.etat == 'en attente'
-      "
+      challenge && !userEncours"
       >Participer</ion-button
     >
     <ion-button

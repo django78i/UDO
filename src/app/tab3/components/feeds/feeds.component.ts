@@ -14,7 +14,6 @@ import {
 } from '@ionic/angular';
 import { EmojisComponent } from 'src/app/components/emojis/emojis.component';
 import { MusicFeedService } from 'src/app/services/music-feed.service';
-import { DetailPostComponent } from '../detail-post/detail-post.component';
 import {
   getStorage,
   ref,
@@ -26,6 +25,7 @@ import { BehaviorSubject } from 'rxjs';
 import { UserProfilComponent } from 'src/app/components/user-profil/user-profil.component';
 import * as _ from 'lodash';
 import { AddContenuComponent } from 'src/app/session-now/add-contenu/add-contenu.component';
+import { DetailPostComponent } from '../detail-post/detail-post.component';
 
 const MEDIA_FILES_KEY = 'mediaFiles';
 interface Reaction {

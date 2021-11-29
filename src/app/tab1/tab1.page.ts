@@ -20,9 +20,9 @@ import { MenuUserComponent } from '../components/menu-user/menu-user.component';
 import { ModalController, AnimationController } from '@ionic/angular';
 import { UserService } from '../services/user-service.service';
 import { EmojisComponent } from '../components/emojis/emojis.component';
-import { DetailPostComponent } from '../tab3/components/detail-post/detail-post.component';
 import { UserProfilComponent } from '../components/user-profil/user-profil.component';
 import { SessionNowService } from '../services/session-now-service.service';
+import { DetailPostComponent } from '../tab3/components/detail-post/detail-post.component';
 
 interface Reaction {
   icon: string;
