@@ -33,6 +33,7 @@ export class FriendPageListComponent implements OnInit {
   }
 
   sendInvite() {
+    console.log(this.friendsList);
     this.friendsList.forEach((friend) => {
       this.championnat.participants.push(friend);
     });

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import * as _ from 'lodash';
 
 @Component({
@@ -6,7 +6,7 @@ import * as _ from 'lodash';
   templateUrl: './classement-challenge.component.html',
   styleUrls: ['./classement-challenge.component.scss'],
 })
-export class ClassementChallengeComponent implements OnInit {
+export class ClassementChallengeComponent implements OnInit ,OnChanges {
   @Input() challenge: any;
   @Input() user: any;
 
@@ -17,6 +17,12 @@ export class ClassementChallengeComponent implements OnInit {
   ngOnInit() {
     console.log(this.challenge);
     this.classement = _.orderBy(this.challenge.participants, ['points'], ['desc']);
+  }
+  
+  ngOnChanges() {
+    console.log(this.challenge);
+    this.classement = _.orderBy(this.challenge.participants, ['points'], ['desc']);
+
   }
   
 }

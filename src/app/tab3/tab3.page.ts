@@ -25,8 +25,10 @@ import { MenuUserComponent } from '../components/menu-user/menu-user.component';
 import { UserService as UserService } from '../services/user-service.service';
 import { ChampionnatsService } from '../services/championnats.service';
 import { NavigationExtras, Router } from '@angular/router';
-import { CreateChallPopUpComponent } from './components/create-chall-pop-up/create-chall-pop-up.component';
 import { ChallengesService } from '../services/challenges.service';
+import { CreateChallPopUpComponent } from './components/create-chall-pop-up/create-chall-pop-up.component';
+// import { CreateChallPopUpComponent } from './components/create-chall-pop-up/create-chall-pop-up.component';
+// import { ChallengesService } from '../services/challenges.service';
 
 @Component({
   selector: 'app-tab3',
@@ -139,6 +141,8 @@ export class Tab3Page implements OnInit, AfterContentChecked, OnDestroy {
     this.ref.detectChanges();
   }
 
+  ionViewDidEnter() {}
+
   ngAfterContentChecked(): void {
     if (this.swiper) {
       this.swiper.map((swip) => swip.updateSwiper({}));
@@ -194,6 +198,10 @@ export class Tab3Page implements OnInit, AfterContentChecked, OnDestroy {
     return await modal.present();
   }
 
+  viewCompetitions(ev) {
+    this.navCtl.navigateForward('competitionsList');
+  }
+
   async launchDetail(ev) {
     this.router.navigate([`/championnat/${ev.uid}`]);
   }
@@ -209,5 +217,6 @@ export class Tab3Page implements OnInit, AfterContentChecked, OnDestroy {
 
   ngOnDestroy() {
     this.champService.unsubscribe();
+    this.champService.unsubscribe2();
   }
 }

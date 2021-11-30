@@ -143,6 +143,7 @@ export class CreateChallPopUpComponent implements OnInit, AfterContentChecked {
       banniereColor: this.banniere.color,
       banniereImage: this.image ? this.image : '',
       name: this.challTitle,
+      userId: user.uid,
       description: this.challDescription,
       metric: this.metricChoice,
       dateDemarrage: this.dateDemarrage,

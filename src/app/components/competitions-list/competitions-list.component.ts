@@ -8,10 +8,11 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { ModalController, NavParams } from '@ionic/angular';
+import { ModalController, NavController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { ChampionnatsService } from 'src/app/services/championnats.service';
+import { ModalChampComponent } from 'src/app/tab3/components/modal-champ/modal-champ.component';
 import { SwiperOptions } from 'swiper';
 import { SwiperComponent } from 'swiper/angular';
 
@@ -40,11 +41,12 @@ export class CompetitionsListComponent implements OnInit, AfterContentChecked {
     public champService: ChampionnatsService,
     public ref: ChangeDetectorRef,
     public router: Router,
-    public navParams: NavParams
+    public navCtl: NavController // public navParams: NavParams
   ) {}
 
   ngOnInit() {
-    this.segmentValue = this.navParams.data.segmentSelected;
+    // this.segmentValue = this.navParams.data.segmentSelected;
+    console.log('state')
     this.champService.getChampionnatNetwork();
     this.subscription = this.champService.champNetWorkList$
       .pipe(
@@ -77,18 +79,27 @@ export class CompetitionsListComponent implements OnInit, AfterContentChecked {
     this.segmentValue = ev.detail.value;
   }
 
-  navigateChallenge(ev) {
-    this.close();
-    this.router.navigate([`/challenge/${ev}`]);
+  async navigateChallenge(ev) {
+    const modal = await this.modalCtrl.create({
+      component: ModalChampComponent,
+      componentProps: { champId: ev, entryData: 'Challenges' },
+    });
+    return await modal.present();
   }
 
   async navigateChampionnat(ev) {
-    console.log(ev);
-    this.close();
-    this.router.navigate([`/championnat/${ev}`]);
+    const modal = await this.modalCtrl.create({
+      component: ModalChampComponent,
+      componentProps: { champId: ev, entryData: 'Championnat' },
+    });
+    return await modal.present();
+
+    // console.log(ev);
+    // this.close();
+    // this.router.navigate([`/championnat/${ev}`]);
   }
 
   close() {
-    this.modalCtrl.dismiss();
+    this.navCtl.navigateBack('tabs/tab3');
   }
 }

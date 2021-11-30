@@ -22,6 +22,7 @@ import {
   ref,
   uploadString,
 } from 'firebase/storage';
+import { MusicFeedService } from 'src/app/services/music-feed.service';
 
 @Component({
   selector: 'app-resultat',
@@ -75,7 +76,8 @@ export class ResultatPage implements OnInit, OnDestroy {
     public navCtl: NavController,
     public router: Router,
     private alertController: AlertController,
-    public ref: ChangeDetectorRef
+    public ref: ChangeDetectorRef,
+    public feedService: MusicFeedService
   ) {
     setInterval(() => {
       if (localStorage.getItem('mode')) {
@@ -261,6 +263,15 @@ export class ResultatPage implements OnInit, OnDestroy {
       uid: this.sessionNow.uid,
       comment: this.sessionNow.comment ? this.sessionNow.comment : '',
       duree: this.counter,
+      competitionInfo: detailCompet ? detailCompet : '',
+      championnat:
+        detailCompet.competitionType == 'Championnat'
+          ? detailCompet.competitionId
+          : '',
+      challenge:
+        detailCompet.competitionType == 'Challenge'
+          ? detailCompet.competitionId
+          : '',
     };
     console.log(this.sessionNow);
     // this.sessionNowService.update(this.sessionNow,'session-now');
@@ -272,6 +283,7 @@ export class ResultatPage implements OnInit, OnDestroy {
         this.sessionNowService.dissmissLoading();
         this.navCtl.navigateForward('session-now/felicitation');
         this.sessionNowService.show('Seance publiée avec succés', 'success');
+        // this.feedService.feedFilter('Récent');
       });
   }
 
@@ -356,4 +368,7 @@ export class PostModel {
   comment: string;
   championnatType: any;
   duree: any;
+  championnat?: string;
+  competitionInfo?: any;
+  challenge?: string;
 }

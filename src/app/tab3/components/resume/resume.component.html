@@ -51,9 +51,6 @@
         alt=""
       />
       <h4 style="font-weight: 900; margin: 0">DETAIL</h4>
-      <ion-badge style="--background: black">{{
-        championnat?.activites.length
-      }}</ion-badge>
     </div>
     <p style="font-size: 12px">{{ championnat?.description }}</p>
   </section>
@@ -69,6 +66,9 @@
         alt=""
       />
       <h4 style="font-weight: 900; margin: 0">ACTIVITES</h4>
+      <ion-badge style="--background: black">{{
+        championnat?.activites.length
+      }}</ion-badge>
     </div>
     <ion-chip *ngFor="let act of championnat?.activites">
       <ion-avatar>

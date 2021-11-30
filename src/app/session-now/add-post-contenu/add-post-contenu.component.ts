@@ -216,7 +216,7 @@ export class PostModel {
   comment: string;
   postCount: number;
   reactionsNombre: number;
-  championnat: string;
-  competitionInfo: any;
-  challenge: string;
+  championnat?: string;
+  competitionInfo?: any;
+  challenge?: string;
 }

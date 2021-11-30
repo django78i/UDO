@@ -91,16 +91,18 @@ export class ChallengesService {
         }
       });
       querySnapshot.forEach((doc) => {
-        const document = doc.data();
-        const bool = document.participants.some(
-          (users: any) => users.uid == auth.currentUser.uid
-        );
-        const docFormat = this.formatChall(document, users);
-        console.log(docFormat);
-        if (document.status == 'en cours' && bool) {
-          this.challengeEnCours$.next(docFormat);
-        } else if (document.status == 'en attente') {
-          this.challenges$.next(docFormat);
+        if (document) {
+          const document = doc.data();
+          const bool = document.participants.some(
+            (users: any) => users.uid == auth.currentUser.uid
+          );
+          const docFormat = this.formatChall(document, users);
+          console.log(docFormat);
+          if (document.status == 'en cours' && bool) {
+            this.challengeEnCours$.next(docFormat);
+          } else if (document.status == 'en attente') {
+            this.challenges$.next(docFormat);
+          }
         }
       });
     });

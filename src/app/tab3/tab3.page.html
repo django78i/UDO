@@ -136,6 +136,7 @@
       [champinonatNetwork]="champinonatNetwork"
       (champChoice)="launchDetail($event)"
       (createChamp)="buttonClick($event)"
+      (viewAllChamp)="viewCompetitions($event)"
     ></app-champ-view>
   </ng-container>
   <ng-container *ngIf="segmentValue == 'challenges'">

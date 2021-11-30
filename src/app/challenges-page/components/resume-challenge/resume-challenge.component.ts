@@ -1,4 +1,10 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+} from '@angular/core';
 
 @Component({
   selector: 'app-resume-challenge',
@@ -7,23 +13,19 @@ import { Component, Input, OnChanges, OnInit } from '@angular/core';
 })
 export class ResumeChallengeComponent implements OnInit, OnChanges {
   @Input() challenge: any;
-  userEncours: any;
+  @Input() userEncours: any;
   @Input() user: any;
 
-  constructor() {}
+  constructor(public ref: ChangeDetectorRef) {}
 
-  ngOnInit() {
-    console.log(this.challenge, this.user);
-    this.userEncours = this.challenge.participants.find(
-      (part) => part.uid == this.user.uid
-    );
-    console.log(this.userEncours);
-  }
+  ngOnInit() {}
 
   ngOnChanges() {
-    this.userEncours = this.challenge.participants.find(
-      (part) => part.uid == this.user.uid
-    );
+    console.log(this.challenge);
+    // this.userEncours = this.challenge.participants.find(
+    //   (part) => part.uid == this.user.uid
+    // );
+    // this.ref.detectChanges();
     console.log(this.userEncours);
   }
 }

@@ -54,15 +54,12 @@ export class MusicFeedService {
 
   //Feed global
   async feedFilter(filter: string) {
-    console.log(filter);
     const table = [];
     const db = getFirestore();
     let first;
     const user = await this.userService.getCurrentUser();
-    console.log(user);
     switch (filter) {
       case 'En direct':
-        console.log('direct');
         first = query(
           collection(db, 'post-session-now'),
           where('isLive', '==', true),

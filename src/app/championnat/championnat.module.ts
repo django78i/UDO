@@ -14,6 +14,7 @@ import { TimeChampPipe } from 'src/app/pipe/time-champ.pipe';
 import { TimeRelativePipe } from '../pipe/time-relative.pipe';
 import { FriendsListComponent } from '../tab3/components/friends-list/friends-list.component';
 import { FriendPageListComponent } from '../components/friend-page-list/friend-page-list.component';
+import { ChampTemplateComponent } from '../components/champ-template/champ-template.component';
 
 @NgModule({
   imports: [
@@ -31,6 +32,7 @@ import { FriendPageListComponent } from '../components/friend-page-list/friend-p
     FriendsListComponent,
     TimeRelativePipe,
     FriendPageListComponent,
+    ChampTemplateComponent
   ],
 })
 export class ChampionnatPageModule {}

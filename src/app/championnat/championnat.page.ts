@@ -84,11 +84,11 @@ export class ChampionnatPage implements OnInit {
 
   ngAfterViewInit() {}
 
-  close() {
+  close(ev) {
     this.navCtl.navigateBack('/tabs/tab3');
   }
 
-  participer() {
+  participer(ev) {
     this.loading = true;
 
     const index = this.championnat.participants.findIndex(
@@ -141,7 +141,7 @@ export class ChampionnatPage implements OnInit {
     await alert.present();
   }
 
-  startChamp() {
+  startChamp(ev) {
     const warning = this.championnat.participants.some(
       (part: any) => part.etat == 'en attente'
     );
@@ -175,12 +175,12 @@ export class ChampionnatPage implements OnInit {
     console.log(final);
   }
 
-  seanceNow() {
+  seanceNow(ev) {
     localStorage.setItem('championnatUid', this.championnat.uid);
 
     const champInfo: NavigationExtras = {
       queryParams: {
-        championnatType : this.championnat.type,
+        championnatType: this.championnat.type,
         type: 'Championnat',
         competitionName: this.championnat.name,
         competitionId: this.championnat.uid,
@@ -189,20 +189,21 @@ export class ChampionnatPage implements OnInit {
     this.navCtl.navigateForward('session-now', champInfo);
   }
 
-  async addFriend() {
-    console.log(this.championnat);
-    const modal = await this.modalCtrl.create({
-      component: FriendPageListComponent,
-      componentProps: {
-        user: this.user,
-        competition: this.championnat,
-      },
-    });
-    modal.onDidDismiss().then((data: any) => {
-      this.champService.getChampionnat(this.championnat.uid);
-    });
-
-    this.champService.getChampionnat(this.championnat.uid);
-    return await modal.present();
+  async addFriend(ev) {
+    if (ev == true) {
+      console.log(this.championnat);
+      const modal = await this.modalCtrl.create({
+        component: FriendPageListComponent,
+        componentProps: {
+          user: this.user,
+          competition: this.championnat,
+        },
+      });
+      modal.onDidDismiss().then((data: any) => {
+        this.champService.getChampionnat(this.championnat.uid);
+      });
+      return await modal.present();
+    }
+    // this.champService.getChampionnat(this.championnat.uid);
   }
 }

@@ -15,6 +15,7 @@ export class ChampViewComponent implements OnInit {
 
   @Output() champChoice: EventEmitter<any> = new EventEmitter();
   @Output() createChamp: EventEmitter<any> = new EventEmitter();
+  @Output() viewAllChamp: EventEmitter<any> = new EventEmitter();
 
   constructor(public router: Router, public modalController: ModalController) {}
 
@@ -29,13 +30,14 @@ export class ChampViewComponent implements OnInit {
     this.createChamp.emit();
   }
 
-  async openCompetitionList() {
-    const modal = await this.modalController.create({
-      component: CompetitionsListComponent,
-      componentProps: {
-        segmentSelected: 'championnats',
-      },
-    });
-    return await modal.present();
+  openCompetitionList() {
+    this.viewAllChamp.emit('championnats');
+    // const modal = await this.modalController.create({
+    //   component: CompetitionsListComponent,
+    //   componentProps: {
+    //     segmentSelected: 'championnats',
+    //   },
+    // });
+    // return await modal.present();
   }
 }

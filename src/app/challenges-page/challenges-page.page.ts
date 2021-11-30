@@ -26,6 +26,8 @@ export class ChallengesPagePage implements OnInit {
   loading = false;
   startDate: any;
 
+  challengeObs$: Observable<any>;
+
   constructor(
     private navCtl: NavController,
     public userService: UserService,
@@ -40,21 +42,23 @@ export class ChallengesPagePage implements OnInit {
       this.user = user;
       const uid = this.route.snapshot.params['id'];
       this.challService.getChallenge(uid);
-      this.challService.singleChallSub$.subscribe((chall) => {
-        if (chall) {
-          this.challenge = chall;
-          this.startDate = moment(this.challenge.dateDemarrage).fromNow();
-          console.log(this.challenge);
-          this.userEncours = this.challenge.participants.find(
-            (part) => part.uid == this.user.uid
-          );
-          this.ref.detectChanges();
-        }
-      });
+      this.challengeObs$ = this.challService.singleChallSub$.pipe(
+        tap((chall) => {
+          if (chall) {
+            this.challenge = chall;
+            this.startDate = moment(this.challenge.dateDemarrage).fromNow();
+            console.log(this.challenge);
+            this.userEncours = this.challenge.participants.find(
+              (part) => part.uid == this.user.uid
+            );
+            this.ref.detectChanges();
+          }
+        })
+      );
     });
   }
 
-  startChall() {
+  startChall(ev) {
     const warning = this.challenge.participants.some(
       (part: any) => part.etat == 'en attente'
     );
@@ -83,26 +87,34 @@ export class ChallengesPagePage implements OnInit {
       dateFin: this.challenge.dateFin.toDate(),
     });
     this.loading = false;
-
+    this.challService.getChallenge(this.challenge.uid);
     this.ref.detectChanges();
     console.log(final);
   }
 
-  participer() {
+  participer(ev) {
     this.loading = true;
 
     const index = this.challenge.participants.findIndex(
       (ind) => ind.uid == this.user.uid
     );
-    this.userEncours.seance = 0;
-    this.userEncours.value = 0;
-    this.userEncours.etat = 'prêt';
+    let user: any;
+    if (!this.userEncours) {
+      user = {
+        ...this.user,
+        seance: 0,
+        value: 0,
+        etat: 'prêt',
+      };
+    }
     index != -1
       ? (this.challenge.participants[index].etat = 'prêt')
-      : this.challenge.participants.push(this.userEncours);
+      : this.challenge.participants.push(user);
     this.ref.detectChanges();
     console.log(this.challenge);
     this.challService.updateChall(this.challenge);
+    this.challService.getChallenge(this.challenge.uid);
+
     this.loading = false;
   }
 

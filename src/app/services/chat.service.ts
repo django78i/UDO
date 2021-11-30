@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Unsubscribe } from '@firebase/util';
 import {
   doc,
   addDoc,
@@ -21,7 +22,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 export class ChatService {
   msgSubject$: BehaviorSubject<any> = new BehaviorSubject(null);
   roomSubject$: Subject<any> = new Subject();
-
+  unsubscribeRoom : Unsubscribe
   constructor() {}
 
   async findRoom(userUid, contactUid): Promise<any[]> {
@@ -30,10 +31,10 @@ export class ChatService {
     const second = doc(db, 'rooms', contactUid + userUid);
     let table;
     const querySnap = (await getDoc(first)).data()
-      ? await (await getDoc(first))
+      ? await await getDoc(first)
       : await getDoc(second);
     table = querySnap.data();
-    console.log(table)
+    console.log(table);
     return table;
   }
 
@@ -75,7 +76,7 @@ export class ChatService {
       const champs = [];
       querySnapshot.forEach((doc) => {
         const document = doc.data();
-        console.log(document)
+        console.log(document);
         champs.push(document);
         this.msgSubject$.next(champs);
       });
@@ -92,19 +93,27 @@ export class ChatService {
   }
 
   getUserRoom(uid) {
+    console.log(uid);
     const db = getFirestore();
     const docRef = query(collection(db, 'rooms'));
-    const unsubscribe = onSnapshot(docRef, (querySnapshot) => {
+    this.unsubscribeRoom = onSnapshot(docRef, (querySnapshot) => {
       const champs = [];
+      querySnapshot.docChanges().forEach((changes) => {
+        if (changes) {
+          this.roomSubject$.next(null);
+        }
+      });
+
       querySnapshot.forEach((doc) => {
         const document = doc.data();
-        console.log(document, uid)
+        console.log(document, uid);
         const bool = document.users.some((user: any) => user.uid == uid);
-        if (bool) {
+        if (bool && document) {
+          console.log(document);
           champs.push(document);
+          this.roomSubject$.next(champs);
+          console.log(champs);
         }
-        console.log(champs)
-        this.roomSubject$.next(champs);
       });
     });
   }

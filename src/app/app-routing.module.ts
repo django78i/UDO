@@ -58,6 +58,13 @@ const routes: Routes = [
       import('./chat/chat.module').then((m) => m.ChatPageModule),
   },
   {
+    path: 'competitionsList',
+    loadChildren: () =>
+      import('./components/competitions-list/competitions.module').then(
+        (m) => m.CompetitionsPageModule
+      ),
+  },
+  {
     path: 'championnat/:id',
     loadChildren: () =>
       import('./championnat/championnat.module').then(
@@ -72,9 +79,11 @@ const routes: Routes = [
   },
   {
     path: 'challenge/:id',
-    loadChildren: () => import('./challenges-page/challenges-page.module').then( m => m.ChallengesPagePageModule)
+    loadChildren: () =>
+      import('./challenges-page/challenges-page.module').then(
+        (m) => m.ChallengesPagePageModule
+      ),
   },
-
 ];
 @NgModule({
   imports: [

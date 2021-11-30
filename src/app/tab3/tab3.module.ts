@@ -40,6 +40,8 @@ import { SessionNowService } from '../services/session-now-service.service';
 import { HeaderComponent } from '../components/header/header.component';
 import { CompetitionsListComponent } from '../components/competitions-list/competitions-list.component';
 import { ChallengesListViewComponent } from '../components/challenges-list-view/challenges-list-view.component';
+import { ChampTemplateComponent } from '../components/champ-template/champ-template.component';
+import { ChallTemplateComponent } from '../components/chall-template/chall-template.component';
 
 @NgModule({
   imports: [
@@ -86,7 +88,9 @@ import { ChallengesListViewComponent } from '../components/challenges-list-view/
     AddContenuComponent,
     HeaderComponent,
     CompetitionsListComponent,
-    ChallengesListViewComponent
+    ChallengesListViewComponent,
+    ChampTemplateComponent,
+    ChallTemplateComponent,
   ],
 })
 export class Tab3PageModule {}

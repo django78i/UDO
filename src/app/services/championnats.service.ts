@@ -33,6 +33,7 @@ export class ChampionnatsService {
   messagesSubject$: Subject<any> = new Subject();
   singleChampSub$: Subject<any> = new Subject();
   unsubscribe: Unsubscribe;
+  unsubscribe2: Unsubscribe;
 
   constructor(public userService: UserService) {}
 
@@ -50,7 +51,7 @@ export class ChampionnatsService {
     );
     const auth = getAuth();
 
-    onSnapshot(docRef, (querySnapshot) => {
+  this.unsubscribe2 =  onSnapshot(docRef, (querySnapshot) => {
       const champs = [];
       querySnapshot.forEach((doc) => {
         console.log(doc.data());
