@@ -65,6 +65,10 @@ export class DetailPostComponent implements OnInit {
     this.ref.detectChanges();
   }
 
+  deletePhoto() {
+    this.picture = null;
+  }
+
   send() {
     const message = {
       text: this.message,

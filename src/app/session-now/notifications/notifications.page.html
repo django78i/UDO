@@ -1,5 +1,4 @@
-
-<ion-header>
+<ion-content>
   <ion-toolbar>
     <ion-item lines="none">
       <ion-img slot="start" class="close" (click)="close()" src="assets/images/close.svg"> </ion-img>
@@ -16,7 +15,7 @@
         <ion-avatar>
           <ion-img [src]="item?.img" class="img-personn"></ion-img>
         </ion-avatar>
-        
+
         <span class="nombre"> {{item?.nombre}}</span>
       </ion-row>
       <ion-grid class="c-grid">
@@ -38,14 +37,17 @@
     </ion-item>
     <!-- fab placed to the top end -->
   </ion-row>
-  <ion-row *ngIf="listReactions.length == 0 ">
-    <ion-img class="img-empty" src="assets/images/encouragements_empty.png"></ion-img>
-    <ion-row class="message">
-      <span>Ne t’arrêtes pas maintenant !</span>
+  <!-- <ion-row [class]="modeClasse" *ngIf="listReactions.length == 0 "> -->
+    <ion-row>
+      <ion-img class="img-empty" src="assets/images/encouragements_empty.png"></ion-img>
     </ion-row>
-  </ion-row>
-  <ion-row class="c-text" *ngIf="listReactions.length == 0 " >
-    <span>Laisse à tes amis le temps de t’envoyer des encouragements</span>
+
+    <ion-row >
+      <span class="message">Ne t’arrêtes pas maintenant !</span>
+    </ion-row>
+  <!-- </ion-row> -->
+  <ion-row  *ngIf="listReactions.length == 0 ">
+    <span [class]="modeClasse">Laisse à tes amis le temps de t’envoyer des encouragements</span>
   </ion-row>
   <ion-fab class="c-ion-fab" (click)="close()" vertical="bottom" horizontal="center" slot="fixed">
     <!-- <ion-fab-button> -->

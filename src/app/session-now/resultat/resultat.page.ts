@@ -1,6 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { AddContenuComponent } from '../add-contenu/add-contenu.component';
-import { ModalController, NavController, Platform } from '@ionic/angular';
+import {
+  AlertController,
+  ModalController,
+  NavController,
+  Platform,
+} from '@ionic/angular';
 import { Router } from '@angular/router';
 import { DonneesPriveComponent } from '../donnees-prive/donnees-prive.component';
 import { Location } from '@angular/common';
@@ -8,7 +13,7 @@ import { SessionNowModel } from '../demarrage/demarrage.page';
 import moment from 'moment';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { SessionNowService } from '../../services/session-now-service.service';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import {
@@ -17,13 +22,14 @@ import {
   ref,
   uploadString,
 } from 'firebase/storage';
+import { MusicFeedService } from 'src/app/services/music-feed.service';
 
 @Component({
   selector: 'app-resultat',
   templateUrl: './resultat.page.html',
   styleUrls: ['./resultat.page.scss'],
 })
-export class ResultatPage implements OnInit {
+export class ResultatPage implements OnInit, OnDestroy {
   sessionNow: SessionNowModel;
   selectedFile: File = null;
   downloadURL: Observable<string>;
@@ -56,6 +62,11 @@ export class ResultatPage implements OnInit {
   ];
   user;
   isVisible = false;
+
+  mode = '';
+  modeClasse = '';
+  message = '';
+  sub: Subscription;
   constructor(
     private modalCtrl: ModalController,
     private platform: Platform,
@@ -63,24 +74,59 @@ export class ResultatPage implements OnInit {
     private storage: AngularFireStorage,
     private sessionNowService: SessionNowService,
     public navCtl: NavController,
-    public router: Router
+    public router: Router,
+    private alertController: AlertController,
+    public ref: ChangeDetectorRef,
+    public feedService: MusicFeedService
   ) {
+    setInterval(() => {
+      if (localStorage.getItem('mode')) {
+        if (localStorage.getItem('mode') === 'landscape') {
+          this.mode = 'landscape';
+          this.modeClasse = 'c-ion-fab-lands';
+        } else {
+          this.mode = '';
+          this.modeClasse = 'c-ion-fab';
+        }
+      } else {
+        this.modeClasse = 'c-ion-fab';
+        this.mode = '';
+      }
+    }, 100);
     this.platform.backButton.subscribeWithPriority(10, () => {
       console.log('Handler was called!');
       this._location.back();
     });
     this.counter = JSON.parse(localStorage.getItem('counter'));
     this.sessionNow = JSON.parse(localStorage.getItem('sessionNow'));
+    console.log(this.sessionNow);
     this.user = JSON.parse(localStorage.getItem('user'));
     this.isPicture = localStorage.getItem('addPicture');
   }
 
   ngOnInit() {
+    this.sub = this.platform.keyboardDidShow.subscribe((ev) => {
+      const { keyboardHeight } = ev;
+      this.isVisible = true;
+      this.ref.detectChanges();
+
+      // Do something with the keyboard height such as translating an input above the keyboard.
+    });
+    this.sub.add(
+      this.platform.keyboardDidHide.subscribe(() => {
+        // Move input back to original location
+        this.isVisible = false;
+        this.ref.detectChanges();
+      })
+    );
+
     this.listNotif = [];
+
     this.activite = JSON.parse(localStorage.getItem('activite'));
     this.listElement = JSON.parse(localStorage.getItem('choix'));
-
+    console.log('list', this.listElement);
     this.sessionNow = JSON.parse(localStorage.getItem('sessionNow'));
+    this.listNotif = this.sessionNow.reactions;
     if (this.sessionNow) {
       this.sessionNow.reactionNumber = this.listNotif?.length;
       if (this.sessionNow) {
@@ -140,8 +186,37 @@ export class ResultatPage implements OnInit {
         }
       }
     }
+    this.platform.backButton.subscribeWithPriority(10, () => {
+      this.presentAlertConfirm();
+    });
   }
+  /**
+   * cette alert permet de confirmer la sortie de l'application
+   */
+  async presentAlertConfirm() {
+    const alert = await this.alertController.create({
+      header: 'Confirmation',
+      mode: 'ios',
+      message: 'Voulez vous vraiment arreter cette seance now',
+      buttons: [
+        {
+          text: 'Non',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {},
+        },
+        {
+          text: 'Oui',
+          handler: () => {
+            // on quitte l'application et on supprime tous les posts
+            this.destroySession();
+          },
+        },
+      ],
+    });
 
+    await alert.present();
+  }
   blur(ev) {
     this.isVisible = false;
   }
@@ -156,7 +231,6 @@ export class ResultatPage implements OnInit {
   }
 
   async upload() {
-    console.log(this.sessionNow);
     let url;
     if (this.base64Image) {
       const storage = getStorage();
@@ -168,6 +242,8 @@ export class ResultatPage implements OnInit {
       );
       url = await getDownloadURL(uploadTask.ref);
     }
+    const detailCompet = JSON.parse(localStorage.getItem('detailCompet'));
+    console.log(detailCompet);
     let postModel: PostModel = {
       startDate: new Date(),
       userName: this.user ? this.user.userName : '',
@@ -179,6 +255,7 @@ export class ResultatPage implements OnInit {
       reactionsNombre: this.sessionNow.reactionsNombre,
       activity: this.sessionNow.activity,
       isLive: false,
+      championnatType: this.sessionNow.championnatType,
       mode: this.sessionNow.mode,
       userAvatar: this.user.avatar,
       niveau: this.user.niveau,
@@ -186,15 +263,27 @@ export class ResultatPage implements OnInit {
       uid: this.sessionNow.uid,
       comment: this.sessionNow.comment ? this.sessionNow.comment : '',
       duree: this.counter,
+      competitionInfo: detailCompet ? detailCompet : '',
+      championnat:
+        detailCompet.competitionType == 'Championnat'
+          ? detailCompet.competitionId
+          : '',
+      challenge:
+        detailCompet.competitionType == 'Challenge'
+          ? detailCompet.competitionId
+          : '',
     };
-    console.log(postModel);
+    console.log(this.sessionNow);
+    // this.sessionNowService.update(this.sessionNow,'session-now');
+    this.sessionNowService.updateCompetition(this.sessionNow);
     this.sessionNowService.findPostLies(this.sessionNow.sessionId);
     this.sessionNowService
       .update(postModel, 'post-session-now')
       .then((resPicture) => {
-        this.navCtl.navigateForward('');
         this.sessionNowService.dissmissLoading();
+        this.navCtl.navigateForward('session-now/felicitation');
         this.sessionNowService.show('Seance publiée avec succés', 'success');
+        // this.feedService.feedFilter('Récent');
       });
   }
 
@@ -235,8 +324,7 @@ export class ResultatPage implements OnInit {
       cssClass: 'my-custom-contenu-modal',
     });
     modal.onDidDismiss().then((data: any) => {
-      console.log(data.data);
-      this.base64Image = data.data != 'Modal Closed' ? data.data : null;
+      this.base64Image = data.data !== 'Modal Closed' ? data.data : null;
     });
     return await modal.present();
   }
@@ -248,6 +336,16 @@ export class ResultatPage implements OnInit {
     });
     modal.onDidDismiss().then((data: any) => {});
     return await modal.present();
+  }
+  destroySession() {
+    this.sessionNowService.deleteSessionCascade(this.sessionNow.sessionId);
+    //on supprime la session now stocké dans le local storage
+    localStorage.removeItem('sessionNow');
+    this.router.navigate(['tabs']);
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 }
 
@@ -268,5 +366,9 @@ export class PostModel {
   metrics: any[];
   uid: string;
   comment: string;
+  championnatType: any;
   duree: any;
+  championnat?: string;
+  competitionInfo?: any;
+  challenge?: string;
 }

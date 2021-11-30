@@ -33,7 +33,7 @@ export class MessagesComponent implements OnInit, OnDestroy {
     this.subscription = this.champService.messagesSubject$.subscribe(
       (messages) => {
         const usersList = JSON.parse(localStorage.getItem('usersList'));
-        console.log(usersList)
+        console.log(usersList);
         console.log(messages);
         const msgFormat = messages?.map((message: any) => {
           return {
@@ -43,7 +43,7 @@ export class MessagesComponent implements OnInit, OnDestroy {
         });
 
         this.messagesList = msgFormat;
-        console.log(this.messagesList)
+        console.log(this.messagesList);
         this.ref.detectChanges();
       }
     );

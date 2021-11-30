@@ -1,12 +1,19 @@
 <ion-content>
-  <ion-row>
+  <!-- <ion-row>
     <img
       *ngIf="base64Image"
       class="base-image"
       (click)="addContenu()"
       [src]="base64Image"
     />
+  </ion-row> -->
+  <ion-row
+    class="base-image"
+    *ngIf="base64Image"
+    [ngStyle]="{ 'background-image': 'url(' + base64Image + ')' }"
+  >
   </ion-row>
+
   <ion-row *ngIf="!base64Image" class="addMedia" (click)="addContenu()">
     <ion-img class="appareil" src="assets/images/photo2.svg"></ion-img>
     <div class="ajouter">Ajouter un média</div>
@@ -27,8 +34,6 @@
   <ion-row class="message">
     <ion-input
       (keyup.enter)="publier()"
-      (ionBlur)="blur($event)"
-      (ionFocus)="active($event)"
       (ionChange)="changeInput($event)"
       [(ngModel)]="sessionNow.comment"
       class="c-textarea"
@@ -53,6 +58,13 @@
   </ion-grid>
   <ion-grid class="choice">
     <ion-row>
+
+      <ion-col class="c-col" size="6" *ngFor="let j of [0,1,2,3]  ; let i=index">
+        <ion-row>
+          <ion-img class="c-image"
+            [ngStyle]="{'width': listElement[j].width ? listElement[j].width : listElement[j].width,'height' : listElement[j].height ? listElement[j].height : listElement[j].height}"
+            [src]="listElement[j].img"></ion-img>
+<!-- dev Moustapha
       <ion-col
         class="c-col"
         size="6"
@@ -64,17 +76,18 @@
             [ngStyle]="{'width': item.width ? item.width : item.width,'height' : item.height ? item.height : item.height}"
             [src]="item.img"
           ></ion-img>
+-->
         </ion-row>
         <ion-row>
           <div class="element">
-            <ion-label class="nombre"> {{item.nombre}} </ion-label>
-            <span class="exposant" *ngIf="item.exposant">
-              {{item.exposant}}
+            <ion-label class="nombre"> {{listElement[j].nombre}} </ion-label>
+            <span class="exposant" *ngIf="listElement[j].exposant">
+              {{listElement[j].exposant}}
             </span>
           </div>
         </ion-row>
         <ion-row>
-          <ion-label class="name"> {{item.name}} </ion-label>
+          <ion-label class="name"> {{listElement[j].name}} </ion-label>
         </ion-row>
       </ion-col>
     </ion-row>
@@ -109,7 +122,12 @@
     </ion-item>
   </ion-row>
 </ion-content>
-<ion-footer>
+<!--
+<ion-footer >
+    <div *ngIf="!isVisible" expand="block" class="c-ion-fab" (click)="publier()" type="submit">Publier
+    </div> -->
+
+<ion-footer [class]="mode">
   <ion-footer>
     <ion-button
       *ngIf="!isVisible"
@@ -117,7 +135,7 @@
       class="c-ion-fab"
       (click)="publier()"
       type="submit"
-      >Publier</ion-button
-    >
+      >Publier
+    </ion-button>
   </ion-footer>
 </ion-footer>

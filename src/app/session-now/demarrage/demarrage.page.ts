@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {
   AlertController,
+  IonSlides,
   ModalController,
   NavController,
   ToastController,
@@ -8,14 +9,16 @@ import {
 import { ListMetricsPage } from '../list-metrics/list-metrics.page';
 import { NotificationsPage } from '../notifications/notifications.page';
 import { ReglagesPage } from '../reglages/reglages.page';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Health } from '@ionic-native/health/ngx';
 import { Platform } from '@ionic/angular';
 import { DonneesPriveComponent } from '../donnees-prive/donnees-prive.component';
 import { SessionNowService } from '../../services/session-now-service.service';
 import { AddPostContenuComponent } from '../add-post-contenu/add-post-contenu.component';
-import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { ShowNotificationPage } from '../show-notification/show-notification.page';
+import { BackgroundMode } from '@ionic-native/background-mode/ngx';
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+import { from, fromEvent, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-demarrage',
@@ -23,6 +26,13 @@ import { ShowNotificationPage } from '../show-notification/show-notification.pag
   styleUrls: ['./demarrage.page.scss'],
 })
 export class DemarragePage implements OnInit {
+  @ViewChild('mySlider') slides: IonSlides;
+  slideOptsOne = {
+    initialSlide: 1,
+    slidesPerView: 1,
+    autoplay: false,
+  };
+  titleCurrentPage: string;
   listElement: any = [];
   base64;
   t: any;
@@ -34,7 +44,8 @@ export class DemarragePage implements OnInit {
   activite: any;
   pause = false;
   image: any;
-  listChoix = [
+  pausedTime: any;
+  /* listChoix = [
     {
       img: 'assets/images/distance_m.svg',
       nombre: '0',
@@ -63,13 +74,19 @@ export class DemarragePage implements OnInit {
       exposant: 'CAL',
       fieldname: 'calories',
     },
-  ];
+  ];*/
   sessionNow = new SessionNowModel();
   listSettings = [];
   user: any;
   reactions = 0;
   interval;
+  mode = '';
+  modeClasse = '';
+  demarrage = '';
+  competitionId: string;
+  closingApp: Observable<any>;
   constructor(
+    private backgroundMode: BackgroundMode,
     private modalCtrl: ModalController,
     private router: Router,
     private toastCtrl: ToastController,
@@ -77,11 +94,28 @@ export class DemarragePage implements OnInit {
     private health: Health,
     private platform: Platform,
     private snService: SessionNowService,
-    public alertController: AlertController
+    public alertController: AlertController,
+    private camera: Camera,
+    private route: ActivatedRoute
   ) {
+    setInterval(() => {
+      if (localStorage.getItem('mode')) {
+        if (localStorage.getItem('mode') === 'landscape') {
+          this.mode = 'landscape';
+          this.modeClasse = 'preseanceSlideLands';
+          this.demarrage = 'demarrageLands';
+        } else {
+          this.mode = 'portrait';
+          this.modeClasse = 'preseanceSlide';
+          this.demarrage = 'demarrage';
+        }
+      } else {
+        this.modeClasse = 'preseanceSlide';
+        this.demarrage = 'demarrage';
+      }
+    }, 100);
     this.image = JSON.parse(localStorage.getItem('image'));
     this.platform.backButton.subscribeWithPriority(10, () => {
-      console.log('Handler was called!');
       this.presentAlertConfirm();
     });
     this.user = JSON.parse(localStorage.getItem('user'));
@@ -93,16 +127,17 @@ export class DemarragePage implements OnInit {
    */
   async getSessionNow() {
     this.interval = setInterval(() => {
-      let sessionNow = JSON.parse(localStorage.getItem('sessionNow'));
+      const sessionNow = JSON.parse(localStorage.getItem('sessionNow'));
       if (sessionNow) {
         this.snService.find(sessionNow.uid, 'session-now').then((resp: any) => {
-          let value = resp._document.data.value.mapValue.fields;
+          const value = resp._document.data.value.mapValue.fields;
           if (value.reactions.arrayValue.values) {
             this.reactions = value.reactions.arrayValue.values?.length;
             this.sessionNow.reactions = value.reactions.arrayValue.values;
             if (
-              this.sessionNow.reactions.length != sessionNow.reactions.length &&
-              this.reactions != 0
+              this.sessionNow.reactions.length !==
+                sessionNow.reactions.length &&
+              this.reactions !== 0
             ) {
               this.showNotification();
             }
@@ -139,7 +174,9 @@ export class DemarragePage implements OnInit {
         {
           text: 'Oui',
           handler: () => {
-            this.displayRecap();
+            // on quitte l'application et on supprime tous les posts
+            this.destroySession();
+            // this.displayRecap();
           },
         },
       ],
@@ -147,12 +184,52 @@ export class DemarragePage implements OnInit {
 
     await alert.present();
   }
+  destroySession() {
+    this.snService.deleteSessionCascade(this.sessionNow.sessionId);
+    //on supprime la session now stocké dans le locl storage
+    localStorage.removeItem('sessionNow');
+    this.router.navigate(['tabs']);
+  }
   ngOnInit() {
+    this.platform.resume.subscribe(async () => {
+      // alert('Resume event detected');
+      // on recupere l'heure à laquelle l'utilisateur est revenu sur de l'application
+      //let pauseInterval= - ;
+      const diff = this.dateDiff(this.pausedTime, Date.now());
+      if (diff) {
+        if (this.s + diff.sec > 60) {
+          this.s = diff.sec + this.s - 60;
+          this.mn = this.mn + 1;
+        } else {
+          this.s = diff.sec + this.s;
+        }
+        this.mn = this.mn + diff.min;
+      }
+    });
+    this.platform.pause.subscribe(async () => {
+      // alert('Resume event detected');
+      // on recupere l'heure à laquelle nous sommes sortit de l'application
+      this.pausedTime = Date.now();
+    });
+
+    //this.platform.pause.subscribe((pause) => console.log(pause));
+    this.route.queryParams.subscribe((params) => {
+      this.competitionId = params ? params.championnat : '';
+    });
+    // activate background mode
+    //  this.backgroundMode.enable();
+
+    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
+    /* this.backgroundMode.isScreenOff( function(bool) {
+      this.updateChrono();
+      this.backgroundMode.wakeUp();
+      this.backgroundMode.unlock();
+    });*/
     const stSettings = localStorage.getItem('reglages');
     if (stSettings) {
       this.listSettings = JSON.parse(stSettings);
     }
-    let valPause = localStorage.getItem('pause');
+    const valPause = localStorage.getItem('pause');
     if (valPause) {
       this.pause = true;
     }
@@ -188,16 +265,53 @@ export class DemarragePage implements OnInit {
         exposant: 'CAL',
         fieldname: 'calories',
       },
+      {
+        name: 'Vitesse',
+        fieldname: 'speed',
+        img: 'assets/images/speed_m.svg',
+        nombre: '0',
+        exposant: '',
+      },
+      {
+        name: 'Réactions',
+        fieldname: 'reaction',
+        img: 'assets/images/reaction_m.svg',
+        nombre: '0',
+        exposant: '',
+      },
     ];
-    let item = JSON.parse(localStorage.getItem('activite'));
+    const item = JSON.parse(localStorage.getItem('activite'));
     if (item) {
       this.activite = item;
     }
-    let choix = localStorage.getItem('choix');
-    if (!choix) {
-      localStorage.setItem('choix', JSON.stringify(this.listChoix));
+    const choix = localStorage.getItem('choix');
+    /*if (!choix) {
+     // localStorage.setItem('choix', JSON.stringify(this.listElement));
     } else {
       this.listElement = JSON.parse(localStorage.getItem('choix'));
+    }*/
+    const detailCompet = JSON.parse(localStorage.getItem('detailCompet'));
+    console.log(detailCompet);
+    if (detailCompet) {
+      if (detailCompet.competitionName) {
+        this.sessionNow.competitionName = detailCompet.competitionName;
+      }
+      if (detailCompet.competitionId) {
+        this.sessionNow.competitionId = detailCompet.competitionId;
+      }
+      if (detailCompet.competitionType) {
+        this.sessionNow.competitionType = detailCompet.competitionType;
+      }
+      if (detailCompet.challengeStatus) {
+        this.sessionNow.challengeStatus = detailCompet.challengeStatus;
+      }
+      if (detailCompet.challengeMetric) {
+        this.sessionNow.challengeMetric = detailCompet.challengeMetric;
+      }
+      if (detailCompet.championnatType) {
+        console.log('metric');
+        this.sessionNow.championnatType = detailCompet.championnatType;
+      }
     }
     this.sessionNow.startDate = new Date();
     this.sessionNow.activity = this.activite;
@@ -220,7 +334,7 @@ export class DemarragePage implements OnInit {
       .createSessionNow(this.sessionNow)
       .then((res) => {
         this.sessionNow.uid = res;
-        localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
+        // localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
         this.sessionNow.photo = this.image ? this.image.picture : '';
         this.sessionNow.userName = this.user ? this.user.userName : '';
         this.sessionNow.userId = this.user ? this.user.uid : '';
@@ -229,10 +343,9 @@ export class DemarragePage implements OnInit {
         this.sessionNow.userNiveau = this.user.niveau;
         this.sessionNow.postCount = 0;
         this.sessionNow.reactionsNombre = 0;
-
-        let sessionNow = { ...this.sessionNow };
+        const sessionNow = { ...this.sessionNow };
         sessionNow['type'] = 'session-now';
-
+        console.log(this.sessionNow);
         this.snService.createPostSessionNow(sessionNow).then((resPost) => {
           console.log('je suis la');
           // this.sessionNow.uid = res;
@@ -240,7 +353,7 @@ export class DemarragePage implements OnInit {
         });
       })
       .catch((err) => console.error(err));
-    localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
+    // localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
   }
 
   /**
@@ -270,10 +383,12 @@ export class DemarragePage implements OnInit {
    */
   getMetrics() {
     if (this.status === 'play') {
-      for (let item of this.listElement) {
-        this.queryMetrics(item.fieldname, item);
+      for (const item of this.listElement) {
+        if (item.fieldname !== 'reaction') {
+          this.queryMetrics(item.fieldname, item);
+        }
       }
-      let that = this;
+      const that = this;
       // this.getMetrics();
       // @ts-ignore
       setTimeout(() => {
@@ -283,13 +398,29 @@ export class DemarragePage implements OnInit {
   }
 
   /**
+   *
+   */
+  calculAgregated(res) {
+    let agregate = 0;
+    if (res !== null && res !== undefined) {
+      // eslint-disable-next-line @typescript-eslint/prefer-for-of
+      for (let i = 0; i < res.length; i++) {
+        agregate = agregate + res[i]?.value;
+      }
+    }
+    return agregate;
+  }
+  /**
    * ce callback est appelé pour procéder le resultat obtenu apres la recuperation de la metric de p
+   *
    * @param res
    * @param item
    */
   processMetricResult(res, item) {
     if (item.fieldname === 'speed') {
-      const distance = res.length > 0 ? res[res.length - 1]?.value : 0;
+      // const distance = res.length > 0 ? res[res.length - 1]?.value : 0;
+      const distance = res.length > 0 ? this.calculAgregated(res) : 0;
+
       if (distance !== 0) {
         const speed = this.calculSpeed(distance, this.mn * 60 + this.s);
         item.nombre =
@@ -297,10 +428,19 @@ export class DemarragePage implements OnInit {
           100;
       }
     } else {
+      /* item.nombre =
+        res.length > 0
+          ? Math.round(
+
+            (parseFloat(res[res.length - 1]?.value) + Number.EPSILON) * 100
+          ) / 100
+          : '0';*/
       item.nombre =
         res.length > 0
           ? Math.round(
-              (parseFloat(res[res.length - 1]?.value) + Number.EPSILON) * 100
+              (parseFloat(this.calculAgregated(res).toString()) +
+                Number.EPSILON) *
+                100
             ) / 100
           : '0';
     }
@@ -318,12 +458,13 @@ export class DemarragePage implements OnInit {
 
   /**
    * cette fonction permet d'afficher les metrics
+   *
    * @param metric
    * @param item
    */
   // @ts-ignore
   queryMetrics(metric, item) {
-    let option = {
+    const option: any = {
       startDate: new Date(this.sessionNow.startDate), // three days ago
       endDate: new Date(), // now
       dataType: metric,
@@ -333,9 +474,9 @@ export class DemarragePage implements OnInit {
       if (metric === 'speed') {
         option.dataType = 'distance';
       }
-      option['bucket'] = 'hour';
+      //  option['bucket'] = 'hour';
       this.health
-        .queryAggregated(option)
+        .query(option)
         .then((res) => this.processMetricResult(res, item))
         .catch((e) => console.log('error3 ', e));
     } else {
@@ -371,12 +512,17 @@ export class DemarragePage implements OnInit {
       'activity',
       'height',
       'weight',
+      'speed',
+      'reaction',
     ];
     this.sessionNow.isLive = false;
     this.sessionNow.duration = this.mn + ':' + this.s;
-    for (let metric of this.listElement) {
+    for (const metric of this.listElement) {
       for (const metricAutorised of listMetricAuhorised) {
         if (metric.fieldname === metricAutorised) {
+          if (metric.fieldname === 'reaction') {
+            metric.nombre = this.sessionNow.reactions?.length;
+          }
           this.sessionNow.metrics.push(metric);
         }
       }
@@ -388,6 +534,7 @@ export class DemarragePage implements OnInit {
       new Date().toISOString().split('T')[1].split('.')[0];
     localStorage.setItem('counter', JSON.stringify({ mn: this.mn, s: this.s }));
     localStorage.setItem('sessionNow', JSON.stringify(this.sessionNow));
+    localStorage.setItem('choix', JSON.stringify(this.sessionNow.metrics));
     // redirection vers le composant qui affiche le recapitulatif
     this.router.navigate(['session-now/resultat']);
   }
@@ -395,22 +542,49 @@ export class DemarragePage implements OnInit {
   /**
    * cette fonction permet d'ouvrir la camera
    */
-  async openCamera() {
+  openCamera() {
+    const options: CameraOptions = {
+      quality: 100,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE,
+    };
+
+    this.camera.getPicture(options).then(
+      (imageData) => {
+        // imageData is either a base64 encoded string or a file URI
+        // If it's base64 (DATA_URL):
+        this.base64 = 'data:image/jpeg;base64,' + imageData;
+        if (this.base64) {
+          this.addContenu();
+          this.slides.slideTo(1);
+        }
+      },
+      (err) => {
+        // Handle error
+      }
+    );
+  }
+  /* async openCamera() {
     const image = await Camera.getPhoto({
       quality: 50,
       allowEditing: false,
       source: CameraSource.Camera,
       resultType: CameraResultType.DataUrl,
     });
-
+console.log(1);
     // Here you get the image as result.
     const theActualPicture = image.dataUrl;
-    localStorage.setItem('picture', theActualPicture);
-    this.addContenu(theActualPicture);
-    // this.modalCtr.dismiss(this.base64Image);
-  }
+    console.log(2);
+    this.base64=theActualPicture;
+    if (this.base64) {
+      console.log(3);
+      this.addContenu();
+    }
+  }*/
   /**
    * cette fonction permet d'afficher un toast message
+   *
    * @param message
    * @param type
    */
@@ -464,16 +638,17 @@ export class DemarragePage implements OnInit {
   /**
    * Cette methode permet d'ouvrir le modal de selection des photos
    */
-  async addContenu(picture) {
-    console.log('ouverture content');
+  async addContenu() {
+    console.log(4);
     const modal = await this.modalCtrl.create({
       component: AddPostContenuComponent,
       cssClass: 'my-custom-contenu-modal',
-      componentProps: { picture: picture, activity: this.activite },
+      componentProps: { picture: this.base64, activity: this.activite },
     });
     // modal.onDidDismiss().then((data: any) => {
     //   this.base64 = data.data;
     // });
+    modal.onDidDismiss().then((data: any) => {});
     return await modal.present();
   }
 
@@ -534,6 +709,7 @@ export class DemarragePage implements OnInit {
 
   /**
    * cette methode synchrone permet d'ouvrir sous forme de modal le composant listMetric
+   *
    * @param item
    * @param index
    */
@@ -550,8 +726,8 @@ export class DemarragePage implements OnInit {
     modal.onDidDismiss().then((data: any) => {
       if (data.data) {
         let value = data.data;
-        for (let el of this.listElement) {
-          if (el.name === value.name) {
+        for (let i = 0; i < 4; i++) {
+          if (this.listElement[i].name === value.name) {
             this.showMessage(
               'Cette activité est déjà dans la liste',
               'warning'
@@ -559,12 +735,12 @@ export class DemarragePage implements OnInit {
             return;
           }
         }
-        for (let val of this.listChoix) {
-          if (value.name == val.name) {
-            value = val;
-            this.listElement[index] = val;
-          } else {
-            this.listElement[index] = value;
+        console.log('value', value);
+        const temp = { ...this.listElement[index] };
+        for (let itemMetric of this.listElement) {
+          if (itemMetric.name === value.name) {
+            this.listElement[index] = itemMetric;
+            itemMetric = temp;
           }
         }
         localStorage.setItem('choix', JSON.stringify(this.listElement));
@@ -575,6 +751,7 @@ export class DemarragePage implements OnInit {
 
   /**
    * Cette méthode permet de calculer la vitesse
+   *
    * @param distanceMeter
    * @param timeSeconds
    */
@@ -584,8 +761,45 @@ export class DemarragePage implements OnInit {
       km: (distanceMeter / timeSeconds) * 3.6,
     };
   }
+  slideChange() {
+    this.slides.getActiveIndex().then((index: number) => {
+      if (index === 0) {
+        this.titleCurrentPage = 'Réglages';
+      }
+      if (index === 1) {
+        this.titleCurrentPage = '';
+      }
+      if (index === 2) {
+        this.openCamera();
+        this.slides.slideTo(1);
+      }
+    });
+  }
+  dateDiff(date1, date2) {
+    let diff = { sec: 0, min: 0, hour: 0, day: 0 }; // Initialisation du retour
+    let tmp = date2 - date1;
+
+    tmp = Math.floor(tmp / 1000); // Nombre de secondes entre les 2 dates
+    diff.sec = tmp % 60; // Extraction du nombre de secondes
+
+    tmp = Math.floor((tmp - diff.sec) / 60); // Nombre de minutes (partie entière)
+    diff.min = tmp % 60; // Extraction du nombre de minutes
+
+    tmp = Math.floor((tmp - diff.min) / 60); // Nombre d'heures (entières)
+    diff.hour = tmp % 24; // Extraction du nombre d'heures
+
+    tmp = Math.floor((tmp - diff.hour) / 24); // Nombre de jours restants
+    diff.day = tmp;
+
+    return diff;
+  }
 }
 export class SessionNowModel {
+  competitionId: string;
+  competitionName: string;
+  competitionType: string;
+  challengeStatus: string;
+  challengeMetric: string;
   uid: string;
   startDate: Date;
   endDate: string;
@@ -598,7 +812,7 @@ export class SessionNowModel {
   metrics = [];
   score: number;
   mode: string; // 'private or public'
-  championant: string; // nulllable true
+  championnat: string; // nulllable true
   isLive: boolean; // true or false
   duration: string;
   comment: string;
@@ -607,6 +821,8 @@ export class SessionNowModel {
   userNiveau: number;
   postCount: 0;
   reactionsNombre: 0;
+  type: string;
+  championnatType: string;
 }
 export class PostModel {
   postedAt: string;

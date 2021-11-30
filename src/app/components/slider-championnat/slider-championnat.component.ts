@@ -39,12 +39,12 @@ export class SliderChampionnatComponent implements OnInit, AfterContentChecked {
 
 
   ngAfterContentChecked(): void {
-    if (this.swiper) {
-      // this.zone.run(()=>{
+    // if (this.swiper) {
+    //   // this.zone.run(()=>{
 
-        this.swiper.map((swip) => swip.updateSwiper({}));
-      // })
-    }
+    //     this.swiper.map((swip) => swip.updateSwiper({}));
+    //   // })
+    // }
   }
 
   choice(champ) {

@@ -1,0 +1,171 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-button
+      slot="start"
+      (click)="close()"
+      style="--background: transparent; --background-activated: transparent"
+    >
+      <img src="../../../../assets/mocks/Icon feather-arrow-left.svg" alt="" />
+    </ion-button>
+    <ion-title style="font-size: 12px; font-weight: 700"
+      >TOUTES LES COMPETITIONS</ion-title
+    >
+  </ion-toolbar>
+  <ion-searchbar
+    placeholder="Rechercher une compétition"
+    (ionChange)="search($event)"
+  ></ion-searchbar>
+  <ion-segment
+    [value]="segmentValue"
+    mode="ios"
+    (ionChange)="viewChange($event)"
+  >
+    <ion-segment-button value="championnats">
+      <ion-label>Championnats</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="challenges">
+      <ion-label>Challenges</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+</ion-header>
+<ion-content slot="fixed">
+  <ng-container *ngIf="segmentValue == 'championnats'">
+    <section style="padding: 0 15px">
+      <ng-container *ngIf="championnatsFiltered.length; else list">
+        <ion-card
+          *ngFor="let champ of championnatsFiltered"
+          [style.backgroundColor]="champ.banniere.color"
+          style="background-image: url('assets/icon/udoIconFond.svg')"
+          (click)="navigateChampionnat(champ.uid)"
+        >
+          <ion-card-header>
+            <ion-card-title class="cardSlide">
+              <img
+                [src]="champ.createur.avatar"
+                alt=""
+                style="width: 34px; height: 34px; border-radius: 50%"
+              />
+              <div style="display: flex; flex-direction: column; gap: 5px">
+                <ion-label
+                  style="font-size: 12px; color: white; font-weight: 700"
+                  >{{ champ.name }}</ion-label
+                >
+                <ion-note
+                  style="font-size: 10px; color: white; font-weight: 700"
+                >
+                  {{ champ.createur.userName }}
+                </ion-note>
+              </div>
+            </ion-card-title>
+            <div class="typeLogo">
+              <img
+                src="../../../assets/icon/Icon feather-globe.svg"
+                alt=""
+                *ngIf="champ?.type == 'Network'"
+              />
+              <img
+                src="../../../assets/icon/FriendsFamilly.svg"
+                alt=""
+                *ngIf="champ?.type == 'Friends&Familly'"
+              />
+            </div>
+          </ion-card-header>
+
+          <ion-card-content class="cardContentZone">
+            <ion-card-subtitle> EN ATTENTE </ion-card-subtitle>
+
+            <ion-item style="--background: transparent" lines="none">
+              <ion-img
+                src="../../../assets/icon/friends-white.svg"
+                alt=""
+                slot="start"
+                style="margin-right: 9.5px"
+              >
+              </ion-img>
+              <ion-label slot="start">
+                {{ champ?.participants?.length }} participants
+              </ion-label>
+              <ion-note slot="end">
+                <img src="../../../assets/icon/duration.svg" alt="" />
+                {{ champ?.dureeMax }} sem.</ion-note
+              >
+            </ion-item>
+          </ion-card-content>
+        </ion-card>
+      </ng-container>
+      <ng-template #list>
+        <ng-container *ngIf="championnatNetwork.length">
+          <ion-card
+            *ngFor="let champ of championnatNetwork"
+            [style.backgroundColor]="champ.banniere.color"
+            style="background-image: url('assets/icon/udoIconFond.svg')"
+            (click)="navigateChampionnat(champ.uid)"
+          >
+            <ion-card-header>
+              <ion-card-title class="cardSlide">
+                <img
+                  [src]="champ.createur.avatar"
+                  alt=""
+                  style="width: 34px; height: 34px; border-radius: 50%"
+                />
+                <div style="display: flex; flex-direction: column; gap: 5px">
+                  <ion-label
+                    style="font-size: 12px; color: white; font-weight: 700"
+                    >{{ champ.name }}</ion-label
+                  >
+                  <ion-note
+                    style="font-size: 10px; color: white; font-weight: 700"
+                  >
+                    {{ champ.createur.name }}
+                  </ion-note>
+                </div>
+              </ion-card-title>
+              <div class="typeLogo">
+                <img
+                  src="../../../assets/icon/Icon feather-globe.svg"
+                  alt=""
+                  *ngIf="champ?.type == 'Network'"
+                />
+                <img
+                  src="../../../assets/icon/FriendsFamilly.svg"
+                  alt=""
+                  *ngIf="champ?.type == 'Friends&Familly'"
+                />
+              </div>
+            </ion-card-header>
+
+            <ion-card-content class="cardContentZone">
+              <ion-card-subtitle> EN ATTENTE </ion-card-subtitle>
+
+              <ion-item style="--background: transparent" lines="none">
+                <ion-img
+                  src="../../../assets/icon/friends-white.svg"
+                  alt=""
+                  slot="start"
+                  style="margin-right: 9.5px"
+                >
+                </ion-img>
+                <ion-label slot="start">
+                  {{ champ?.participants?.length }} participants
+                </ion-label>
+                <ion-note slot="end">
+                  <img src="../../../assets/icon/duration.svg" alt="" />
+                  {{ champ?.dureeMax }} sem.</ion-note
+                >
+              </ion-item>
+            </ion-card-content>
+          </ion-card>
+        </ng-container>
+      </ng-template>
+    </section>
+  </ng-container>
+  <ng-container *ngIf="segmentValue == 'challenges'">
+    <section style="padding: 0 15px">
+      <app-challenges-list-view
+        [filter]="filter"
+        (challengeChoice)="navigateChallenge($event)"
+      >
+      </app-challenges-list-view>
+    </section>
+  </ng-container>
+</ion-content>

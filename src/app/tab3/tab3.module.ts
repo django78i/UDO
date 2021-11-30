@@ -32,6 +32,16 @@ import { ChatRoomComponent } from '../components/chat-room/chat-room.component';
 import { AddContenuComponent } from '../session-now/add-contenu/add-contenu.component';
 import { PhotoDetailComponent } from './components/photo-detail/photo-detail.component';
 import { TimeChampPipe } from '../pipe/time-champ.pipe';
+import { ChampViewComponent } from './components/champ-view/champ-view.component';
+import { ChallViewComponent } from './components/chall-view/chall-view.component';
+import { BigChallSliderComponent } from '../components/big-chall-slider/big-chall-slider.component';
+import { CreateChallPopUpComponent } from './components/create-chall-pop-up/create-chall-pop-up.component';
+import { SessionNowService } from '../services/session-now-service.service';
+import { HeaderComponent } from '../components/header/header.component';
+import { CompetitionsListComponent } from '../components/competitions-list/competitions-list.component';
+import { ChallengesListViewComponent } from '../components/challenges-list-view/challenges-list-view.component';
+import { ChampTemplateComponent } from '../components/champ-template/champ-template.component';
+import { ChallTemplateComponent } from '../components/chall-template/chall-template.component';
 
 @NgModule({
   imports: [
@@ -69,8 +79,18 @@ import { TimeChampPipe } from '../pipe/time-champ.pipe';
     MessagesComponent,
     PhotoDetailComponent,
     TimeFeedPipe,
-    TimeChampPipe
-    // AddContenuComponent,
+    TimeChampPipe,
+    ChampViewComponent,
+    ChallViewComponent,
+    ChallViewComponent,
+    BigChallSliderComponent,
+    CreateChallPopUpComponent,
+    AddContenuComponent,
+    HeaderComponent,
+    CompetitionsListComponent,
+    ChallengesListViewComponent,
+    ChampTemplateComponent,
+    ChallTemplateComponent,
   ],
 })
 export class Tab3PageModule {}

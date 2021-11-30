@@ -1,44 +1,60 @@
 <ion-content>
-  <ion-row>
-    <span class="rond">
-      <ion-img src="assets/images/claps.png"></ion-img>
-    </span>
-  </ion-row>
-  <ion-row>
-    <span class="fantastique">
-      Fantastique !
-    </span>
-  </ion-row>
-  <ion-row class="progress">
-    <ion-progress-bar class="one"></ion-progress-bar>
-    <ion-progress-bar class="two"></ion-progress-bar>
-    <ion-progress-bar class="three"></ion-progress-bar>
-    <span class="rond-progress">
-      <span class="valeur">40</span>
-    </span>
-  </ion-row>
+  <ng-container *ngIf="user">
+    <ion-row>
+      <span class="rond">
+        <ion-img src="assets/images/claps.png"></ion-img>
+      </span>
+    </ion-row>
+    <ion-row>
+      <span class="fantastique"> Fantastique ! </span>
+    </ion-row>
+    <ion-row class="progress">
+      <ion-progress-bar value="1" class="one"></ion-progress-bar>
+      <ion-progress-bar [value]="xpNewOnTotal" class="two"></ion-progress-bar>
+      <ion-progress-bar
+        [value]="xpUserOnTotal"
+        class="three"
+      ></ion-progress-bar>
 
-  <ion-row>
-    <span class="xp">4 500 / 5 000 XP</span>
-  </ion-row>
+      <span class="rond-progress">
+        <span class="valeur"> {{user.niveau}} </span>
+      </span>
+    </ion-row>
+    <ion-row>
+      <span class="xp">{{newxp}} / {{max}} XP</span>
+    </ion-row>
 
-  <ion-row class="c-row">
-    <ion-col class="c-col" size="4" *ngFor="let item of listActivite">
-      <round-progress [current]="item.value" [max]="200" [color]="'#000000'" [background]="'#7070703d'" [radius]="47"
-        [stroke]="4">
-      </round-progress>
-      <div class="val-progess">
-        <ion-row [ngClass]="{'val':item.value.length<=2,'val2':item.value.length>2}">+{{item.value}}</ion-row>
-        <ion-row class="val-xp">xp</ion-row>
-      </div>
-      <ion-row class="c-name">
-        <span class="name"> {{item.name}} </span>
-      </ion-row>
-    </ion-col>
-  </ion-row>
-  <ion-fab class="c-ion-fab" (click)="fermer()" vertical="bottom" slot="fixed">
-    <!-- <ion-fab-button> -->
-    <span>Fermer</span>
-    <!-- </ion-fab-button> -->
-  </ion-fab>
+    <ion-row [class]="modeRow">
+      <ion-col class="c-col" size="4" *ngFor="let item of listActivite">
+        <round-progress
+          [current]="item.value"
+          [max]="valeur"
+          [color]="'#000000'"
+          [background]="'#7070703d'"
+          [radius]="47"
+          [stroke]="4"
+        >
+        </round-progress>
+        <div [class]="modeClasse">
+          <ion-row
+            [ngClass]="{'val3':item.value.length==1,'val':item.value.length<=2,'val2':item.value.length>2}"
+            >+{{item.value}}</ion-row
+          >
+          <ion-row class="val-xp">xp</ion-row>
+        </div>
+        <ion-row class="c-name">
+          <span class="name"> {{item.name}} </span>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+    <ion-row class="gtotal">
+      <ion-col class="c-col total" size="7"><span>TOTAL</span></ion-col>
+      <ion-col class="c-col total" size="5"><span>+{{valeur}}XP</span></ion-col>
+    </ion-row>
+  </ng-container>
 </ion-content>
+<ion-footer (click)="fermer()">
+  <div [class]="demarrage">
+    <span>Fermer</span>
+  </div>
+</ion-footer>

@@ -4,6 +4,7 @@ import { AlertController, Platform, LoadingController, ToastController } from '@
 import {auth} from './fix-bug-firebase-on-mac';
 
 
+import { HttpClient } from '@angular/common/http';
 import {
   collection,
   doc,
@@ -15,22 +16,27 @@ import {
   query,
   setDoc,
   updateDoc,
+  deleteDoc,
   where,
+  QuerySnapshot,
 } from 'firebase/firestore';
-import {
-  getAuth,
-} from 'firebase/auth';
+import { getAuth } from 'firebase/auth';
+import { GooglePlus } from '@ionic-native/google-plus/ngx';
+import { MusicFeedService } from './music-feed.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SessionNowService {
   loader: HTMLIonLoadingElement;
+  user: any;
   constructor(
     public platform: Platform, // private googlePlus: GooglePlus,
     public alertController: AlertController,
     private loadingCtrl: LoadingController,
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
+    private http: HttpClient,
+    public mFeed: MusicFeedService
   ) {}
 
   async create(document, collectionName) {
@@ -40,6 +46,7 @@ export class SessionNowService {
     await setDoc(doc(db, collectionName, document.uid), document);
     return id;
   }
+
   async createSessionNow(document) {
     const db = getFirestore();
     const id = this.createId();
@@ -47,6 +54,49 @@ export class SessionNowService {
     await setDoc(doc(db, 'session-now', document.uid), document);
     return id;
   }
+
+  async controlLive(uid) {
+    console.log('control');
+    this.presentLoading();
+    //récupération des posts de l'utilisateur
+    const postList = await this.getSessionNow(uid);
+    if (postList) {
+      postList.forEach((post) => {
+        const postData = post.data();
+        console.log(postData);
+        //update du post si il est toujours en live
+        if (postData.isLive == true) {
+          console.log(postData);
+          //suppression du post de type sessionNow si aucune réaction pendant la séance
+          if (postData.type == 'session-now') {
+            this.deleteSessionCascade(postData.sessionId);
+          } else {
+            //update status du post
+            this.updatePostLies(postData);
+          }
+          this.mFeed.feedFilter('Récent');
+        }
+      });
+    }
+    this.dissmissLoading();
+  }
+
+  async updatePostSeanceNow(post) {
+    const db = getFirestore();
+    await updateDoc(doc(db, 'post-session-now', post.uid), post);
+  }
+
+  async getSessionNow(uid): Promise<QuerySnapshot<DocumentData>> {
+    console.log('now');
+    const db = getFirestore();
+    const querySelect = query(
+      collection(db, 'post-session-now'),
+      where('userId', '==', uid)
+    );
+    const document = await getDocs(querySelect);
+    return document;
+  }
+
   async createPostSessionNow(document) {
     const db = getFirestore();
     // const id = this.createId();
@@ -93,6 +143,43 @@ export class SessionNowService {
     });
   }
 
+  /**
+   * cette fonction permet de supprimer en cascade une seance now
+   * @param sessionId
+   */
+  async deleteSessionCascade(sessionId) {
+    let canDelete = true;
+    const db = getFirestore();
+    const queryPost = query(
+      collection(db, 'post-session-now'),
+      where('sessionId', '==', sessionId)
+    );
+    const document = await getDocs(queryPost);
+
+    document.forEach((doc) => {
+      if (doc) {
+        if (doc.data().reactionsNombre > 0) {
+          canDelete = false;
+        }
+      }
+    });
+    if (canDelete) {
+      // on supprime la session now et tous les post liés
+      deleteDoc(doc(db, 'session-now', sessionId));
+      deleteDoc(doc(db, 'post-session-now', sessionId));
+      document.forEach((doc) =>
+        doc ? this.deletePostLies(doc.data().uid, db) : ''
+      );
+    } else {
+      // la session a un post commenté donc on supprime
+      const document = await getDocs(queryPost);
+      document.forEach((doc) =>
+        doc ? this.updatePostLies(doc.data().uid) : ''
+      );
+      updateDoc(doc(db, 'session-now', sessionId), { isLive: false });
+    }
+  }
+
   async findPostLies(postUid) {
     const db = getFirestore();
     const queryPost = query(
@@ -100,15 +187,111 @@ export class SessionNowService {
       where('sessionId', '==', postUid)
     );
     const document = await getDocs(queryPost);
-
-    let donnees = [];
     document.forEach((doc) => (doc ? this.updatePostLies(doc.data().uid) : ''));
-    console.log(donnees);
   }
 
   async updatePostLies(postUid) {
     const db = getFirestore();
-    updateDoc(doc(db, 'post-session-now', postUid), { isLive: false });
+    await updateDoc(doc(db, 'post-session-now', postUid), {
+      type: 'picture',
+      isLive: false,
+    });
+  }
+
+  updateCompetition(sessionNow) {
+    console.log(sessionNow);
+    this.user = JSON.parse(localStorage.getItem('user'));
+    console.log(sessionNow);
+    if (sessionNow.competitionType === 'Séance Libre') {
+      // cas seance libre
+    } else if (sessionNow.competitionType === 'Championnat') {
+      // cas seance championnat
+      this.updateChampionnat(this.user.uid, sessionNow);
+    } else if (sessionNow.competitionType === 'Challenge') {
+      // TODO: cas Challenge
+      this.updateChallenge(this.user.uid, sessionNow);
+    }
+  }
+
+  async updateChallenge(userId, sessionNow) {
+    const db = getFirestore();
+    const queryPost = query(
+      collection(db, 'challenges'),
+      where('uid', '==', sessionNow.competitionId)
+    );
+    const document = await getDocs(queryPost);
+    console.log(sessionNow.metrics);
+    document.forEach((doc1) => {
+      if (doc1 && doc1.data() && doc1.data().participants) {
+        let challenge = doc1.data();
+
+        //recherche user en cours
+        const ind = challenge.participants.findIndex(
+          (part) => (part.uid = userId)
+        );
+        //on ajoute 1 seance au participant
+        challenge.participants[ind].seance =
+          challenge.participants[ind].seance != 0
+            ? challenge.participants[ind].seance + 1
+            : 1;
+        //recherche de la métrique à incrémenter
+        const metricValue = sessionNow.metrics.find(
+          (sess) => challenge.metric.metric == sess.exposant
+        );
+
+        //on incémente l'avancé du participant
+        challenge.participants[ind].value += metricValue.nombre;
+        //on ajoute incémente l'avancé du challenge
+        challenge.completion.value += metricValue.nombre;
+        //MAJ du challenge
+        updateDoc(doc(db, 'challenges', sessionNow.competitionId), challenge);
+      }
+    });
+  }
+
+  async updateChampionnat(userId, sessionNow) {
+    const db = getFirestore();
+    const queryPost = query(
+      collection(db, 'championnats'),
+      where('uid', '==', sessionNow.competitionId)
+    );
+    const document = await getDocs(queryPost);
+    document.forEach((doc1) => {
+      console.log(doc1.data());
+      if (doc1 && doc1.data() && doc1.data().participants) {
+        let championnat = doc1.data();
+        //Calcul journée en cours
+        const journeeEnChamp = Number(
+          championnat.semaineEnCours * championnat.seanceByWeek
+        );
+        let participants = doc1.data().participants;
+        //recherche du user parmis les participants
+        const ind = participants.findIndex((part) => (part.uid = userId));
+        //on ajoute 3 points au participants
+        participants[ind].points =
+          participants[ind].points != 0 ? participants[ind].points + 3 : 3;
+        //La séance du user est une séance bonus
+        const journey = Number(
+          participants[ind].journeeEnCours + participants[ind].bonus
+        );
+        if (journey >= journeeEnChamp) {
+          console.log('==');
+          participants[ind].bonus += 1;
+        } else {
+          // on incrémente la journee,
+          participants[ind].journeeEnCours = participants[ind].journeeEnCours =
+            !0 ? participants[ind].journeeEnCours + 1 : 1;
+        }
+        const champ = { ...doc1.data(), participants: participants };
+        console.log(champ);
+        // on appelle la fonction qui fait le update du participant
+        updateDoc(doc(db, 'championnats', sessionNow.competitionId), champ);
+      }
+    });
+  }
+
+  async deletePostLies(postUid, db) {
+    deleteDoc(doc(db, 'post-session-now', postUid));
   }
 
 
@@ -123,6 +306,7 @@ export class SessionNowService {
       toastData.present();
     });
   }
+
   async presentLoading() {
     this.loader = await this.loadingCtrl
       .create({
@@ -140,5 +324,9 @@ export class SessionNowService {
     if (this.loader) {
       await this.loader.dismiss();
     }
+  }
+
+  getActivities() {
+    return this.http.get('../../../assets/mocks/activitiesList.json').pipe();
   }
 }

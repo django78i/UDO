@@ -17,13 +17,13 @@ import {
 })
 export class ConnexionChoiceComponent implements OnInit {
   hide = true;
-  seg = "s'inscrire";
+  seg = 's\'inscrire';
   @Output() log: EventEmitter<[]> = new EventEmitter();
-  mdPasse: string = '';
-  email: string = '';
+  mdPasse  = '';
+  email = '';
   user: any;
   errorSub: BehaviorSubject<string> = new BehaviorSubject(null);
-
+  isConnected="";
   constructor(
     public userService: UserService,
     public fb: FormBuilder,
@@ -31,14 +31,24 @@ export class ConnexionChoiceComponent implements OnInit {
     public navController: NavController,
     public modalController: ModalController,
     public zone: NgZone
-  ) {}
+  ) {
+    localStorage.setItem('firstConnexion','true');
+    this.isConnected = localStorage.getItem('isConnected');
+    if(this.isConnected == "true"){
+      this.seg = "se connecter";
+    }else{
+      this.seg = 's\'inscrire';
+    }
+  }
 
   ngOnInit() {
     this.errorSub = this.userService.errorSubject$;
     const auth = getAuth();
     auth.onAuthStateChanged((user) => {
+      console.log("user",user);
+      
       if (user) {
-        setTimeout(() => {
+        // setTimeout(() => {
           const userDataBase = from(this.userService.findUser(user.uid));
           userDataBase
             .pipe(
@@ -47,7 +57,7 @@ export class ConnexionChoiceComponent implements OnInit {
               })
             )
             .subscribe();
-        }, 1000);
+        // }, 1000);
       }
     });
     this.errorSub = this.userService.errorSubject$;
@@ -78,7 +88,7 @@ export class ConnexionChoiceComponent implements OnInit {
       mail: this.email,
       password: this.mdPasse,
     };
-    this.seg == "s'inscrire"
+    this.seg === 's\'inscrire'
       ? this.userService.createUser(formValue)
       : this.userService.log(formValue);
   }
@@ -93,5 +103,8 @@ export class ConnexionChoiceComponent implements OnInit {
 
   close() {
     this.modalController.dismiss();
+  }
+  retour() {
+    this.navController.navigateBack('');
   }
 }

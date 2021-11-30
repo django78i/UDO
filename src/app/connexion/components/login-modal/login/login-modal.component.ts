@@ -10,11 +10,13 @@ import {
 } from '@angular/core';
 import { MatStepper } from '@angular/material/stepper';
 import {
+  AlertController,
   IonSlides,
   LoadingController,
   ModalController,
   NavController,
   PickerController,
+  Platform,
 } from '@ionic/angular';
 import { UserService as UserService } from 'src/app/services/user-service.service';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
@@ -27,6 +29,7 @@ import {
 import { Subscription } from 'rxjs';
 import { $ } from 'protractor';
 import { SessionNowService } from 'src/app/services/session-now-service.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-modal',
@@ -39,6 +42,7 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
   step: number = 0;
   sex: string = '';
   activitesList: any;
+  currentSlide=0;
   physicalParam = {
     poids: 50,
     taille: 120,
@@ -52,34 +56,76 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
   slideOpts = {
     speed: 400,
   };
+
+  jour ='';
+  mois =''
+  annee ='';
+
   activeIndex: number = 0;
+  fabButton="c-fab";
+  title="Suivant";
+  ignorerText="Ignorer";
+  errorPseudo="";
+  invalidInput="";
+  invalidDate="";
   constructor(
-    public zone: NgZone,
+    public zone: NgZone,private router: Router,
     public modalCtl: ModalController,
     public picker: PickerController,
     public userService: UserService,
     public navController: NavController,
     public loadingController: LoadingController,
     public ref: ChangeDetectorRef,
-    public sessionNowService: SessionNowService
-  ) {}
+    public sessionNowService: SessionNowService,
+    private platform:Platform, private alertController:AlertController
+  ) {
+    this.fabButton ="c-fab";
+    this.platform.backButton.subscribeWithPriority(10, () => {
+      this.presentAlertConfirm();
+    });
+  }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
+  async presentAlertConfirm() {
+    const alert = await this.alertController.create({
+      header: 'Confirmation',
+      mode: 'ios',
+      message: "Voulez vous vraiment arreter l'inscription",
+      buttons: [
+        {
+          text: 'Non',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+          },
+        },
+        {
+          text: 'Oui',
+          handler: () => {
+            // on quitte l'application et on supprime tous les posts
+            this.router.navigate(['login']);
+           // this.displayRecap();
+          },
+        },
+      ],
+    });
+
+    await alert.present();
+  }
   close() {
     this.modalCtl.dismiss();
   }
 
   async change(event) {
     this.activeIndex = await this.sliderComp.getActiveIndex();
-    console.log(this.activeIndex);
   }
 
   async ngAfterViewInit() {
     this.sliderComp.lockSwipeToNext(true);
-    console.log(this.sliderComp.getActiveIndex());
     this.activeIndex = await this.sliderComp.getActiveIndex();
-    console.log(this.activeIndex);
+    this.fabButton ="c-fab";
   }
 
   // login() {
@@ -87,7 +133,9 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
   // }
 
   redirect() {
+    this.sliderComp.lockSwipes(true);
     this.navController.navigateForward(['']);
+    localStorage.setItem('isConnected',"true");
   }
 
   async addPhoto() {
@@ -102,10 +150,70 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
     const theActualPicture = image.dataUrl;
     var imageUrl = image.webPath;
     this.picture = theActualPicture;
+
+  }
+  nextStep(){
+    if(this.activeIndex == 0){
+      this.savePhoto();
+    }else if(this.activeIndex == 1){
+      this.saveDateNaiss();
+    }else if(this.activeIndex == 2){
+      this.genderSlide();
+    }else if(this.activeIndex == 3){
+      this.physicSlide();
+    }
+  }
+  saveDateNaiss(){
+    if(this.fabButton == 'c-fab-img2'){
+      this.step += 0.2;
+      this.ref.detectChanges();
+      this.slideNext();
+      this.fabButton = "c-fab";
+    }
   }
 
-  changeInput(event) {
-    this.pseudo = event.detail.value;
+  ignorer(){
+    this.step += 0.2;
+    this.ref.detectChanges();
+    this.slideNext();
+    this.fabButton = "c-fab";
+   /* if(this.activeIndex===4){
+      this.sliderComp.lockSwipeToPrev(true);
+    }*/
+
+  }
+
+  checkPseudo(){
+    if(this.pseudo!='' && this.pseudo.toLowerCase() != 'admin'){
+      this.fabButton="c-fab-img";
+    }else{
+      this.fabButton="c-fab";
+    }
+    if(this.pseudo.toLocaleLowerCase() == 'admin'){
+      this.errorPseudo ="Ce pseudo est interdit";
+      this.invalidInput ="mat-form-field-invalid";
+    }else{
+      this.errorPseudo="";
+      this.invalidInput ="";
+    }
+  }
+
+  checkDate(){
+    if(parseInt(this.jour)>31 || parseInt(this.jour)<0){
+      this.invalidDate = "Date invalide";
+      return;
+    }
+    if(parseInt(this.mois)>12 || parseInt(this.jour)<0){
+      this.invalidDate = "Date invalide";
+      return;
+    }
+    this.invalidDate="";
+    if(this.jour!='' && this.jour.length == 2 && this.mois!='' && this.mois.length ==2 && this.annee!='' && this.annee.length ==2  ){
+      this.fabButton = "c-fab-img2";
+    }else{
+      this.fabButton = "c-fab";
+    }
+
   }
 
   savePhoto() {
@@ -124,26 +232,32 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
         }
       );
     }
-    if (this.pseudo != '') {
-      this.step += 0.25;
+    if (this.pseudo != '' && this.invalidInput =='') {
+      this.step += 0.2;
       this.ref.detectChanges();
       this.slideNext();
+       this.fabButton ="c-fab"
     }
   }
 
   genderSlide() {
     if (this.physicalParam.taille !== 0 && this.physicalParam.poids !== 0) {
-      this.step += 0.25;
+      this.step =0.6;
       this.ref.detectChanges();
       this.slideNext();
+      this.fabButton = "c-fab-img";
     }
   }
 
+  toDoString(val){
+    return val.toString();
+  }
   physicSlide() {
     if (this.physicalParam.taille !== 0 && this.physicalParam.poids !== 0) {
-      this.step += 0.25;
+      this.step += 0.2;
       this.ref.detectChanges();
       this.slideNext();
+      this.fabButton="c-fab";
     }
   }
 
@@ -190,7 +304,7 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
       activitesPratiquees: this.activitesList ? this.activitesList : '',
       userName: this.pseudo,
       physique: this.physicalParam ? this.physicalParam : '',
-      niveau: 0,
+      niveau: 1,
       metrics: table,
       friends: [],
       exp: 0,
@@ -221,23 +335,46 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
     } else {
       this.physicalParam.taille = ev.taille;
     }
+    if(this.physicalParam.poids && this.physicalParam.taille){
+      this.fabButton ="c-fab-img";
+    }else{
+      this.fabButton ="c-fab";
+    }
   }
 
   choiceSex(event) {
     this.sex = event;
+    if(this.sex){
+      this.fabButton ="c-fab-img";
+    }else{
+      this.fabButton="c-fab";
+    }
+
   }
 
   eventActivite(event) {
-    console.log(event);
     this.activitesList = event;
-    console.log(this.activitesList);
+    if(this.activitesList){
+      this.fabButton = 'c-fab-img';
+    }else{
+      this.fabButton = 'c-fab';
+    }
   }
 
   validate() {
+    this.sliderComp.lockSwipeToPrev(true);
+    this.sliderComp.lockSwipes(true);
     if (this.activitesList) {
-      this.step += 0.25;
+      this.step += 0.2;
       this.ref.detectChanges();
     }
     this.saveOnBoarding();
+  }
+
+  retour() {
+    this.presentAlertConfirm();
+  }
+  parseIntValue(value){
+    return parseInt(value);
   }
 }

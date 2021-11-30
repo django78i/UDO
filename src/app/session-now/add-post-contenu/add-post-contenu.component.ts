@@ -5,6 +5,7 @@ import {
   ViewChild,
   AfterViewInit,
   ChangeDetectorRef,
+  OnDestroy,
 } from '@angular/core';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import {
@@ -15,11 +16,10 @@ import {
   Platform,
 } from '@ionic/angular';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { SessionNowService } from '../../services/session-now-service.service';
 import moment from 'moment';
-import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { ref } from '@firebase/storage';
 import { getDownloadURL, getStorage, uploadString } from 'firebase/storage';
 
@@ -28,7 +28,7 @@ import { getDownloadURL, getStorage, uploadString } from 'firebase/storage';
   templateUrl: './add-post-contenu.component.html',
   styleUrls: ['./add-post-contenu.component.scss'],
 })
-export class AddPostContenuComponent implements OnInit {
+export class AddPostContenuComponent implements OnInit, OnDestroy {
   isPicture = true;
   base64Image: any;
   selectedFile: File = null;
@@ -44,6 +44,10 @@ export class AddPostContenuComponent implements OnInit {
 
   @ViewChild('textAreaZone') textAreaZone: IonInput;
   small = false;
+  mode = '';
+  modeClasse = '';
+  message = '';
+  sub: Subscription;
   constructor(
     private platform: Platform,
     private modalCtr: ModalController,
@@ -51,25 +55,48 @@ export class AddPostContenuComponent implements OnInit {
     public ref: ChangeDetectorRef,
     private navParams: NavParams
   ) {
+    setInterval(() => {
+      if (localStorage.getItem('mode')) {
+        if (localStorage.getItem('mode') === 'landscape') {
+          this.mode = 'landscape';
+          this.modeClasse = 'c-ion-fab-lands';
+          this.message = 'message-lands';
+        } else {
+          this.mode = '';
+          this.modeClasse = 'c-ion-fab';
+          this.message = 'message';
+        }
+      } else {
+        this.mode = '';
+        this.modeClasse = 'c-ion-fab';
+        this.message = 'message';
+      }
+    }, 100);
     this.sessionNow = JSON.parse(localStorage.getItem('sessionNow'));
     this.user = JSON.parse(localStorage.getItem('user'));
-    this.base64Image = localStorage.getItem('picture');
+    //this.base64Image = localStorage.getItem('picture');
     this.activite = JSON.parse(localStorage.getItem('activite'));
     this.picture = this.navParams.get('picture');
-    this.platform.keyboardDidShow.subscribe((ev) => {
+    this.sub = this.platform.keyboardDidShow.subscribe((ev) => {
       const { keyboardHeight } = ev;
       this.isVisible = true;
+      this.ref.detectChanges();
+
       // Do something with the keyboard height such as translating an input above the keyboard.
     });
 
-    this.platform.keyboardDidHide.subscribe(() => {
-      // Move input back to original location
-      this.isVisible = false;
-    });
+    this.sub.add(
+      this.platform.keyboardDidHide.subscribe(() => {
+        // Move input back to original location
+        this.isVisible = false;
+        this.ref.detectChanges();
+      })
+    );
   }
 
   ngOnInit() {
-    console.log(this.picture);
+    console.log(5);
+    //console.log(this.picture);
   }
 
   async close() {
@@ -105,6 +132,8 @@ export class AddPostContenuComponent implements OnInit {
       );
       url = await getDownloadURL(uploadTask.ref);
     }
+    const detailCompet = JSON.parse(localStorage.getItem('detailCompet'));
+
     let postModel: PostModel;
     console.log('no sesionNow');
     postModel = {
@@ -123,6 +152,15 @@ export class AddPostContenuComponent implements OnInit {
       comment: this.comment,
       postCount: 0,
       reactionsNombre: 0,
+      competitionInfo: detailCompet,
+      championnat:
+        detailCompet.competitionType == 'Championnat'
+          ? detailCompet.competitionId
+          : '',
+      challenge:
+        detailCompet.competitionType == 'Challenge'
+          ? detailCompet.competitionId
+          : '',
     };
     this.sessionNowService
       .create(postModel, 'post-session-now')
@@ -157,6 +195,10 @@ export class AddPostContenuComponent implements OnInit {
     const blob = new Blob([arrayBuffer], { type: 'image/png' });
     return blob;
   }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
+  }
 }
 export class PostModel {
   startDate: Date;
@@ -174,4 +216,7 @@ export class PostModel {
   comment: string;
   postCount: number;
   reactionsNombre: number;
+  championnat?: string;
+  competitionInfo?: any;
+  challenge?: string;
 }

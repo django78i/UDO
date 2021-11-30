@@ -19,9 +19,7 @@
 </ion-header>
 
 <section style="padding-bottom: 100px">
-  <ng-container
-    *ngIf="friendsList ; else showNone"
-  >
+  <ng-container *ngIf="friendsList ; else showNone">
     <ion-item
       lines="full"
       class="champColor"
@@ -42,7 +40,24 @@
       <ion-checkbox (click)="selectFriend(friend)"></ion-checkbox>
     </ion-item>
   </ng-container>
-  <ng-template #showNone> <p>Aucn amis</p></ng-template>
+  <ng-container *ngIf="usersList">
+    <ion-item lines="full" class="champColor" *ngFor="let friend of usersList">
+      <ion-avatar style="margin-right: 10px">
+        <img
+          *ngIf="!friend.avatar"
+          src="https://img.icons8.com/ios-filled/50/000000/gender-neutral-user.png"
+          alt=""
+        />
+        <img *ngIf="friend.avatar" [src]="friend.avatar" alt="" />
+        <ion-badge>{{ friend.niveau }}</ion-badge>
+      </ion-avatar>
+      <ion-label>
+        <p class="sousTitre">{{ friend.userName }}</p>
+      </ion-label>
+      <ion-checkbox (click)="selectFriend(friend)"></ion-checkbox>
+    </ion-item>
+  </ng-container>
+  <!-- <ng-template #showNone> <p>Aucn amis</p></ng-template> -->
   <ion-fab
     vertical="bottom"
     horizontal="start"
@@ -50,7 +65,7 @@
     style="width: 100%; --ion-safe-area-left: 0px"
   >
     <ion-button expand="block" class="buttonNextSlide" (click)="create()"
-      >Démarrer</ion-button
+      >{{boutton}}</ion-button
     >
   </ion-fab>
 </section>

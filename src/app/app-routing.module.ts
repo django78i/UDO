@@ -58,9 +58,31 @@ const routes: Routes = [
       import('./chat/chat.module').then((m) => m.ChatPageModule),
   },
   {
+    path: 'competitionsList',
+    loadChildren: () =>
+      import('./components/competitions-list/competitions.module').then(
+        (m) => m.CompetitionsPageModule
+      ),
+  },
+  {
+    path: 'championnat/:id',
+    loadChildren: () =>
+      import('./championnat/championnat.module').then(
+        (m) => m.ChampionnatPageModule
+      ),
+  },
+
+  {
     path: '',
     redirectTo: 'tabs',
     pathMatch: 'full',
+  },
+  {
+    path: 'challenge/:id',
+    loadChildren: () =>
+      import('./challenges-page/challenges-page.module').then(
+        (m) => m.ChallengesPagePageModule
+      ),
   },
 ];
 @NgModule({

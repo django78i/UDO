@@ -49,34 +49,17 @@ export class MusicFeedService {
       limit(15)
     );
     const documentSnapshots = await getDocs(first);
-    // documentSnapshots.forEach((f) => {
-    //   // this.lastVisible = f.data().key;
-    //   table.push(f.data());
-    // });
-
     return this.returnQueryObject(documentSnapshots);
-
-    // // Get the last visible document
-    // const lastVisible: any = documentSnapshots.docs[
-    //   documentSnapshots.docs.length - 1
-    // ]
-    //   ? documentSnapshots.docs[documentSnapshots.docs.length - 1]
-    //   : null;
-    // console.log(documentSnapshots.docs.length);
-    // return { table: table, last: lastVisible };
   }
 
   //Feed global
   async feedFilter(filter: string) {
-    console.log(filter);
     const table = [];
     const db = getFirestore();
     let first;
     const user = await this.userService.getCurrentUser();
-    console.log(user);
     switch (filter) {
       case 'En direct':
-        console.log('direct');
         first = query(
           collection(db, 'post-session-now'),
           where('isLive', '==', true),
@@ -95,7 +78,7 @@ export class MusicFeedService {
         first = query(
           collection(db, 'post-session-now'),
           // where('isLive', '==', true),
-          orderBy('postCount', 'desc'),
+          orderBy('reactionsNombre', 'desc'),
           limit(15)
         );
         break;
@@ -144,7 +127,7 @@ export class MusicFeedService {
           limit(15)
         );
         break;
-      case 'Tendance':
+      case 'Populaire':
         queryColl = query(
           collection(db, 'post-session-now'),
           orderBy('reactionsNombre', 'desc'),
@@ -177,8 +160,8 @@ export class MusicFeedService {
     const queryColl = query(
       collection(db, 'post-session-now'),
       where('championnat', '==', champUid),
-      startAfter(last),
       orderBy('startDate', 'desc'),
+      startAfter(last),
       limit(15)
     );
     const documentSnapshots = await getDocs(queryColl);

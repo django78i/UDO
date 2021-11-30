@@ -24,7 +24,7 @@
     <ion-label>
       <div style="display: flex; gap: 10px; align-items: center">
         <p>{{ post.user.userName }}</p>
-        <ion-note style="font-size: 10px">{{
+        <ion-note style="font-size: 10px; font-weight: 600">{{
           post.startDate | timeRelative
         }}</ion-note>
       </div>
@@ -32,14 +32,34 @@
         style="display: flex; gap: 5px; align-items: center"
         *ngIf="post.activity"
       >
-        <img
-          [src]="post.activity.image"
-          alt=""
-          style="width: 20px; height: 20px"
-        />
-        <p style="font-size: 10px; font-weight: 900">
-          {{ post.activity.name }}
-        </p>
+        <div style="display: flex; gap: 5px; align-items: center">
+          <img
+            style="padding: 5px; border-radius: 50%; background: #eaebef"
+            src="assets/icon/FriendsFamilly.svg"
+            alt=""
+            *ngIf="post.championnatType == 'Friends&Familly'"
+          />
+          <img
+            style="padding: 5px; border-radius: 50%; background: #eaebef"
+            src="assets/icon/Icon feather-globe.svg"
+            alt=""
+            *ngIf="post.championnatType == 'Network'"
+          />
+          <p style="color: #6f99f7; font-size: 10px; font-weight: 600">
+            {{ post.competitionName }}
+          </p>
+        </div>
+
+        <div style="display: flex; gap: 5px; align-items: center">
+          <img
+            [src]="post.activity.image"
+            alt=""
+            style="width: 20px; height: 20px"
+          />
+          <p style="font-size: 10px; font-weight: 900">
+            {{ post.activity.name }}
+          </p>
+        </div>
       </div>
       <ion-note style="font-size: 12px; padding-left: 40px" *ngIf="post.text">{{
         post.comment

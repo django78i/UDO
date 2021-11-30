@@ -32,6 +32,8 @@ import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 import { AngularFireModule } from '@angular/fire/compat';
 import { environment } from '../../environments/environment.prod';
 import {Keyboard} from '@ionic-native/keyboard/ngx';
+import { BackgroundMode } from '@ionic-native/background-mode/ngx';
+
 
 @NgModule({
   imports: [
@@ -50,11 +52,11 @@ import {Keyboard} from '@ionic-native/keyboard/ngx';
     IonicModule.forRoot(),
     NgCircleProgressModule.forRoot(),
     AngularFireModule.initializeApp(environment.firebaseConfig),
-
   ],
   declarations: [SessionNowComponent,ActivitiesPage,ReglagesPage,ListMetricsPage],
   // entryComponents: [ActivitiesPage,ReglagesPage,ListMetricsPage],
-  providers: [Camera,ScreenOrientation,Keyboard ,{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },Health,AppLauncher
+  providers: [Camera,BackgroundMode,ScreenOrientation,Keyboard ,
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },Health,AppLauncher
   ,{provide: HAMMER_GESTURE_CONFIG, useClass: IonicGestureConfig}
   ],
   exports:[ReglagesPage]

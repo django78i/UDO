@@ -3,14 +3,21 @@ import { MusicFeedService } from '../services/music-feed.service';
 import {
   ModalController,
   AnimationController,
-  NavController,
+  NavController, Platform, AlertController, IonRouterOutlet,
 } from '@ionic/angular';
 import { MenuUserComponent } from '../components/menu-user/menu-user.component';
 import { AddContenuComponent } from '../session-now/add-contenu/add-contenu.component';
 import { ExternalSessionNowComponent } from '../session-now/external-session-now/external-session-now.component';
 import { CreatePostComponent } from './component/create-post/create-post.component';
 import { UserService } from '../services/user-service.service';
-import { RouterOutlet, Router, ActivationStart } from '@angular/router';
+
+import {RouterOutlet, Router, ActivationStart, NavigationExtras} from '@angular/router';
+import {Plugins} from '@capacitor/core';
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const { App } = Plugins;
+
+
+
 
 @Component({
   selector: 'app-tabs',
@@ -28,24 +35,39 @@ export class TabsPage implements OnInit {
     public msService: MusicFeedService,
     public navController: NavController,
     private modalCtrl: ModalController,
-    public userService: UserService
+    public userService: UserService,
+    private platform: Platform,
+    public alertController: AlertController,
+    private routerOutlet: IonRouterOutlet
   ) {
   }
 
   ngOnInit() {
+    this.routerOutlet.swipeGesture = false;
     this.userService.getCurrentUser().then((user) => {
       this.user = user;
     });
   }
 
   changeTab(event) {
-    event.tab != 'tab1'
+    event.tab !== 'tab1'
       ? this.msService.currentPlay$.next(false)
       : this.msService.currentPlay$.next(true);
   }
 
   launch() {
-    this.navController.navigateForward('session-now');
+    const navigationExtras: NavigationExtras = {
+      queryParams: {
+        type: 'Séance Libre',
+        // type: 'Championnat',
+        //type: 'Challenge',
+        competitionName:'',
+        competitionId:'',
+        challengeStatus:0,
+        challengeMetric:''
+      }
+    };
+    this.navController.navigateForward(['session-now'], navigationExtras);
   }
 
   /**
@@ -71,4 +93,33 @@ export class TabsPage implements OnInit {
     modal.onDidDismiss().then((data: any) => {});
     return await modal.present();
   }
+  /**
+   * cette alert permet de confirmer la sortie de l'application
+   */
+  async presentAlertConfirm() {
+
+    const alert = await this.alertController.create({
+      header: 'Confirmation',
+      mode: 'ios',
+      message: 'Voulez vous vraiment quitter cette application',
+      buttons: [
+        {
+          text: 'Non',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+          },
+        },
+        {
+          text: 'Oui',
+          handler: () => {
+            App.exitApp();
+          },
+        },
+      ],
+    });
+
+    await alert.present();
+  }
+
 }

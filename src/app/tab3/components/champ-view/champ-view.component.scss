@@ -1,0 +1,33 @@
+.iconTitle {
+  padding-left: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+ion-item {
+  margin-bottom: 20px;
+  width: 90%;
+  margin: 0 auto 20px auto;
+  --inner-padding-end: 0;
+  --background: rgb(228, 228, 228);
+  --padding-top: 10px;
+  --padding-bottom: 10px;
+  --padding-end: 10px;
+  --border-radius: 15px;
+  --detail-icon-color: black;
+  --detail-icon-opacity: 1;
+  --color: black;
+}
+
+.challengeCreate {
+  --background : white;
+  &::part(detail-icon) {
+    background-color: #f2f2f4;
+    --detail-icon-opacity: 1;
+    padding: 5px;
+    width: 30px;
+    height: 31px;
+    border-radius: 11px;
+  }
+}

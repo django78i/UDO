@@ -1,0 +1,121 @@
+ion-segment {
+  width: 80%;
+  margin: auto;
+  background-color: rgb(233, 229, 229);
+  border-radius: 17px;
+  padding: 3px;
+  margin-bottom: 10px;
+}
+ion-segment-button {
+  --padding-top: 10px !important;
+  --padding-bottom: 10px !important;
+  --border-radius: 14px;
+  --color: #25252998;
+  --color-focused: #000000;
+  --color-checked: #000000;
+  ion-label {
+    font-size: 14px;
+    font-weight: 600;
+  }
+}
+
+ion-header {
+  background: #f7f7fa;
+}
+
+:host ::ng-depp {
+  .searchbar-input-container.sc-ion-searchbar-ios {
+    input.searchbar-input {
+      font-size: 14px !important;
+      font-weight: 700 !important;
+    }
+  }
+}
+
+swiper {
+  height: 100%;
+}
+
+ion-card {
+  width: 100%;
+  height: 170px;
+  border-radius: 30px;
+  display: flex;
+  margin: 0;
+  flex-direction: column;
+  justify-content: space-between;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 50%;
+  margin-bottom: 20px;
+  .cardSlide {
+    display: flex;
+    gap: 7px;
+  }
+  ion-label {
+    color: white;
+    font-size: 24px;
+    font-weight: 900;
+  }
+  ion-note {
+    color: white;
+    font-size: 9px;
+    font-weight: 700;
+  }
+  ion-card-header {
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    ion-note::before {
+      content: "créé par ";
+      font-weight: 400;
+    }
+    img {
+      height: 13px;
+      width: 24px;
+    }
+    .typeLogo {
+      background-color: white;
+      height: 25px;
+      width: 25px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
+    }
+  }
+
+  ion-card-content {
+    padding: 0 0 7px 15px;
+    ion-label {
+      font-size: 10px;
+      font-weight: 900;
+    }
+    ion-note {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      img {
+        height: 15px;
+      }
+    }
+    ion-item {
+      padding-right: 0px;
+      --min-height: 45px;
+      &::part(native) {
+        padding-left: 0;
+      }
+    }
+    ion-card-subtitle {
+      background-color: black;
+      color: white;
+      display: initial;
+      padding: 6px 13px;
+      border-radius: 7px;
+      font-size: 8px;
+    }
+  }
+}

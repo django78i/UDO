@@ -8,6 +8,7 @@ import {
   ViewChild,
   ViewChildren,
 } from '@angular/core';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-user-param',
@@ -87,7 +88,7 @@ export class UserParamComponent implements OnInit, AfterViewInit {
   donneeFormat: any[] = [];
   position: string;
   @Input() user: any;
-  max = 20;
+  max: number;
   tableMetrics = [
     '../../assets/icon/metrics/corpshaut.svg',
     '../../assets/icon/metrics/corpsbas.svg',
@@ -99,7 +100,11 @@ export class UserParamComponent implements OnInit, AfterViewInit {
   constructor() {}
 
   ngOnInit() {
+    console.log(this.user);
     this.createGraph();
+    const tableOrder = _.orderBy(this.user.metrics, ['value'], ['desc']);
+    console.log(tableOrder);
+    this.max = this.user.metrics ? Math.round(tableOrder[0].value * 1.2) : 0;
     this.position = this.createStats();
   }
 
@@ -123,11 +128,13 @@ export class UserParamComponent implements OnInit, AfterViewInit {
     let table: any[] = [];
     if (this.user.metrics) {
       this.user.metrics.map((stat, i) => {
-        const ratio = stat.value / this.max;
+        console.log(stat.value);
+        const ratio = stat.value != 0 ? stat.value / this.max : 0;
         const position = {
           x: 130 - this.doneesIniitial[i].vecteur.x * ratio,
           y: 130 - this.doneesIniitial[i].vecteur.y * ratio,
         };
+        console.log(this.max, ratio, stat.value);
         this.statTable.push({
           name: stat.name,
           ratio: ratio * 100,

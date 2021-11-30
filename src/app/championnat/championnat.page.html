@@ -1,0 +1,15 @@
+<ion-content>
+  <ng-container *ngIf="championnat$|async as champ">
+    <app-champ-template
+      [championnat]="champ"
+      [user]="user"
+      [userEncours]="userEncours"
+      [participantsList]="participantsList"
+      (friends)="addFriend($event)"
+      (start)="startChamp($event)"
+      (seance)="seanceNow($event)"
+      (closed)="close($event)"
+      (join)="participer($event)"
+    ></app-champ-template>
+  </ng-container>
+</ion-content>

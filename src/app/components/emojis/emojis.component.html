@@ -5,19 +5,17 @@
   </ion-toolbar>
 </ion-header>
 <ion-content style="--background: white">
-  <section style="display: flex; flex-wrap: wrap">
-    <img
-      (click)="choice(emojiList)"
-      [src]="emojiList.icon"
-      alt=""
-      *ngFor="let emojiList of emojisList$ | async"
-      style="width: 50px"
-    />
+  <section
+    style="display: flex; flex-wrap: wrap; gap: 5px; justify-content: center"
+  >
+    <img #iconSelected [ngClass]="{ black: indice == i, white: indice !== i }"
+    (click)="choice(emojiList, i)" [src]="emojiList.icon" alt="" *ngFor="let
+    emojiList of emojisList$ | async; let i = index" class="imgIcon" />
   </section>
 </ion-content>
 <ion-footer>
   <ion-toolbar style="--border-width: 0">
-    <ion-title *ngIf="emoji">
+    <ion-title *ngIf="emoji" style="font-size: 14px">
       {{ emoji.nom }}
     </ion-title>
   </ion-toolbar>

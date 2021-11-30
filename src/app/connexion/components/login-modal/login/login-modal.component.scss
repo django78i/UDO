@@ -1,6 +1,57 @@
 .progress::part(progress) {
   border-radius: 10px;
 }
+ion-toolbar{
+  .img-back{
+    width: 13px;
+    height: 13px;
+    margin-left: 19px;
+  }
+    --background: transparent !important;
+}
+.label-step{
+  letter-spacing: 2px;
+  color: #000000;
+  opacity: 1;
+  font-family: "AllRoundGothicBold" !important;
+  font-size: 40px;
+}
+.pourcent{
+  color: #000000;
+  font-size: 23px;
+  margin-top: -3px;
+  position: absolute;
+  font-family: "AllRoundGothicBold" !important;
+}
+.text-step{
+  letter-spacing: 0px;
+  text-transform: uppercase;
+  font-family: "PoppinsBold" !important;
+  font-size: 12px;
+  color: #707071;
+  .active-step{
+    color: #000000 !important;
+  }
+}
+.create-profil{
+  letter-spacing: -0.6px;
+  color: #000000;
+  text-align: left;
+  font-size: 20px;
+  font-family: "PoppinsSemiBold" !important;
+  margin-top: 35px;
+}
+.text-profil{
+  width: 365px;
+  height: 35px;
+  text-align: left;
+  font-size:12px;
+  letter-spacing: 0px;
+  color: #707070;
+  opacity: 1;
+  font-family: "PoppinsMedium" !important;
+  margin-top: 17px;
+}
 
 :host ::ng-deep {
   .mat-horizontal-stepper-header-container {
@@ -66,25 +117,65 @@ ion-item::part(detail-icon) {
 
 ion-avatar {
   position: relative;
-  height: 100px;
-  width: 100px;
-  background: #dfdfe8;
+  height: 124px;
+  width: 124px;
+  background: #DFDFE8;
+  .c-picture{
+    width: 33px;
+    height: 37px;
+    margin: 44px auto;
+    text-align: center;
+  }
+  .c-picture-in{
+    width: 100%;
+  }
   ion-badge {
-    font-size: 10px;
     position: absolute;
-    height: 30px;
-    width: 30px;
-    min-width: 26px;
-    min-height: 26px;
-    --padding-top: 8px;
+    height: 39px;
+    width: 39px;
+    --padding-top: 11px;
     --padding-bottom: 8px;
     --background: #33363b;
-    right: -11px;
+    right: 9px;
     bottom: 0;
     border-radius: 50%;
     box-shadow: 0px 3px 8px #1e1c2715;
   }
 }
+.c-form{
+  margin-top: 33px;
+}
+.c-mat-form{
+  width: 355px;
+  font-size: 12px;
+  text-align: left;
+  mat-label{
+    letter-spacing: -0.1px;
+    color: #000000;
+    opacity: 0.5;
+    font-size: 10px;
+    font-family: "PoppinsSemiBold" !important;
+  }
+  input::placeholder{
+    letter-spacing: -0.14px;
+    color: #000000;
+    opacity: 1;
+    font-size: 14px;
+    font-family: "PoppinsSemiBold" !important;
+
+  }
+  input{
+    letter-spacing: -0.14px;
+    color: #000000;
+    opacity: 1;
+    font-size: 14px;
+    font-family: "PoppinsSemiBold" !important;
+
+  }
+
+}
+
+
 
 .photo {
   height: 200px;
@@ -116,18 +207,12 @@ ion-avatar {
 }
 
 .sectionZone {
-  height: 100%;
   padding: 0 15px;
-  position: relative;
 }
 
 .buttonNextSlide {
   height: 80px;
   border-radius: 20px;
-}
-
-ion-slides {
-  height: 100%;
 }
 
 :host ::ng-deep {
@@ -143,4 +228,194 @@ ion-input {
   --padding-start: 15px !important;
   border: 1px solid black;
   border-radius: 12px;
+}
+.fab{
+  margin: auto;
+  .c-fab{
+    border-radius: 33px;
+    --background: #DFDFE8 !important;
+    width: 95%;
+    margin: auto;
+    opacity: 1;
+    margin-bottom: 30px;
+    letter-spacing: 0px;
+    span{
+      color: #000000;
+      opacity: 0.28;
+      font-size: 16px;
+      font-family: "PoppinsSemiBold" !important;
+    }
+  }
+  .c-fab2{
+    --background: #DFDFE8 !important;
+    opacity: 1;
+    letter-spacing: 0px;
+    margin: auto;
+    width: 95%;
+    border-radius: 33px;
+    span{
+      color: #000000;
+      opacity: 0.28;
+      font-size: 16px;
+      font-family: "PoppinsSemiBold" !important;
+    }
+  }
+}
+.fab2{
+
+  z-index: 1;
+  .c-fab{
+    --background: #DFDFE8 !important;
+    opacity: 1;
+    margin-bottom: 30px;
+    letter-spacing: 0px;
+    margin: auto;
+    width: 95%;
+    border-radius: 33px;
+    span{
+      color: #000000;
+      opacity: 0.28;
+      font-size: 16px;
+      font-family: "PoppinsSemiBold" !important;
+    }
+  }
+}
+
+.c-fab-img{
+  --background: #2D2E31 !important;
+
+  opacity: 1;
+  margin-bottom: 30px;
+  letter-spacing: 0px;
+  span{
+    color: #FFFFFF;
+    font-size: 16px;
+    font-family: "PoppinsSemiBold" !important;
+  }
+}
+.c-fab-img2{
+  --background: #2D2E31 !important;
+  z-index: 1;
+  opacity: 1;
+  letter-spacing: 0px;
+  margin-bottom: 30px;
+  span{
+    color: #FFFFFF;
+    font-size: 16px;
+    font-family: "PoppinsSemiBold" !important;
+  }
+}
+
+.ignore{
+  margin-top: -30px;
+  z-index: 99999;
+  text-align: center;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  .text-ignore{
+    letter-spacing: 0px;
+    color: #000000;
+    font-family: "PoppinsSemiBold" !important;
+    font-size: 16px;
+  }
+}
+
+.ignore2{
+  z-index: 99999;
+  margin: auto;
+  text-align: center;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  .text-ignore2{
+    position: relative;
+    letter-spacing: 0px;
+    color: #000000;
+    font-family: "PoppinsSemiBold" !important;
+    font-size: 16px;
+  }
+}
+.error{
+  letter-spacing: 0px;
+  color: #707070;
+  font-family: "PoppinsMedium" !important;
+  font-size: 12px;
+  position: absolute;
+  left: 16px;
+  margin-top: -14px;
+}
+.c-div{
+  margin-top: 50px;
+}
+.c-gender{
+  margin-top: 20px;
+}
+.dateNaisse{
+  margin-top: 110px !important;
+  margin: auto;
+  ion-item{
+    margin: auto;
+  }
+  input{
+    border-bottom-color: #C0C0C7 !important;
+    width: 65px;
+    background: transparent !important;
+    border-top: 4px solid #C0C0C7;
+    border-color: transparent;
+    letter-spacing: 1px;
+    color: #000000;
+    font-size: 50px;
+    font-family: "StaatlichesRegular" !important;
+    padding-left: 8px;
+    text-align: center;
+  }
+  .barre{
+    width: 1px;
+    height: 60px;
+    border: 3px solid #2F3033;
+    opacity: 1;
+    margin: 0 13px 0 26px;
+    transform: rotate(25deg);
+    margin-top: 13px;
+
+  }
+  input:focus-visible {
+    outline: none !important;
+  }
+}
+.invalidDate{
+  letter-spacing: 0px;
+  color: red;
+  font-family: "PoppinsMedium" !important;
+  font-size: 12px;
+  position: absolute;
+  left: 56px;
+  margin-top: 12px;
+}
+.mat-form-field-valid{
+  border: 2px solid black !important;
+}
+
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline-thick {
+  color: black !important ;
+}
+::ng-deep .mat-form-field-appearance-outline:not(.mat-form-field-empty) {
+  color: black !important ;
+}
+::ng-deep .mat-form-field-outline-start {
+  border-radius: 14px 0 0 14px !important;
+  min-width: 14px !important;
+}
+
+::ng-deep .mat-form-field-outline-end {
+  border-radius: 0 14px 14px 0 !important;
+}
+::ng-deep .mat-form-field-label:not(.mat-form-field-empty) {
+  padding-left: 11px;
+}
+::ng-deep .mat-form-field-label {
+  padding-left: 11px;
+}
+
+ion-footer{
+  background-color: #f7f7fa !important;
 }

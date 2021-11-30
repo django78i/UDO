@@ -44,7 +44,7 @@
           *ngIf="!user.avatar"
         />
         <img [src]="user?.avatar" *ngIf="user.avatar" alt="" />
-        <ion-badge>{{ user.niveau }}</ion-badge>
+        <ion-badge class="badgeTop">{{ user.niveau }}</ion-badge>
       </ion-avatar>
       <h3>{{ user.userName }}</h3>
       <div style="display: flex; gap: 10px; align-items: center">
@@ -64,7 +64,27 @@
       <!-- <ion-segment-button value="historique"> Historique </ion-segment-button> -->
     </ion-segment>
     <section *ngIf="seg == 'amis'">
-      <app-friend-page-list [friends]="user.friends"></app-friend-page-list>
+      <!-- <app-friend-page-list [friends]="user.friends"></app-friend-page-list> -->
+      <ng-container *ngIf="user.friends">
+        <ion-item
+          lines="full"
+          class="champColor"
+          *ngFor="let friend of user.friends"
+        >
+          <ion-avatar class="avatarClass">
+            <img
+              *ngIf="!friend.avatar"
+              src="https://img.icons8.com/ios-filled/50/000000/gender-neutral-user.png"
+              alt=""
+            />
+            <img *ngIf="friend.avatar" [src]="friend.avatar" alt="" />
+            <ion-badge class="badgeClass">{{ friend.niveau }}</ion-badge>
+          </ion-avatar>
+          <ion-label>
+            <p class="sousTitre">{{ friend.userName }}</p>
+          </ion-label>
+        </ion-item>
+      </ng-container>
     </section>
     <section *ngIf="seg == 'resume'">
       <app-user-param [user]="user"></app-user-param>

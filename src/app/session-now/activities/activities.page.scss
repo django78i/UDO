@@ -86,4 +86,20 @@ ion-content{
             height: 27px;
         }
     }
+    .rondLands{
+        width: 27px;
+        height: 27px;
+        border-radius: 14px;
+        opacity: 0.3;
+        margin-right: 10px;
+        
+        ion-radio{
+            margin-top: 1px;
+            margin-left: 1px;
+            width: 27px;
+            height: 27px;
+            border: 1px solid gray;
+            border-radius: 50%;
+        }
+    }
 }

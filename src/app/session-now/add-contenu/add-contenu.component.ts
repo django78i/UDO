@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { Component, OnInit, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { SessionNowService } from '../../services/session-now-service.service';
 import moment from 'moment';
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 
 @Component({
   selector: 'app-add-contenu',
@@ -20,15 +20,20 @@ export class AddContenuComponent implements OnInit {
   sessionNow: any;
   postModel: PostModel;
   user;
-  constructor(private modalCtr: ModalController,
-              private storage: AngularFireStorage,
-              private sessionNowService: SessionNowService) {
+  @Input() type: any;
+
+  constructor(
+    private modalCtr: ModalController,
+    private storage: AngularFireStorage,
+    private sessionNowService: SessionNowService,
+    private camera: Camera
+  ) {
     this.sessionNow = JSON.parse(localStorage.getItem('sessionNow'));
     this.user = JSON.parse(localStorage.getItem('user'));
   }
 
-  ngOnInit() { 
-    console.log('openData')
+  ngOnInit() {
+    console.log(this.type);
   }
 
   async close() {
@@ -36,7 +41,7 @@ export class AddContenuComponent implements OnInit {
     await this.modalCtr.dismiss(closeModal);
   }
 
-  async openCamera() {
+  /* async openCamera() {
     const image = await Camera.getPhoto({
       quality: 100,
       allowEditing: false,
@@ -51,9 +56,9 @@ export class AddContenuComponent implements OnInit {
     // this.upload();
     this.modalCtr.dismiss(this.base64Image);
 
-  }
+  } */
 
-  async openGallery() {
+  /* async openGallery() {
     const image = await Camera.getPhoto({
       quality: 100,
       allowEditing: false,
@@ -67,66 +72,137 @@ export class AddContenuComponent implements OnInit {
     // this.upload();
     this.modalCtr.dismiss(this.base64Image);
 
+  } */
+
+  /**
+   * cette fonction permet d'ouvrir la gallery
+   */
+  openGallery() {
+    const encode = this.type
+      ? this.camera.EncodingType.PNG
+      : this.camera.EncodingType.JPEG;
+    console.log(encode);
+    const options: CameraOptions = {
+      quality: 100,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      encodingType: encode,
+      mediaType: this.camera.MediaType.PICTURE,
+      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
+    };
+    this.camera.getPicture(options).then(
+      (imageData) => {
+        // this.base64Image = 'data:image/jpeg;base64,' + imageData;
+        this.base64Image = this.type
+          ? 'data:image/png;base64,' + imageData
+          : 'data:image/jpeg;base64,' + imageData;
+        if (this.base64Image) {
+          this.modalCtr.dismiss(this.base64Image);
+        }
+      },
+      (err) => {
+        // Handle error
+      }
+    );
+  }
+  /**
+   * cette fonction permet d'ouvrir la camera
+   */
+  openCamera() {
+    console.log('ici');
+    const options: CameraOptions = {
+      quality: 100,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE,
+    };
+
+    this.camera.getPicture(options).then(
+      (imageData) => {
+        // imageData is either a base64 encoded string or a file URI
+        // If it's base64 (DATA_URL):
+        this.base64Image = 'data:image/jpeg;base64,' + imageData;
+        if (this.base64Image) {
+          this.modalCtr.dismiss(this.base64Image);
+        }
+      },
+      (err) => {
+        // Handle error
+      }
+    );
   }
 
   upload(): void {
-    var currentDate = new Date().getTime();
+    const currentDate = new Date().getTime();
     const file: any = this.base64ToImage(this.base64Image);
     const filePath = `images/${currentDate}`;
     const fileRef = this.storage.ref(filePath);
     this.sessionNowService.presentLoading();
     const task = this.storage.upload(`images/${currentDate}`, file);
-    
-    task.snapshotChanges()
-      .pipe(finalize(() => {
+
+    task
+      .snapshotChanges()
+      .pipe(
+        finalize(() => {
           this.downloadURL = fileRef.getDownloadURL();
-          this.downloadURL.subscribe(downloadURL => {
-            if (downloadURL) {
-              let image = {
-                picture: this.base64Image,
-                path: filePath
+          this.downloadURL.subscribe(
+            (downloadURL) => {
+              if (downloadURL) {
+                const image = {
+                  picture: this.base64Image,
+                  path: filePath,
+                };
+                localStorage.setItem('image', JSON.stringify(image));
+                if (!this.sessionNow) {
+                  this.close();
+                  this.sessionNowService.dissmissLoading();
+                  this.sessionNowService.show(
+                    'Image chargée avec succès',
+                    'success'
+                  );
+                } else {
+                  const postModel: PostModel = {
+                    startDate: moment().format('DD/MM/YYYY'),
+                    userName: this.user ? this.user.userName : '',
+                    userId: this.user ? this.user.uid : '',
+                    sessionId: this.sessionNow.uid,
+                    photo: this.base64Image,
+                    activity: this.sessionNow.activity,
+                    type: 'picture',
+                    isLive: false,
+                    reactions: [],
+                    mode: this.sessionNow.mode,
+                    userAvatar: this.sessionNow.userAvatar,
+                    niveau: this.sessionNow.userNiveau,
+                  };
+                  this.sessionNowService
+                    .create(postModel, 'post-session-now')
+                    .then((resPicture) => {
+                      this.close();
+                      this.sessionNowService.dissmissLoading();
+                      this.sessionNowService.show(
+                        'Image créée avec succès',
+                        'success'
+                      );
+                    });
+                }
               }
-              localStorage.setItem('image', JSON.stringify(image));
-              if (!this.sessionNow) {
-                this.close();
-                this.sessionNowService.dissmissLoading();
-                this.sessionNowService.show('Image chargée avec succès', 'success');
-              } else {
-                let postModel: PostModel = {
-                  startDate: moment().format('DD/MM/YYYY'),
-                  userName: this.user ? this.user.userName : '',
-                  userId: this.user ? this.user.uid : '',
-                  sessionId: this.sessionNow.uid,
-                  photo: this.base64Image,
-                  activity: this.sessionNow.activity,
-                  type: 'picture',
-                  isLive: false,
-                  reactions : [],
-                  mode: this.sessionNow.mode,
-                  userAvatar: this.sessionNow.userAvatar,
-                  niveau: this.sessionNow.userNiveau,                }
-                this.sessionNowService.create(postModel, 'post-session-now')
-                  .then(resPicture => {
-                    this.close();
-                    this.sessionNowService.dissmissLoading();
-                    this.sessionNowService.show('Image créée avec succès', 'success');
-                  })
-              }
+            },
+            (error) => {
+              this.sessionNowService.show(
+                'Erreur sur le serveur veuillez réssayé',
+                'error'
+              );
+              this.sessionNowService.dissmissLoading();
             }
-          }, error => {
-            this.sessionNowService.show('Erreur sur le serveur veuillez réssayé', 'error');
-            this.sessionNowService.dissmissLoading();
-          });
+          );
         })
       )
-      .subscribe(url => {
+      .subscribe((url) => {
         if (url) {
           console.log(url);
         }
       });
   }
-
-
 
   base64ToImage(dataURI) {
     const fileDate = dataURI.split(',');
@@ -153,5 +229,5 @@ export class PostModel {
   mode: string;
   userAvatar: string;
   niveau: number;
-  reactions : []
+  reactions: [];
 }

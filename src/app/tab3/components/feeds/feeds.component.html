@@ -44,10 +44,10 @@
         <ion-icon
           *ngIf="!picture"
           name="image-outline"
-          (click)="addPhoto()"
+          (click)="addContenu()"
           slot="start"
         ></ion-icon>
-        <ion-icon name="camera-outline" (click)="takePhoto()"></ion-icon>
+        <!-- <ion-icon name="camera-outline" (click)="addContenu()"></ion-icon> -->
         <div style="position: relative" *ngIf="picture">
           <img [src]="picture" alt="" class="photoJoin" />
           <img

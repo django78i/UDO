@@ -20,8 +20,9 @@ import { MenuUserComponent } from '../components/menu-user/menu-user.component';
 import { ModalController, AnimationController } from '@ionic/angular';
 import { UserService } from '../services/user-service.service';
 import { EmojisComponent } from '../components/emojis/emojis.component';
-import { DetailPostComponent } from '../tab3/components/detail-post/detail-post.component';
 import { UserProfilComponent } from '../components/user-profil/user-profil.component';
+import { SessionNowService } from '../services/session-now-service.service';
+import { DetailPostComponent } from '../tab3/components/detail-post/detail-post.component';
 
 interface Reaction {
   icon: string;
@@ -98,23 +99,36 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
     public http: HttpClient,
     public navCtl: NavController,
     public userService: UserService,
-    public ref: ElementRef
+    public ref: ElementRef,
+    public snsService: SessionNowService
   ) {}
 
-  async ngOnInit() {
+  ngOnInit() {}
+
+  ionViewDidEnter() {
+    console.log('ionViewDidEnter');
     const user = from(this.userService.getCurrentUser());
     this.subscription = user.subscribe((us) => {
       this.user = us;
+      this.snsService.controlLive(this.user.uid);
     });
+    this.getFeeds();
+  }
+
+
+  async getFeeds() {
     const feed = await this.feedService.feedFilter('Récent');
     this.loading = false;
     this.feeds = feed.table;
-    console.log(this.feeds);
     this.lastVisible = feed.last;
     this.indice = 0;
   }
 
-  ngAfterContentChecked() {}
+  ngAfterContentChecked() {
+    if (this.swiper2) {
+      this.swiper2.map((swip) => swip.updateSwiper({}));
+    }
+  }
 
   async showMenu() {
     const modal = await this.modalController.create({
@@ -136,7 +150,6 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
     setTimeout(() => {
       event.target.complete();
       this.lastVisible = feedPlus.last;
-      console.log(taille.last);
       feedPlus.table.forEach((fed) => this.feeds.push(fed));
       if (taille.last.data() <= this.feeds.length) {
         event.target.disabled = true;
@@ -147,7 +160,6 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
   //Refresh du feed
   async doRefresh(event) {
     this.feeds = [];
-    console.log(event);
     const feedRefresh = await this.feedService.feedFilter(this.filter);
     setTimeout(() => {
       event.target.complete();
@@ -172,7 +184,7 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
     modal.onDidDismiss().then((data) => {
       this.reaction = data.data;
       if (data.data) {
-        this.controleReaction(i, feedLik.reactions);
+        this.controleReaction(i, feedLik.reactions, data.data);
       }
       this.reaction = null;
     });
@@ -180,17 +192,13 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
   }
 
   controleReaction(i: number, reactions?: any[], reaction?: any) {
-    console.log(this.reaction);
     const react: Reaction[] = reactions;
-    console.log(react);
     //l'émoji existe déjà
     const isEmojiExist = react.findIndex((f) =>
-      this.reaction ? f.nom == this.reaction.nom : f.nom == reaction.nom
+      reaction ? f.nom == reaction.nom : f.nom == reaction.nom
     );
 
     if (isEmojiExist != -1) {
-      console.log('parla');
-
       //incrémente de 1 compteur général réactions
       this.feeds[i].reactionsNombre += 1;
 
@@ -206,9 +214,9 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
       });
     } else {
       //incrémente de 1 compteur général réactions
-      this.feeds[i].reactionsNombre = this.feeds[i].reactionsNombre += 1;
+      this.feeds[i].reactionsNombre = this.feeds[i].reactionsNombre + 1;
       this.feeds[i].reactions.push({
-        ...this.reaction,
+        ...reaction,
         nombre: 1,
         users: [
           {
@@ -220,12 +228,12 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
         ],
       });
     }
-    console.log(this.feeds[i].reactionsNombre);
 
     //création object réactions pour le séanceNow
     if (this.feeds[i].type == 'session-now') {
+      // const reactionFilter = this.reaction ? this.reaction : reaction;
       const reactionPost = {
-        ...this.reaction,
+        reaction,
         user: {
           uid: this.user.uid,
           name: this.user.userName,
@@ -252,7 +260,6 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
   }
 
   async openProfil(contact) {
-    console.log(contact);
     const modal = await this.modalController.create({
       component: UserProfilComponent,
       componentProps: {

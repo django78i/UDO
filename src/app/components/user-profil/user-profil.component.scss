@@ -27,7 +27,7 @@ ion-avatar {
   border: 5px solid white;
   background: #ddd7d7;
   position: relative;
-  ion-badge {
+  ion-badge.badgeTop {
     font-size: 18px;
     position: absolute;
     width: 40px;
@@ -47,4 +47,46 @@ ion-avatar {
 ion-fab-button {
   width: 60px;
   height: 60px;
+}
+
+.champColor {
+  height: 70px;
+  --detail-icon-opacity: 1;
+  --detail-icon-color: black;
+  &::part(detail-icon) {
+    background: #e0e0e0;
+    padding: 5px;
+    width: 30px;
+    height: 31px;
+    border-radius: 11px;
+  }
+}
+
+.badgeClass {
+  font-size: 10px;
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  --padding-top: 8px;
+  --padding-end: 0;
+  --padding-bottom: 8px;
+  --padding-start: 0;
+  --background: white;
+  --color: black;
+  right: -11px;
+  bottom: 0;
+  border-radius: 50%;
+}
+.avatarClass {
+  position: relative;
+  height: 57px;
+  width: 57px;
+  margin-right: 10px;
+}
+
+ion-item {
+  display: flex;
+  align-items: center;
+  --inner-padding-top: 3px;
+  --inner-padding-bottom: 5px;
 }

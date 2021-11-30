@@ -1,25 +1,55 @@
-<swiper #swiper [config]="config" style="padding-left: 26px;" (slideChange)="change($event)">
-  <ng-template swiperSlide *ngFor="let chall of challenges" >
-    <ion-card [style.background]="chall.background">
+<swiper
+  #swiper
+  [config]="config"
+  style="padding-left: 26px"
+  (slideChange)="change($event)"
+>
+  <ng-template swiperSlide *ngFor="let chall of challenges">
+    <ion-card
+      (click)="showChallenge(chall.uid)"
+      [style.backgroundColor]="chall.banniereColor"
+      style="background-image: url('assets/icon/udoIconFond.svg')"
+    >
       <ion-card-header>
         <ion-card-title class="cardSlide">
-          <img [src]="chall.icon" alt=""
-            style="margin-right: 10px; background-color: white;border-radius: 50%;padding: 5px;width: 30px;height: 30px;">
-          <ion-label style="font-size:12px;color: white; font-weight: 700">{{chall.name}}</ion-label>
+          <img
+            [src]="chall.icon"
+            alt=""
+            style="
+              margin-right: 10px;
+              background-color: white;
+              border-radius: 50%;
+              padding: 5px;
+              width: 30px;
+              height: 30px;
+            "
+          />
+          <ion-label style="font-size: 12px; color: white; font-weight: 700">{{
+            chall.name
+          }}</ion-label>
         </ion-card-title>
       </ion-card-header>
 
       <ion-card-content class="cardContentZone">
         <!-- <div>Current slide is {{ data.isActive ? 'active' : 'not active' }}</div> -->
-        <ion-item style="--background	: transparent;" lines="none">
-          <ion-label>
-            {{chall.completion.value}}
-            <img src="../../assets/icon/Icon feather-percent.svg" alt="">
+        <ion-item style="--background: transparent" lines="none">
+          <ion-label slot="start">
+            {{ (chall.completion.value / chall.objectifs) * 100 | number:'1.1-2' }} %
+            <!-- <img src="../../assets/icon/Icon feather-percent.svg" alt="" /> -->
           </ion-label>
+          <ion-label style="font-size: 14px; text-align: end"
+            >{{chall.completion.value | number:'1.1-1'}}/{{ chall.objectifs }} {{ chall.metric.metric }}</ion-label
+          >
           <!-- <ion-note>{{chall.dateFin|timeRelative | uppercase}}</ion-note> -->
         </ion-item>
-        <ion-progress-bar [value]="chall.completion.percent"
-          style=" --progress-background	 : white; height: 6px;border-radius: 10px;"></ion-progress-bar>
+        <ion-progress-bar
+          [value]="chall.completion.percent"
+          style="
+            --progress-background: rgb(138, 44, 44);
+            height: 6px;
+            border-radius: 10px;
+          "
+        ></ion-progress-bar>
       </ion-card-content>
     </ion-card>
   </ng-template>

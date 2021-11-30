@@ -28,12 +28,15 @@
       }}</ion-label>
     </div>
   </ion-item>
-  <ion-item lines="full">
-    <ion-progress-bar
-      style="height: 23px; border-radius: 34px; --background: #eaebef"
-      value="0.5"
-    ></ion-progress-bar>
-  </ion-item>
+  <ion-row class="progress">
+    <ion-progress-bar [value]="xpNewOnTotal" class="two"></ion-progress-bar>
+    <span class="rond-progress">
+      <span class="valeur"> {{ user.niveau }} </span>
+    </span>
+  </ion-row>
+  <ion-row style="height: 30px">
+    <span class="xp">{{ user.exp }} / {{ max }} XP</span>
+  </ion-row>
 </ion-header>
 <ion-content>
   <ion-list>

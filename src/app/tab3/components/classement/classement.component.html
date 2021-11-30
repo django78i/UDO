@@ -16,7 +16,7 @@
       <ion-label
         slot="start"
         style="font-size: 28px; font-weight: 700"
-        *ngIf="champ.status == 'en cours'"
+        *ngIf="championnat.status == 'en cours'"
         >{{ i + 1 }}</ion-label
       >
       <ion-item lines="none">
@@ -47,7 +47,7 @@
           </h3>
           <p
             style="font-size: 12px; font-weight: 500; color: black"
-            *ngIf="champ.status == 'en cours'"
+            *ngIf="championnat.status == 'en cours'"
           >
             J.<span style="font-weight: 600">{{ cl.journeeEnCours }}</span>
             <ion-icon
@@ -61,7 +61,7 @@
       <ion-label
         slot="end"
         style="display: flex; align-items: center; flex-direction: column"
-        *ngIf="champ.status == 'en cours'"
+        *ngIf="championnat.status == 'en cours'"
       >
         <p
           style="font-size: 18px; font-weight: 700; color: black; margin: 4px 0"
@@ -72,7 +72,7 @@
       </ion-label>
       <ion-chip
         slot="end"
-        *ngIf="champ.status == 'en attente'"
+        *ngIf="championnat.status == 'en attente'"
         [ngClass]="{ green: cl.etat == 'prêt', good: cl.etat == 'en attente' }"
         style="font-size: 10px; font-weight: 700"
       >

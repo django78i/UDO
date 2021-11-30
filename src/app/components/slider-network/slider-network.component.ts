@@ -36,9 +36,9 @@ export class SliderNetworkComponent implements OnInit {
   };
 
   ngAfterContentChecked(): void {
-    if (this.swiper) {
-      this.swiper.map((swip) => swip.updateSwiper({}));
-    }
+    // if (this.swiper) {
+    //   this.swiper.map((swip) => swip.updateSwiper({}));
+    // }
   }
 
   choice(champ) {

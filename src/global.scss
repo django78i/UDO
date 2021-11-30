@@ -26,7 +26,7 @@
 @import "~@ionic/angular/css/flex-utils.css";
 //Swiper
 @import "~swiper/swiper-bundle";
-
+$--ion-backdrop-opacity:#F4F5FA;
 ion-content,
 ion-header,
 ion-footer {
@@ -128,7 +128,14 @@ h4 {
     0.5
   ) !important;
 }
+
 ion-slides.aideSlide
+  .swiper-pagination-bullets
+  .swiper-pagination-bullet-active {
+  opacity: 1;
+  background: #19191cab !important;
+}
+ion-slides.aideSlideLands
   .swiper-pagination-bullets
   .swiper-pagination-bullet-active {
   opacity: 1;
@@ -139,6 +146,29 @@ ion-slides.preseanceSlide
   .swiper-pagination-bullet-active {
   opacity: 1;
   background: #19191cab !important;
+}
+ion-slides.preseanceSlideLands
+  .swiper-pagination-bullets
+  .swiper-pagination-bullet-active {
+  opacity: 1;
+  background: #19191cab !important;
+}
+ion-slides.slideDemarrage
+  .swiper-pagination-bullets
+  .swiper-pagination-bullet-active {
+  opacity: 1;
+  background: white !important;
+}
+ion-slides.slideDemarrage  .swiper-pagination-bullets{
+  position: absolute;
+  bottom: 23%;
+  text-align: left;
+  margin-left: 39px;
+  z-index: 1;
+}
+ion-slides.slideDemarrage  .swiper-pagination-bullet {
+
+  background: #c3bbbb !important;
 }
 ion-slides.aideSlide {
   height: 92%;
@@ -185,4 +215,13 @@ ion-slides.preseanceSlide {
   --backdrop-opacity: 0 !important;
   width: 93%;
   margin: auto;
+}
+.sc-ion-modal-ios-h:first-of-type{
+  --backdrop-opacity: 0 !important;
+}
+.header-ios ion-toolbar:last-of-type {
+  --border-width: 0 !important;
+}
+ion-header{
+  box-sizing: none;
 }

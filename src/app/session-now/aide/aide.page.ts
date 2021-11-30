@@ -11,11 +11,27 @@ export class AidePage implements OnInit {
     slidesPerView: 1,
     autoplay: false
   };
-  constructor() { }
+  mode = "";
+  modeClasse = "";
+  constructor() {
+    setInterval(() => {
+      if (localStorage.getItem('mode')) {
+        if (localStorage.getItem('mode') == 'landscape') {
+          this.mode = 'landscape';
+          this.modeClasse = "aideSlideLands";
+        } else {
+          this.mode = 'portrait';
+          this.modeClasse = "aideSlide";
+        }
+      } else {
+        this.modeClasse = "aideSlide";
+      }
+    }, 100);
+  }
 
   ngOnInit() {
   }
-  close(){
+  close() {
     window.history.back();
   }
 }

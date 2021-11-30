@@ -20,9 +20,14 @@ import { MediaCapture } from '@ionic-native/media-capture/ngx';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { TimeRelativePipe } from './pipe/time-relative.pipe';
 import { TimeChampPipe } from './pipe/time-champ.pipe';
+import { NumberOnlyDirective } from './directives/numberOnly.directive';
+import { BackgroundMode } from '@ionic-native/background-mode/ngx';
+import { Camera } from '@ionic-native/camera/ngx';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [
+    AppComponent
+    ],
   entryComponents: [],
   imports: [
     BrowserModule,
@@ -45,6 +50,8 @@ import { TimeChampPipe } from './pipe/time-champ.pipe';
     VideoEditor,
     MediaCapture,
     NativeStorage,
+    BackgroundMode,
+    Camera,
   ],
   bootstrap: [AppComponent],
 })

@@ -8,22 +8,25 @@
     ></ion-img>
     <ion-title class="name">POSTER UN MEDIA</ion-title>
   </ion-toolbar>
-</ion-header>
-<ion-content>
-  <ion-row>
-    <img [src]="picture" class="c-img" />
+  <ion-row
+    class="c-img"
+    *ngIf="picture"
+    [ngStyle]="{ 'background-image': 'url(' + picture + ')' }"
+  >
   </ion-row>
+
+  <!-- <ion-row>
+    <img [src]="picture" class="c-img" />
+  </ion-row> -->
   <ion-row class="activite">
     <span class="rond">
-      <ion-img [src]="activite.image"></ion-img>
+      <ion-img [src]="activite?.image"></ion-img>
     </span>
-    <span class="nameActivity">{{ activite.name }}</span>
+    <span class="nameActivity">{{ activite?.name }}</span>
   </ion-row>
+
   <ion-row class="message">
     <ion-input
-      (keyup.enter)="publier()"
-      (ionBlur)="blur($event)"
-      (ionFocus)="active($event)"
       (ionChange)="changeInput($event)"
       class="c-textarea"
       placeholder="Commentez votre post"
@@ -32,15 +35,8 @@
     <ion-img class="crayon" src="assets/images/crayon.PNG"></ion-img>
   </ion-row>
 </ion-content>
-<ion-footer>
-  <ion-footer>
-    <ion-button
-      *ngIf="!isVisible"
-      expand="block"
-      class="c-ion-fab"
-      (click)="publier()"
-      type="submit"
-      >Publier</ion-button
-    >
-  </ion-footer>
+
+<ion-footer (click)="publier()" *ngIf="!isVisible">
+    <div expand="block" [class]="modeClasse"  type="submit">Publier
+    </div>
 </ion-footer>

@@ -9,6 +9,7 @@ import { Tab1PageRoutingModule } from './tab1-routing.module';
 import { SwiperModule } from 'swiper/angular';
 import { TimeRelativePipe } from '../pipe/time-relative.pipe';
 import { TimeFeedPipe } from '../pipe/time-feed.pipe';
+import { HeaderComponent } from '../components/header/header.component';
 
 @NgModule({
   imports: [
@@ -20,6 +21,6 @@ import { TimeFeedPipe } from '../pipe/time-feed.pipe';
     MatProgressSpinnerModule,
     SwiperModule,
   ],
-  declarations: [Tab1Page, TimeRelativePipe, TimeFeedPipe],
+  declarations: [Tab1Page, TimeRelativePipe, TimeFeedPipe, HeaderComponent],
 })
 export class Tab1PageModule {}

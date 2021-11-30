@@ -1,10 +1,12 @@
 import {
   AfterContentChecked,
+  AfterViewInit,
   ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
   NgZone,
+  OnChanges,
   OnInit,
   Output,
   QueryList,
@@ -22,7 +24,9 @@ import { UserService } from 'src/app/services/user-service.service';
   templateUrl: './user-championnats-slide.component.html',
   styleUrls: ['./user-championnats-slide.component.scss'],
 })
-export class UserChampionnatsSlideComponent implements OnInit {
+export class UserChampionnatsSlideComponent
+  implements OnInit, AfterViewInit, OnChanges
+{
   @Input() championnats: any[];
   @Output() champ: EventEmitter<any> = new EventEmitter();
 
@@ -41,20 +45,42 @@ export class UserChampionnatsSlideComponent implements OnInit {
     public userService: UserService
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    let user = JSON.parse(localStorage.getItem('user'));
+    if (this.championnats.length) {
+      this.championnats.forEach((champ, i) => {
+        this.userInfo = champ.participants.find(
+          (userChamp) => user.uid == userChamp.uid
+        );
+        // console.log(this.userInfo);
+        champ.userInfo = this.userInfo;
+        // this.ref.detectChanges()
+      });
+      console.log(this.championnats);
+    }
+  }
+
+  ngOnChanges() {
+    let user = JSON.parse(localStorage.getItem('user'));
+    if (this.championnats.length) {
+      this.championnats.forEach((champ, i) => {
+        this.userInfo = champ.participants.find(
+          (userChamp) => user.uid == userChamp.uid
+        );
+        // console.log(this.userInfo);
+        champ.userInfo = this.userInfo;
+        // this.ref.detectChanges()
+      });
+      console.log(this.championnats);
+    }
+  }
+
+  ngAfterViewInit() {}
 
   ngAfterContentChecked(): void {
-    if (this.swiper) {
-      this.swiper.map((swip) => swip.updateSwiper({}));
-      let user = JSON.parse(localStorage.getItem('user'));
-      if (this.championnats.length) {
-        this.championnats.map((champ, i) => {
-          this.userInfo = champ.participants.find(
-            (userChamp) => user.uid == userChamp.uid
-          );
-        });
-      }
-    }
+    // if (this.swiper) {
+    //   this.swiper.map((swip) => swip.updateSwiper({}));
+    // }
   }
 
   choice(champ) {
