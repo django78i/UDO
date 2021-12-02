@@ -26,7 +26,9 @@ import { ChallTemplateComponent } from '../components/chall-template/chall-templ
     ClassementChallengeComponent,
     TimeChampPipe,
     TimeRelativePipe,
-    ChallTemplateComponent
+    ChallTemplateComponent,
+    ResumeChallengeComponent,
+    ClassementChallengeComponent,
   ],
 })
 export class ChallengesPagePageModule {}

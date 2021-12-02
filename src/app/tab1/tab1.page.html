@@ -258,6 +258,8 @@
             </ion-label>
 
             <img
+              (click)="presentEditPost($event, item.uid)"
+              *ngIf="user.uid == item.userId"
               slot="end"
               src="../../assets/icon/threeDot.svg"
               alt=""

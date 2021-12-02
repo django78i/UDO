@@ -1,15 +1,150 @@
-<ion-content>
+<ion-header mode="ios" collapse="condense">
+  <ion-toolbar style="--border-width: 0 0 0 !important">
+    <ion-button
+      slot="start"
+      (click)="close()"
+      style="--background: transparent; --background-activated: transparent"
+    >
+      <img src="../../../../assets/mocks/Icon feather-arrow-left.svg" alt="" />
+    </ion-button>
+    <ion-buttons slot="end">
+      <ion-button>
+        <img src="../../../../assets/mocks/Icon feather-share-2.svg" alt="" />
+      </ion-button>
+      <ion-button>
+        <img src="../../../../assets/mocks/Icon feather-settings.svg" alt="" />
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-card
+    *ngIf="championnat$|async as championnat"
+    [style.backgroundColor]="championnat.banniere.color"
+    style="background-image: url('assets/icon/udoIconFond.svg')"
+    [ngClass]="{ notActive: segmentValue != 'resume' }"
+  >
+    <ion-card-header [ngClass]="{ notActiveContent: segmentValue != 'resume' }">
+      <ion-card-subtitle *ngIf="championnat?.status == 'en cours'">
+        {{ championnat?.dateFin | timeChamp }}
+      </ion-card-subtitle>
+      <ion-card-subtitle *ngIf="champ?.status == 'en attente'">
+        {{ championnat?.dateDemarrage | timeChamp }}
+      </ion-card-subtitle>
+      <ion-card-title style="color: white"
+        >{{ championnat?.name }}</ion-card-title
+      >
+    </ion-card-header>
+
+    <ion-card-content>
+      <div style="display: flex">
+        <ng-container *ngFor="let champ of participantsList; let i = index">
+          <ion-avatar style="--i : {{ i }}; --mess : {{ champ.user.niveau }} ">
+            <img [src]="champ?.user.avatar" alt="" />
+            <ion-badge>{{ champ.user.niveau }}</ion-badge>
+          </ion-avatar>
+        </ng-container>
+        <div
+          class="champCarousel"
+          *ngIf="championnat.participants.length - participantsList.length != 0"
+        >
+          <p style="font-size: 20px">
+            + {{ championnat?.participants.length - participantsList?.length }}
+          </p>
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
+  <ion-segment
+    (ionChange)="segmentChanged($event)"
+    [value]="segmentValue"
+    mode="ios"
+  >
+    <ion-segment-button value="resume">
+      <ion-label>Résumé</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="participants">
+      <ion-label>Participants</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="feed">
+      <ion-label>Feed</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+</ion-header>
+
+<ion-content fullscreen>
   <ng-container *ngIf="championnat$|async as champ">
     <app-champ-template
       [championnat]="champ"
       [user]="user"
       [userEncours]="userEncours"
       [participantsList]="participantsList"
-      (friends)="addFriend($event)"
-      (start)="startChamp($event)"
-      (seance)="seanceNow($event)"
-      (closed)="close($event)"
-      (join)="participer($event)"
+      [segmentValue]="segmentValue"
     ></app-champ-template>
+    <div
+      style="
+        position: fixed;
+        bottom: 0;
+        display: flex;
+        justify-content: center;
+        align-content: center;
+        width: 100%;
+        z-index: 100;
+        padding-bottom: 10px;
+      "
+    >
+      <ion-button
+        class="buttonNextSlide"
+        style=" --i : {{ championnat.banniere.color }}"
+        (click)="startChamp()"
+        *ngIf="championnat.status == 'en attente' && championnat.createur.uid == user.uid"
+        >{{ loading ? "" : "Démarrer" }}<ion-spinner
+          *ngIf="loading"
+          name="crescent"
+          mode="md"
+        ></ion-spinner
+      ></ion-button>
+      <ion-button
+        class="buttonNextSlide"
+        style=" --i : {{ championnat.banniere.color }}"
+        (click)="participer()"
+        *ngIf="championnat?.status == 'en attente' &&  userEncours?.etat == 'en attente'"
+        >Participer</ion-button
+      >
+      <ion-button
+        class="buttonNextSlide"
+        style=" --i : {{ championnat.banniere.color }}"
+        *ngIf="championnat?.status == 'en attente' && userEncours?.etat == 'prêt' && championnat?.createur.uid != user.uid"
+        ><span *ngIf="!loading">
+          {{ championnat.dateDemarrage | timeChamp }}</span
+        ></ion-button
+      ><ion-spinner *ngIf="loading" name="crescent" mode="md"></ion-spinner>
+
+      <ion-button
+        style=" --i : {{ championnat.banniere.color }}"
+        (click)="seanceNow()"
+        *ngIf="championnat?.status == 'en cours'"
+        class="buttonNextSlide"
+        >Séance Now</ion-button
+      >
+    </div>
+  </ng-container>
+  <ng-container *ngIf="championnat$|async as championnat">
+    <ion-fab
+      vertical="bottom"
+      horizontal="end"
+      slot="fixed"
+      *ngIf="championnat?.createur.uid == user.uid && championnat?.status == 'en attente' "
+    >
+      <ion-fab-button color="dark" style="width: 70px; height: 70px">
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-list side="top">
+        <ion-fab-button color="primary" (click)="addFriend()">
+          <img src="assets/icon/friends-white.svg" alt="" />
+        </ion-fab-button>
+        <ion-fab-button color="success" (click)="chat()">
+          <img src="assets/icon/chat_white.svg" alt="" />
+        </ion-fab-button>
+      </ion-fab-list>
+    </ion-fab>
   </ng-container>
 </ion-content>

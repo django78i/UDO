@@ -3,6 +3,7 @@ import {
   ChangeDetectorRef,
   Component,
   Input,
+  NgZone,
   OnDestroy,
   OnInit,
   ViewChild,
@@ -41,12 +42,13 @@ export class CompetitionsListComponent implements OnInit, AfterContentChecked {
     public champService: ChampionnatsService,
     public ref: ChangeDetectorRef,
     public router: Router,
-    public navCtl: NavController // public navParams: NavParams
+    public navCtl: NavController,
+    public zone: NgZone // public navParams: NavParams
   ) {}
 
   ngOnInit() {
     // this.segmentValue = this.navParams.data.segmentSelected;
-    console.log('state')
+    console.log('state');
     this.champService.getChampionnatNetwork();
     this.subscription = this.champService.champNetWorkList$
       .pipe(
@@ -100,6 +102,6 @@ export class CompetitionsListComponent implements OnInit, AfterContentChecked {
   }
 
   close() {
-    this.navCtl.navigateBack('tabs/tab3');
+      this.navCtl.navigateBack('tabs/tab3');
   }
 }

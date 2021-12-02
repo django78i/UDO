@@ -44,7 +44,7 @@
               placeholder="Nom du championnat"
               maxLength="20"
               class="form-control"
-              formControlName="name"
+              formControlName="nameChamp"
               (ionChange)="onKey($event)"
             ></ion-input>
             <ion-badge
@@ -256,6 +256,7 @@
                 align-items: center;
                 justify-content: center;
               "
+              *ngIf="activitesList.length !=0"
               >{{ activitesList.length }}</ion-badge
             >
           </ion-thumbnail>
@@ -267,8 +268,10 @@
         <div style="display: flex; justify-content: center">
           <ion-button
             shape="round"
+            class="buttonNextSlide"
             style="--background: #ed2d6a; width: 50%"
             (click)="nextFriends()"
+            [disabled]="formChamp.invalid"
             >Publier
           </ion-button>
         </div>

@@ -42,6 +42,8 @@ import { CompetitionsListComponent } from '../components/competitions-list/compe
 import { ChallengesListViewComponent } from '../components/challenges-list-view/challenges-list-view.component';
 import { ChampTemplateComponent } from '../components/champ-template/champ-template.component';
 import { ChallTemplateComponent } from '../components/chall-template/chall-template.component';
+import { ResumeChallengeComponent } from '../challenges-page/components/resume-challenge/resume-challenge.component';
+import { ClassementChallengeComponent } from '../challenges-page/components/classement-challenge/classement-challenge.component';
 
 @NgModule({
   imports: [
@@ -90,7 +92,9 @@ import { ChallTemplateComponent } from '../components/chall-template/chall-templ
     CompetitionsListComponent,
     ChallengesListViewComponent,
     ChampTemplateComponent,
-    ChallTemplateComponent,
+    ResumeChallengeComponent,
+    ClassementChallengeComponent,
+    ChallTemplateComponent
   ],
 })
 export class Tab3PageModule {}

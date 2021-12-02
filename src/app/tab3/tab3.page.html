@@ -16,7 +16,7 @@
       </ion-button>
     </ion-buttons>
   </ion-toolbar> -->
-<app-header></app-header>
+  <app-header></app-header>
   <!-- <div
     class="banniere"
     *ngIf="challenges|async as chall"
@@ -141,6 +141,7 @@
   </ng-container>
   <ng-container *ngIf="segmentValue == 'challenges'">
     <app-chall-view
+      (viewAllChall)="viewCompetitions($event)"
       (createChall)="createChallenge($event)"
       [challenges]="challengesEnAttente"
       [challEncours]="challengesEnCours"

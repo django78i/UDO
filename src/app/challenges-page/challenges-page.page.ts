@@ -5,10 +5,15 @@ import {
   OnInit,
 } from '@angular/core';
 import { ActivatedRoute, NavigationExtras } from '@angular/router';
-import { AlertController, NavController } from '@ionic/angular';
+import {
+  AlertController,
+  ModalController,
+  NavController,
+} from '@ionic/angular';
 import moment from 'moment';
 import { Observable } from 'rxjs';
 import { takeLast, tap } from 'rxjs/operators';
+import { FriendPageListComponent } from '../components/friend-page-list/friend-page-list.component';
 import { ChallengesService } from '../services/challenges.service';
 import { UserService } from '../services/user-service.service';
 
@@ -34,7 +39,8 @@ export class ChallengesPagePage implements OnInit {
     public challService: ChallengesService,
     public route: ActivatedRoute,
     public ref: ChangeDetectorRef,
-    public alertController: AlertController
+    public alertController: AlertController,
+    public modalCtrl: ModalController
   ) {}
 
   ngOnInit() {
@@ -47,10 +53,12 @@ export class ChallengesPagePage implements OnInit {
           if (chall) {
             this.challenge = chall;
             this.startDate = moment(this.challenge.dateDemarrage).fromNow();
+
             console.log(this.challenge);
             this.userEncours = this.challenge.participants.find(
               (part) => part.uid == this.user.uid
             );
+            console.log(this.userEncours, this.challenge, this.startDate)
             this.ref.detectChanges();
           }
         })
@@ -155,6 +163,22 @@ export class ChallengesPagePage implements OnInit {
       console.log(dat);
     });
     await alert.present();
+  }
+
+  async addFriend() {
+    console.log(this.challenge);
+    const modal = await this.modalCtrl.create({
+      component: FriendPageListComponent,
+      componentProps: {
+        user: this.user,
+        competition: this.challenge,
+        type: 'challenges',
+      },
+    });
+    modal.onDidDismiss().then((data: any) => {
+      this.challService.getChallenge(this.challenge.uid);
+    });
+    return await modal.present();
   }
 
   seanceNow() {

@@ -71,7 +71,7 @@ export class CreateChallPopUpComponent implements OnInit, AfterContentChecked {
   maxPlayer: number;
   dateDemarrage: any;
   icon: any;
-  friendsList: any;
+  friendsList: any[] = [];
   constructor(
     public modalCtl: ModalController,
     public challService: ChallengesService,
@@ -161,8 +161,15 @@ export class CreateChallPopUpComponent implements OnInit, AfterContentChecked {
       icon: this.icon,
       dateCreation: new Date(),
     };
-    this.challService.createChallenge(challenge);
-    this.sessionNowService.show('challenge créé', 'success');
+    this.challService
+      .createChallenge(challenge)
+      .then(() => this.sessionNowService.show('challenge créé', 'success'))
+      .catch((err) =>
+        this.sessionNowService.show(
+          "une erreur s'est produite, veuillez rééssayer plus tard",
+          'warning'
+        )
+      );
     this.modalCtl.dismiss();
     console.log(challenge);
   }

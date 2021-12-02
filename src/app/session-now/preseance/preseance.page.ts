@@ -37,7 +37,7 @@ export class PreseancePage implements OnInit {
   };
   mode = '';
   modeClasse = '';
-  demarrage = '';
+  demarrage = 'demarrage';
   type: string;
   categoryName: string;
   challengeStatus: number;

@@ -80,9 +80,9 @@ export class DemarragePage implements OnInit {
   user: any;
   reactions = 0;
   interval;
-  mode = '';
-  modeClasse = '';
-  demarrage = '';
+  mode = 'portrait';
+  modeClasse = 'preseanceSlide';
+  demarrage = 'demarrage';
   competitionId: string;
   closingApp: Observable<any>;
   constructor(

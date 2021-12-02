@@ -19,7 +19,7 @@
 </ion-header>
 
 <section style="padding-bottom: 100px">
-  <ng-container *ngIf="friendsList ; else showNone">
+  <ng-container *ngIf="friendsList; else showNone">
     <ion-item
       lines="full"
       class="champColor"
@@ -58,14 +58,20 @@
     </ion-item>
   </ng-container>
   <!-- <ng-template #showNone> <p>Aucn amis</p></ng-template> -->
-  <ion-fab
-    vertical="bottom"
-    horizontal="start"
-    slot="fixed"
-    style="width: 100%; --ion-safe-area-left: 0px"
+  <div
+    style="
+      position: fixed;
+      bottom: 0;
+      display: flex;
+      justify-content: center;
+      align-content: center;
+      width: 100%;
+      z-index: 100;
+      padding-bottom: 10px;
+    "
   >
-    <ion-button expand="block" class="buttonNextSlide" (click)="create()"
-      >{{boutton}}</ion-button
-    >
-  </ion-fab>
+    <ion-button expand="block" class="buttonNextSlide" (click)="create()">{{
+      boutton
+    }}</ion-button>
+  </div>
 </section>

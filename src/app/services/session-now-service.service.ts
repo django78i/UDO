@@ -47,6 +47,7 @@ export class SessionNowService {
     const db = getFirestore();
     const id = this.createId();
     document = { ...document, uid: id };
+    console.log(JSON.stringify(document));
     await setDoc(doc(db, collectionName, document.uid), document);
     return id;
   }
@@ -61,7 +62,7 @@ export class SessionNowService {
 
   async controlLive(uid) {
     console.log('control');
-    this.presentLoading();
+    // this.presentLoading();
     //récupération des posts de l'utilisateur
     const postList = await this.getSessionNow(uid);
     if (postList) {
@@ -76,13 +77,13 @@ export class SessionNowService {
             this.deleteSessionCascade(postData.sessionId);
           } else {
             //update status du post
-            this.updatePostLies(postData);
+            this.updatePostLies(postData.uid);
           }
-          this.mFeed.feedFilter('Récent');
+          // this.mFeed.feedFilter('Récent');
         }
       });
     }
-    this.dissmissLoading();
+    // this.dissmissLoading();
   }
 
   async updatePostSeanceNow(post) {

@@ -10,6 +10,7 @@ import { SwiperModule } from 'swiper/angular';
 import { TimeRelativePipe } from '../pipe/time-relative.pipe';
 import { TimeFeedPipe } from '../pipe/time-feed.pipe';
 import { HeaderComponent } from '../components/header/header.component';
+import { EditPageComponent } from '../components/edit-page/edit-page.component';
 
 @NgModule({
   imports: [
@@ -21,6 +22,6 @@ import { HeaderComponent } from '../components/header/header.component';
     MatProgressSpinnerModule,
     SwiperModule,
   ],
-  declarations: [Tab1Page, TimeRelativePipe, TimeFeedPipe, HeaderComponent],
+  declarations: [Tab1Page, TimeRelativePipe, TimeFeedPipe, HeaderComponent, EditPageComponent],
 })
 export class Tab1PageModule {}

@@ -15,7 +15,7 @@ import { SwiperComponent } from 'swiper/angular';
 import { MusicFeedService } from '../services/music-feed.service';
 import { HttpClient } from '@angular/common/http';
 import { from, Observable, Subscription } from 'rxjs';
-import { IonItem, NavController } from '@ionic/angular';
+import { IonItem, NavController, PopoverController } from '@ionic/angular';
 import { MenuUserComponent } from '../components/menu-user/menu-user.component';
 import { ModalController, AnimationController } from '@ionic/angular';
 import { UserService } from '../services/user-service.service';
@@ -23,6 +23,7 @@ import { EmojisComponent } from '../components/emojis/emojis.component';
 import { UserProfilComponent } from '../components/user-profil/user-profil.component';
 import { SessionNowService } from '../services/session-now-service.service';
 import { DetailPostComponent } from '../tab3/components/detail-post/detail-post.component';
+import { EditPageComponent } from '../components/edit-page/edit-page.component';
 
 interface Reaction {
   icon: string;
@@ -100,21 +101,27 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
     public navCtl: NavController,
     public userService: UserService,
     public ref: ElementRef,
-    public snsService: SessionNowService
+    public snsService: SessionNowService,
+    public popoverController: PopoverController
   ) {}
 
   ngOnInit() {}
 
   ionViewDidEnter() {
     console.log('ionViewDidEnter');
+
     const user = from(this.userService.getCurrentUser());
     this.subscription = user.subscribe((us) => {
       this.user = us;
-      this.snsService.controlLive(this.user.uid);
+      this.controlLivePost();
     });
     this.getFeeds();
   }
 
+  async controlLivePost() {
+    const feed = await this.snsService.controlLive(this.user.uid);
+    this.refreshFeed();
+  }
 
   async getFeeds() {
     const feed = await this.feedService.feedFilter('Récent');
@@ -162,7 +169,7 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
     this.feeds = [];
     const feedRefresh = await this.feedService.feedFilter(this.filter);
     setTimeout(() => {
-      event.target.complete();
+      event ? event.target.complete() : '';
       this.feeds = feedRefresh.table;
       this.lastVisible = feedRefresh.last;
     }, 2000);
@@ -260,6 +267,29 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
       },
     });
     return await modal.present();
+  }
+
+  async presentEditPost(ev, postUid) {
+    const popover = await this.popoverController.create({
+      component: EditPageComponent,
+      event: ev,
+      componentProps: {
+        uid: postUid,
+        filter: this.filter,
+      },
+    });
+    await popover.present();
+
+    popover.onDidDismiss().then((data) => {
+      this.refreshFeed();
+    });
+  }
+
+  refreshFeed() {
+    const event = null;
+    this.snsService.presentLoading();
+
+    this.doRefresh(event).then(() => this.snsService.dissmissLoading());
   }
 
   async openProfil(contact) {

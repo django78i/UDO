@@ -71,7 +71,7 @@ export class ChampionnatPage implements OnInit {
       this.champService.getChampionnat(uid);
       this.championnat$ = this.champService.singleChampSub$.pipe(
         tap((champ) => {
-          console.log(champ);
+          console.log(champ, this.user);
           this.championnat = champ;
           this.participantsList = this.championnat.participants.slice(0, 4);
           this.userEncours = this.championnat.participants.find(
@@ -141,7 +141,7 @@ export class ChampionnatPage implements OnInit {
     await alert.present();
   }
 
-  startChamp(ev) {
+  startChamp() {
     const warning = this.championnat.participants.some(
       (part: any) => part.etat == 'en attente'
     );
@@ -175,7 +175,7 @@ export class ChampionnatPage implements OnInit {
     console.log(final);
   }
 
-  seanceNow(ev) {
+  seanceNow() {
     localStorage.setItem('championnatUid', this.championnat.uid);
 
     const champInfo: NavigationExtras = {
@@ -189,21 +189,19 @@ export class ChampionnatPage implements OnInit {
     this.navCtl.navigateForward('session-now', champInfo);
   }
 
-  async addFriend(ev) {
-    if (ev == true) {
-      console.log(this.championnat);
-      const modal = await this.modalCtrl.create({
-        component: FriendPageListComponent,
-        componentProps: {
-          user: this.user,
-          competition: this.championnat,
-        },
-      });
-      modal.onDidDismiss().then((data: any) => {
-        this.champService.getChampionnat(this.championnat.uid);
-      });
-      return await modal.present();
-    }
-    // this.champService.getChampionnat(this.championnat.uid);
+  async addFriend() {
+    console.log(this.championnat);
+    const modal = await this.modalCtrl.create({
+      component: FriendPageListComponent,
+      componentProps: {
+        user: this.user,
+        competition: this.championnat,
+        type: 'championnat',
+      },
+    });
+    modal.onDidDismiss().then((data: any) => {
+      this.champService.getChampionnat(this.championnat.uid);
+    });
+    return await modal.present();
   }
 }

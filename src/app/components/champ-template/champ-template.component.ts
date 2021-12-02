@@ -17,6 +17,7 @@ export class ChampTemplateComponent implements OnInit, OnChanges {
   @Input() user: any;
   @Input() userEncours: any;
   @Input() participantsList: any;
+  @Input() segmentValue: string;
 
   @Output() friends: EventEmitter<boolean> = new EventEmitter();
   @Output() start: EventEmitter<any> = new EventEmitter();
@@ -25,7 +26,7 @@ export class ChampTemplateComponent implements OnInit, OnChanges {
   @Output() join: EventEmitter<any> = new EventEmitter();
   @Output() closed: EventEmitter<any> = new EventEmitter();
 
-  segmentValue = 'resume';
+  // segmentValue = 'resume';
 
   constructor() {}
 

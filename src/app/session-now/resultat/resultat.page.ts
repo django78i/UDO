@@ -1,4 +1,10 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  NgZone,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { AddContenuComponent } from '../add-contenu/add-contenu.component';
 import {
   AlertController,
@@ -77,7 +83,8 @@ export class ResultatPage implements OnInit, OnDestroy {
     public router: Router,
     private alertController: AlertController,
     public ref: ChangeDetectorRef,
-    public feedService: MusicFeedService
+    public feedService: MusicFeedService,
+    public zone: NgZone
   ) {
     setInterval(() => {
       if (localStorage.getItem('mode')) {
@@ -242,9 +249,10 @@ export class ResultatPage implements OnInit, OnDestroy {
       );
       url = await getDownloadURL(uploadTask.ref);
     }
-    const detailCompet = JSON.parse(localStorage.getItem('detailCompet'));
-    console.log(detailCompet);
-    let postModel: PostModel = {
+    const detailCompetion = JSON.parse(localStorage.getItem('detailCompet'));
+    console.log(detailCompetion);
+    let postModel: PostModel;
+    postModel = {
       startDate: new Date(),
       userName: this.user ? this.user.userName : '',
       userId: this.user ? this.user.uid : '',
@@ -255,7 +263,6 @@ export class ResultatPage implements OnInit, OnDestroy {
       reactionsNombre: this.sessionNow.reactionsNombre,
       activity: this.sessionNow.activity,
       isLive: false,
-      championnatType: this.sessionNow.championnatType,
       mode: this.sessionNow.mode,
       userAvatar: this.user.avatar,
       niveau: this.user.niveau,
@@ -263,14 +270,20 @@ export class ResultatPage implements OnInit, OnDestroy {
       uid: this.sessionNow.uid,
       comment: this.sessionNow.comment ? this.sessionNow.comment : '',
       duree: this.counter,
-      competitionInfo: detailCompet ? detailCompet : '',
+      // competitionInfo: detailCompetion,
+      challengeMetric: detailCompetion.challengeMetric,
+      championnatType: detailCompetion.championnatType,
+      competitionId: detailCompetion.competitionId,
+      competitionName: detailCompetion.competitionName,
+      competitionType: detailCompetion.competitionType,
+
       championnat:
-        detailCompet.competitionType == 'Championnat'
-          ? detailCompet.competitionId
+        detailCompetion.competitionType == 'Championnat'
+          ? detailCompetion.competitionId
           : '',
       challenge:
-        detailCompet.competitionType == 'Challenge'
-          ? detailCompet.competitionId
+        detailCompetion.competitionType == 'Challenge'
+          ? detailCompetion.competitionId
           : '',
     };
     console.log(this.sessionNow);
@@ -281,10 +294,18 @@ export class ResultatPage implements OnInit, OnDestroy {
       .update(postModel, 'post-session-now')
       .then((resPicture) => {
         this.sessionNowService.dissmissLoading();
-        this.navCtl.navigateForward('session-now/felicitation');
-        this.sessionNowService.show('Seance publiée avec succés', 'success');
+        this.zone.run(() => {
+          this.navCtl.navigateForward('session-now/felicitation');
+          this.sessionNowService.show('Seance publiée avec succés', 'success');
+        });
         // this.feedService.feedFilter('Récent');
-      });
+      })
+      .catch((err) =>
+        this.sessionNowService.show(
+          "Une erreur s'est produite, veuillez rééssayer plus tard",
+          'warning'
+        )
+      );
   }
 
   changeInput(event) {
@@ -366,9 +387,14 @@ export class PostModel {
   metrics: any[];
   uid: string;
   comment: string;
-  championnatType: any;
+  // championnatType: any;
   duree: any;
   championnat?: string;
   competitionInfo?: any;
   challenge?: string;
+  challengeMetric?: string;
+  championnatType?: string;
+  competitionId?: string;
+  competitionName?: string;
+  competitionType?: string;
 }

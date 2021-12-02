@@ -65,6 +65,10 @@ ion-card-content {
   }
 }
 
+.sousTitre{
+  font-size: 13px !important;
+}
+
 .addSub {
   --background: #eaebef;
   --border-radius: 13px;
@@ -81,7 +85,7 @@ ion-card-content {
   ion-label {
     margin-left: 9px;
     margin-right: 0;
-    font-size: 20px;
+    font-size: 13px;
     font-weight: 700;
   }
 }
@@ -147,4 +151,13 @@ svg {
   border: 1px solid #e1e4ef;
   border-radius: 19px;
   --padding-start: 13px;
+}
+
+.buttonNextSlide {
+  height: 70px;
+  width: 200px;
+  --border-radius: 25px;
+  --background: var(--i);
+  --background-activated: var(--i);
+  margin: 5px;
 }

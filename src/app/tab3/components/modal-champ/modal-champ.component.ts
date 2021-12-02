@@ -85,13 +85,13 @@ export class ModalChampComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit() {
-    console.log('modail', this.navParam.data);
+    console.log('modail', this.navParam.data, this.entryData);
     const uid = this.navParam.data.champId;
     this.entryData = this.navParam.data.entryData;
     this.userService.getCurrentUser().then((user) => {
-      console.log(user)
+      console.log(user);
       this.user = user;
-      if (this.entryData == "Championnat") {
+      if (this.entryData == 'Championnat') {
         this.champService.getChampionnat(uid);
         this.championnat$ = this.champService.singleChampSub$.pipe(
           tap((champ) => {
@@ -111,11 +111,11 @@ export class ModalChampComponent implements OnInit, AfterViewInit {
           tap((chall) => {
             if (chall) {
               this.challenge = chall;
-              this.startDate = moment(this.challenge.dateDemarrage).fromNow();
-              console.log(this.challenge);
               this.userEncours = this.challenge.participants.find(
                 (part) => part.uid == this.user.uid
               );
+              this.startDate = moment(this.challenge.dateDemarrage).fromNow();
+              console.log(this.challenge);
               this.ref.detectChanges();
             }
           })
@@ -247,6 +247,10 @@ export class ModalChampComponent implements OnInit, AfterViewInit {
     console.log(final);
   }
 
+  segmentChanged(ev) {
+    this.segmentValue = ev.detail.value;
+  }
+
   seanceNow(ev, type) {
     let competInfo: NavigationExtras;
     if (type == 'championnat') {
@@ -272,20 +276,23 @@ export class ModalChampComponent implements OnInit, AfterViewInit {
     this.navCtl.navigateForward('session-now', competInfo);
   }
 
-  async addFriend(ev) {
-    if (ev == true) {
-      console.log(this.championnat);
-      const modal = await this.modalCtrl.create({
-        component: FriendPageListComponent,
-        componentProps: {
-          user: this.user,
-          competition: this.championnat,
-        },
-      });
-      modal.onDidDismiss().then((data: any) => {
+  async addFriend() {
+    console.log(this.championnat);
+    const modal = await this.modalCtrl.create({
+      component: FriendPageListComponent,
+      componentProps: {
+        user: this.user,
+        competition: this.championnat,
+        type: this.entryData.toLowerCase(),
+      },
+    });
+    modal.onDidDismiss().then((data: any) => {
+      if (this.entryData == 'Championnat') {
         this.champService.getChampionnat(this.championnat.uid);
-      });
-      return await modal.present();
-    }
+      } else {
+        this.challService.getChallenge(this.challenge.uid);
+      }
+    });
+    return await modal.present();
   }
 }

@@ -1,4 +1,4 @@
-<ion-header mode="ios">
+<!-- <ion-header mode="ios">
   <ion-toolbar style="--border-width: 0 0 0 !important">
     <ion-button
       slot="start"
@@ -79,7 +79,7 @@
     </ion-segment-button>
   </ion-segment>
 </ion-header>
-<ion-content scrollY="false">
+<ion-content scrollY="false"> -->
   <ng-container *ngIf="challenge">
     <app-resume-challenge
       [user]="user"
@@ -93,7 +93,7 @@
       *ngIf="segmentValue == 'participants'"
     ></app-classement-challenge>
   </ng-container>
-  <ion-fab
+  <!-- <ion-fab
     vertical="bottom"
     horizontal="start"
     slot="fixed"
@@ -139,7 +139,7 @@
       class="buttonNextSlide"
       >Séance Now</ion-button
     >
-  </ion-fab>
+  </ion-fab> -->
   <!-- <ion-fab
     vertical="bottom"
     horizontal="end"
@@ -165,4 +165,3 @@
       </ion-fab-button>
     </ion-fab-list>
   </ion-fab> -->
-</ion-content>

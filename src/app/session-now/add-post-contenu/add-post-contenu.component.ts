@@ -152,7 +152,12 @@ export class AddPostContenuComponent implements OnInit, OnDestroy {
       comment: this.comment,
       postCount: 0,
       reactionsNombre: 0,
-      competitionInfo: detailCompet,
+      challengeMetric: detailCompet.challengeMetric,
+      championnatType: detailCompet.championnatType,
+      competitionId: detailCompet.competitionId,
+      competitionName: detailCompet.competitionName,
+      competitionType: detailCompet.competitionType,
+      // competitionInfo: detailCompet,
       championnat:
         detailCompet.competitionType == 'Championnat'
           ? detailCompet.competitionId
@@ -162,13 +167,20 @@ export class AddPostContenuComponent implements OnInit, OnDestroy {
           ? detailCompet.competitionId
           : '',
     };
+    console.log(JSON.stringify(postModel));
     this.sessionNowService
       .create(postModel, 'post-session-now')
       .then((resPicture) => {
         this.close();
         this.sessionNowService.dissmissLoading();
         this.sessionNowService.show('Image créée avec succès', 'success');
-      });
+      })
+      .catch((err) =>
+        this.sessionNowService.show(
+          "Une erreur s'est produite, veuillez rééssayer plus tard",
+          'warning'
+        )
+      );
   }
 
   blur(ev) {
@@ -217,6 +229,11 @@ export class PostModel {
   postCount: number;
   reactionsNombre: number;
   championnat?: string;
-  competitionInfo?: any;
+  // competitionInfo?: any;
   challenge?: string;
+  challengeMetric?: string;
+  championnatType?: string;
+  competitionId?: string;
+  competitionName?: string;
+  competitionType?: string;
 }

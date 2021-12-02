@@ -12,6 +12,8 @@ ion-card {
   margin-top: 0;
   background-size: cover;
   background-position: center;
+  background-size: 50%;
+  background-repeat: no-repeat;
 }
 
 ion-card-subtitle {
@@ -158,9 +160,17 @@ ion-avatar {
   }
 }
 
+ion-grid {
+  * {
+    padding: 0;
+  }
+}
+
 .buttonNextSlide {
-  height: 80px;
-  --border-radius: 33px;
+  height: 70px;
+  width: 200px;
+  --border-radius: 25px;
   --background: var(--i);
   --background-activated: var(--i);
+  margin: 0;
 }

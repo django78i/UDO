@@ -22,9 +22,9 @@ export class ResumeChallengeComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     console.log(this.challenge);
-    // this.userEncours = this.challenge.participants.find(
-    //   (part) => part.uid == this.user.uid
-    // );
+    this.userEncours = this.challenge.participants.find(
+      (part) => part.uid == this.user.uid
+    );
     // this.ref.detectChanges();
     console.log(this.userEncours);
   }

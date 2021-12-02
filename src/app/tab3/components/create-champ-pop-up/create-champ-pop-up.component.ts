@@ -12,7 +12,7 @@ import {
   ViewChild,
   ViewChildren,
 } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   IonCheckbox,
   IonInput,
@@ -75,8 +75,12 @@ export class CreateChampPopUpComponent
 
   bannieres = [
     {
-      color: '#19191C',
-      url: 'assets/banner/blackBanner.svg',
+      color: '#FCD03B',
+      url: 'assets/banner/yellow.svg',
+    },
+    {
+      color: '#F8774D',
+      url: 'assets/banner/orange.svg',
     },
     {
       color: '#EE2E6C',
@@ -91,20 +95,13 @@ export class CreateChampPopUpComponent
       url: 'assets/banner/blue.svg',
     },
     {
-      color: '#F8774D',
-      url: 'assets/banner/orange.svg',
-    },
-    {
-      color: '#1BAC86',
-      url: 'assets/banner/turqoise.svg',
-    },
-    {
       color: '#6F37C3',
       url: 'assets/banner/violet.svg',
     },
+
     {
-      color: '#FCD03B',
-      url: 'assets/banner/yellow.svg',
+      color: '#19191C',
+      url: 'assets/banner/blackBanner.svg',
     },
   ];
 
@@ -124,7 +121,7 @@ export class CreateChampPopUpComponent
   @ViewChildren('checkBanniere') checkBanniere: QueryList<IonCheckbox>;
 
   seg: string = 'Friends&Familly';
-  
+
   constructor(
     private modalCtrl: ModalController,
     public fb: FormBuilder,
@@ -162,7 +159,7 @@ export class CreateChampPopUpComponent
 
   initForm() {
     this.formChamp = this.fb.group({
-      name: [''],
+      nameChamp: ['', Validators.required],
     });
   }
 
@@ -295,7 +292,15 @@ export class CreateChampPopUpComponent
       nbParticipants: this.friendsList?.length,
     };
     console.log(champ);
-    this.champService.createChampionnat(champ);
+    this.champService
+      .createChampionnat(champ)
+      .then(() => this.snService.show('championnat créé', 'success'))
+      .catch((err) =>
+        this.snService.show(
+          "une erreur s'est produite, veuillez rééssayer plus tard",
+          'warning'
+        )
+      );
     this.modalCtrl.dismiss();
     this.presentToast();
   }

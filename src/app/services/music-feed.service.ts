@@ -16,6 +16,7 @@ import {
   orderBy,
   startAfter,
   where,
+  deleteDoc,
 } from 'firebase/firestore';
 import { UserService } from './user-service.service';
 import { map } from 'rxjs/operators';
@@ -230,6 +231,12 @@ export class MusicFeedService {
     await updateDoc(postRef, {
       reactions: post.reactions,
     });
+  }
+
+  async deletePost(uid) {
+    const db = getFirestore();
+    const postRef = doc(db, 'post-session-now', uid);
+    await deleteDoc(postRef);
   }
 
   async sendPost(post) {

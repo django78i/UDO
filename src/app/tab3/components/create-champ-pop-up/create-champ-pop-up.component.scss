@@ -42,6 +42,11 @@ ion-segment-button {
   border: 1px solid grey;
 }
 
+.sousTitre{
+  font-size: 13px !important;
+}
+
+
 .thumbIcon {
   height: 22px;
   width: 26px;
@@ -250,4 +255,13 @@ ion-radio-group {
 .radioChoice {
   --color: var(--dataColor);
   --color-checked: var(--dataColor);
+}
+
+.buttonNextSlide {
+  height: 70px;
+  width: 200px;
+  --border-radius: 25px;
+  --background: var(--i);
+  --background-activated: var(--i);
+  margin: 5px;
 }

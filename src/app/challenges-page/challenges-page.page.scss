@@ -99,8 +99,17 @@ ion-card-content {
 }
 
 .buttonNextSlide {
-  height: 80px;
-  --border-radius: 33px;
+  height: 70px;
+  width: 200px;
+  --border-radius: 25px;
   --background: var(--i);
   --background-activated: var(--i);
+  margin: 5px;
+}
+
+
+ion-grid {
+  * {
+    padding: 0;
+  }
 }

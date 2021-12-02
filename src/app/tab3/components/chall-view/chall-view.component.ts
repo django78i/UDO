@@ -16,6 +16,8 @@ export class ChallViewComponent implements OnInit {
   @Input() challEncours: any[];
   @Output() createChall: EventEmitter<any> = new EventEmitter();
   @Output() challengeId: EventEmitter<any> = new EventEmitter();
+  @Output() viewAllChall: EventEmitter<any> = new EventEmitter();
+
 
   constructor(
     public http: HttpClient,
@@ -40,12 +42,13 @@ export class ChallViewComponent implements OnInit {
   }
 
   async openCompetitionList() {
-    const modal = await this.modalController.create({
-      component: CompetitionsListComponent,
-      componentProps : {
-        segmentSelected : 'challenges'
-      }
-    });
-    return await modal.present();
+    this.viewAllChall.emit([])
+    // const modal = await this.modalController.create({
+    //   component: CompetitionsListComponent,
+    //   componentProps : {
+    //     segmentSelected : 'challenges'
+    //   }
+    // });
+    // return await modal.present();
   }
 }
