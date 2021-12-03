@@ -24,7 +24,8 @@ export class ReglagesPage implements OnInit {
 
   }
   ngOnInit() {
-    this.listReglages = { rotation: false, son: false, compteRebour: false, modePrive: false };
+    //rotation: false, son: false,
+      this.listReglages = { compteRebour: false, modePrive: false };
     const value = localStorage.getItem('reglages');
     if (value) {
       this.listReglages = JSON.parse(value);
