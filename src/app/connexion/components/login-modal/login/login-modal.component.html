@@ -19,7 +19,7 @@
 </ion-header>
 <ion-content>
   <ion-slides pager="false" [options]="slideOpts" (ionSlideDidChange)="change($event)" #slider>
-    
+
     <ion-slide>
       <div class="sectionZone">
         <ion-label>
@@ -48,7 +48,7 @@
           </ion-item>
 
         </div>
-        <span class="error" *ngIf="errorPseudo!= '' "> {{errorPseudo}} </span>
+        <span class="error" *ngIf="errorPseudo!== '' "> {{errorPseudo}} </span>
       </div>
     </ion-slide>
     <ion-slide>
@@ -62,14 +62,14 @@
         </ion-label>
         <ion-row class="dateNaisse">
           <ion-item lines="none">
-            <input type="text" numberOnly (keyup)="checkDate()" minlength="2" maxlength="2" [(ngModel)]="jour">
+            <input type="number"  (keyup)="checkDate()" minlength="2" maxlength="2" [(ngModel)]="jour">
             <span class="barre"></span>
-            <input type="text" numberOnly (keyup)="checkDate()" minlength="2" maxlength="2" [(ngModel)]="mois">
+            <input type="number" id="dMois" #dMois  (keyup)="checkDate()" minlength="2" maxlength="2" [(ngModel)]="mois">
             <span class="barre"></span>
-            <input type="text" numberOnly (keyup)="checkDate()" minlength="2" maxlength="2" [(ngModel)]="annee">
+            <input type="number" id="dMois" #dAnnee  (keyup)="checkDate()" minlength="2" maxlength="2" [(ngModel)]="annee">
           </ion-item>
         </ion-row>
-        <span class="invalidDate" *ngIf="invalidDate!= '' "> {{invalidDate}} </span>
+        <span class="invalidDate" *ngIf="invalidDate!== '' "> {{invalidDate}} </span>
 
       </section>
     </ion-slide>
@@ -105,21 +105,21 @@
     </ion-slide>
   </ion-slides>
 
- 
+
 </ion-content>
-<ion-footer *ngIf="activeIndex!=4" class="fab"  (click)="nextStep()">
+<ion-footer  *ngIf="activeIndex !== 4 && isVisible" class="fab"  (click)="nextStep()">
   <ion-button [class]="fabButton"  expand="block" class="buttonNextSlide">
     <span> Suivant</span>
   </ion-button>
 </ion-footer>
-<ion-footer *ngIf="activeIndex==4" class="fab"  (click)="validate()">
+<ion-footer  *ngIf="activeIndex === 4 && isVisible" class="fab"  (click)="validate()">
   <ion-button [class]="fabButton"  expand="block" class="buttonNextSlide">
     <span> Finaliser</span>
   </ion-button>
 </ion-footer>
-<ion-footer class="ignore" *ngIf="activeIndex!=0 && activeIndex!=4">
+<ion-footer  class="ignore" *ngIf="activeIndex !== 0 && activeIndex !== 4 && isVisible">
   <span class="text-ignore" (click)="ignorer()">Ignorer cette étape</span>
 </ion-footer>
-<ion-footer class="ignore2" *ngIf="activeIndex==4">
+<ion-footer  class="ignore2" *ngIf="activeIndex === 4 && isVisible">
   <span class="text-ignore2" (click)="validate()">Plus tard</span>
 </ion-footer>

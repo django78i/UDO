@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 import * as firebase from 'firebase/app';
-import { type } from 'os';
 import { UserService } from './services/user-service.service';
 import { NavController } from '@ionic/angular';
 
@@ -47,12 +46,13 @@ export class AppComponent {
   setOrientation(){
     this.screenOrientation.onChange().subscribe(
       () => {
-        let activeScreenOrt = this.screenOrientation.type;
+        this.setPortrait();
+       /* let activeScreenOrt = this.screenOrientation.type;
         if(activeScreenOrt == 'portrait-primary'){
           this.setPortrait();
         }else{
           this.setLandscape();
-        }
+        }*/
 
       });
   }
@@ -65,6 +65,6 @@ export class AppComponent {
   setPortrait() {
     // set to portrait
     this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
-    localStorage.setItem('mode','portait');
+    //localStorage.setItem('mode','portait');
   }
 }
