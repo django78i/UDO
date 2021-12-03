@@ -1,16 +1,25 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationExtras } from '@angular/router';
 import {
   AlertController,
+  IonInput,
   ModalController,
   NavController,
 } from '@ionic/angular';
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadString,
+} from 'firebase/storage';
 import moment from 'moment';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { ChampionnatsService } from 'src/app/services/championnats.service';
 import { UserService } from 'src/app/services/user-service.service';
 import { FriendPageListComponent } from '../components/friend-page-list/friend-page-list.component';
+import { MusicFeedService } from '../services/music-feed.service';
+import { AddContenuComponent } from '../session-now/add-contenu/add-contenu.component';
 
 interface ChampionnatNav {
   type: string;
@@ -54,6 +63,15 @@ export class ChampionnatPage implements OnInit {
   user: any;
   loading = false;
   championnat$: Observable<any>;
+  text: string;
+  picture: any;
+  boole: Boolean = false;
+  feed: any;
+  lastVisible: any;
+  pictureUrl: string;
+  competition = 'championnat';
+  @ViewChild('inputFeed') inputFeed: IonInput;
+
   constructor(
     private modalCtrl: ModalController,
     public alertController: AlertController,
@@ -61,7 +79,8 @@ export class ChampionnatPage implements OnInit {
     public navCtl: NavController,
     public ref: ChangeDetectorRef,
     public route: ActivatedRoute,
-    public userService: UserService
+    public userService: UserService,
+    public feedService: MusicFeedService
   ) {}
 
   ngOnInit() {
@@ -73,6 +92,7 @@ export class ChampionnatPage implements OnInit {
         tap((champ) => {
           console.log(champ, this.user);
           this.championnat = champ;
+          this.getFeedChampionnat(this.championnat.uid);
           this.participantsList = this.championnat.participants.slice(0, 4);
           this.userEncours = this.championnat.participants.find(
             (part) => part.uid == this.user.uid
@@ -83,6 +103,13 @@ export class ChampionnatPage implements OnInit {
   }
 
   ngAfterViewInit() {}
+
+  async getFeedChampionnat(uid) {
+    const feedPrime = await this.feedService.feedQuery(uid, this.competition);
+    console.log(feedPrime);
+    this.feed = feedPrime.table;
+    this.lastVisible = feedPrime.last;
+  }
 
   close(ev) {
     this.navCtl.navigateBack('/tabs/tab3');
@@ -104,6 +131,7 @@ export class ChampionnatPage implements OnInit {
 
   segmentChanged(ev) {
     this.segmentValue = ev.detail.value;
+    console.log(this.segmentValue);
   }
 
   async presentAlertConfirm() {
@@ -139,6 +167,26 @@ export class ChampionnatPage implements OnInit {
       console.log(dat);
     });
     await alert.present();
+  }
+
+  async feedReinit() {
+    this.feed = [];
+    console.log(this.feed);
+    const feedRefresh = await this.feedService.feedQuery(
+      this.championnat.uid,
+      this.competition
+    );
+    console.log(feedRefresh);
+    this.feed = feedRefresh.table;
+    this.lastVisible = feedRefresh.last;
+    if (this.inputFeed) {
+      this.inputFeed.value = null;
+    }
+    this.picture = null;
+    this.pictureUrl = null;
+    this.boole = false;
+    this.inputFeed.value = null;
+
   }
 
   startChamp() {
@@ -187,6 +235,62 @@ export class ChampionnatPage implements OnInit {
       },
     };
     this.navCtl.navigateForward('session-now', champInfo);
+  }
+
+  deletePhoto() {
+    this.picture = null;
+  }
+
+  async savePhoto(photo) {
+    console.log(photo);
+    const storage = getStorage();
+    const storageRef = ref(storage, `images/${new Date()}`);
+    const uploadTask = uploadString(storageRef, photo, 'data_url');
+    return await uploadTask;
+  }
+
+  inputRead(event) {
+    console.log(event.detail.value);
+    this.text = event.detail.value;
+  }
+
+  async send() {
+    let photo;
+    if (this.picture) {
+      const tof = await this.savePhoto(this.picture);
+      photo = await getDownloadURL(tof.ref);
+    }
+
+    const post = {
+      userId: this.user.uid,
+      type: 'picture',
+      startDate: new Date(),
+      reactions: [],
+      photo: photo ? photo : '',
+      mode: 'public',
+      isLive: false,
+      comment: this.text,
+      activity: '',
+      championnat: this.championnat.uid,
+      competitionType: this.competition,
+      competitionName: this.championnat.name,
+      competitionId: this.championnat.uid,
+      championnatType: this.championnat.type,
+    };
+    console.log(post);
+    this.feedService.sendPost(post);
+    this.feedReinit();
+  }
+
+  async addContenu() {
+    const modal = await this.modalCtrl.create({
+      component: AddContenuComponent,
+      cssClass: 'my-custom-contenu-modal',
+    });
+    modal.onDidDismiss().then((data: any) => {
+      this.picture = data.data !== 'Modal Closed' ? data.data : null;
+    });
+    return await modal.present();
   }
 
   async addFriend() {

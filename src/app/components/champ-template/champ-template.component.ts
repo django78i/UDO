@@ -18,6 +18,9 @@ export class ChampTemplateComponent implements OnInit, OnChanges {
   @Input() userEncours: any;
   @Input() participantsList: any;
   @Input() segmentValue: string;
+  @Input() lastVisible: any;
+  @Input() feed: any;
+  @Input() competition: any;
 
   @Output() friends: EventEmitter<boolean> = new EventEmitter();
   @Output() start: EventEmitter<any> = new EventEmitter();
@@ -36,7 +39,7 @@ export class ChampTemplateComponent implements OnInit, OnChanges {
       this.user,
       this.userEncours,
       this.participantsList,
-      this.championnat
+      this.championnat, this.competition
     );
   }
 

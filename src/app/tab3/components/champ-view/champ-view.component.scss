@@ -21,7 +21,7 @@ ion-item {
 }
 
 .challengeCreate {
-  --background : white;
+  --background: white;
   &::part(detail-icon) {
     background-color: #f2f2f4;
     --detail-icon-opacity: 1;
@@ -30,4 +30,10 @@ ion-item {
     height: 31px;
     border-radius: 11px;
   }
+}
+
+.infoItemTitle {
+  font-weight: 800;
+  font-size: 12px;
+  color: black;
 }

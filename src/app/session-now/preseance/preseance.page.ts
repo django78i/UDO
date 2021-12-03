@@ -43,6 +43,7 @@ export class PreseancePage implements OnInit {
   challengeStatus: number;
   challengeUnity: string;
   championnatType: string;
+  challengeIcon: string;
 
   //...
 
@@ -101,15 +102,21 @@ export class PreseancePage implements OnInit {
         console.log('metric');
         this.championnatType = params.championnatType;
       }
+      if (params.challengeIcon) {
+        console.log('icon');
+        this.challengeIcon = params.challengeIcon;
+      }
     });
     const detailCompet = {
       championnatType: this.championnatType,
+      challengeIcon: this.challengeIcon,
       competitionType: this.type,
       competitionName: this.categoryName,
       competitionId: this.categoryId,
       challengeStatus: this.challengeStatus,
       challengeMetric: this.challengeUnity,
     };
+    console.log(detailCompet)
     localStorage.setItem('detailCompet', JSON.stringify(detailCompet));
     // this.type='Challenge';
     // this.type='Championnat';

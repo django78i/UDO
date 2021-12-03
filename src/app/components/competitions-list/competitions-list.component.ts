@@ -84,7 +84,7 @@ export class CompetitionsListComponent implements OnInit, AfterContentChecked {
   async navigateChallenge(ev) {
     const modal = await this.modalCtrl.create({
       component: ModalChampComponent,
-      componentProps: { champId: ev, entryData: 'Challenges' },
+      componentProps: { champId: ev, entryData: 'challenge' },
     });
     return await modal.present();
   }
@@ -92,7 +92,7 @@ export class CompetitionsListComponent implements OnInit, AfterContentChecked {
   async navigateChampionnat(ev) {
     const modal = await this.modalCtrl.create({
       component: ModalChampComponent,
-      componentProps: { champId: ev, entryData: 'Championnat' },
+      componentProps: { champId: ev, entryData: 'championnat' },
     });
     return await modal.present();
 

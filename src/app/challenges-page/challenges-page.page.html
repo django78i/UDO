@@ -73,6 +73,71 @@
       <ion-label>Feed</ion-label>
     </ion-segment-button>
   </ion-segment>
+  <section *ngIf="segmentValue == 'feed'">
+    <ion-toolbar
+      mode="ios"
+      style="
+        --border-width: 0 0 0.55px;
+        --padding-start: 15px;
+        --padding-end: 15px;
+      "
+    >
+      <div style="display: flex; flex-direction: column">
+        <ion-item lines="none">
+          <ion-avatar slot="start" style="margin-right: 15px">
+            <img src="assets/mocks/3.jpg" alt="" />
+            <ion-badge>{{ user.niveau }}</ion-badge>
+          </ion-avatar>
+
+          <ion-input
+            #inputFeed
+            (ionChange)="inputRead($event)"
+            mode="ios"
+            inputmode="text"
+            clear-on-edit
+            placeholder="Publier un post"
+          ></ion-input>
+          <div *ngIf="boole">test</div>
+          <ion-button
+            slot="end"
+            type="submit"
+            style="
+              --border-radius: 50%;
+              --background: #0a122129;
+              --backdrop-opacity: 9%;
+              height: 30px;
+              width: 30px;
+              margin-right: 0;
+            "
+          >
+            <img
+              (click)="send()"
+              src="assets/icon/icons8-email-send.svg"
+              alt=""
+            />
+          </ion-button>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-icon
+            *ngIf="!picture"
+            name="image-outline"
+            (click)="addContenu()"
+            slot="start"
+          ></ion-icon>
+          <!-- <ion-icon name="camera-outline" (click)="addContenu()"></ion-icon> -->
+          <div style="position: relative" *ngIf="picture">
+            <img [src]="picture" alt="" class="photoJoin" />
+            <img
+              src="assets/icon/closeIconPhoto.svg"
+              class="iconPhotoJoin"
+              alt=""
+              (click)="deletePhoto()"
+            />
+          </div>
+        </ion-item>
+      </div>
+    </ion-toolbar>
+  </section>
 </ion-header>
 <ion-content scrollY="false">
   <ng-container *ngIf="challengeObs$|async as challenge">
@@ -82,6 +147,9 @@
       [userEncours]="userEncours"
       [participantsList]="participantsList"
       [segmentValue]="segmentValue"
+      [lastVisible]="lastVisible"
+      [feed]="feed"
+      [competition]="competition"
     ></app-chall-template>
     <div
       style="
@@ -144,69 +212,7 @@
         <ion-fab-button color="primary" (click)="addFriend()">
           <img src="assets/icon/friends-white.svg" alt="" />
         </ion-fab-button>
-        <ion-fab-button color="success" (click)="chat()">
-          <img src="assets/icon/chat_white.svg" alt="" />
-        </ion-fab-button>
       </ion-fab-list>
     </ion-fab>
   </ng-container>
 </ion-content>
-<!-- <ion-footer
-  transparent
-  *ngIf="challengeObs$|async as championnat"
-  style="background: transparent"
-  class="ion-no-border"
->
-  <ion-toolbar lines="none" style="--background: #f7f7fa; height: 60px">
-    <ion-grid style="padding: 0">
-      <ion-row>
-        <ion-col style="display: flex; justify-content: center">
-          <ion-button
-            expand="block"
-            class="buttonNextSlide"
-            style=" --i : {{ challenge.banniereColor }}"
-            (click)="startChall()"
-            *ngIf="
-            challenge &&
-            challenge.status == 'en attente' &&
-            user.uid == challenge.userId
-          "
-            >{{ loading ? "" : "Démarrer" }}<ion-spinner
-              *ngIf="loading"
-              name="crescent"
-              mode="md"
-            ></ion-spinner
-          ></ion-button>
-          <ion-button
-            expand="block"
-            class="buttonNextSlide"
-            style=" --i : {{ challenge.banniereColor }}"
-            (click)="participer()"
-            *ngIf="challenge && !userEncours"
-            >Participer</ion-button
-          >
-          <ion-button
-            expand="block"
-            class="buttonNextSlide"
-            style=" --i : {{ challenge.banniereColor }}"
-            *ngIf="
-            challenge &&
-            challenge?.status == 'en attente' &&
-            userEncours?.etat == 'prêt' &&
-            user.uid == !challenge.userId
-          "
-            ><span *ngIf="!loading"> {{ startDate }}</span></ion-button
-          ><ion-spinner *ngIf="loading" name="crescent" mode="md"></ion-spinner>
-          <ion-button
-            expand="block"
-            style=" --i : {{ challenge.banniereColor }}"
-            (click)="seanceNow()"
-            *ngIf="challenge && challenge?.status == 'en cours' && userEncours"
-            class="buttonNextSlide"
-            >Séance Now</ion-button
-          >
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </ion-toolbar>
-</ion-footer> -->

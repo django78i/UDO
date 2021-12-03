@@ -145,6 +145,7 @@ export class SessionNowService {
       startDate: document.startDate,
       comment: document.comment,
       duree: document.duree,
+      challIcon : document.challIcon
     });
   }
 

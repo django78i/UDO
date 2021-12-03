@@ -26,7 +26,7 @@
 @import "~@ionic/angular/css/flex-utils.css";
 //Swiper
 @import "~swiper/swiper-bundle";
-$--ion-backdrop-opacity:#F4F5FA;
+$--ion-backdrop-opacity: #f4f5fa;
 ion-content,
 ion-header,
 ion-footer {
@@ -159,15 +159,14 @@ ion-slides.slideDemarrage
   opacity: 1;
   background: white !important;
 }
-ion-slides.slideDemarrage  .swiper-pagination-bullets{
+ion-slides.slideDemarrage .swiper-pagination-bullets {
   position: absolute;
   bottom: 23%;
   text-align: left;
   margin-left: 39px;
   z-index: 1;
 }
-ion-slides.slideDemarrage  .swiper-pagination-bullet {
-
+ion-slides.slideDemarrage .swiper-pagination-bullet {
   background: #c3bbbb !important;
 }
 ion-slides.aideSlide {
@@ -213,12 +212,21 @@ ion-slides.preseanceSlide {
   width: 93%;
   margin: auto;
 }
-.sc-ion-modal-ios-h:first-of-type{
+.sc-ion-modal-ios-h:first-of-type {
   --backdrop-opacity: 0 !important;
 }
 .header-ios ion-toolbar:last-of-type {
   --border-width: 0 !important;
 }
-ion-header{
+ion-header {
   box-sizing: none;
+}
+
+.my-custom-class .popover-content {
+  width: 150px;
+  right: 4px;
+}
+
+.photoJoin {
+  height: 50px;
 }

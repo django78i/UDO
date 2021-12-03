@@ -157,6 +157,7 @@ export class AddPostContenuComponent implements OnInit, OnDestroy {
       competitionId: detailCompet.competitionId,
       competitionName: detailCompet.competitionName,
       competitionType: detailCompet.competitionType,
+      challIcon : detailCompet.challengeIcon,
       // competitionInfo: detailCompet,
       championnat:
         detailCompet.competitionType == 'Championnat'
@@ -175,12 +176,14 @@ export class AddPostContenuComponent implements OnInit, OnDestroy {
         this.sessionNowService.dissmissLoading();
         this.sessionNowService.show('Image créée avec succès', 'success');
       })
-      .catch((err) =>
+      .catch((err) => {
         this.sessionNowService.show(
           "Une erreur s'est produite, veuillez rééssayer plus tard",
           'warning'
-        )
-      );
+        );
+        this.sessionNowService.dissmissLoading();
+        this.close();
+      });
   }
 
   blur(ev) {
@@ -229,7 +232,7 @@ export class PostModel {
   postCount: number;
   reactionsNombre: number;
   championnat?: string;
-  // competitionInfo?: any;
+  challIcon?: string;
   challenge?: string;
   challengeMetric?: string;
   championnatType?: string;

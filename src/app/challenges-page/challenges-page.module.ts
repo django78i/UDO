@@ -12,6 +12,7 @@ import { ClassementChallengeComponent } from './components/classement-challenge/
 import { TimeChampPipe } from '../pipe/time-champ.pipe';
 import { TimeRelativePipe } from '../pipe/time-relative.pipe';
 import { ChallTemplateComponent } from '../components/chall-template/chall-template.component';
+import { FeedsComponent } from '../tab3/components/feeds/feeds.component';
 
 @NgModule({
   imports: [
@@ -29,6 +30,7 @@ import { ChallTemplateComponent } from '../components/chall-template/chall-templ
     ChallTemplateComponent,
     ResumeChallengeComponent,
     ClassementChallengeComponent,
+    FeedsComponent
   ],
 })
 export class ChallengesPagePageModule {}

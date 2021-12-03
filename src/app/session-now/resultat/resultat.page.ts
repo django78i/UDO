@@ -276,6 +276,7 @@ export class ResultatPage implements OnInit, OnDestroy {
       competitionId: detailCompetion.competitionId,
       competitionName: detailCompetion.competitionName,
       competitionType: detailCompetion.competitionType,
+      challIcon: detailCompetion.challengeIcon,
 
       championnat:
         detailCompetion.competitionType == 'Championnat'
@@ -287,6 +288,7 @@ export class ResultatPage implements OnInit, OnDestroy {
           : '',
     };
     console.log(this.sessionNow);
+    console.log(detailCompetion, postModel);
     // this.sessionNowService.update(this.sessionNow,'session-now');
     this.sessionNowService.updateCompetition(this.sessionNow);
     this.sessionNowService.findPostLies(this.sessionNow.sessionId);
@@ -294,10 +296,10 @@ export class ResultatPage implements OnInit, OnDestroy {
       .update(postModel, 'post-session-now')
       .then((resPicture) => {
         this.sessionNowService.dissmissLoading();
-        this.zone.run(() => {
+        // this.zone.run(() => {
           this.navCtl.navigateForward('session-now/felicitation');
           this.sessionNowService.show('Seance publiée avec succés', 'success');
-        });
+        // });
         // this.feedService.feedFilter('Récent');
       })
       .catch((err) =>
@@ -387,7 +389,7 @@ export class PostModel {
   metrics: any[];
   uid: string;
   comment: string;
-  // championnatType: any;
+  challIcon?: string;
   duree: any;
   championnat?: string;
   competitionInfo?: any;

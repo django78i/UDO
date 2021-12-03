@@ -3,19 +3,29 @@ import {
   ChangeDetectorRef,
   Component,
   OnInit,
+  ViewChild,
 } from '@angular/core';
 import { ActivatedRoute, NavigationExtras } from '@angular/router';
 import {
   AlertController,
+  IonInput,
   ModalController,
   NavController,
 } from '@ionic/angular';
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadString,
+} from 'firebase/storage';
 import moment from 'moment';
 import { Observable } from 'rxjs';
 import { takeLast, tap } from 'rxjs/operators';
 import { FriendPageListComponent } from '../components/friend-page-list/friend-page-list.component';
 import { ChallengesService } from '../services/challenges.service';
+import { MusicFeedService } from '../services/music-feed.service';
 import { UserService } from '../services/user-service.service';
+import { AddContenuComponent } from '../session-now/add-contenu/add-contenu.component';
 
 @Component({
   selector: 'app-challenges-page',
@@ -32,6 +42,14 @@ export class ChallengesPagePage implements OnInit {
   startDate: any;
 
   challengeObs$: Observable<any>;
+  text: string;
+  picture: any;
+  boole: Boolean = false;
+  feed: any;
+  lastVisible: any;
+  pictureUrl: string;
+  competition = 'challenge';
+  @ViewChild('inputFeed') inputFeed: IonInput;
 
   constructor(
     private navCtl: NavController,
@@ -40,7 +58,8 @@ export class ChallengesPagePage implements OnInit {
     public route: ActivatedRoute,
     public ref: ChangeDetectorRef,
     public alertController: AlertController,
-    public modalCtrl: ModalController
+    public modalCtrl: ModalController,
+    public feedService: MusicFeedService
   ) {}
 
   ngOnInit() {
@@ -53,17 +72,24 @@ export class ChallengesPagePage implements OnInit {
           if (chall) {
             this.challenge = chall;
             this.startDate = moment(this.challenge.dateDemarrage).fromNow();
-
+            this.getFeedChallenge(uid);
             console.log(this.challenge);
             this.userEncours = this.challenge.participants.find(
               (part) => part.uid == this.user.uid
             );
-            console.log(this.userEncours, this.challenge, this.startDate)
+            console.log(this.userEncours, this.challenge, this.startDate);
             this.ref.detectChanges();
           }
         })
       );
     });
+  }
+
+  async getFeedChallenge(uid) {
+    const feedPrime = await this.feedService.feedQuery(uid, this.competition);
+    console.log(feedPrime);
+    this.feed = feedPrime.table;
+    this.lastVisible = feedPrime.last;
   }
 
   startChall(ev) {
@@ -191,9 +217,85 @@ export class ChallengesPagePage implements OnInit {
         competitionId: this.challenge.uid,
         challengeMetric: this.challenge.metric.metric,
         challengeStatus: this.challenge.completion.value,
+        challengeIcon: this.challenge.icon,
       },
     };
     this.navCtl.navigateForward('session-now', challInfo);
+  }
+
+  deletePhoto() {
+    this.picture = null;
+  }
+
+  async savePhoto(photo) {
+    console.log(photo);
+    const storage = getStorage();
+    const storageRef = ref(storage, `images/${new Date()}`);
+    const uploadTask = uploadString(storageRef, photo, 'data_url');
+    return await uploadTask;
+  }
+
+  inputRead(event) {
+    console.log(event.detail.value);
+    this.text = event.detail.value;
+  }
+
+  async send() {
+    let photo;
+    if (this.picture) {
+      const tof = await this.savePhoto(this.picture);
+      photo = await getDownloadURL(tof.ref);
+    }
+
+    const post = {
+      userId: this.user.uid,
+      type: 'picture',
+      startDate: new Date(),
+      reactions: [],
+      photo: photo ? photo : '',
+      mode: 'public',
+      isLive: false,
+      comment: this.text,
+      activity: '',
+      challenge: this.challenge.uid,
+      competitionType: this.competition,
+      challIcon: this.challenge.icon,
+      competitionName: this.challenge.name,
+      competitionId: this.challenge.uid,
+    };
+    console.log(post);
+    this.feedService.sendPost(post);
+    this.feedReinit();
+  }
+
+  async feedReinit() {
+    this.feed = [];
+    console.log(this.feed);
+    const feedRefresh = await this.feedService.feedQuery(
+      this.challenge.uid,
+      this.competition
+    );
+    console.log(feedRefresh);
+    this.feed = feedRefresh.table;
+    this.lastVisible = feedRefresh.last;
+    if (this.inputFeed) {
+      this.inputFeed.value = null;
+    }
+    this.picture = null;
+    this.pictureUrl = null;
+    this.boole = false;
+    this.inputFeed.value = null;
+  }
+
+  async addContenu() {
+    const modal = await this.modalCtrl.create({
+      component: AddContenuComponent,
+      cssClass: 'my-custom-contenu-modal',
+    });
+    modal.onDidDismiss().then((data: any) => {
+      this.picture = data.data !== 'Modal Closed' ? data.data : null;
+    });
+    return await modal.present();
   }
 
   close() {

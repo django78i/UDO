@@ -19,6 +19,9 @@ export class ChallTemplateComponent implements OnInit, OnChanges {
   @Input() userEncours: any;
   @Input() participantsList: any;
   @Input() segmentValue: string ="résumé";
+  @Input() lastVisible: any;
+  @Input() feed: any;
+  @Input() competition: any;
 
   @Output() friends: EventEmitter<boolean> = new EventEmitter();
   @Output() start: EventEmitter<any> = new EventEmitter();
@@ -36,7 +39,7 @@ export class ChallTemplateComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    console.log(this.challenge, this.segmentValue);
+    console.log(this.challenge, this.segmentValue, this.competition);
   }
 
   segmentChanged(ev) {

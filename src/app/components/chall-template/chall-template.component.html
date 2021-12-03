@@ -80,20 +80,27 @@
   </ion-segment>
 </ion-header>
 <ion-content scrollY="false"> -->
-  <ng-container *ngIf="challenge">
-    <app-resume-challenge
-      [user]="user"
-      [userEncours]="userEncours"
-      [challenge]="challenge"
-      *ngIf="segmentValue == 'resume'"
-    ></app-resume-challenge>
-    <app-classement-challenge
-      [user]="user"
-      [challenge]="challenge"
-      *ngIf="segmentValue == 'participants'"
-    ></app-classement-challenge>
-  </ng-container>
-  <!-- <ion-fab
+<ng-container *ngIf="challenge">
+  <app-resume-challenge
+    [user]="user"
+    [challenge]="challenge"
+    *ngIf="segmentValue == 'resume'"
+  ></app-resume-challenge>
+  <app-classement-challenge
+    [user]="user"
+    [challenge]="challenge"
+    *ngIf="segmentValue == 'participants'"
+  ></app-classement-challenge>
+  <app-feeds
+    [championnat]="challenge"
+    *ngIf="segmentValue == 'feed'"
+    [user]="user"
+    [lastVisible]="lastVisible"
+    [feed]="feed"
+    [competition]="competition"
+  ></app-feeds>
+</ng-container>
+<!-- <ion-fab
     vertical="bottom"
     horizontal="start"
     slot="fixed"
@@ -140,7 +147,7 @@
       >Séance Now</ion-button
     >
   </ion-fab> -->
-  <!-- <ion-fab
+<!-- <ion-fab
     vertical="bottom"
     horizontal="end"
     slot="fixed"

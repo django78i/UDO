@@ -259,6 +259,7 @@ export class CreateChampPopUpComponent
   }
 
   async saveChamp(ev) {
+    this.snService.presentLoading();
     this.user = await this.userService.getCurrentUser();
     const userOne = {
       avatar: this.user.avatar,
@@ -294,15 +295,19 @@ export class CreateChampPopUpComponent
     console.log(champ);
     this.champService
       .createChampionnat(champ)
-      .then(() => this.snService.show('championnat créé', 'success'))
-      .catch((err) =>
+      .then(() => {
+        this.snService.show('championnat créé', 'success');
+        this.snService.dissmissLoading();
+      })
+      .catch((err) => {
         this.snService.show(
           "une erreur s'est produite, veuillez rééssayer plus tard",
           'warning'
-        )
-      );
+        );
+        this.snService.dissmissLoading();
+      });
     this.modalCtrl.dismiss();
-    this.presentToast();
+    // this.presentToast();
   }
 
   async presentToast() {

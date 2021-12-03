@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { ModalController, NavController } from '@ionic/angular';
 import { UserService } from 'src/app/services/user-service.service';
 import { MenuUserComponent } from '../menu-user/menu-user.component';
@@ -8,8 +8,8 @@ import { MenuUserComponent } from '../menu-user/menu-user.component';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent implements OnInit {
-  user: any;
+export class HeaderComponent implements OnInit, OnChanges {
+  @Input() user: any;
   constructor(
     public userService: UserService,
     public modalController: ModalController,
@@ -17,8 +17,10 @@ export class HeaderComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.userService.getCurrentUser().then((user) => (this.user = user));
+    // this.userService.getCurrentUser().then((user) => (this.user = user));
   }
+
+  ngOnChanges() {}
 
   async showMenu() {
     const modal = await this.modalController.create({

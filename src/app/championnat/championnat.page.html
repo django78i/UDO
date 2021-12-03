@@ -1,5 +1,5 @@
 <ion-header mode="ios" collapse="condense">
-  <ion-toolbar style="--border-width: 0 0 0 !important">
+  <ion-toolbar >
     <ion-button
       slot="start"
       (click)="close()"
@@ -68,6 +68,71 @@
       <ion-label>Feed</ion-label>
     </ion-segment-button>
   </ion-segment>
+  <section *ngIf="segmentValue == 'feed'">
+    <ion-toolbar
+      mode="ios"
+      style="
+        --border-width: 0 0 0.55px;
+        --padding-start: 15px;
+        --padding-end: 15px;
+      "
+    >
+      <div style="display: flex; flex-direction: column">
+        <ion-item lines="none">
+          <ion-avatar slot="start" style="margin-right: 15px">
+            <img src="assets/mocks/3.jpg" alt="" />
+            <ion-badge>{{ user.niveau }}</ion-badge>
+          </ion-avatar>
+
+          <ion-input
+            #inputFeed
+            (ionChange)="inputRead($event)"
+            mode="ios"
+            inputmode="text"
+            clear-on-edit
+            placeholder="Publier un post"
+          ></ion-input>
+          <div *ngIf="boole">test</div>
+          <ion-button
+            slot="end"
+            type="submit"
+            style="
+              --border-radius: 50%;
+              --background: #0a122129;
+              --backdrop-opacity: 9%;
+              height: 30px;
+              width: 30px;
+              margin-right: 0;
+            "
+          >
+            <img
+              (click)="send()"
+              src="assets/icon/icons8-email-send.svg"
+              alt=""
+            />
+          </ion-button>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-icon
+            *ngIf="!picture"
+            name="image-outline"
+            (click)="addContenu()"
+            slot="start"
+          ></ion-icon>
+          <!-- <ion-icon name="camera-outline" (click)="addContenu()"></ion-icon> -->
+          <div style="position: relative" *ngIf="picture">
+            <img [src]="picture" alt="" class="photoJoin" />
+            <img
+              src="assets/icon/closeIconPhoto.svg"
+              class="iconPhotoJoin"
+              alt=""
+              (click)="deletePhoto()"
+            />
+          </div>
+        </ion-item>
+      </div>
+    </ion-toolbar>
+  </section>
 </ion-header>
 
 <ion-content fullscreen>
@@ -78,6 +143,9 @@
       [userEncours]="userEncours"
       [participantsList]="participantsList"
       [segmentValue]="segmentValue"
+      [lastVisible]="lastVisible"
+      [feed]="feed"
+      [competition]="competition"
     ></app-champ-template>
     <div
       style="
@@ -140,9 +208,6 @@
       <ion-fab-list side="top">
         <ion-fab-button color="primary" (click)="addFriend()">
           <img src="assets/icon/friends-white.svg" alt="" />
-        </ion-fab-button>
-        <ion-fab-button color="success" (click)="chat()">
-          <img src="assets/icon/chat_white.svg" alt="" />
         </ion-fab-button>
       </ion-fab-list>
     </ion-fab>

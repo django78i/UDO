@@ -78,7 +78,10 @@
     <app-feeds
       *ngIf="segmentValue == 'feed'"
       [user]="user"
+      [lastVisible]="lastVisible"
+      [feed]="feed"
       [championnat]="championnat"
+      [competition]="competition"
     ></app-feeds>
     <app-resume
       *ngIf="segmentValue == 'resume'"

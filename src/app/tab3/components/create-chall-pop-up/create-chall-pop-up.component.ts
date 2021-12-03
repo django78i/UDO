@@ -7,6 +7,7 @@ import {
   ViewChild,
   ViewChildren,
 } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import moment from 'moment';
 import { ChallengesService } from 'src/app/services/challenges.service';
@@ -33,7 +34,7 @@ export class CreateChallPopUpComponent implements OnInit, AfterContentChecked {
   banniere = {
     color: '#000000',
   };
-  weekCount = 0;
+  weekCount = 1;
   @ViewChild('swiper') swiper: SwiperComponent;
   inputLength = 20;
   activitesList = [];
@@ -72,16 +73,20 @@ export class CreateChallPopUpComponent implements OnInit, AfterContentChecked {
   dateDemarrage: any;
   icon: any;
   friendsList: any[] = [];
+  formChallLow: FormGroup;
+  formChallUp: FormGroup;
+
   constructor(
     public modalCtl: ModalController,
     public challService: ChallengesService,
-    public sessionNowService: SessionNowService
+    public sessionNowService: SessionNowService,
+    public fb: FormBuilder
   ) {}
 
   ngOnInit() {
     this.indice = 0;
     this.metricChoice = this.filters[0];
-
+    this.initForm();
     console.log(this.banniere);
   }
 
@@ -93,6 +98,16 @@ export class CreateChallPopUpComponent implements OnInit, AfterContentChecked {
     if (this.swiper2) {
       this.swiper2.updateSwiper({});
     }
+  }
+  initForm() {
+    this.formChallLow = this.fb.group({
+      objectif: ['', Validators.required],
+      participants: ['', Validators.required],
+      dateDemarrage: ['', Validators.required],
+    });
+    this.formChallUp = this.fb.group({
+      name: ['', Validators.required],
+    });
   }
 
   changeDescription(ev) {
@@ -163,13 +178,15 @@ export class CreateChallPopUpComponent implements OnInit, AfterContentChecked {
     };
     this.challService
       .createChallenge(challenge)
-      .then(() => this.sessionNowService.show('challenge créé', 'success'))
-      .catch((err) =>
+      .then(() => {
+        this.sessionNowService.show('challenge créé', 'success');
+      })
+      .catch((err) => {
         this.sessionNowService.show(
           "une erreur s'est produite, veuillez rééssayer plus tard",
           'warning'
-        )
-      );
+        );
+      });
     this.modalCtl.dismiss();
     console.log(challenge);
   }
@@ -222,9 +239,13 @@ export class CreateChallPopUpComponent implements OnInit, AfterContentChecked {
 
   async addIcon() {
     console.log('addContenu');
+    const type = 'PNG';
     const modal = await this.modalCtl.create({
       component: AddContenuComponent,
       cssClass: 'my-custom-contenu-modal',
+      componentProps: {
+        type: type,
+      },
     });
     modal.onDidDismiss().then((data: any) => {
       console.log(data);

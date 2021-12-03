@@ -40,17 +40,18 @@ export class FriendPageListComponent implements OnInit {
     this.friendsList.forEach((friend) => {
       this.championnat.participants.push(friend);
     });
-    console.log(this.championnat);
-    if (this.type == 'Championnat') {
+    console.log(this.championnat, this.type);
+    if (this.type == 'championnat') {
       this.champService
         .updateChamp(this.championnat)
         .then(() => this.sessionNowService.show('Invitation enoyé', 'success'))
-        .catch((err) =>
+        .catch((err) => {
+          console.log(err);
           this.sessionNowService.show(
             'Inivitation non envoyé, veuillez rééssayer plus tard',
             'warning'
-          )
-        );
+          );
+        });
     } else {
       this.challService
         .updateChall(this.championnat)

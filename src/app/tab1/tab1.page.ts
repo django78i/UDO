@@ -273,6 +273,7 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
     const popover = await this.popoverController.create({
       component: EditPageComponent,
       event: ev,
+      cssClass: 'my-custom-class',
       componentProps: {
         uid: postUid,
         filter: this.filter,
@@ -281,7 +282,10 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
     await popover.present();
 
     popover.onDidDismiss().then((data) => {
-      this.refreshFeed();
+      if (data.data) {
+        console.log(data);
+        this.refreshFeed();
+      }
     });
   }
 

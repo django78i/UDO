@@ -13,7 +13,7 @@ import {
 })
 export class ResumeChallengeComponent implements OnInit, OnChanges {
   @Input() challenge: any;
-  @Input() userEncours: any;
+  userEncours: any;
   @Input() user: any;
 
   constructor(public ref: ChangeDetectorRef) {}

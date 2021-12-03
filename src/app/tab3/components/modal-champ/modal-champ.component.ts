@@ -10,17 +10,26 @@ import {
 import { NavigationExtras, Router } from '@angular/router';
 import {
   AlertController,
+  IonInput,
   ModalController,
   NavController,
   NavParams,
 } from '@ionic/angular';
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadString,
+} from 'firebase/storage';
 import moment from 'moment';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { FriendPageListComponent } from 'src/app/components/friend-page-list/friend-page-list.component';
 import { ChallengesService } from 'src/app/services/challenges.service';
 import { ChampionnatsService } from 'src/app/services/championnats.service';
+import { MusicFeedService } from 'src/app/services/music-feed.service';
 import { UserService } from 'src/app/services/user-service.service';
+import { AddContenuComponent } from 'src/app/session-now/add-contenu/add-contenu.component';
 
 interface ChampionnatNav {
   type: string;
@@ -71,6 +80,13 @@ export class ModalChampComponent implements OnInit, AfterViewInit {
   startDate: any;
 
   challengeObs$: Observable<any>;
+  @ViewChild('inputFeed') inputFeed: IonInput;
+  text: any;
+  lastVisible: any;
+  picture: any;
+  pictureUrl: any;
+  boole: Boolean = false;
+  feed: any;
 
   constructor(
     private modalCtrl: ModalController,
@@ -81,23 +97,27 @@ export class ModalChampComponent implements OnInit, AfterViewInit {
     public router: Router,
     public navParam: NavParams,
     public userService: UserService,
-    public challService: ChallengesService
+    public challService: ChallengesService,
+    public feedService: MusicFeedService
   ) {}
 
   ngOnInit() {
     console.log('modail', this.navParam.data, this.entryData);
     const uid = this.navParam.data.champId;
     this.entryData = this.navParam.data.entryData;
+
     this.userService.getCurrentUser().then((user) => {
       console.log(user);
       this.user = user;
-      if (this.entryData == 'Championnat') {
+      if (this.entryData == 'championnat') {
         this.champService.getChampionnat(uid);
         this.championnat$ = this.champService.singleChampSub$.pipe(
           tap((champ) => {
             if (champ) {
               console.log(champ);
               this.championnat = champ;
+              this.getFeedChampionnat(this.championnat.uid);
+
               this.participantsList = this.championnat.participants.slice(0, 4);
               this.userEncours = this.championnat.participants.find(
                 (part) => part.uid == this.user.uid
@@ -111,6 +131,9 @@ export class ModalChampComponent implements OnInit, AfterViewInit {
           tap((chall) => {
             if (chall) {
               this.challenge = chall;
+              console.log(this.entryData);
+              this.getFeedChampionnat(this.challenge.uid);
+
               this.userEncours = this.challenge.participants.find(
                 (part) => part.uid == this.user.uid
               );
@@ -126,6 +149,16 @@ export class ModalChampComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {}
 
+  async getFeedChampionnat(uid) {
+    const feedPrime = await this.feedService.feedQuery(
+      uid,
+      this.entryData.toLowerCase()
+    );
+    console.log(feedPrime);
+    this.feed = feedPrime.table;
+    this.lastVisible = feedPrime.last;
+  }
+
   close() {
     this.modalCtrl.dismiss();
   }
@@ -133,14 +166,26 @@ export class ModalChampComponent implements OnInit, AfterViewInit {
   participer(ev) {
     this.loading = true;
 
-    const index = this.championnat.participants.findIndex(
+    const index = this.challenge.participants.findIndex(
       (ind) => ind.uid == this.user.uid
     );
-    this.championnat.participants[index].etat = 'prêt';
-    this.userEncours.etat = 'prêt';
+    let user: any;
+    if (!this.userEncours) {
+      user = {
+        ...this.user,
+        seance: 0,
+        value: 0,
+        etat: 'prêt',
+      };
+    }
+    index != -1
+      ? (this.challenge.participants[index].etat = 'prêt')
+      : this.challenge.participants.push(user);
     this.ref.detectChanges();
-    console.log(this.championnat);
-    this.champService.updateChamp(this.championnat);
+    console.log(this.challenge);
+    this.challService.updateChall(this.challenge);
+    this.challService.getChallenge(this.challenge.uid);
+
     this.loading = false;
   }
 
@@ -247,6 +292,91 @@ export class ModalChampComponent implements OnInit, AfterViewInit {
     console.log(final);
   }
 
+  deletePhoto() {
+    this.picture = null;
+  }
+
+  async savePhoto(photo) {
+    console.log(photo);
+    const storage = getStorage();
+    const storageRef = ref(storage, `images/${new Date()}`);
+    const uploadTask = uploadString(storageRef, photo, 'data_url');
+    return await uploadTask;
+  }
+
+  inputRead(event) {
+    console.log(event.detail.value);
+    this.text = event.detail.value;
+  }
+
+  async send() {
+    let photo;
+    if (this.picture) {
+      const tof = await this.savePhoto(this.picture);
+      photo = await getDownloadURL(tof.ref);
+    }
+
+    const post: any = {
+      userId: this.user.uid,
+      type: 'picture',
+      startDate: new Date(),
+      reactions: [],
+      photo: photo ? photo : '',
+      mode: 'public',
+      isLive: false,
+      comment: this.text,
+      activity: '',
+      challIcon: this.challenge ? this.challenge.icon : '',
+      championnatType: this.championnat ? this.championnat.type : '',
+      competitionType: this.entryData.toLowerCase(),
+      competitionName: this.championnat
+        ? this.championnat.name
+        : this.challenge.name,
+      competitionId: this.championnat
+        ? this.championnat.uid
+        : this.challenge.uid,
+    };
+
+    this.entryData.toLowerCase() == 'championnat'
+      ? (post.championnat = this.championnat.uid)
+      : (post.challenge = this.challenge.uid);
+
+    console.log(post);
+    this.feedService.sendPost(post);
+    this.feedReinit();
+  }
+
+  async feedReinit() {
+    this.feed = [];
+    console.log(this.feed, this.challenge);
+    const feedRefresh = await this.feedService.feedQuery(
+      this.challenge ? this.challenge.uid : this.championnat.uid,
+      this.entryData.toLowerCase()
+    );
+    console.log(feedRefresh);
+    this.feed = feedRefresh.table;
+    this.lastVisible = feedRefresh.last;
+    if (this.inputFeed) {
+      this.inputFeed.value = null;
+    }
+    this.picture = null;
+    this.pictureUrl = null;
+    this.boole = false;
+    this.inputFeed.value = null;
+
+  }
+
+  async addContenu() {
+    const modal = await this.modalCtrl.create({
+      component: AddContenuComponent,
+      cssClass: 'my-custom-contenu-modal',
+    });
+    modal.onDidDismiss().then((data: any) => {
+      this.picture = data.data !== 'Modal Closed' ? data.data : null;
+    });
+    return await modal.present();
+  }
+
   segmentChanged(ev) {
     this.segmentValue = ev.detail.value;
   }
@@ -270,6 +400,7 @@ export class ModalChampComponent implements OnInit, AfterViewInit {
           competitionId: this.challenge.uid,
           challengeMetric: this.challenge.metric.metric,
           challengeStatus: this.challenge.completion.value,
+          challengeIcon: this.challenge.icon,
         },
       };
     }

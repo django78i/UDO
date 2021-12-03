@@ -55,28 +55,31 @@
             </ion-item>
           </ion-card-content>
         </ion-card>
-        <!-- </div> -->
-        <ion-item lines="full">
-          <ion-input
-            type="text"
-            style="padding-bottom: 0px"
-            placeholder="Nom du challenge"
-            maxLength="20"
-            (ionChange)="changeTitle($event)"
-          ></ion-input>
-          <ion-badge
-            slot="end"
-            style="
-              --padding-bottom: 5px;
-              --padding-top: 5px;
-              border-radius: 5px;
-              --background: #cfccd5;
-              --color: black;
-            "
-          >
-            {{ inputLength }}
-          </ion-badge>
-        </ion-item>
+        <!-- Nom du championnat -->
+        <form [formGroup]="formChallUp">
+          <ion-item lines="full">
+            <ion-input
+              type="text"
+              formControlName ="name"
+              style="padding-bottom: 0px"
+              placeholder="Nom du challenge"
+              maxLength="20"
+              (ionChange)="changeTitle($event)"
+            ></ion-input>
+            <ion-badge
+              slot="end"
+              style="
+                --padding-bottom: 5px;
+                --padding-top: 5px;
+                border-radius: 5px;
+                --background: #cfccd5;
+                --color: black;
+              "
+            >
+              {{ inputLength }}
+            </ion-badge>
+          </ion-item>
+        </form>
         <ion-item lines="full">
           <ion-textarea
             rows="1"
@@ -298,33 +301,42 @@
             </ion-item>
           </ng-template>
         </swiper>
-        <!-- Input objectifs -->
-        <ion-item lines="full">
-          <ion-label slot="start" class="sousTitre"> Objectif</ion-label>
-          <ion-input
-            type="number"
-            (ionChange)="objectifChoice($event)"
-          ></ion-input>
-          <ion-label slot="end" style="color: #00000031">{{
-            metricChoice.metric
-          }}</ion-label>
-        </ion-item>
-        <!-- Input nombre participants -->
-        <ion-item lines="full">
-          <ion-label slot="start" class="sousTitre">
-            Nombre participants</ion-label
-          >
-          <ion-input type="number" (ionChange)="playerMax($event)"></ion-input>
-          <ion-label slot="end"></ion-label>
-        </ion-item>
-        <ion-item lines="full" style="margin-bottom: 10px">
-          <ion-label class="sousTitre">Date de démarrage</ion-label>
-          <ion-datetime
-            (ionChange)="dateChoise($event)"
-            displayFormat="MM/DD/YYYY"
-            placeholder=""
-          ></ion-datetime>
-        </ion-item>
+        <form [formGroup]="formChallLow">
+          <!-- Input objectifs -->
+          <ion-item lines="full">
+            <ion-label slot="start" class="sousTitre"> Objectif</ion-label>
+            <ion-input
+              formControlName="objectif"
+              type="number"
+              (ionChange)="objectifChoice($event)"
+            ></ion-input>
+            <ion-label slot="end" style="color: #00000031">{{
+              metricChoice.metric
+            }}</ion-label>
+          </ion-item>
+          <!-- Input nombre participants -->
+          <ion-item lines="full">
+            <ion-label slot="start" class="sousTitre">
+              Nombre participants</ion-label
+            >
+            <ion-input
+              formControlName="participants"
+              type="number"
+              (ionChange)="playerMax($event)"
+            ></ion-input>
+            <ion-label slot="end"></ion-label>
+          </ion-item>
+          <!-- Date de démarrage -->
+          <ion-item lines="full" style="margin-bottom: 10px">
+            <ion-label class="sousTitre">Date de démarrage</ion-label>
+            <ion-datetime
+              formControlName="dateDemarrage"
+              (ionChange)="dateChoise($event)"
+              displayFormat="MM/DD/YYYY"
+              placeholder=""
+            ></ion-datetime>
+          </ion-item>
+        </form>
         <ion-item lines="none" class="champColor">
           <ion-thumbnail slot="start" class="thumbZone">
             <svg
@@ -404,6 +416,7 @@
             class="buttonNextSlide"
             style="--background: #ed2d6a; width: 50%"
             (click)="nextFriends()"
+            [disabled]="formChallUp.invalid || formChallLow.invalid"
             >Publier
           </ion-button>
         </div>

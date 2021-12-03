@@ -35,17 +35,17 @@ export class MusicFeedService {
     public championnatService: ChampionnatsService
   ) {}
 
-  //Feed d'un championnat
-  async feedQuery(champUid) {
+  //Feed d'un championnat ou d'un challenge
+  async feedQuery(champUid, competition) {
     console.log('là');
     const table = [];
 
     const db = getFirestore();
-
+    console.log(competition)
     // Query the first page of docs
     const first = query(
       collection(db, 'post-session-now'),
-      where('championnat', '==', champUid),
+      where(competition, '==', champUid),
       orderBy('startDate', 'desc'),
       limit(15)
     );
@@ -155,12 +155,12 @@ export class MusicFeedService {
     return this.returnQueryObject(documentSnapshots);
   }
 
-  //Ajout de post dans le feed du championnat
-  async addFeedChamps(last, champUid?) {
+  //Ajout de post dans le feed du championnat ou challenge
+  async addFeedChamps(competition, last, champUid?) {
     const db = getFirestore();
     const queryColl = query(
       collection(db, 'post-session-now'),
-      where('championnat', '==', champUid),
+      where(competition, '==', champUid),
       orderBy('startDate', 'desc'),
       startAfter(last),
       limit(15)

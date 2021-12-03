@@ -66,7 +66,7 @@
       </ion-card-content>
     </ion-card>
   </ng-template>
-  <ng-container *ngIf="entryData == 'Championnat'; else challCard">
+  <ng-container *ngIf="entryData == 'championnat'; else challCard">
     <ion-card
       *ngIf="championnat$ | async as championnat"
       [style.backgroundColor]="championnat.banniere.color"
@@ -127,10 +127,75 @@
       <ion-label>Feed</ion-label>
     </ion-segment-button>
   </ion-segment>
+  <section *ngIf="segmentValue == 'feed'">
+    <ion-toolbar
+      mode="ios"
+      style="
+        --border-width: 0 0 0.55px;
+        --padding-start: 15px;
+        --padding-end: 15px;
+      "
+    >
+      <div style="display: flex; flex-direction: column">
+        <ion-item lines="none">
+          <ion-avatar slot="start" style="margin-right: 15px">
+            <img src="assets/mocks/3.jpg" alt="" />
+            <ion-badge>{{ user.niveau }}</ion-badge>
+          </ion-avatar>
+
+          <ion-input
+            #inputFeed
+            (ionChange)="inputRead($event)"
+            mode="ios"
+            inputmode="text"
+            clear-on-edit
+            placeholder="Publier un post"
+          ></ion-input>
+          <div *ngIf="boole">test</div>
+          <ion-button
+            slot="end"
+            type="submit"
+            style="
+              --border-radius: 50%;
+              --background: #0a122129;
+              --backdrop-opacity: 9%;
+              height: 30px;
+              width: 30px;
+              margin-right: 0;
+            "
+          >
+            <img
+              (click)="send()"
+              src="assets/icon/icons8-email-send.svg"
+              alt=""
+            />
+          </ion-button>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-icon
+            *ngIf="!picture"
+            name="image-outline"
+            (click)="addContenu()"
+            slot="start"
+          ></ion-icon>
+          <!-- <ion-icon name="camera-outline" (click)="addContenu()"></ion-icon> -->
+          <div style="position: relative" *ngIf="picture">
+            <img [src]="picture" alt="" class="photoJoin" />
+            <img
+              src="assets/icon/closeIconPhoto.svg"
+              class="iconPhotoJoin"
+              alt=""
+              (click)="deletePhoto()"
+            />
+          </div>
+        </ion-item>
+      </div>
+    </ion-toolbar>
+  </section>
 </ion-header>
 
 <ion-content>
-  <ng-container *ngIf="entryData == 'Championnat'; else challenges">
+  <ng-container *ngIf="entryData == 'championnat'; else challenges">
     <ng-container *ngIf="championnat$ | async as champ">
       <app-champ-template
         [championnat]="champ"
@@ -138,6 +203,9 @@
         [userEncours]="userEncours"
         [participantsList]="participantsList"
         [segmentValue]="segmentValue"
+        [competition]="entryData"
+        [feed]="feed"
+        [lastVisible]="lastVisible"
       ></app-champ-template>
     </ng-container>
   </ng-container>
@@ -154,6 +222,9 @@
         (closed)="close($event)"
         (join)="participer($event)"
         [segmentValue]="segmentValue"
+        [competition]="entryData"
+        [feed]="feed"
+        [lastVisible]="lastVisible"
       ></app-chall-template>
     </ng-container>
   </ng-template>
@@ -261,7 +332,8 @@
         style=" --i : {{ challenge.banniereColor }}"
         *ngIf="
           challenge &&
-          challenge?.status == 'en attente' &&userEncours &&
+          challenge?.status == 'en attente' &&
+          userEncours &&
           userEncours.etat == 'prêt' &&
           user.uid != challenge.userId
         "
@@ -288,9 +360,6 @@
         <ion-fab-list side="top">
           <ion-fab-button color="primary" (click)="addFriend()">
             <img src="assets/icon/friends-white.svg" alt="" />
-          </ion-fab-button>
-          <ion-fab-button color="success" (click)="chat()">
-            <img src="assets/icon/chat_white.svg" alt="" />
           </ion-fab-button>
         </ion-fab-list>
       </ion-fab>

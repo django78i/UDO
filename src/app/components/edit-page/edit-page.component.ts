@@ -31,6 +31,6 @@ export class EditPageComponent implements OnInit {
           'warning'
         )
       );
-    this.popoverController.dismiss();
+    this.popoverController.dismiss(true);
   }
 }

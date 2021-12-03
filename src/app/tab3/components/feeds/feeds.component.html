@@ -1,71 +1,9 @@
-<ion-header>
-  <ion-toolbar
-    mode="ios"
-    style="
-      --border-width: 0 0 0.55px;
-      --padding-start: 15px;
-      --padding-end: 15px;
-    "
-  >
-    <div style="display: flex; flex-direction: column">
-      <ion-item lines="none">
-        <ion-avatar slot="start" style="margin-right: 15px">
-          <img src="assets/mocks/3.jpg" alt="" />
-          <ion-badge>{{ user.niveau }}</ion-badge>
-        </ion-avatar>
-
-        <ion-input
-          #inputFeed
-          (ionChange)="inputRead($event)"
-          mode="ios"
-          inputmode="text"
-          clear-on-edit
-          placeholder="Publier un post"
-        ></ion-input>
-        <div *ngIf="boole">test</div>
-        <ion-button
-          slot="end"
-          style="
-            --border-radius: 50%;
-            --background: #0a122129;
-            --backdrop-opacity: 9%;
-            height: 30px;
-            width: 30px;
-          "
-        >
-          <img
-            (click)="send()"
-            src="assets/icon/icons8-email-send.svg"
-            alt=""
-          />
-        </ion-button>
-      </ion-item>
-      <ion-item lines="none">
-        <ion-icon
-          *ngIf="!picture"
-          name="image-outline"
-          (click)="addContenu()"
-          slot="start"
-        ></ion-icon>
-        <!-- <ion-icon name="camera-outline" (click)="addContenu()"></ion-icon> -->
-        <div style="position: relative" *ngIf="picture">
-          <img [src]="picture" alt="" class="photoJoin" />
-          <img
-            src="assets/icon/closeIconPhoto.svg"
-            class="iconPhotoJoin"
-            alt=""
-            (click)="deletePhoto()"
-          />
-        </div>
-      </ion-item>
-    </div>
-  </ion-toolbar>
-</ion-header>
 <ion-content>
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  <section class="contenu" *ngIf="feed; else showBlank">
+
+  <section class="contenu" *ngIf="feed && feed.length; else showBlank">
     <ion-item
       lines="full"
       *ngFor="let item of feed; let i = index"
@@ -103,18 +41,59 @@
                   {{ item.startDate | timeRelative }}
                 </p>
               </div>
-              <div
-                style="display: flex; gap: 5px; align-items: center"
-                *ngIf="item.activity"
-              >
-                <img
-                  [src]="item.activity.image"
-                  alt=""
-                  style="width: 20px; height: 20px"
-                />
-                <p style="font-size: 10px; font-weight: 900">
-                  {{ item.activity.name }}
-                </p>
+              <div style="display: flex; gap: 5px; align-items: center">
+                <div style="display: flex; gap: 5px; align-items: center">
+                  <img
+                    style="
+                      padding: 5px;
+                      border-radius: 50%;
+                      background: #eaebef;
+                    "
+                    src="assets/icon/FriendsFamilly.svg"
+                    alt=""
+                    *ngIf="item.championnatType == 'Friends&Familly'"
+                  />
+                  <img
+                    style="
+                      height: 26px;
+                      padding: 2px;
+                      border-radius: 50%;
+                      background: #eaebef;
+                      width: 26px;
+                    "
+                    [src]="item.challIcon"
+                    alt=""
+                    *ngIf="item.challIcon"
+                  />
+                  <img
+                    style="
+                      padding: 5px;
+                      border-radius: 50%;
+                      background: #eaebef;
+                    "
+                    src="assets/icon/Icon feather-globe.svg"
+                    alt=""
+                    *ngIf="item.championnatType == 'Network'"
+                  />
+                  <p style="color: #6f99f7; font-size: 10px; font-weight: 600">
+                    {{ item.competitionName }}
+                  </p>
+                </div>
+
+                <div style="display: flex; gap: 5px; align-items: center">
+                  <img
+                    *ngIf="item.activity"
+                    [src]="item.activity.image"
+                    alt=""
+                    style="width: 20px; height: 20px"
+                  />
+                  <p
+                    style="font-size: 10px; font-weight: 900"
+                    *ngIf="item.activity"
+                  >
+                    {{ item.activity.name }}
+                  </p>
+                </div>
               </div>
             </ion-label>
 
@@ -129,7 +108,7 @@
             style="margin: 0 12px 12px 0; font-size: 14px; font-weight: 600"
             (click)="openDetail(item)"
           >
-            {{ item.text }}
+            {{ item.comment }}
           </p>
         </ion-card-header>
         <ion-card-header *ngIf="item.type == 'session-now'">
@@ -301,6 +280,8 @@
       </ion-card>
     </ion-item>
   </section>
+  <section style="height: 100px"></section>
+
   <ng-template #showBlank>
     <ion-card class="blank">
       <img src="assets/mocks/Groupe 3959.png" alt="" />

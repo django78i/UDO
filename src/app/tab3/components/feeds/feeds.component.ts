@@ -3,6 +3,7 @@ import {
   ChangeDetectorRef,
   Component,
   Input,
+  OnChanges,
   OnInit,
   ViewChild,
 } from '@angular/core';
@@ -47,11 +48,15 @@ interface Users {
   templateUrl: './feeds.component.html',
   styleUrls: ['./feeds.component.scss'],
 })
-export class FeedsComponent implements OnInit {
-  feed: any[] = [];
-  lastVisible: any;
+export class FeedsComponent implements OnInit, OnChanges {
+  // feed: any[] = [];
+  // lastVisible: any;
   @Input() user: any;
   @Input() championnat: any;
+  @Input() lastVisible: any;
+  @Input() feed: any;
+  @Input() competition: any;
+
   reaction: any;
   picture: any;
   pictureUrl: string;
@@ -75,17 +80,20 @@ export class FeedsComponent implements OnInit {
     public modalCtrl: ModalController
   ) {}
 
-  async ngOnInit() {
-    console.log(this.user);
-    const feedPrime = await this.feedService.feedQuery(this.championnat.uid);
-    console.log(feedPrime);
-    this.feed = feedPrime.table;
-    this.lastVisible = feedPrime.last;
+  ngOnInit() {}
+
+  ngOnChanges() {
+    this.competition.toLowerCase();
+    console.log('init', this.feed, this.competition);
   }
 
   async loadData(event) {
-    const taille = await this.feedService.feedQuery(this.championnat.uid);
+    const taille = await this.feedService.feedQuery(
+      this.championnat.uid,
+      this.competition.toLowerCase()
+    );
     const feedPlus = await this.feedService.addFeedChamps(
+      this.competition.toLowerCase(),
       this.lastVisible,
       this.championnat.uid
     );
@@ -103,7 +111,10 @@ export class FeedsComponent implements OnInit {
   async doRefresh(event) {
     this.feed = [];
     console.log(event);
-    const feedRefresh = await this.feedService.feedQuery(this.championnat.uid);
+    const feedRefresh = await this.feedService.feedQuery(
+      this.championnat.uid,
+      this.competition.toLowerCase()
+    );
     setTimeout(() => {
       event.target.complete();
       this.feed = feedRefresh.table;
@@ -169,75 +180,6 @@ export class FeedsComponent implements OnInit {
       this.feedService.createReactionSeanceNow(this.feed[i], reactionPost);
     }
     this.feedService.updatePost(this.feed[i]);
-  }
-
-  deletePhoto() {
-    this.picture = null;
-  }
-
-  async savePhoto(photo) {
-    console.log(photo);
-    const storage = getStorage();
-    const storageRef = ref(storage, `images/${new Date()}`);
-    const uploadTask = uploadString(storageRef, photo, 'data_url');
-    return await uploadTask;
-  }
-
-  inputRead(event) {
-    console.log(event.detail.value);
-    this.text = event.detail.value;
-  }
-
-  async send() {
-    let photo;
-    if (this.picture) {
-      const tof = await this.savePhoto(this.picture);
-      photo = await getDownloadURL(tof.ref);
-    }
-
-    const post = {
-      userId: this.user.uid,
-      // username: this.user.userName,
-      // userAvatar: this.user.avatar,
-      type: 'picture',
-      startDate: new Date(),
-      reactions: [],
-      photo: photo ? photo : '',
-      mode: 'public',
-      isLive: false,
-      text: this.text,
-      activity: '',
-      championnat: this.championnat.uid,
-    };
-    console.log(post);
-    this.feedService.sendPost(post);
-    this.feedReinit();
-
-    this.feedReinit();
-  }
-
-  async addContenu() {
-    const modal = await this.modalCtrl.create({
-      component: AddContenuComponent,
-      cssClass: 'my-custom-contenu-modal',
-    });
-    modal.onDidDismiss().then((data: any) => {
-      this.picture = data.data !== 'Modal Closed' ? data.data : null;
-    });
-    return await modal.present();
-  }
-
-  async feedReinit() {
-    this.feed = [];
-    console.log(this.feed);
-    const feedRefresh = await this.feedService.feedQuery(this.championnat.uid);
-    console.log(feedRefresh);
-    this.feed = feedRefresh.table;
-    this.lastVisible = feedRefresh.last;
-    this.inputFeed.value = null;
-    this.picture = null;
-    this.pictureUrl = null;
-    this.boole = false;
   }
 
   async openDetail(post) {

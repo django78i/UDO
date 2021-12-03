@@ -19,6 +19,8 @@ import { SwiperOptions } from 'swiper';
 export class ChallengesListViewComponent implements OnInit, OnChanges {
   challenges: any[] = [];
   @Input() filter: string;
+  @Input() competition: any;
+
   challengesFilered: any[] = [];
   @Output() challengeChoice: EventEmitter<string> = new EventEmitter();
 

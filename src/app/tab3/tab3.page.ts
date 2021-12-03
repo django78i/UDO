@@ -141,7 +141,9 @@ export class Tab3Page implements OnInit, AfterContentChecked, OnDestroy {
     this.ref.detectChanges();
   }
 
-  ionViewDidEnter() {}
+  ionViewDidEnter() {
+    
+  }
 
   ngAfterContentChecked(): void {
     if (this.swiper) {
