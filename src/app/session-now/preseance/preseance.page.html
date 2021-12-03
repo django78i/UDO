@@ -238,24 +238,22 @@
 
     </ion-slide>
   </ion-slides>
-  <ion-grid [class]="demarrage">
-    <ion-row class="row-demarrage">
-      <ion-item lines="none">
-        <span class="param" slot="start" (click)="reglage(mySlider)">
-          <ion-img src="assets/images/settings.svg"></ion-img>
-        </span>
-        <ion-img class="feather-rose" *ngIf="!isActif" src="assets/images/warning.svg"></ion-img>
-
-        <span class="start" (click)="start()">
-          <ion-img src="assets/images/play.svg"></ion-img>
-        </span>
-
-        <span class="photo" slot="end" (click)="openCamera()">
-          <ion-img src="assets/images/photo.svg"></ion-img>
-        </span>
-      </ion-item>
-    </ion-row>
-  </ion-grid>
-
-
 </ion-content>
+<ion-footer >
+  <ion-row class="demarrage">
+    <ion-item lines="none">
+      <span class="param" slot="start" (click)="reglage(mySlider)">
+        <ion-img src="assets/images/settings.svg"></ion-img>
+      </span>
+      <ion-img class="feather-rose" *ngIf="!isActif" src="assets/images/warning.svg"></ion-img>
+
+      <span class="start" (click)="start()">
+        <ion-img src="assets/images/play.svg"></ion-img>
+      </span>
+
+      <span class="photo" slot="end" (click)="openCamera()">
+        <ion-img src="assets/images/photo.svg"></ion-img>
+      </span>
+    </ion-item>
+  </ion-row>
+</ion-footer>
