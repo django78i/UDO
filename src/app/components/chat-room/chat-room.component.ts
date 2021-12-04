@@ -4,6 +4,8 @@ import {
   Input,
   ChangeDetectorRef,
   ViewChild,
+  OnDestroy,
+  ElementRef,
 } from '@angular/core';
 import { IonInput, ModalController } from '@ionic/angular';
 import { Observable } from 'rxjs';
@@ -15,28 +17,40 @@ import { ChatService } from 'src/app/services/chat.service';
   templateUrl: './chat-room.component.html',
   styleUrls: ['./chat-room.component.scss'],
 })
-export class ChatRoomComponent implements OnInit {
+export class ChatRoomComponent implements OnInit, OnDestroy {
   @Input() contact: any;
   @Input() user: any;
   @Input() id: any;
   message$: Observable<any>;
   text;
   @ViewChild('inputMsg') input: IonInput;
+  @ViewChild('content') private content: any;
 
+  messages: any[] = [];
   constructor(
     public modaCtl: ModalController,
     public chatService: ChatService,
     public ref: ChangeDetectorRef
   ) {}
 
-  ngOnInit() {
+  ionViewWillEnter () {
     console.log(this.contact, this.user, this.id);
     this.chatService.getMessages(this.id);
-    this.message$ = this.chatService.msgSubject$.pipe(
-      tap((r) => {
-        console.log(r);
-      })
-    );
+    this.chatService.msgSubject$
+      .pipe(
+        tap((r) => {
+          console.log(r);
+          r ? this.messages.push(r) : (this.messages = []);
+          this.content.scrollToBottom(300);
+
+          this.ref.detectChanges();
+        })
+      )
+      .subscribe();
+
+  }
+
+  ngOnInit() {
   }
 
   close() {
@@ -59,5 +73,10 @@ export class ChatRoomComponent implements OnInit {
     };
     this.chatService.sendMessage(this.id, msg);
     this.input.value = null;
+
+  }
+
+  ngOnDestroy() {
+    this.chatService.msgSubcription();
   }
 }

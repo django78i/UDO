@@ -30,7 +30,11 @@
           <ion-card-content>
             <div style="display: flex">
               <ion-avatar>
-                <img [src]="user.avatar" alt="" />
+                <img
+                  [src]="user.avatar"
+                  alt=""
+                  style="width: 57px; height: 57px"
+                />
                 <ion-badge>{{ user.niveau }}</ion-badge>
               </ion-avatar>
             </div>
@@ -100,7 +104,7 @@
         <ion-item>
           <ion-textarea
             rows="1"
-            placeholder="En quoi consiste votre championnat"
+            placeholder="description"
             (ionChange)="description($event)"
           ></ion-textarea>
           <div
@@ -256,7 +260,7 @@
                 align-items: center;
                 justify-content: center;
               "
-              *ngIf="activitesList.length !=0"
+              *ngIf="activitesList.length != 0"
               >{{ activitesList.length }}</ion-badge
             >
           </ion-thumbnail>

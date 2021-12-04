@@ -139,7 +139,7 @@
       <div style="display: flex; flex-direction: column">
         <ion-item lines="none">
           <ion-avatar slot="start" style="margin-right: 15px">
-            <img src="assets/mocks/3.jpg" alt="" />
+            <img [src]="user.avatar" alt="" />
             <ion-badge>{{ user.niveau }}</ion-badge>
           </ion-avatar>
 
@@ -258,7 +258,7 @@
         (click)="participer()"
         *ngIf="
           championnat?.status == 'en attente' &&
-          userEncours?.etat == 'en attente'
+          (userEncours?.etat == 'en attente' || !userEncours)
         "
         >Participer</ion-button
       >

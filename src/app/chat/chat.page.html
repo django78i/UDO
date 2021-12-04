@@ -15,7 +15,7 @@
 <ion-content>
   <ion-list>
     <!-- <ng-container *ngIf="rooms$|async as rooms"> -->
-      <ng-container *ngIf="roomTable">
+      <ng-container *ngIf="roomTable.length">
         <ion-item
           lines="full"
           *ngFor="let room of roomTable"

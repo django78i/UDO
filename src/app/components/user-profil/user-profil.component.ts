@@ -8,7 +8,7 @@ import {
   ViewChild,
   ViewChildren,
 } from '@angular/core';
-import { ModalController, NavController } from '@ionic/angular';
+import { ModalController, NavController, NavParams } from '@ionic/angular';
 import { ChatService } from 'src/app/services/chat.service';
 import { UserService } from 'src/app/services/user-service.service';
 import { ChatRoomComponent } from '../chat-room/chat-room.component';
@@ -124,10 +124,12 @@ export class UserProfilComponent implements OnInit {
     public userService: UserService,
     public navController: NavController,
     public chatService: ChatService,
-    public sessionNowService: SessionNowService
+    public sessionNowService: SessionNowService,
+    public navParams: NavParams
   ) {}
 
   ngOnInit() {
+    this.navParams.data.segment ? (this.seg = this.navParams.data.segment) : '';
     console.log(this.userId);
     this.userService.findUser(this.userId).then((user) => {
       this.user = user.data();

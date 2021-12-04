@@ -51,7 +51,7 @@ export class ChampionnatsService {
     );
     const auth = getAuth();
 
-  this.unsubscribe2 =  onSnapshot(docRef, (querySnapshot) => {
+    this.unsubscribe2 = onSnapshot(docRef, (querySnapshot) => {
       const champs = [];
       querySnapshot.forEach((doc) => {
         console.log(doc.data());
@@ -122,15 +122,11 @@ export class ChampionnatsService {
         const docFormat = this.formatChamp(document, users);
         if (document.status == 'en cours' && bool) {
           this.champEnCoursSubject$.next(docFormat);
-        } else if (
-          document.status == 'en attente' &&
-          bool &&
-          document.type == 'Friends&Familly'
-        ) {
+        } else if (document.status == 'en attente' && bool) {
           this.champSubject$.next(docFormat);
         } else if (
           document.status == 'en attente' &&
-          bool &&
+          !bool &&
           document.type == 'Network'
         ) {
           this.champNetWork$.next(docFormat);

@@ -14,6 +14,8 @@ export class ChallViewComponent implements OnInit {
   bannData: any;
   @Input() challenges: any[];
   @Input() challEncours: any[];
+  @Input() challengesUser: any[];
+
   @Output() createChall: EventEmitter<any> = new EventEmitter();
   @Output() challengeId: EventEmitter<any> = new EventEmitter();
   @Output() viewAllChall: EventEmitter<any> = new EventEmitter();

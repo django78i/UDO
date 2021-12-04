@@ -157,7 +157,7 @@ export class AddPostContenuComponent implements OnInit, OnDestroy {
       competitionId: detailCompet.competitionId,
       competitionName: detailCompet.competitionName,
       competitionType: detailCompet.competitionType,
-      challIcon : detailCompet.challengeIcon,
+      challIcon: detailCompet.challengeIcon ? detailCompet.challengeIcon : '',
       // competitionInfo: detailCompet,
       championnat:
         detailCompet.competitionType == 'Championnat'
@@ -177,6 +177,7 @@ export class AddPostContenuComponent implements OnInit, OnDestroy {
         this.sessionNowService.show('Image créée avec succès', 'success');
       })
       .catch((err) => {
+        console.log(err);
         this.sessionNowService.show(
           "Une erreur s'est produite, veuillez rééssayer plus tard",
           'warning'

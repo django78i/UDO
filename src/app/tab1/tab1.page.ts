@@ -107,9 +107,8 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
 
   ngOnInit() {}
 
-  ionViewDidEnter() {
+  ionViewWillEnter() {
     console.log('ionViewDidEnter');
-
     const user = from(this.userService.getCurrentUser());
     this.subscription = user.subscribe((us) => {
       this.user = us;
@@ -177,12 +176,14 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
 
   //Choix du filtre
   async clickFilter(filter: string, i) {
+    this.snsService.presentLoading();
     this.indice = i;
     this.feeds = [];
     this.filter = filter;
     const feedRefresh = await this.feedService.feedFilter(filter);
     this.feeds = feedRefresh.table;
     this.lastVisible = feedRefresh.last;
+    this.snsService.dissmissLoading();
   }
 
   async presentPopover(i: number, feedLik) {
@@ -292,7 +293,6 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
   refreshFeed() {
     const event = null;
     this.snsService.presentLoading();
-
     this.doRefresh(event).then(() => this.snsService.dissmissLoading());
   }
 

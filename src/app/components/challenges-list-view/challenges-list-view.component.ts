@@ -17,11 +17,11 @@ import { SwiperOptions } from 'swiper';
   styleUrls: ['./challenges-list-view.component.scss'],
 })
 export class ChallengesListViewComponent implements OnInit, OnChanges {
-  challenges: any[] = [];
+  @Input() challenges: any[];
   @Input() filter: string;
   @Input() competition: any;
 
-  challengesFilered: any[] = [];
+  @Input() challengesFilered: any[];
   @Output() challengeChoice: EventEmitter<string> = new EventEmitter();
 
   config: SwiperOptions = {
@@ -30,36 +30,15 @@ export class ChallengesListViewComponent implements OnInit, OnChanges {
     direction: 'vertical',
   };
 
-  constructor(public challService: ChallengesService, public router: Router) {}
+  constructor(public router: Router) {}
 
-  ngOnInit() {
-    this.challService.getChallengesList();
-    this.challService.challengesList$
-      .pipe(
-        tap((r) => {
-          if (r) {
-            console.log(r);
-            this.challenges.push(r);
-          }
-          // this.ref.detectChanges();
-        })
-      )
-      .subscribe();
-  }
+  ngOnInit() {}
 
   ngOnChanges() {
-    const filter = this.challenges.filter((champ) =>
-      champ.name.toLowerCase().includes(this.filter.toLowerCase().trim())
-    );
-    console.log(filter);
-    this.challengesFilered = filter;
   }
 
-
-  
   async showChallenge(ev) {
     console.log(ev);
     this.challengeChoice.emit(ev);
-    
   }
 }

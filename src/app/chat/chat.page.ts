@@ -39,55 +39,29 @@ export class ChatPage implements OnInit, OnDestroy {
     this.chatService.getUserRoom(user.uid);
     this.chatService.roomSubject$
       .pipe(
-        tap((r: Message[]) => {
+        tap((r: Message) => {
           console.log(r);
           if (r) {
             const roomPlace = r;
             if (roomPlace) {
-              roomPlace.forEach((rooms) => {
-                const roomTemp = rooms;
-                const findIndex = rooms.users.findIndex(
-                  (us) => us.uid != user.uid
-                );
-                roomTemp.users = roomTemp.users[findIndex];
+              const roomTemp = roomPlace;
+              console.log(roomTemp);
+              //Recherche room avec user en cours
+              const findIndex = roomPlace.users.findIndex(
+                (us) => us.uid != user.uid
+              );
+              roomTemp.users = roomPlace.users[findIndex];
 
-                this.roomTable.push(roomTemp);
-                this.ref.detectChanges();
-                console.log(this.roomTable);
-              });
-            } else {
-              this.roomTable = [];
+              this.roomTable.push(roomTemp);
+              this.ref.detectChanges();
+              console.log(this.roomTable);
             }
+          }else{
+            this.roomTable = []
           }
         })
       )
       .subscribe();
-    // auth.onAuthStateChanged((user) => {
-    //   this.roomTable = [];
-    //   console.log(user);
-    //   if (user) {
-    //     this.chatService.getUserRoom(user.uid);
-    //     this.roomsSub = this.chatService.roomSubject$
-    //       // .pipe(skip(1))
-    //       .subscribe((room) => {
-    //         console.log(room);
-    //         const roomPlace = room;
-    //         if (roomPlace) {
-    //           roomPlace.forEach((rooms) => {
-    //             const roomTemp = rooms;
-    //             const findIndex = rooms.users.findIndex(
-    //               (us) => us.uid != user.uid
-    //             );
-    //             roomTemp.users = roomTemp.users[findIndex];
-
-    //             this.roomTable.push(roomTemp);
-    //             this.ref.detectChanges();
-    //             console.log(this.roomTable);
-    //           });
-    //         }
-    //       });
-    //   }
-    // });
   }
 
   async openChat(room) {
@@ -108,6 +82,6 @@ export class ChatPage implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    // this.chatService.unsubscribeRoom();
+    this.chatService.unsubscribeRoom();
   }
 }

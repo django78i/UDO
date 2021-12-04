@@ -62,6 +62,26 @@
         "
         alt=""
       />
+      <h4 style="font-weight: 900; margin: 0">EN ATTENTE</h4>
+    </div>
+    <app-slider-challenge
+      [challenges]="challengesUser"
+      *ngIf="challEncours"
+      (challengeId)="chooseChallenge($event)"
+    >
+    </app-slider-challenge>
+  </div>
+  <div style="width: 100%">
+    <div class="iconTitle">
+      <img
+        src="../../assets/icon/dot.svg"
+        style="
+          background-color: rgb(233, 229, 229);
+          padding: 10px;
+          border-radius: 50%;
+        "
+        alt=""
+      />
       <h4 style="font-weight: 900; margin: 0">EXPLORER</h4>
     </div>
     <app-big-chall-slider
