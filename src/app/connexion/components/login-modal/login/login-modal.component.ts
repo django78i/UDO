@@ -27,6 +27,7 @@ import {
 import { Subscription } from 'rxjs';
 import { SessionNowService } from 'src/app/services/session-now-service.service';
 import { Router } from '@angular/router';
+// import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook/ngx';
 
 @Component({
   selector: 'app-login-modal',
@@ -77,7 +78,8 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
     public loadingController: LoadingController,
     public ref1: ChangeDetectorRef,
     public sessionNowService: SessionNowService,
-    private platform: Platform, private alertController: AlertController
+    private platform: Platform, private alertController: AlertController //,
+    // private fb: Facebook
   ) {
     this.fabButton ='c-fab';
     this.platform.backButton.subscribeWithPriority(10, () => {
