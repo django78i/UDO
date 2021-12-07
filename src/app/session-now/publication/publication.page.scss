@@ -80,39 +80,24 @@ ion-content {
   .c-row {
     margin-top: 65px;
     .c-col {
+      justify-content: center !important;
       round-progress {
         margin: auto;
       }
       .val-progess {
-        top: 33px;
-        position: absolute;
+        margin: auto;
+        justify-content: center !important;
         .val {
           font-family: "StaatlichesRegular" !important;
           font-size: 31px;
           color: #040405;
-          margin-left: 35px;
-          margin-top: -3px;
-        }
-        .val3 {
-          font-family: "StaatlichesRegular" !important;
-          font-size: 31px;
-          color: #040405;
-          margin-left: 43px;
-          margin-top: -3px;
-        }
-        .val2 {
-          font-family: "StaatlichesRegular" !important;
-          font-size: 31px;
-          color: #040405;
-          margin-left: 35px;
-          margin-top: -3px;
+           margin-top: -70px;
         }
         .val-xp {
           font-family: "PoppinsSemiBold" !important;
           font-size: 12px;
           color: #040405;
-          margin-top: -3px;
-          margin-left: 52px;
+          margin-top: -33px;
         }
       }
       .c-name {
@@ -135,35 +120,25 @@ ion-content {
         margin: auto;
       }
       .val-progess-lands {
-        top: 33px;
-        position: absolute;
         .val {
           font-family: "StaatlichesRegular" !important;
           font-size: 31px;
           color: #040405;
-          margin-left: 108px;
-          margin-top: -3px;
         }
         .val3 {
           font-family: "StaatlichesRegular" !important;
           font-size: 31px;
           color: #040405;
-          margin-left: 116px;
-          margin-top: -3px;
         }
         .val2 {
           font-family: "StaatlichesRegular" !important;
           font-size: 31px;
           color: #040405;
-          margin-left: 106px;
-          margin-top: -3px;
         }
         .val-xp {
           font-family: "PoppinsSemiBold" !important;
           font-size: 12px;
           color: #040405;
-          margin-top: -3px;
-          margin-left: 125px;
         }
       }
       .c-name {

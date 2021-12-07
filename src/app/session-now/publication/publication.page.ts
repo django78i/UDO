@@ -62,7 +62,6 @@ export class PublicationPage implements OnInit, OnDestroy {
     }, 100);
     const activite = JSON.parse(localStorage.getItem('activite'));
     if (activite) {
-      console.log(activite);
       this.listActivite = activite.details;
       let counter: any = JSON.parse(localStorage.getItem('counter'));
       let time = 0;
@@ -102,14 +101,12 @@ export class PublicationPage implements OnInit, OnDestroy {
     this.userService.getCurrentUser().then((user) => {
       this.user = user;
       this.max = this.user.niveau * 100;
-      console.log(this.user.exp + this.valeur);
       if (this.user.exp >= this.max) {
         this.user.niveau += 1;
       } else if (this.user.exp + this.valeur >= this.max) {
         this.user.niveau += 1;
       }
       this.max = this.user.niveau * 100;
-      console.log(this.max);
 
       this.user.metrics.forEach((metrics, i) => {
         const metricFormat = (metrics.value =
@@ -117,18 +114,15 @@ export class PublicationPage implements OnInit, OnDestroy {
         this.xpMax += Number(this.listActivite[i].value);
         return { ...metrics, value: metricFormat };
       });
-      console.log(this.xpMax, this.user.exp);
       this.newxp = this.user.exp + this.xpMax;
       this.xpUserOnTotal = this.user.exp / this.max;
       this.user.exp += this.xpMax;
-      console.log(this.user);
       this.xpNewOnTotal = this.newxp / this.max;
       this.updateUser();
     });
   }
 
   updateUser() {
-    console.log(this.user);
     this.userService.updateUser(this.user);
   }
 
