@@ -144,49 +144,8 @@
               ></ion-col> </ion-row
           ></ion-grid>
         </ion-item>
-        <!-- Slider choix des métriques de championnat -->
+        <!-- Slider choix des métriques du challenge -->
         <swiper #swiper2 [config]="config2" class="sliderFilter">
-          <ng-template swiperSlide>
-            <ion-item
-              [ngClass]="{ black: indice == 0, white: indice !== 0 }"
-              (click)="clickFilter(filters[0], 0)"
-              style="width: auto"
-              lines="none"
-              class="chipFilter"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 15.6 15.6"
-                [ngClass]="{ whiteFill: indice == 0, blackFill: indice !== 0 }"
-              >
-                <g id="Layer_2" data-name="Layer 2">
-                  <g id="Layer_1-2" data-name="Layer 1">
-                    <g id="Icon_feather-clock" data-name="Icon feather-clock">
-                      <g id="Tracé_32399" data-name="Tracé 32399">
-                        <path
-                          d="M7.8,15.6a7.8,7.8,0,1,1,7.8-7.8A7.81,7.81,0,0,1,7.8,15.6Zm0-13.1A5.3,5.3,0,1,0,13.1,7.8,5.31,5.31,0,0,0,7.81,2.5Z"
-                        />
-                      </g>
-                      <g id="Tracé_32400" data-name="Tracé 32400">
-                        <path
-                          d="M9.6,10a1.23,1.23,0,0,1-.55-.13L6.56,8.57V4.8a1.25,1.25,0,0,1,2.5,0V7l1.1.55A1.25,1.25,0,0,1,9.6,10Z"
-                        />
-                      </g>
-                    </g>
-                  </g>
-                </g>
-              </svg>
-
-              <ion-label
-                style="font-size: 12px; font-weight: 500"
-                [ngClass]="{
-                  whiteLabel: indice == 0,
-                  blackLabel: indice !== 0
-                }"
-                >{{ filters[0].name }}</ion-label
-              >
-            </ion-item>
-          </ng-template>
           <ng-template swiperSlide>
             <ion-item
               [ngClass]="{ black: indice == 1, white: indice !== 1 }"

@@ -255,7 +255,7 @@
       <ion-button
         class="buttonNextSlide"
         style=" --i : {{ championnat.banniere.color }}"
-        (click)="participer()"
+        (click)="participer('championnat')"
         *ngIf="
           championnat?.status == 'en attente' &&
           (userEncours?.etat == 'en attente' || !userEncours)
@@ -320,7 +320,7 @@
       <ion-button
         class="buttonNextSlide"
         style=" --i : {{ challenge.banniereColor }}"
-        (click)="participer()"
+        (click)="participer('challenge')"
         *ngIf="
           (challenge && !userEncours) ||
           (challenge && userEncours && userEncours.etat == 'en attente')
@@ -346,14 +346,7 @@
         class="buttonNextSlide"
         >Séance Now</ion-button
       >
-      <ion-fab
-        vertical="bottom"
-        horizontal="end"
-        slot="fixed"
-        *ngIf="
-          challenge?.userId == user.uid && challenge?.status == 'en attente'
-        "
-      >
+      <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="admin">
         <ion-fab-button color="dark">
           <ion-icon name="add"></ion-icon>
         </ion-fab-button>

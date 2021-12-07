@@ -7,6 +7,7 @@ import {
   QueryList,
   ViewChildren,
   Output,
+  OnChanges,
 } from '@angular/core';
 import { SwiperOptions } from 'swiper';
 import { SwiperComponent } from 'swiper/angular';
@@ -16,7 +17,7 @@ import { SwiperComponent } from 'swiper/angular';
   templateUrl: './slider-challenge.component.html',
   styleUrls: ['./slider-challenge.component.scss'],
 })
-export class SliderChallengeComponent implements OnInit, AfterContentChecked {
+export class SliderChallengeComponent implements OnInit, AfterContentChecked, OnChanges {
   @Input() challenges: any[];
 
   @ViewChildren('swiper') swiper: QueryList<SwiperComponent>;
@@ -29,6 +30,9 @@ export class SliderChallengeComponent implements OnInit, AfterContentChecked {
   ngOnInit() {
     // this.countDownChallenge = (this.challenges.completion.value /chall.objectifs)*100
   }
+
+  ngOnChanges() {}
+
 
   config: SwiperOptions = {
     slidesPerView: 1.3,

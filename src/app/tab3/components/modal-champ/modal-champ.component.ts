@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import {
   AfterViewInit,
   ChangeDetectorRef,
@@ -87,6 +88,7 @@ export class ModalChampComponent implements OnInit, AfterViewInit {
   pictureUrl: any;
   boole: Boolean = false;
   feed: any;
+  admin: boolean = false;
 
   constructor(
     private modalCtrl: ModalController,
@@ -98,7 +100,8 @@ export class ModalChampComponent implements OnInit, AfterViewInit {
     public navParam: NavParams,
     public userService: UserService,
     public challService: ChallengesService,
-    public feedService: MusicFeedService
+    public feedService: MusicFeedService,
+    public http: HttpClient
   ) {}
 
   ngOnInit() {
@@ -109,6 +112,16 @@ export class ModalChampComponent implements OnInit, AfterViewInit {
     this.userService.getCurrentUser().then((user) => {
       console.log(user);
       this.user = user;
+      this.http
+        .get<any[]>('../../../../assets/mocks/admin.json')
+        .pipe(
+          tap(
+            (ad) =>
+              (this.admin = ad.some((userAdmin) => userAdmin == this.user.uid))
+          )
+        )
+        .subscribe();
+
       if (this.entryData == 'championnat') {
         this.champService.getChampionnat(uid);
         this.championnat$ = this.champService.singleChampSub$.pipe(
@@ -163,30 +176,65 @@ export class ModalChampComponent implements OnInit, AfterViewInit {
     this.modalCtrl.dismiss();
   }
 
-  participer(ev) {
+  participer(ev: string) {
     this.loading = true;
 
-    const index = this.challenge.participants.findIndex(
-      (ind) => ind.uid == this.user.uid
-    );
+    const index =
+      ev == 'challenge'
+        ? this.challenge.participants.findIndex(
+            (ind) => ind.uid == this.user.uid
+          )
+        : this.championnat.participants.findIndex(
+            (ind) => ind.uid == this.user.uid
+          );
     let user: any;
     if (!this.userEncours) {
-      user = {
-        ...this.user,
-        seance: 0,
-        value: 0,
-        etat: 'prêt',
-      };
+      user =
+        ev == 'challenge'
+          ? {
+              ...this.user,
+              seance: 0,
+              value: 0,
+              etat: 'prêt',
+            }
+          : {
+              avatar: this.user.avatar,
+              etat: 'prêt',
+              niveau: this.user.niveau,
+              points: 0,
+              journeeEnCours: 0,
+              bonus: 0,
+              uid: this.user.uid,
+            };
     }
-    index != -1
-      ? (this.challenge.participants[index].etat = 'prêt')
-      : this.challenge.participants.push(user);
+    ev == 'challenge'
+      ? this.participerChallengeEnAttente(this.challenge, index, user)
+      : this.participerChampionnat(this.championnat, index, user);
     this.ref.detectChanges();
     console.log(this.challenge);
-    this.challService.updateChall(this.challenge);
-    this.challService.getChallenge(this.challenge.uid);
 
     this.loading = false;
+  }
+
+  participerChallengeEnAttente(challenge, index, user): void {
+    const chall = challenge;
+
+    index = !-1
+      ? (chall.participants[index].etat = 'prêt')
+      : chall.participants.push(user);
+
+    this.challService.updateChall(chall);
+    this.challService.getChallenge(chall.uid);
+  }
+
+  participerChampionnat(championnat, index, user): void {
+    const champ = championnat;
+    index = !-1
+      ? (champ.participants[index].etat = 'prêt')
+      : champ.participants.push(user);
+
+    this.challService.updateChall(champ);
+    this.challService.getChallenge(champ.uid);
   }
 
   async presentAlertConfirm() {
@@ -363,7 +411,6 @@ export class ModalChampComponent implements OnInit, AfterViewInit {
     this.pictureUrl = null;
     this.boole = false;
     this.inputFeed.value = null;
-
   }
 
   async addContenu() {

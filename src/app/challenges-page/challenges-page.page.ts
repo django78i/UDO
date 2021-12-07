@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import {
   AfterViewInit,
   ChangeDetectorRef,
@@ -50,7 +51,7 @@ export class ChallengesPagePage implements OnInit {
   pictureUrl: string;
   competition = 'challenge';
   @ViewChild('inputFeed') inputFeed: IonInput;
-
+  admin: boolean = false;
   constructor(
     private navCtl: NavController,
     public userService: UserService,
@@ -59,12 +60,22 @@ export class ChallengesPagePage implements OnInit {
     public ref: ChangeDetectorRef,
     public alertController: AlertController,
     public modalCtrl: ModalController,
-    public feedService: MusicFeedService
+    public feedService: MusicFeedService,
+    public http: HttpClient
   ) {}
 
   ngOnInit() {
     this.userService.getCurrentUser().then((user) => {
       this.user = user;
+      this.http
+        .get<any[]>('../../../assets/mocks/admin.json')
+        .pipe(
+          tap(
+            (ad) =>
+              (this.admin = ad.some((userAdmin) => userAdmin == this.user.uid))
+          )
+        )
+        .subscribe();
       const uid = this.route.snapshot.params['id'];
       this.challService.getChallenge(uid);
       this.challengeObs$ = this.challService.singleChallSub$.pipe(
@@ -126,7 +137,7 @@ export class ChallengesPagePage implements OnInit {
     console.log(final);
   }
 
-  participer(ev) {
+  participer() {
     this.loading = true;
 
     const index = this.challenge.participants.findIndex(

@@ -199,12 +199,7 @@
         >Séance Now</ion-button
       >
     </div>
-    <ion-fab
-      vertical="bottom"
-      horizontal="end"
-      slot="fixed"
-      *ngIf="challenge?.userId == user.uid && challenge?.status == 'en attente' "
-    >
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="admin  ">
       <ion-fab-button color="dark">
         <ion-icon name="add"></ion-icon>
       </ion-fab-button>

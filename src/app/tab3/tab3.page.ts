@@ -151,7 +151,6 @@ export class Tab3Page implements OnInit, AfterContentChecked, OnDestroy {
       )
       .subscribe();
     this.ref.detectChanges();
-
   }
 
   ionViewDidEnter() {

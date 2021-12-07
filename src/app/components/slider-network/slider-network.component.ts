@@ -7,6 +7,7 @@ import {
   Output,
   QueryList,
   ViewChildren,
+  OnChanges,
 } from '@angular/core';
 import { SwiperOptions } from 'swiper';
 import { SwiperComponent } from 'swiper/angular';
@@ -16,7 +17,7 @@ import { SwiperComponent } from 'swiper/angular';
   templateUrl: './slider-network.component.html',
   styleUrls: ['./slider-network.component.scss'],
 })
-export class SliderNetworkComponent implements OnInit {
+export class SliderNetworkComponent implements OnInit, OnChanges {
   @Input() championnats: any[];
 
   @ViewChildren('swiper') swiper: QueryList<SwiperComponent>;
@@ -29,6 +30,9 @@ export class SliderNetworkComponent implements OnInit {
   ngOnInit() {
     console.log(this.championnats);
   }
+
+  ngOnChanges(){}
+
 
   config: SwiperOptions = {
     slidesPerView: 1.3,

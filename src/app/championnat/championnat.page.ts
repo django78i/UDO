@@ -115,14 +115,28 @@ export class ChampionnatPage implements OnInit {
     this.navCtl.navigateBack('/tabs/tab3');
   }
 
-  participer(ev) {
+  participer() {
     this.loading = true;
-
+    console.log(this.championnat);
     const index = this.championnat.participants.findIndex(
       (ind) => ind.uid == this.user.uid
     );
-    this.championnat.participants[index].etat = 'prêt';
-    this.userEncours.etat = 'prêt';
+    if (this.userEncours) {
+      this.championnat.participants[index].etat = 'prêt';
+      this.userEncours.etat = 'prêt';
+    } else {
+      const userEnCours = {
+        avatar: this.user.avatar,
+        etat: 'prêt',
+        niveau: this.user.niveau,
+        points: 0,
+        journeeEnCours: 0,
+        bonus: 0,
+        uid: this.user.uid,
+      };
+      this.championnat.participants.push(userEnCours);
+      this.userEncours = userEnCours;
+    }
     this.ref.detectChanges();
     console.log(this.championnat);
     this.champService.updateChamp(this.championnat);
@@ -186,7 +200,6 @@ export class ChampionnatPage implements OnInit {
     this.pictureUrl = null;
     this.boole = false;
     this.inputFeed.value = null;
-
   }
 
   startChamp() {

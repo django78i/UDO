@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { SwiperOptions } from 'swiper';
 import moment from 'moment';
 
@@ -7,7 +14,7 @@ import moment from 'moment';
   templateUrl: './big-chall-slider.component.html',
   styleUrls: ['./big-chall-slider.component.scss'],
 })
-export class BigChallSliderComponent implements OnInit {
+export class BigChallSliderComponent implements OnInit, OnChanges {
   @Input() challenges: any[];
   config: SwiperOptions = {
     slidesPerView: 1,
@@ -30,6 +37,7 @@ export class BigChallSliderComponent implements OnInit {
     });
     console.log(this.challengesFormat);
   }
+  ngOnChanges() {}
 
   showChallenge(uid) {
     console.log(uid);
