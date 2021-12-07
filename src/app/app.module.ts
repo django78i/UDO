@@ -24,7 +24,7 @@ import { TimeChampPipe } from './pipe/time-champ.pipe';
 import { NumberOnlyDirective } from './directives/numberOnly.directive';
 import { BackgroundMode } from '@ionic-native/background-mode/ngx';
 import { Camera } from '@ionic-native/camera/ngx';
-
+import { Keyboard } from '@ionic-native/keyboard/ngx';
 @NgModule({
   declarations: [
     AppComponent
@@ -54,6 +54,7 @@ import { Camera } from '@ionic-native/camera/ngx';
     NativeStorage,
     BackgroundMode,
     Camera,
+    Keyboard
   ],
   bootstrap: [AppComponent],
 })

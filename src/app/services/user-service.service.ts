@@ -18,6 +18,7 @@ import {
   signInWithCredential,
   GoogleAuthProvider,
   signInWithPopup,
+  FacebookAuthProvider,
 } from 'firebase/auth';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { BehaviorSubject } from 'rxjs';
@@ -108,6 +109,31 @@ export class UserService {
     localStorage.setItem('usersList', JSON.stringify(table));
     return table;
   }
+  async fbAuth(accessToken){
+    const auth = getAuth();
+    try{
+    // const credential = auth.FacebookAuthProvider.credential(accessToken);
+    await signInWithCredential(
+      auth,
+      FacebookAuthProvider.credential(accessToken)
+    );
+    await auth.onAuthStateChanged((user) => {
+      if (user) {
+        console.log('user',user);
+        user['userName']=user?.displayName;
+        this.findUser(user.uid).then((userDatabase) => {
+          if (!userDatabase.data()) {
+            console.log('userDatabase',userDatabase);
+            this.createUserDataBase(user);
+          }
+        });
+        return user;
+      } else {
+        // this.presentAlert('rien');
+      }
+    });
+    } catch (err) {}
+  }
 
   async googleSignIn() {
     const auth = getAuth();
@@ -169,8 +195,8 @@ export class UserService {
   }
   async removeFriend(friend, user) {
     const userTemp = user;
-    const ind = userTemp.friends.findIndex((us) => us.uid == friend.uid);
-    ind != -1 ? userTemp.friends.splice(ind, 1) : '';
+    const ind = userTemp.friends.findIndex((us) => us.uid === friend.uid);
+    ind !== -1 ? userTemp.friends.splice(ind, 1) : '';
     await updateDoc(doc(this.db, 'users', userTemp.uid), userTemp);
   }
 

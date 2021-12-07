@@ -175,13 +175,52 @@ ion-content{
       text-align: center;
       font: normal normal bold 20px/21px Poppins;
     }
-    .row-demarrage{
-        position: relative; left: -50%
+    
+    .row-bordure{
+        // width: 220px;
+        margin: 35px auto;
+        ion-img{
+            margin: auto;
+        }
     }
+
+    round-progress{
+        position: relative;
+        width: 235px !important;
+        height: 235px !important;
+    }
+    .c-compt{
+        margin-top: 35px;
+        display: grid;
+        width: 100%;
+        align-items: center;
+        justify-items: center;
+        .percentageValue {
+            margin-top: 75px;
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            font-size: 63px;
+            font-weight: 600;
+            color: black;
+            left: 0px;
+            font-family: "PoppinsBold" !important;
+            span{
+                font-size: 25px;
+                position: absolute;
+            }
+        }
+    }
+
+
+}
+
+ion-footer{
+    background-color: #F4F5FA !important;
     .demarrage{
-        position: absolute;
-        bottom: 5%;
-        left: 50%;
+        justify-content: center;
+        margin: auto;
+        margin-bottom: 10px !important;
         .param{
             background-color: white;
             height: 68px;
@@ -270,41 +309,4 @@ ion-content{
             height: 18px;
         }
     }
-    .row-bordure{
-        // width: 220px;
-        margin: 35px auto;
-        ion-img{
-            margin: auto;
-        }
-    }
-
-    round-progress{
-        position: relative;
-        width: 235px !important;
-        height: 235px !important;
-    }
-    .c-compt{
-        margin-top: 35px;
-        display: grid;
-        width: 100%;
-        align-items: center;
-        justify-items: center;
-        .percentageValue {
-            margin-top: 75px;
-            position: absolute;
-            width: 100%;
-            text-align: center;
-            font-size: 63px;
-            font-weight: 600;
-            color: black;
-            left: 0px;
-            font-family: "PoppinsBold" !important;
-            span{
-                font-size: 25px;
-                position: absolute;
-            }
-        }
-    }
-
-
 }

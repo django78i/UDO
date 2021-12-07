@@ -2,13 +2,11 @@ import { StepperSelectionEvent } from '@angular/cdk/stepper';
 import {
   AfterViewInit,
   ChangeDetectorRef,
-  Component,
+  Component, ElementRef,
   NgZone,
-  OnDestroy,
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { MatStepper } from '@angular/material/stepper';
 import {
   AlertController,
   IonSlides,
@@ -21,15 +19,15 @@ import {
 import { UserService as UserService } from 'src/app/services/user-service.service';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import {
-  getStorage,
   ref,
+  getStorage,
   getDownloadURL,
   uploadString,
 } from 'firebase/storage';
 import { Subscription } from 'rxjs';
-import { $ } from 'protractor';
 import { SessionNowService } from 'src/app/services/session-now-service.service';
 import { Router } from '@angular/router';
+// import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook/ngx';
 
 @Component({
   selector: 'app-login-modal',
@@ -38,9 +36,11 @@ import { Router } from '@angular/router';
 })
 export class LoginModalComponent implements OnInit, AfterViewInit {
   @ViewChild('slider') sliderComp: IonSlides;
-  pseudo: string = '';
-  step: number = 0;
-  sex: string = '';
+  @ViewChild('dMois') dMois: ElementRef;
+  @ViewChild('dAnnee') dAnnee: ElementRef;
+  pseudo = '';
+  step = 0;
+  sex = '';
   activitesList: any;
   currentSlide=0;
   physicalParam = {
@@ -58,16 +58,17 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
   };
 
   jour ='';
-  mois =''
+  mois ='';
   annee ='';
-
-  activeIndex: number = 0;
-  fabButton="c-fab";
-  title="Suivant";
-  ignorerText="Ignorer";
-  errorPseudo="";
-  invalidInput="";
-  invalidDate="";
+  activeIndex = 0;
+  fabButton='c-fab';
+  title='Suivant';
+  ignorerText='Ignorer';
+  errorPseudo='';
+  invalidInput='';
+  invalidDate='';
+  isVisible =true;
+  sub: any;
   constructor(
     public zone: NgZone,private router: Router,
     public modalCtl: ModalController,
@@ -75,24 +76,41 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
     public userService: UserService,
     public navController: NavController,
     public loadingController: LoadingController,
-    public ref: ChangeDetectorRef,
+    public ref1: ChangeDetectorRef,
     public sessionNowService: SessionNowService,
-    private platform:Platform, private alertController:AlertController
+    private platform: Platform, private alertController: AlertController //,
+    // private fb: Facebook
   ) {
-    this.fabButton ="c-fab";
+    this.fabButton ='c-fab';
     this.platform.backButton.subscribeWithPriority(10, () => {
       this.presentAlertConfirm();
     });
+
   }
 
   ngOnInit() {
+    this.sub = this.platform.keyboardDidShow.subscribe((ev) => {
+      const { keyboardHeight } = ev;
+      this.isVisible = false;
+      this.ref1.detectChanges();
+
+      // Do something with the keyboard height such as translating an input above the keyboard.
+    });
+
+    this.sub.add(
+      this.platform.keyboardDidHide.subscribe(() => {
+        // Move input back to original location
+        this.isVisible = true;
+        this.ref1.detectChanges();
+      })
+    );
   }
 
   async presentAlertConfirm() {
     const alert = await this.alertController.create({
       header: 'Confirmation',
       mode: 'ios',
-      message: "Voulez vous vraiment arreter l'inscription",
+      message: 'Voulez vous vraiment arreter l\'inscription',
       buttons: [
         {
           text: 'Non',
@@ -125,7 +143,7 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
   async ngAfterViewInit() {
     this.sliderComp.lockSwipeToNext(true);
     this.activeIndex = await this.sliderComp.getActiveIndex();
-    this.fabButton ="c-fab";
+    this.fabButton ='c-fab';
   }
 
   login() {
@@ -135,7 +153,7 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
   redirect() {
     this.sliderComp.lockSwipes(true);
     this.navController.navigateForward(['']);
-    localStorage.setItem('isConnected',"true");
+    localStorage.setItem('isConnected','true');
   }
 
   async addPhoto() {
@@ -148,35 +166,35 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
 
     // Here you get the image as result.
     const theActualPicture = image.dataUrl;
-    var imageUrl = image.webPath;
+    const imageUrl = image.webPath;
     this.picture = theActualPicture;
 
   }
   nextStep(){
-    if(this.activeIndex == 0){
+    if(this.activeIndex === 0){
       this.savePhoto();
-    }else if(this.activeIndex == 1){
+    }else if(this.activeIndex === 1){
       this.saveDateNaiss();
-    }else if(this.activeIndex == 2){
+    }else if(this.activeIndex === 2){
       this.genderSlide();
-    }else if(this.activeIndex == 3){
+    }else if(this.activeIndex === 3){
       this.physicSlide();
     }
   }
   saveDateNaiss(){
-    if(this.fabButton == 'c-fab-img2'){
+    if(this.fabButton === 'c-fab-img2'){
       this.step += 0.2;
-      this.ref.detectChanges();
+      this.ref1.detectChanges();
       this.slideNext();
-      this.fabButton = "c-fab";
+      this.fabButton = 'c-fab';
     }
   }
 
   ignorer(){
     this.step += 0.2;
-    this.ref.detectChanges();
+    this.ref1.detectChanges();
     this.slideNext();
-    this.fabButton = "c-fab";
+    this.fabButton = 'c-fab';
    /* if(this.activeIndex===4){
       this.sliderComp.lockSwipeToPrev(true);
     }*/
@@ -184,34 +202,44 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
   }
 
   checkPseudo(){
-    if(this.pseudo!='' && this.pseudo.toLowerCase() != 'admin'){
-      this.fabButton="c-fab-img";
+    if(this.pseudo!=='' && this.pseudo.toLowerCase() !== 'admin'){
+      this.fabButton='c-fab-img';
     }else{
-      this.fabButton="c-fab";
+      this.fabButton='c-fab';
     }
-    if(this.pseudo.toLocaleLowerCase() == 'admin'){
-      this.errorPseudo ="Ce pseudo est interdit";
-      this.invalidInput ="mat-form-field-invalid";
+    if(this.pseudo.toLocaleLowerCase() === 'admin'){
+      this.errorPseudo ='Ce pseudo est interdit';
+      this.invalidInput ='mat-form-field-invalid';
     }else{
-      this.errorPseudo="";
-      this.invalidInput ="";
+      this.errorPseudo='';
+      this.invalidInput ='';
     }
   }
 
   checkDate(){
     if(parseInt(this.jour)>31 || parseInt(this.jour)<0){
-      this.invalidDate = "Date invalide";
+      this.invalidDate = 'Date invalide';
       return;
+    } else{
+     if(this.jour && (this.jour.toString()).length === 2) {
+       this.dMois.nativeElement.focus();
+     }
+      //document.getElementById('dMois').click();
     }
     if(parseInt(this.mois)>12 || parseInt(this.jour)<0){
-      this.invalidDate = "Date invalide";
+      this.invalidDate = 'Date invalide';
       return;
+    }else {
+      if(this.mois && (this.mois.toString()).length === 2) {
+        this.dAnnee.nativeElement.focus();
+      }
     }
-    this.invalidDate="";
-    if(this.jour!='' && this.jour.length == 2 && this.mois!='' && this.mois.length ==2 && this.annee!='' && this.annee.length ==2  ){
-      this.fabButton = "c-fab-img2";
+    this.invalidDate= '';
+    if(this.jour!=='' && (this.jour.toString()).length === 2 && this.mois!== ''
+      && (this.mois.toString()).length === 2 && this.annee!=='' && (this.annee.toString()).length ===2  ){
+      this.fabButton = 'c-fab-img2';
     }else{
-      this.fabButton = "c-fab";
+      this.fabButton = 'c-fab';
     }
 
   }
@@ -232,20 +260,20 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
         }
       );
     }
-    if (this.pseudo != '' && this.invalidInput =='') {
+    if (this.pseudo !== '' && this.invalidInput ==='') {
       this.step += 0.2;
-      this.ref.detectChanges();
+      this.ref1.detectChanges();
       this.slideNext();
-       this.fabButton ="c-fab"
+       this.fabButton ='c-fab';
     }
   }
 
   genderSlide() {
     if (this.physicalParam.taille !== 0 && this.physicalParam.poids !== 0) {
       this.step =0.6;
-      this.ref.detectChanges();
+      this.ref1.detectChanges();
       this.slideNext();
-      this.fabButton = "c-fab-img";
+      this.fabButton = 'c-fab-img';
     }
   }
 
@@ -255,9 +283,9 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
   physicSlide() {
     if (this.physicalParam.taille !== 0 && this.physicalParam.poids !== 0) {
       this.step += 0.2;
-      this.ref.detectChanges();
+      this.ref1.detectChanges();
       this.slideNext();
-      this.fabButton="c-fab";
+      this.fabButton='c-fab';
     }
   }
 
@@ -312,15 +340,8 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
         ? this.pictureURL
         : 'https://img.icons8.com/ios-filled/50/000000/gender-neutral-user.png',
     };
-    // const loading = await this.loadingController.create({
-    //   message: 'Veuillez patienter...',
-    //   duration: 2000,
-    // });
-    // await loading.present();
     this.sessionNowService.dissmissLoading();
     this.userService.updateUser(this.user);
-
-    // const { role, data } = await loading.onDidDismiss();
 
     this.redirect();
   }
@@ -330,24 +351,24 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
   }
 
   physicParam(ev) {
-    if (ev['poids']) {
+    if (ev.poids) {
       this.physicalParam.poids = ev.poids;
     } else {
       this.physicalParam.taille = ev.taille;
     }
     if(this.physicalParam.poids && this.physicalParam.taille){
-      this.fabButton ="c-fab-img";
+      this.fabButton ='c-fab-img';
     }else{
-      this.fabButton ="c-fab";
+      this.fabButton ='c-fab';
     }
   }
 
   choiceSex(event) {
     this.sex = event;
     if(this.sex){
-      this.fabButton ="c-fab-img";
+      this.fabButton ='c-fab-img';
     }else{
-      this.fabButton="c-fab";
+      this.fabButton='c-fab';
     }
 
   }
@@ -366,7 +387,7 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
     this.sliderComp.lockSwipes(true);
     if (this.activitesList) {
       this.step += 0.2;
-      this.ref.detectChanges();
+      this.ref1.detectChanges();
     }
     this.saveOnBoarding();
   }
@@ -376,5 +397,12 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
   }
   parseIntValue(value){
     return parseInt(value);
+  }
+
+  focusFunction(){
+    this.isVisible = false;
+  }
+  focusOutFunction(){
+    this.isVisible = true;
   }
 }
