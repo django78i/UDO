@@ -145,7 +145,7 @@ export class SessionNowService {
       startDate: document.startDate,
       comment: document.comment,
       duree: document.duree,
-      challIcon : document.challIcon
+      challIcon: document.challIcon,
     });
   }
 
@@ -208,13 +208,11 @@ export class SessionNowService {
     console.log(sessionNow);
     this.user = JSON.parse(localStorage.getItem('user'));
     console.log(sessionNow);
-    if (sessionNow.competitionType === 'Séance Libre') {
-      // cas seance libre
-    } else if (sessionNow.competitionType === 'Championnat') {
+    if (sessionNow.competitionType === 'Championnat') {
       // cas seance championnat
       this.updateChampionnat(this.user.uid, sessionNow);
     } else if (sessionNow.competitionType === 'Challenge') {
-      // TODO: cas Challenge
+      // cas Challenge
       this.updateChallenge(this.user.uid, sessionNow);
     }
   }
@@ -240,15 +238,24 @@ export class SessionNowService {
           challenge.participants[ind].seance != 0
             ? challenge.participants[ind].seance + 1
             : 1;
+
+        let metricValue;
         //recherche de la métrique à incrémenter
-        const metricValue = sessionNow.metrics.find(
+        metricValue = sessionNow.metrics.find(
           (sess) => challenge.metric.metric == sess.exposant
         );
+        // if (!metricValue) {
+        //   // if (challenge.metric.metric == 'steps') {
+        //   //   metricValue = sessionNow.metric.find(
+        //   //     (sess) => sess.fieldname == 'steps'
+        //   //   );
+        //   // }
+        // }
 
         //on incémente l'avancé du participant
         challenge.participants[ind].value += metricValue.nombre;
         //on ajoute incémente l'avancé du challenge
-        challenge.completion.value += metricValue.nombre;
+        challenge.completion.value += Number(metricValue.nombre).toFixed(2);
         //MAJ du challenge
         updateDoc(doc(db, 'challenges', sessionNow.competitionId), challenge);
       }

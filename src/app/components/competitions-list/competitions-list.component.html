@@ -163,6 +163,8 @@
     <section style="padding: 0 15px">
       <app-challenges-list-view
         [filter]="filter"
+        [challenges]="challenges"
+        [challengesFilered]="challengesFilered"
         (challengeChoice)="navigateChallenge($event)"
       >
       </app-challenges-list-view>

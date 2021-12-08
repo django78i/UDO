@@ -53,7 +53,7 @@
         >
       </ion-item>
       <ion-progress-bar
-        [value]="challenge.completion.percent"
+        [value]="pourcentage"
         style="--progress-background: white; height: 6px; border-radius: 10px"
       ></ion-progress-bar>
     </ion-card-content>
@@ -85,7 +85,7 @@
       <div style="display: flex; flex-direction: column">
         <ion-item lines="none">
           <ion-avatar slot="start" style="margin-right: 15px">
-            <img src="assets/mocks/3.jpg" alt="" />
+            <img [src]="user.avatar" alt="" />
             <ion-badge>{{ user.niveau }}</ion-badge>
           </ion-avatar>
 
@@ -199,12 +199,7 @@
         >Séance Now</ion-button
       >
     </div>
-    <ion-fab
-      vertical="bottom"
-      horizontal="end"
-      slot="fixed"
-      *ngIf="challenge?.userId == user.uid && challenge?.status == 'en attente' "
-    >
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="admin  ">
       <ion-fab-button color="dark">
         <ion-icon name="add"></ion-icon>
       </ion-fab-button>

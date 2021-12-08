@@ -275,7 +275,7 @@ export class CreateChampPopUpComponent
       dateDemarrage: moment(new Date()).add(7, 'days').toDate(),
       banniere: this.ban,
       journeeTotale: this.seanceWeekCount * this.weekCount,
-      name: this.formChamp.get('name').value,
+      name: this.title,
       dureeMax: this.weekCount,
       status: 'en attente',
       description: this.descriptionString ? this.descriptionString : '',
@@ -304,7 +304,7 @@ export class CreateChampPopUpComponent
           "une erreur s'est produite, veuillez rééssayer plus tard",
           'warning'
         );
-        this.snService.dissmissLoading();
+        // this.snService.dissmissLoading();
       });
     this.modalCtrl.dismiss();
     // this.presentToast();

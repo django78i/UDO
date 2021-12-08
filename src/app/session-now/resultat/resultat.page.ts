@@ -276,7 +276,9 @@ export class ResultatPage implements OnInit, OnDestroy {
       competitionId: detailCompetion.competitionId,
       competitionName: detailCompetion.competitionName,
       competitionType: detailCompetion.competitionType,
-      challIcon: detailCompetion.challengeIcon,
+      challIcon: detailCompetion.challengeIcon
+        ? detailCompetion.challengeIcon
+        : '',
 
       championnat:
         detailCompetion.competitionType == 'Championnat'
@@ -297,17 +299,19 @@ export class ResultatPage implements OnInit, OnDestroy {
       .then((resPicture) => {
         this.sessionNowService.dissmissLoading();
         // this.zone.run(() => {
-          this.navCtl.navigateForward('session-now/felicitation');
-          this.sessionNowService.show('Seance publiée avec succés', 'success');
+        this.navCtl.navigateForward('session-now/felicitation');
+        this.sessionNowService.show('Seance publiée avec succés', 'success');
         // });
         // this.feedService.feedFilter('Récent');
       })
-      .catch((err) =>
+      .catch((err) => {
+        console.log(err);
         this.sessionNowService.show(
           "Une erreur s'est produite, veuillez rééssayer plus tard",
           'warning'
-        )
-      );
+        );
+        this.sessionNowService.dissmissLoading();
+      });
   }
 
   changeInput(event) {

@@ -248,14 +248,14 @@ export class DemarragePage implements OnInit {
         img: 'assets/images/pas.svg',
         nombre: '0',
         name: 'Nombre de pas',
-        exposant: '',
+        exposant: 'pas',
         fieldname: 'steps',
       },
       {
         img: 'assets/images/heart_m.svg',
         nombre: '0',
         name: 'BPM',
-        exposant: '',
+        exposant: 'BPM',
         fieldname: 'heart_rate',
       },
       {
@@ -270,7 +270,7 @@ export class DemarragePage implements OnInit {
         fieldname: 'speed',
         img: 'assets/images/speed_m.svg',
         nombre: '0',
-        exposant: '',
+        exposant: 'KM/H',
       },
       {
         name: 'Réactions',

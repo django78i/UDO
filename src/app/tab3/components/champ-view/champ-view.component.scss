@@ -3,6 +3,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  margin-bottom: 10px;
 }
 
 ion-item {
@@ -36,4 +37,18 @@ ion-item {
   font-weight: 800;
   font-size: 12px;
   color: black;
+}
+
+ion-item.template {
+  margin: 0;
+  width: 100%;
+  padding-left: 15px;
+  --background: transparent;
+  &::part(native) {
+    padding: 0;
+  }
+}
+
+ion-card {
+  margin: 0;
 }

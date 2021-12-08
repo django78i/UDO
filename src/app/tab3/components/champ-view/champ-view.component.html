@@ -12,13 +12,61 @@
       />
       <h4 style="font-weight: 900; margin: 0">EN COURS</h4>
     </div>
+    <ng-container *ngIf="!loading; else tempChamp">
+      <app-user-championnats-slide
+        [championnats]="userChampionnats"
+        (champ)="launchDetail($event)"
+        *ngIf="userChampionnats"
+      >
+      </app-user-championnats-slide>
+    </ng-container>
 
-    <app-user-championnats-slide
-      [championnats]="userChampionnats"
-      (champ)="launchDetail($event)"
-      *ngIf="userChampionnats"
-    >
-    </app-user-championnats-slide>
+    <ng-template #tempChamp>
+      <swiper #swiper [config]="config" style="padding-left: 15px">
+        <ng-template swiperSlide *ngFor="let chall of temporaire">
+          <ion-card style="height: 170px; width: 100%; border-radius: 30px">
+            <ion-card-header style="padding: 20px">
+              <ion-item class="template" lines="none">
+                <ion-avatar slot="start">
+                  <ion-skeleton-text animated></ion-skeleton-text>
+                </ion-avatar>
+                <ion-label>
+                  <ion-skeleton-text
+                    animated
+                    style="width: 20%"
+                  ></ion-skeleton-text>
+                  <ion-skeleton-text
+                    animated
+                    style="width: 40%"
+                  ></ion-skeleton-text>
+                </ion-label>
+                <ion-avatar slot="end">
+                  <ion-skeleton-text animated></ion-skeleton-text>
+                </ion-avatar>
+              </ion-item>
+            </ion-card-header>
+
+            <ion-card-content class="cardContent">
+              <ion-item
+                style="--background: transparent; width: 100%"
+                lines="none"
+              >
+                <ion-skeleton-text
+                  animated
+                  style="width: 30%"
+                  slot="start"
+                ></ion-skeleton-text>
+                <ion-skeleton-text
+                  animated
+                  style="width: 20%"
+                  slot="end"
+                ></ion-skeleton-text>
+              </ion-item>
+            </ion-card-content>
+          </ion-card>
+        </ng-template>
+      </swiper>
+    </ng-template>
   </div>
   <ion-item
     button
@@ -64,12 +112,13 @@
       />
       <h4 style="font-weight: 900; margin: 0">EN ATTENTE</h4>
     </div>
-
-    <app-slider-championnat
-      (champ)="launchDetail($event)"
-      [championnats]="championnatsList"
-      *ngIf="championnatsList"
-    ></app-slider-championnat>
+    <ng-container *ngIf="!loading; else tempChamp">
+      <app-slider-championnat
+        (champ)="launchDetail($event)"
+        [championnats]="championnatsList"
+        *ngIf="championnatsList"
+      ></app-slider-championnat>
+    </ng-container>
   </div>
   <div style="width: 100%; margin-bottom: 30px; margin-top: 15px">
     <div class="iconTitle">
@@ -84,12 +133,59 @@
       />
       <h4 style="font-weight: 900; margin: 0">NETWORK</h4>
     </div>
+    <ng-container *ngIf="!loading; else tempNetWork">
+      <app-slider-network
+        (champ)="launchDetail($event)"
+        [championnats]="champinonatNetwork"
+        *ngIf="champinonatNetwork"
+      ></app-slider-network>
+    </ng-container>
+    <ng-template #tempNetWork>
+      <swiper #swiper [config]="config" style="padding-left: 0">
+        <ng-template swiperSlide *ngFor="let chall of temporaire">
+          <ion-card style="height: 257px; width: 100%; border-radius: 30px">
+            <ion-card-header style="padding: 20px">
+              <ion-item class="template" lines="none">
+                <ion-avatar slot="start">
+                  <ion-skeleton-text animated></ion-skeleton-text>
+                </ion-avatar>
+                <ion-label>
+                  <ion-skeleton-text
+                    animated
+                    style="width: 20%"
+                  ></ion-skeleton-text>
+                  <ion-skeleton-text
+                    animated
+                    style="width: 40%"
+                  ></ion-skeleton-text>
+                </ion-label>
+                <ion-avatar slot="end">
+                  <ion-skeleton-text animated></ion-skeleton-text>
+                </ion-avatar>
+              </ion-item>
+            </ion-card-header>
 
-    <app-slider-network
-      (champ)="launchDetail($event)"
-      [championnats]="champinonatNetwork"
-      *ngIf="champinonatNetwork"
-    ></app-slider-network>
+            <ion-card-content class="cardContent">
+              <ion-item
+                style="--background: transparent; width: 100%"
+                lines="none"
+              >
+                <ion-skeleton-text
+                  animated
+                  style="width: 30%"
+                  slot="start"
+                ></ion-skeleton-text>
+                <ion-skeleton-text
+                  animated
+                  style="width: 20%"
+                  slot="end"
+                ></ion-skeleton-text>
+              </ion-item>
+            </ion-card-content>
+          </ion-card>
+        </ng-template>
+      </swiper>
+    </ng-template>
   </div>
   <ion-item
     button

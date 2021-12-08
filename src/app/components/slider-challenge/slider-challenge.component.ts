@@ -7,6 +7,7 @@ import {
   QueryList,
   ViewChildren,
   Output,
+  OnChanges,
 } from '@angular/core';
 import { SwiperOptions } from 'swiper';
 import { SwiperComponent } from 'swiper/angular';
@@ -16,18 +17,29 @@ import { SwiperComponent } from 'swiper/angular';
   templateUrl: './slider-challenge.component.html',
   styleUrls: ['./slider-challenge.component.scss'],
 })
-export class SliderChallengeComponent implements OnInit, AfterContentChecked {
+export class SliderChallengeComponent
+  implements OnInit, AfterContentChecked, OnChanges
+{
   @Input() challenges: any[];
 
   @ViewChildren('swiper') swiper: QueryList<SwiperComponent>;
   @Output() slide: EventEmitter<any> = new EventEmitter();
   @Output() challengeId: EventEmitter<any> = new EventEmitter();
-  countDownChallenge : number
+  countDownChallenge: number;
+  pourcentage: number;
 
   constructor() {}
 
   ngOnInit() {
     // this.countDownChallenge = (this.challenges.completion.value /chall.objectifs)*100
+  }
+
+  ngOnChanges() {
+    // this.challenges.forEach((chall) => {
+    //   const pourcentage = Number(chall.completion.value / chall.objectifs);
+    //   return { ...chall, pourcentage: pourcentage };
+    // });
+    // console.log(this.challenges)
   }
 
   config: SwiperOptions = {
@@ -50,5 +62,4 @@ export class SliderChallengeComponent implements OnInit, AfterContentChecked {
     console.log(uid);
     this.challengeId.emit(uid);
   }
-
 }

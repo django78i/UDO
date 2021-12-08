@@ -57,6 +57,7 @@ export class Tab3Page implements OnInit, AfterContentChecked, OnDestroy {
   //Challenges
   challengesEnAttente: any[] = [];
   challengesEnCours: any[] = [];
+  challengesUser: any[] = [];
 
   bannData: any;
   affiche: BehaviorSubject<any> = new BehaviorSubject(null);
@@ -135,6 +136,17 @@ export class Tab3Page implements OnInit, AfterContentChecked, OnDestroy {
           r == null
             ? (this.challengesEnCours = [])
             : this.challengesEnCours.push(r);
+        })
+      )
+      .subscribe();
+    this.ref.detectChanges();
+    this.challServ.challengeUser$
+      .pipe(
+        tap((r) => {
+          console.log(r);
+          r == null
+            ? (this.challengesUser = [])
+            : this.challengesUser.push(r);
         })
       )
       .subscribe();

@@ -1,14 +1,28 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  OnChanges,
+  ViewChildren,
+  QueryList,
+  AfterContentChecked,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { CompetitionsListComponent } from 'src/app/components/competitions-list/competitions-list.component';
+import { SwiperOptions } from 'swiper';
+import { SwiperComponent } from 'swiper/angular';
 
 @Component({
   selector: 'app-champ-view',
   templateUrl: './champ-view.component.html',
   styleUrls: ['./champ-view.component.scss'],
 })
-export class ChampViewComponent implements OnInit {
+export class ChampViewComponent
+  implements OnInit, OnChanges, AfterContentChecked
+{
   @Input() userChampionnats: any[];
   @Input() championnatsList: any[];
   @Input() champinonatNetwork: any[];
@@ -17,13 +31,35 @@ export class ChampViewComponent implements OnInit {
   @Output() createChamp: EventEmitter<any> = new EventEmitter();
   @Output() viewAllChamp: EventEmitter<any> = new EventEmitter();
 
+  loading: boolean = true;
+
+  config: SwiperOptions = {
+    slidesPerView: 1.3,
+    spaceBetween: 20,
+  };
+  @ViewChildren('swiper') swiper: QueryList<SwiperComponent>;
+  temporaire = [1, 2, 3];
+
   constructor(public router: Router, public modalController: ModalController) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    setTimeout(() => {
+      this.loading = false;
+    }, 1000);
+  }
+
+  ngAfterContentChecked() {
+    if (this.swiper) {
+      this.swiper.forEach((swip) => swip.updateSwiper({}));
+    }
+  }
 
   async launchDetail(ev) {
     this.champChoice.emit(ev);
-    // this.router.navigate([`/championnat/${ev.uid}`]);
+  }
+
+  ngOnChanges(changes) {
+    console.log(changes);
   }
 
   buttonClick() {
@@ -32,12 +68,5 @@ export class ChampViewComponent implements OnInit {
 
   openCompetitionList() {
     this.viewAllChamp.emit('championnats');
-    // const modal = await this.modalController.create({
-    //   component: CompetitionsListComponent,
-    //   componentProps: {
-    //     segmentSelected: 'championnats',
-    //   },
-    // });
-    // return await modal.present();
   }
 }

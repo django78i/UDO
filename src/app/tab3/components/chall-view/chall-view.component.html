@@ -12,13 +12,14 @@
       />
       <h4 style="font-weight: 900; margin: 0">EN COURS</h4>
     </div>
-
-    <app-slider-challenge
-      [challenges]="challEncours"
-      *ngIf="challEncours"
-      (challengeId)="chooseChallenge($event)"
-    >
-    </app-slider-challenge>
+    <ng-container *ngIf="!loading; else tempChamp">
+      <app-slider-challenge
+        [challenges]="challEncours"
+        *ngIf="challEncours"
+        (challengeId)="chooseChallenge($event)"
+      >
+      </app-slider-challenge>
+    </ng-container>
   </div>
   <ion-item
     button
@@ -62,13 +63,129 @@
         "
         alt=""
       />
+      <h4 style="font-weight: 900; margin: 0">EN ATTENTE</h4>
+    </div>
+    <ng-container *ngIf="!loading; else tempChamp">
+      <app-slider-challenge
+        [challenges]="challengesUser"
+        *ngIf="challEncours"
+        (challengeId)="chooseChallenge($event)"
+      >
+      </app-slider-challenge>
+    </ng-container>
+    <ng-template #tempChamp>
+      <swiper #swiper [config]="config" style="padding-left: 15px">
+        <ng-template swiperSlide *ngFor="let chall of temporaire">
+          <ion-card style="height: 170px; width: 100%; border-radius: 30px">
+            <ion-card-header style="padding: 20px">
+              <ion-item class="template" lines="none">
+                <ion-avatar slot="start">
+                  <ion-skeleton-text animated></ion-skeleton-text>
+                </ion-avatar>
+                <ion-label>
+                  <ion-skeleton-text
+                    animated
+                    style="width: 20%"
+                  ></ion-skeleton-text>
+                  <ion-skeleton-text
+                    animated
+                    style="width: 40%"
+                  ></ion-skeleton-text>
+                </ion-label>
+                <ion-avatar slot="end">
+                  <ion-skeleton-text animated></ion-skeleton-text>
+                </ion-avatar>
+              </ion-item>
+            </ion-card-header>
+
+            <ion-card-content class="cardContent">
+              <ion-item
+                style="--background: transparent; width: 100%"
+                lines="none"
+              >
+                <ion-skeleton-text
+                  animated
+                  style="width: 30%"
+                  slot="start"
+                ></ion-skeleton-text>
+                <ion-skeleton-text
+                  animated
+                  style="width: 20%"
+                  slot="end"
+                ></ion-skeleton-text>
+              </ion-item>
+            </ion-card-content>
+          </ion-card>
+        </ng-template>
+      </swiper>
+    </ng-template>
+  </div>
+  <div style="width: 100%">
+    <div class="iconTitle">
+      <img
+        src="../../assets/icon/dot.svg"
+        style="
+          background-color: rgb(233, 229, 229);
+          padding: 10px;
+          border-radius: 50%;
+        "
+        alt=""
+      />
       <h4 style="font-weight: 900; margin: 0">EXPLORER</h4>
     </div>
-    <app-big-chall-slider
-      [challenges]="challenges"
-      *ngIf="challenges"
-      (challengeId)="chooseChallenge($event)"
-    ></app-big-chall-slider>
+    <ng-container *ngIf="!loading; else tempNetWork">
+      <app-big-chall-slider
+        [challenges]="challenges"
+        *ngIf="challenges"
+        (challengeId)="chooseChallenge($event)"
+      ></app-big-chall-slider>
+    </ng-container>
+    <ng-template #tempNetWork>
+      <swiper #swiper [config]="config" style="padding-left: 0">
+        <ng-template swiperSlide *ngFor="let chall of temporaire">
+          <ion-card style="height: 257px; width: 100%; border-radius: 30px">
+            <ion-card-header style="padding: 20px">
+              <ion-item class="template" lines="none">
+                <ion-avatar slot="start">
+                  <ion-skeleton-text animated></ion-skeleton-text>
+                </ion-avatar>
+                <ion-label>
+                  <ion-skeleton-text
+                    animated
+                    style="width: 20%"
+                  ></ion-skeleton-text>
+                  <ion-skeleton-text
+                    animated
+                    style="width: 40%"
+                  ></ion-skeleton-text>
+                </ion-label>
+                <ion-avatar slot="end">
+                  <ion-skeleton-text animated></ion-skeleton-text>
+                </ion-avatar>
+              </ion-item>
+            </ion-card-header>
+
+            <ion-card-content class="cardContent">
+              <ion-item
+                style="--background: transparent; width: 100%"
+                lines="none"
+              >
+                <ion-skeleton-text
+                  animated
+                  style="width: 30%"
+                  slot="start"
+                ></ion-skeleton-text>
+                <ion-skeleton-text
+                  animated
+                  style="width: 20%"
+                  slot="end"
+                ></ion-skeleton-text>
+              </ion-item>
+            </ion-card-content>
+          </ion-card>
+        </ng-template>
+      </swiper>
+    </ng-template>
   </div>
   <div style="width: 100%; margin-bottom: 30px; margin-top: 15px">
     <div class="iconTitle">

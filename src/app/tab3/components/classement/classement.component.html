@@ -23,7 +23,7 @@
         <ion-avatar
           slot="start"
           [ngClass]="{ greyBlank: !cl.avatar }"
-          (click)="openProfil(cl)"
+          (click)="openProfil(cl.uid)"
         >
           <img [src]="cl.user.avatar" alt="" *ngIf="cl.user.avatar" />
           <img

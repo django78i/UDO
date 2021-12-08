@@ -61,9 +61,11 @@
           </p>
         </div>
       </div>
-      <ion-note style="font-size: 12px; padding-left: 40px" *ngIf="post.text">{{
-        post.comment
-      }}</ion-note>
+      <ion-note
+        style="font-size: 12px; padding-left: 40px"
+        *ngIf="post.comment"
+        >{{ post.comment }}</ion-note
+      >
     </ion-label>
   </ion-item>
   <ion-segment

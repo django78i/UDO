@@ -5,6 +5,7 @@ import {
   EventEmitter,
   Input,
   NgZone,
+  OnChanges,
   OnInit,
   Output,
   QueryList,
@@ -20,7 +21,9 @@ import { SwiperComponent } from 'swiper/angular';
   templateUrl: './slider-championnat.component.html',
   styleUrls: ['./slider-championnat.component.scss'],
 })
-export class SliderChampionnatComponent implements OnInit, AfterContentChecked {
+export class SliderChampionnatComponent
+  implements OnInit, AfterContentChecked, OnChanges
+{
   @Input() championnats: any[];
 
   championnatList: any[] = [];
@@ -32,16 +35,15 @@ export class SliderChampionnatComponent implements OnInit, AfterContentChecked {
   @ViewChildren('swiper') swiper: QueryList<SwiperComponent>;
   @Output() champ: EventEmitter<any> = new EventEmitter();
 
-  constructor(public ref: ChangeDetectorRef, public zone : NgZone) {}
+  constructor(public ref: ChangeDetectorRef, public zone: NgZone) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
+  ngOnChanges() {}
 
   ngAfterContentChecked(): void {
     // if (this.swiper) {
     //   // this.zone.run(()=>{
-
     //     this.swiper.map((swip) => swip.updateSwiper({}));
     //   // })
     // }

@@ -22,7 +22,8 @@ import { BehaviorSubject, Subject } from 'rxjs';
 export class ChatService {
   msgSubject$: BehaviorSubject<any> = new BehaviorSubject(null);
   roomSubject$: Subject<any> = new Subject();
-  unsubscribeRoom : Unsubscribe
+  unsubscribeRoom: Unsubscribe;
+  msgSubcription: Unsubscribe;
   constructor() {}
 
   async findRoom(userUid, contactUid): Promise<any[]> {
@@ -66,19 +67,26 @@ export class ChatService {
   }
 
   async getMessages(uid) {
+    this.msgSubject$ = new BehaviorSubject(null);
     console.log(uid);
     const db = getFirestore();
     const docRef = query(
       collection(db, `rooms/${uid}/messages`),
       orderBy('date', 'asc')
     );
-    const unsubscribe = onSnapshot(docRef, (querySnapshot) => {
+    this.msgSubcription = onSnapshot(docRef, (querySnapshot) => {
       const champs = [];
+      querySnapshot.docChanges().forEach((changes) => {
+        if (changes) {
+          this.msgSubject$.next(null);
+        }
+      });
+
       querySnapshot.forEach((doc) => {
         const document = doc.data();
         console.log(document);
         champs.push(document);
-        this.msgSubject$.next(champs);
+        this.msgSubject$.next(document);
       });
     });
   }
@@ -93,6 +101,7 @@ export class ChatService {
   }
 
   getUserRoom(uid) {
+    this.roomSubject$ = new BehaviorSubject(null);
     console.log(uid);
     const db = getFirestore();
     const docRef = query(collection(db, 'rooms'));
@@ -107,12 +116,14 @@ export class ChatService {
       querySnapshot.forEach((doc) => {
         const document = doc.data();
         console.log(document, uid);
-        const bool = document.users.some((user: any) => user.uid == uid);
-        if (bool && document) {
-          console.log(document);
-          champs.push(document);
-          this.roomSubject$.next(champs);
-          console.log(champs);
+        if (document) {
+          const bool = document.users.some((user: any) => user.uid == uid);
+          if (bool) {
+            console.log(document);
+            champs.push(document);
+            this.roomSubject$.next(document);
+            console.log(champs);
+          }
         }
       });
     });

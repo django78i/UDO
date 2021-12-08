@@ -32,18 +32,24 @@
         <!-- <div>Current slide is {{ data.isActive ? 'active' : 'not active' }}</div> -->
         <ion-item style="--background: transparent" lines="none">
           <ion-label slot="start">
-            {{ (chall.completion.value / chall.objectifs) * 100 | number:'1.1-2' }} %
+            {{
+              (chall.completion.value / chall.objectifs) * 100 | number: "1.1-2"
+            }}
+            %
             <!-- <img src="../../assets/icon/Icon feather-percent.svg" alt="" /> -->
           </ion-label>
           <ion-label style="font-size: 14px; text-align: end"
-            >{{chall.completion.value | number:'1.1-1'}}/{{ chall.objectifs }} {{ chall.metric.metric }}</ion-label
+            >{{ chall.completion.value | number: "1.1-1" }}/{{
+              chall.objectifs
+            }}
+            {{ chall.metric.metric }}</ion-label
           >
           <!-- <ion-note>{{chall.dateFin|timeRelative | uppercase}}</ion-note> -->
         </ion-item>
         <ion-progress-bar
-          [value]="chall.completion.percent"
+          [value]="chall.completion.value / chall.objectifs"
           style="
-            --progress-background: rgb(138, 44, 44);
+            --progress-background: white;
             height: 6px;
             border-radius: 10px;
           "

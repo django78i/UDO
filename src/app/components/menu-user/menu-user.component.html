@@ -40,7 +40,7 @@
 </ion-header>
 <ion-content>
   <ion-list>
-    <ion-item lines="none" detail class="champColor" (click)="openProfil()">
+    <ion-item lines="none" detail class="champColor" (click)="openProfil(null)">
       <div class="typeLogo">
         <img src="assets/icon/profil.svg" style="width: 50%" />
       </div>
@@ -49,16 +49,12 @@
         <p style="font-size: 10px">Mode actuel :</p>
       </ion-label>
     </ion-item>
-    <ion-item lines="none" detail class="champColor">
-      <div class="typeLogo">
-        <img src="assets/icon/profil.svg" style="width: 50%" />
-      </div>
-      <ion-label>
-        <p class="sousTitre black">Centre des notifications</p>
-        <p style="font-size: 10px">Consulter vos notifications</p>
-      </ion-label>
-    </ion-item>
-    <ion-item detail lines="full" class="champColor">
+    <ion-item
+      detail
+      lines="full"
+      class="champColor"
+      (click)="openProfil('amis')"
+    >
       <div class="typeLogo">
         <img src="assets/icon/FriendsFamilly.svg" alt="" />
       </div>
@@ -69,15 +65,20 @@
         </p>
       </ion-label>
     </ion-item>
-    <ion-item detail lines="none" class="champColor">
+    <ion-item
+      detail
+      lines="none"
+      class="champColor"
+      (click)="rootCompetition()"
+    >
       <div class="typeLogo">
         <img src="assets/icon/cup.svg" style="width: 50%" alt="" />
       </div>
 
       <ion-label>
-        <p class="sousTitre black">Mes championnats</p>
+        <p class="sousTitre black">Mes compétitions</p>
         <p style="font-size: 10px">
-          Consulter et gérer votre liste de contacts
+          Voir cos championnats et challenges
         </p>
       </ion-label>
     </ion-item>

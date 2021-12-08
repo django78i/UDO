@@ -15,7 +15,7 @@
 <ion-content>
   <ion-list>
     <!-- <ng-container *ngIf="rooms$|async as rooms"> -->
-      <ng-container *ngIf="roomTable">
+      <ng-container *ngIf="roomTable.length">
         <ion-item
           lines="full"
           *ngFor="let room of roomTable"
@@ -29,7 +29,7 @@
             <p class="sousTitre black">{{room.users.userName}}</p>
             <p>{{room.lastMsg}}</p>
           </ion-label>
-          <ion-label style="font-size: 12px"
+          <ion-label style="font-size: 12px" slot="end"
             >{{room.timestamp|timeRelative}}</ion-label
           >
         </ion-item>

@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 import { ModalController, NavController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { ChallengesService } from 'src/app/services/challenges.service';
 import { ChampionnatsService } from 'src/app/services/championnats.service';
 import { ModalChampComponent } from 'src/app/tab3/components/modal-champ/modal-champ.component';
 import { SwiperOptions } from 'swiper';
@@ -37,27 +38,39 @@ export class CompetitionsListComponent implements OnInit, AfterContentChecked {
   championnatsFiltered: any[] = [];
   filter: string;
   subscription: Subscription;
+  challenges: any[] = [];
+  challengesFilered: any[] = [];
+
   constructor(
     public modalCtrl: ModalController,
     public champService: ChampionnatsService,
     public ref: ChangeDetectorRef,
     public router: Router,
     public navCtl: NavController,
-    public zone: NgZone // public navParams: NavParams
+    public zone: NgZone,
+    public challService: ChallengesService // public navParams: NavParams
   ) {}
 
   ngOnInit() {
     // this.segmentValue = this.navParams.data.segmentSelected;
     console.log('state');
     this.champService.getChampionnatNetwork();
-    this.subscription = this.champService.champNetWorkList$
+    this.challService.getChallengesList();
+
+    this.champService.champNetWorkList$
       .pipe(
         tap((r) => {
           if (r) {
             console.log(r);
             this.championnatNetwork.push(r);
           }
-          this.ref.detectChanges();
+        })
+      )
+      .subscribe();
+    this.challService.challengesList$
+      .pipe(
+        tap((r) => {
+          r == null ? (this.challenges = []) : this.challenges.push(r);
         })
       )
       .subscribe();
@@ -71,10 +84,16 @@ export class CompetitionsListComponent implements OnInit, AfterContentChecked {
 
   search(ev) {
     this.filter = ev.detail.value;
-    const filter = this.championnatNetwork.filter((champ) =>
+    const filterChamp = this.championnatNetwork.filter((champ) =>
       champ.name.toLowerCase().includes(ev.detail.value.toLowerCase().trim())
     );
-    this.championnatsFiltered = filter;
+    const filterChallenge = this.challenges.filter((chall) =>
+      chall.name.toLowerCase().includes(this.filter.toLowerCase().trim())
+    );
+    console.log(filterChallenge);
+    this.challengesFilered = filterChallenge;
+
+    this.championnatsFiltered = filterChamp;
   }
 
   viewChange(ev) {
@@ -95,13 +114,9 @@ export class CompetitionsListComponent implements OnInit, AfterContentChecked {
       componentProps: { champId: ev, entryData: 'championnat' },
     });
     return await modal.present();
-
-    // console.log(ev);
-    // this.close();
-    // this.router.navigate([`/championnat/${ev}`]);
   }
 
   close() {
-      this.navCtl.navigateBack('tabs/tab3');
+    this.navCtl.navigateBack('tabs/tab3');
   }
 }

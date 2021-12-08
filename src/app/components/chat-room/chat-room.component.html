@@ -27,8 +27,8 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ng-container *ngIf="message$ | async as messages; else blank">
+<ion-content #content>
+  <ng-container *ngIf="messages.length; else blank">
     <section
       *ngFor="let msg of messages"
       style="display: flex"

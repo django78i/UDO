@@ -27,6 +27,7 @@ export class ChallengesService {
   challenges$: BehaviorSubject<any> = new BehaviorSubject(null);
   singleChallSub$: BehaviorSubject<any> = new BehaviorSubject(null);
   challengesList$: BehaviorSubject<any> = new BehaviorSubject(null);
+  challengeUser$: BehaviorSubject<any> = new BehaviorSubject(null);
   unsubscribe: Unsubscribe;
 
   constructor() {}
@@ -88,6 +89,7 @@ export class ChallengesService {
           console.log('ici', changes);
           this.challengeEnCours$.next(null);
           this.challenges$.next(null);
+          this.challengeUser$.next(null);
         }
       });
       querySnapshot.forEach((doc) => {
@@ -100,7 +102,10 @@ export class ChallengesService {
           console.log(docFormat);
           if (document.status == 'en cours' && bool) {
             this.challengeEnCours$.next(docFormat);
-          } else if (document.status == 'en attente') {
+          } else if (document.status == 'en attente' && bool) {
+            this.challengeUser$.next(docFormat);
+          } else if (document.status == 'en attente' && !bool) {
+            console.log(docFormat)
             this.challenges$.next(docFormat);
           }
         }
