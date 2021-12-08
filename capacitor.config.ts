@@ -1,7 +1,7 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'fr.udo.health.blueprint',
+  appId: 'com.UDO.app',
   appName: 'UDO',
   webDir: 'www',
   bundledWebRuntime: false,
@@ -20,9 +20,19 @@ const config: CapacitorConfig = {
   plugins: {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     SplashScreen: {
-      launchShowDuration: 5000,
+      launchShowDuration: 20000,
       backgroundColor: '#352D8F',
       launchAutoHide: false,
+      androidSplashResourceName: 'splash',
+      androidScaleType: 'CENTER_CROP',
+      showSpinner: true,
+      androidSpinnerStyle: 'large',
+      iosSpinnerStyle: 'small',
+      spinnerColor: '#999999',
+      splashFullScreen: true,
+      splashImmersive: true,
+      layoutName: 'launch_screen',
+      useDialog: true
     },
     // eslint-disable-next-line @typescript-eslint/naming-convention
     GoogleAuth: {

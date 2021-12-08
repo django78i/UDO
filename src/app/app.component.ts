@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 import * as firebase from 'firebase/app';
 import { UserService } from './services/user-service.service';
-import { NavController } from '@ionic/angular';
+import {NavController, Platform} from '@ionic/angular';
+import {Capacitor, Plugins} from "@capacitor/core";
 
 @Component({
   selector: 'app-root',
@@ -12,8 +13,16 @@ import { NavController } from '@ionic/angular';
 export class AppComponent {
   constructor(
     private screenOrientation: ScreenOrientation,
-    public navController: NavController
+    public navController: NavController,
+    private platform: Platform
   ) {
+    this.platform.ready().then(() => {
+      // splash screen
+      if (Capacitor.isPluginAvailable('SplashScreen')) {
+        Plugins.SplashScreen.hide();
+      }
+    }) ;
+
     const config = {
       apiKey: 'AIzaSyCHrlvzztARn_AUL9yiVTTEtGSMdgO_XRw',
       authDomain: 'udonew-cc142.firebaseapp.com',
