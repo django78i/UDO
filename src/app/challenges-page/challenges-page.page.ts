@@ -53,6 +53,7 @@ export class ChallengesPagePage implements OnInit {
   competition = 'challenge';
   @ViewChild('inputFeed') inputFeed: IonInput;
   admin: boolean = false;
+  pourcentage: number;
   constructor(
     private navCtl: NavController,
     public userService: UserService,
@@ -83,6 +84,9 @@ export class ChallengesPagePage implements OnInit {
         tap((chall) => {
           if (chall) {
             this.challenge = chall;
+            this.pourcentage = Number(
+              this.challenge.completion.value / this.challenge.objectifs
+            );
             this.startDate = moment(this.challenge.dateDemarrage).fromNow();
             this.getFeedChallenge(uid);
             console.log(this.challenge);
@@ -298,9 +302,6 @@ export class ChallengesPagePage implements OnInit {
     this.boole = false;
     this.inputFeed.value = null;
   }
-
-
-
 
   async addContenu() {
     const modal = await this.modalCtrl.create({

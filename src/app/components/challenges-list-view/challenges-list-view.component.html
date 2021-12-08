@@ -101,9 +101,9 @@
           <!-- <ion-note>{{chall.dateFin|timeRelative | uppercase}}</ion-note> -->
         </ion-item>
         <ion-progress-bar
-          [value]="chall.completion.percent"
+          [value]="chall.completion.value / chall.objectifs"
           style="
-            --progress-background: rgb(138, 44, 44);
+            --progress-background: white;
             height: 6px;
             border-radius: 10px;
           "
