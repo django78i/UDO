@@ -23,6 +23,7 @@ import moment from 'moment';
 import { Observable } from 'rxjs';
 import { takeLast, tap } from 'rxjs/operators';
 import { FriendPageListComponent } from '../components/friend-page-list/friend-page-list.component';
+import { UserProfilComponent } from '../components/user-profil/user-profil.component';
 import { ChallengesService } from '../services/challenges.service';
 import { MusicFeedService } from '../services/music-feed.service';
 import { UserService } from '../services/user-service.service';
@@ -297,6 +298,9 @@ export class ChallengesPagePage implements OnInit {
     this.boole = false;
     this.inputFeed.value = null;
   }
+
+
+
 
   async addContenu() {
     const modal = await this.modalCtrl.create({

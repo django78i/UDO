@@ -48,7 +48,7 @@ export class ClassementComponent implements OnInit, OnChanges {
     const modal = await this.modalController.create({
       component: UserProfilComponent,
       componentProps: {
-        user: contact,
+        userId: contact,
         currentUser: this.user,
       },
     });

@@ -130,6 +130,7 @@ export class UserProfilComponent implements OnInit {
 
   ngOnInit() {
     this.navParams.data.segment ? (this.seg = this.navParams.data.segment) : '';
+    this.userId = this.navParams.data.userId;
     console.log(this.userId);
     this.userService.findUser(this.userId).then((user) => {
       this.user = user.data();
