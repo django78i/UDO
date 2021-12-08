@@ -89,6 +89,7 @@ export class ModalChampComponent implements OnInit, AfterViewInit {
   boole: Boolean = false;
   feed: any;
   admin: boolean = false;
+  pourcentage: number = 0;
 
   constructor(
     private modalCtrl: ModalController,
@@ -146,6 +147,9 @@ export class ModalChampComponent implements OnInit, AfterViewInit {
               this.challenge = chall;
               console.log(this.entryData);
               this.getFeedChampionnat(this.challenge.uid);
+              this.pourcentage = Number(
+                this.challenge.completion.value / this.challenge.objectifs
+              );
 
               this.userEncours = this.challenge.participants.find(
                 (part) => part.uid == this.user.uid
