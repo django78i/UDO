@@ -25,6 +25,7 @@ export class ChallViewComponent implements OnInit {
   @Input() challenges: any[];
   @Input() challEncours: any[];
   @Input() challengesUser: any[];
+  @Input() user: any;
 
   @Output() createChall: EventEmitter<any> = new EventEmitter();
   @Output() challengeId: EventEmitter<any> = new EventEmitter();
@@ -38,7 +39,7 @@ export class ChallViewComponent implements OnInit {
   temporaire = [1, 2, 3];
 
   loading: boolean = true;
-
+  admin: boolean = false;
   constructor(
     public http: HttpClient,
     public modalController: ModalController
@@ -48,6 +49,15 @@ export class ChallViewComponent implements OnInit {
     setTimeout(() => {
       this.loading = false;
     }, 1000);
+    this.http
+      .get<any[]>('../../../assets/mocks/admin.json')
+      .pipe(
+        tap(
+          (ad) =>
+            (this.admin = ad.some((userAdmin) => userAdmin == this.user.uid))
+        )
+      )
+      .subscribe();
   }
 
   buttonClick() {
