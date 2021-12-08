@@ -26,22 +26,16 @@
 
     <ion-row [class]="modeRow">
       <ion-col class="c-col" size="4" *ngFor="let item of listActivite">
-        <round-progress
-          [current]="item.value"
-          [max]="valeur"
-          [color]="'#000000'"
-          [background]="'#7070703d'"
-          [radius]="47"
-          [stroke]="4"
-        >
+        <round-progress [current]="item.value" [max]="valeur" [color]="'#000000'" [background]="'#7070703d'" [radius]="47" [stroke]="4" >
         </round-progress>
-        <div [class]="modeClasse">
-          <ion-row
-            [ngClass]="{'val3':item.value.length==1,'val':item.value.length<=2,'val2':item.value.length>2}"
-            >+{{item.value}}</ion-row
-          >
-          <ion-row class="val-xp">xp</ion-row>
-        </div>
+        <ion-row [class]="modeClasse">
+          <div
+            class="val">+{{item.value}}
+          </div>
+        </ion-row>
+          <ion-row [class]="modeClasse">
+          <div class="val-xp">xp</div>
+        </ion-row>
         <ion-row class="c-name">
           <span class="name"> {{item.name}} </span>
         </ion-row>
