@@ -138,7 +138,7 @@ export class AddPostContenuComponent implements OnInit, OnDestroy {
     console.log('no sesionNow');
     postModel = {
       startDate: new Date(),
-      userName: this.user ? this.user.userName : '',
+      // userName: this.user ? this.user.userName : '',
       userId: this.user ? this.user.uid : '',
       sessionId: this.sessionNow ? this.sessionNow.uid : '',
       photo: url ? url : '',
@@ -147,16 +147,26 @@ export class AddPostContenuComponent implements OnInit, OnDestroy {
       activity: this.activity,
       isLive: this.sessionNow ? true : false,
       mode: this.sessionNow ? this.sessionNow.mode : 'public',
-      userAvatar: this.user.avatar,
-      niveau: this.user.niveau,
+      // userAvatar: this.user.avatar,
+      // niveau: this.user.niveau,
       comment: this.comment,
       postCount: 0,
       reactionsNombre: 0,
-      challengeMetric: detailCompet.challengeMetric,
-      championnatType: detailCompet.championnatType,
+      challengeMetric: detailCompet.challengeMetric
+        ? detailCompet.challengeMetric
+        : '',
+      championnatType: detailCompet.championnatType
+        ? detailCompet.championnatType
+        : '',
       competitionId: detailCompet.competitionId,
+      // ? detailCompet.competitionId
+      // : ''
       competitionName: detailCompet.competitionName,
+      // ? detailCompet.competitionName
+      // : ''
       competitionType: detailCompet.competitionType,
+      // ? detailCompet.competitionType
+      // : ''
       challIcon: detailCompet.challengeIcon ? detailCompet.challengeIcon : '',
       // competitionInfo: detailCompet,
       championnat:
@@ -169,6 +179,7 @@ export class AddPostContenuComponent implements OnInit, OnDestroy {
           : '',
     };
     console.log(JSON.stringify(postModel));
+    console.log(JSON.stringify(detailCompet));
     this.sessionNowService
       .create(postModel, 'post-session-now')
       .then((resPicture) => {
@@ -218,7 +229,7 @@ export class AddPostContenuComponent implements OnInit, OnDestroy {
 }
 export class PostModel {
   startDate: Date;
-  userName: string;
+  // userName: string;
   userId: string;
   sessionId: string;
   photo: string;
@@ -226,8 +237,8 @@ export class PostModel {
   type: string;
   isLive: boolean;
   mode: string;
-  userAvatar: string;
-  niveau: number;
+  // userAvatar: string;
+  // niveau: number;
   reactions: any;
   comment: string;
   postCount: number;

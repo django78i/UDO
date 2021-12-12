@@ -36,3 +36,23 @@ ion-avatar {
   top: 0;
   right: -8px;
 }
+
+ion-segment {
+  width: 80%;
+  margin: auto;
+  background-color: rgb(233, 229, 229);
+  border-radius: 17px;
+  padding: 3px;
+}
+ion-segment-button {
+  --padding-top: 10px !important;
+  --padding-bottom: 10px !important;
+  --border-radius: 14px;
+  --color: #25252998;
+  --color-focused: #000000;
+  --color-checked: #000000;
+  ion-label {
+    font-size: 14px;
+    font-weight: 600;
+  }
+}

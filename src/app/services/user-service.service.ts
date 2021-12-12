@@ -195,6 +195,7 @@ export class UserService {
   }
   async removeFriend(friend, user) {
     const userTemp = user;
+    console.log(friend, user)
     const ind = userTemp.friends.findIndex((us) => us.uid === friend.uid);
     ind !== -1 ? userTemp.friends.splice(ind, 1) : '';
     await updateDoc(doc(this.db, 'users', userTemp.uid), userTemp);

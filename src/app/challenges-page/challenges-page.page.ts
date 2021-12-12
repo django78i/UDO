@@ -50,7 +50,7 @@ export class ChallengesPagePage implements OnInit {
   feed: any;
   lastVisible: any;
   pictureUrl: string;
-  competition = 'challenge';
+  competition = 'challenges';
   @ViewChild('inputFeed') inputFeed: IonInput;
   admin: boolean = false;
   pourcentage: number;

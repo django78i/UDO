@@ -1,9 +1,19 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  QueryList,
+  ViewChild,
+  ViewChildren,
+} from '@angular/core';
 import { MusicFeedService } from '../services/music-feed.service';
 import {
   ModalController,
   AnimationController,
-  NavController, Platform, AlertController, IonRouterOutlet,
+  NavController,
+  Platform,
+  AlertController,
+  IonRouterOutlet,
+  IonTabButton,
 } from '@ionic/angular';
 import { MenuUserComponent } from '../components/menu-user/menu-user.component';
 import { AddContenuComponent } from '../session-now/add-contenu/add-contenu.component';
@@ -11,13 +21,16 @@ import { ExternalSessionNowComponent } from '../session-now/external-session-now
 import { CreatePostComponent } from './component/create-post/create-post.component';
 import { UserService } from '../services/user-service.service';
 
-import {RouterOutlet, Router, ActivationStart, NavigationExtras} from '@angular/router';
-import {Plugins} from '@capacitor/core';
+import {
+  RouterOutlet,
+  Router,
+  ActivationStart,
+  NavigationExtras,
+  RouterEvent,
+} from '@angular/router';
+import { Plugins } from '@capacitor/core';
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const { App } = Plugins;
-
-
-
 
 @Component({
   selector: 'app-tabs',
@@ -27,6 +40,8 @@ const { App } = Plugins;
 export class TabsPage implements OnInit {
   user: any;
   @ViewChild(RouterOutlet) outlet: RouterOutlet;
+  @ViewChildren('tabsRoute') tabsRoute: QueryList<HTMLElement>;
+  selectedPath: any = 'tab1';
 
   constructor(
     private router: Router,
@@ -51,6 +66,13 @@ export class TabsPage implements OnInit {
     this.userService.getCurrentUser().then((user) => {
       this.user = user;
     });
+    this.router.events.subscribe((event: RouterEvent) => {
+      console.log('changement');
+      if (event && event.url) {
+        console.log(event);
+        this.selectedPath = event.url == '/' ? 'tab1' : event.url;
+      }
+    });
   }
 
   changeTab(event) {
@@ -65,11 +87,11 @@ export class TabsPage implements OnInit {
         type: 'Séance Libre',
         // type: 'Championnat',
         //type: 'Challenge',
-        competitionName:'',
-        competitionId:'',
-        challengeStatus:0,
-        challengeMetric:''
-      }
+        competitionName: '',
+        competitionId: '',
+        challengeStatus: 0,
+        challengeMetric: '',
+      },
     };
     this.navController.navigateForward(['session-now'], navigationExtras);
   }
@@ -101,7 +123,6 @@ export class TabsPage implements OnInit {
    * cette alert permet de confirmer la sortie de l'application
    */
   async presentAlertConfirm() {
-
     const alert = await this.alertController.create({
       header: 'Confirmation',
       mode: 'ios',
@@ -111,8 +132,7 @@ export class TabsPage implements OnInit {
           text: 'Non',
           role: 'cancel',
           cssClass: 'secondary',
-          handler: (blah) => {
-          },
+          handler: (blah) => {},
         },
         {
           text: 'Oui',
@@ -126,4 +146,15 @@ export class TabsPage implements OnInit {
     await alert.present();
   }
 
+  // getSelected() {
+  //   console.log('selected');
+  //   this.tabsRoute.forEach(
+  //     (tabs, i) =>
+  //       tabs.selected
+  //         ? (tabs.nativeElement.style.background = 'red')
+  //         : (tabs.nativeElement.style.background = 'green')
+  //     // tabs.selected ? tabs.target.
+  //     // console.log(i, tabs, tabs.selected)
+  //   );
+  // }
 }

@@ -27,6 +27,7 @@ export class ChatService {
   constructor() {}
 
   async findRoom(userUid, contactUid): Promise<any[]> {
+    console.log(userUid, contactUid);
     const db = getFirestore();
     const first = doc(db, 'rooms', userUid + contactUid);
     const second = doc(db, 'rooms', contactUid + userUid);

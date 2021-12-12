@@ -219,47 +219,41 @@ export class SessionNowService {
 
   async updateChallenge(userId, sessionNow) {
     const db = getFirestore();
-    const queryPost = query(
-      collection(db, 'challenges'),
-      where('uid', '==', sessionNow.competitionId)
+    const queryPost = await getDoc(
+      doc(db, 'challenges', sessionNow.competitionId)
     );
-    const document = await getDocs(queryPost);
+    // const document = await getDocs(queryPost);
     console.log(sessionNow.metrics);
-    document.forEach((doc1) => {
-      if (doc1 && doc1.data() && doc1.data().participants) {
-        let challenge = doc1.data();
 
-        //recherche user en cours
-        const ind = challenge.participants.findIndex(
-          (part) => (part.uid = userId)
-        );
-        //on ajoute 1 seance au participant
-        challenge.participants[ind].seance =
-          challenge.participants[ind].seance != 0
-            ? challenge.participants[ind].seance + 1
-            : 1;
+    if (queryPost && queryPost.data() && queryPost.data().participants) {
+      let challenge = queryPost.data();
+      let participants = challenge.participants;
+      //recherche user en cours
+      const ind = participants.findIndex((part) => part.uid == userId);
+      //on ajoute 1 seance au participant
+      participants[ind].seance =
+        participants[ind].seance != 0 ? participants[ind].seance + 1 : 1;
 
-        let metricValue;
-        //recherche de la métrique à incrémenter
-        metricValue = sessionNow.metrics.find(
-          (sess) => challenge.metric.metric == sess.exposant
-        );
-        // if (!metricValue) {
-        //   // if (challenge.metric.metric == 'steps') {
-        //   //   metricValue = sessionNow.metric.find(
-        //   //     (sess) => sess.fieldname == 'steps'
-        //   //   );
-        //   // }
-        // }
+      let metricValue;
+      //recherche de la métrique à incrémenter
+      metricValue = sessionNow.metrics.find(
+        (sess) => challenge.metric.metric == sess.exposant
+      );
 
-        //on incémente l'avancé du participant
-        challenge.participants[ind].value += metricValue.nombre;
-        //on ajoute incémente l'avancé du challenge
-        challenge.completion.value += Number(metricValue.nombre).toFixed(2);
-        //MAJ du challenge
-        updateDoc(doc(db, 'challenges', sessionNow.competitionId), challenge);
-      }
-    });
+      //on incémente l'avancé du participant
+      participants[ind].value += metricValue.nombre;
+      //on ajoute incémente l'avancé du challenge
+      const evolution = Number(
+        Number(metricValue.nombre) + challenge.completion.value
+      ).toFixed(2) as unknown as number;
+      //contrôle si avancé supérieure à objectif
+      challenge.completion.value =
+        evolution > challenge.objectif ? challenge.objectif : evolution;
+
+      //MAJ du challenge
+      const chall = { ...challenge, participants: participants };
+      updateDoc(doc(db, 'challenges', sessionNow.competitionId), chall);
+    }
   }
 
   async updateChampionnat(userId, sessionNow) {
@@ -279,7 +273,7 @@ export class SessionNowService {
         );
         let participants = doc1.data().participants;
         //recherche du user parmis les participants
-        const ind = participants.findIndex((part) => (part.uid = userId));
+        const ind = participants.findIndex((part) => part.uid == userId);
         //on ajoute 3 points au participants
         participants[ind].points =
           participants[ind].points != 0 ? participants[ind].points + 3 : 3;

@@ -1,4 +1,4 @@
-<ion-header mode="ios" style="--background: #f4f5fa">
+<ion-header mode="ios" style="background: #f4f5fa">
   <ion-toolbar style="--border-width: 0 0 0 !important; --background: #f4f5fa">
     <ion-button
       slot="start"
@@ -140,7 +140,23 @@
       flex-direction: column;
     "
   >
-    <div
+    <ion-thumbnail
+      *ngIf="post.type == 'picture' && post.photo"
+      style="
+        background-color: rgb(233, 229, 229);
+        height: 300px;
+        width: 100%;
+        background-position: center;
+        background-size: cover;
+        border-radius: 15px;
+      "
+      (click)="detailPhoto(post.photo)"
+    >
+      <ion-img [src]="post.photo" style="border-radius: 15px; border: 0">
+      </ion-img>
+    </ion-thumbnail>
+
+    <!-- <div
       (click)="detailPhoto(post.photo)"
       *ngIf="post.photo"
       [style.backgroundImage]="'url(\'' + post.photo + '\')'"
@@ -151,7 +167,7 @@
         background-size: cover;
         border-radius: 15px;
       "
-    ></div>
+    ></div> -->
 
     <div class="iconTitle" *ngIf="post.metrics">
       <img

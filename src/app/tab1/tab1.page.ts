@@ -176,14 +176,14 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
 
   //Choix du filtre
   async clickFilter(filter: string, i) {
-    this.snsService.presentLoading();
+    // this.snsService.presentLoading();
     this.indice = i;
     this.feeds = [];
     this.filter = filter;
     const feedRefresh = await this.feedService.feedFilter(filter);
     this.feeds = feedRefresh.table;
     this.lastVisible = feedRefresh.last;
-    this.snsService.dissmissLoading();
+    // this.snsService.dissmissLoading();
   }
 
   async presentPopover(i: number, feedLik) {
@@ -256,6 +256,7 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
       this.feedService.createReactionSeanceNow(this.feeds[i], reactionPost);
     }
     this.feedService.updatePost(this.feeds[i]);
+    this.clickFilter(this.filter, this.indice);
   }
 
   async openDetail(post) {
@@ -310,6 +311,11 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
       }
     });
     return await modal.present();
+  }
+
+  show(ev, i) {
+    console.log(ev);
+    return true;
   }
 
   chatPage() {

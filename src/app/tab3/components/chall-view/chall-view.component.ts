@@ -48,7 +48,7 @@ export class ChallViewComponent implements OnInit {
   ngOnInit() {
     setTimeout(() => {
       this.loading = false;
-    }, 1000);
+    }, 500);
     this.http
       .get<any[]>('../../../assets/mocks/admin.json')
       .pipe(

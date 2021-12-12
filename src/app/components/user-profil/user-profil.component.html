@@ -7,90 +7,106 @@
     >
       <img src="assets/mocks/Icon feather-arrow-left.svg" alt="" />
     </ion-button>
-    <ion-buttons slot="end">
-      <ion-button>
-        <img src="assets/mocks/Icon feather-share-2.svg" alt="" />
-      </ion-button>
-      <ion-button>
-        <img src="assets/mocks/Icon feather-settings.svg" alt="" />
-      </ion-button>
-    </ion-buttons>
+    <ion-thumbnail
+      class="delete"
+      (click)="removeFriend(user)"
+      slot="end"
+      *ngIf="friendBool && userId != currentUser.uid"
+      style="
+        background-image: url('assets/icon/delete.svg');
+        --background: black;
+      "
+    >
+    </ion-thumbnail>
+    <ion-thumbnail
+      (click)="addFriend(user)"
+      class="add"
+      slot="end"
+      style="background-image: url('assets/icon/add.svg'); --background: white"
+      *ngIf="!friendBool && userId != currentUser?.uid"
+    >
+    </ion-thumbnail>
   </ion-toolbar>
-  <section style="height: 200px; position: relative; margin-bottom: 150px">
-    <ion-card
-      style="
-        background: transparent
-          linear-gradient(180deg, #53545c 0%, #1a1718 100%);
-        border-radius: 22px;
-        height: 100%;
-      "
-    >
-    </ion-card>
-    <div
-      style="
-        width: 200px;
-        position: absolute;
-        bottom: -130px;
-        left: calc(50% - 100px);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-      "
-    >
+  <section style="margin-bottom: 30px; position: relative">
+    <div style="display: flex; flex-direction: column; align-items: center">
       <ion-avatar>
-        <!-- <img
-          src="https://img.icons8.com/ios-filled/50/000000/gender-neutral-user.png"
-          alt=""
-          *ngIf="!user.avatar"
-        /> -->
         <img [src]="user.avatar" *ngIf="user" alt="" />
         <ion-badge class="badgeTop" *ngIf="user">{{ user.niveau }}</ion-badge>
       </ion-avatar>
-      <h3 *ngIf="user">{{ user.userName }}</h3>
+      <h3 *ngIf="user" style="font-weight: 700; margin: 0">
+        {{ user.userName }}
+      </h3>
       <div style="display: flex; gap: 10px; align-items: center" *ngIf="user">
-        <p>
+        <ion-label style="font-weight: 600; color: #707070">
           {{
             user.friends
               ? user.friends.length == 1
                 ? "1 ami"
+                : user.friends.length == 0
+                ? 0 + " ami"
                 : user.friends.length + " amis"
               : 0 + " ami"
           }}
-        </p>
+        </ion-label>
       </div>
     </div>
   </section>
-  <section style="padding: 0 15px; margin-top: 50px">
+  <section style="padding: 0 15px">
     <ion-segment
       mode="ios"
       (ionChange)="segmentChanged($event)"
       [value]="seg"
       style="--background: #dfdfe8; margin-bottom: 20px"
     >
-      <ion-segment-button value="resume">Résumé </ion-segment-button>
-      <ion-segment-button value="amis"> amis </ion-segment-button>
-      <!-- <ion-segment-button value="historique"> Historique </ion-segment-button> -->
+      <ion-segment-button value="resume"
+        ><ion-label> Résumé </ion-label></ion-segment-button
+      >
+      <ion-segment-button value="amis">
+        <ion-label> amis </ion-label></ion-segment-button
+      >
     </ion-segment>
     <section *ngIf="seg == 'amis'">
-      <!-- <app-friend-page-list [friends]="user.friends"></app-friend-page-list> -->
       <ng-container *ngIf="user.friends">
         <ion-item
           lines="full"
           class="champColor"
           *ngFor="let friend of user.friends"
         >
-          <ion-avatar class="avatarClass">
-            <img
-              *ngIf="!friend.avatar"
-              src="https://img.icons8.com/ios-filled/50/000000/gender-neutral-user.png"
-              alt=""
-            />
+          <ion-avatar class="avatarClass" (click)="openProfil(friend.uid)">
             <img *ngIf="friend.avatar" [src]="friend.avatar" alt="" />
             <ion-badge class="badgeClass">{{ friend.niveau }}</ion-badge>
           </ion-avatar>
           <ion-label>
             <p class="sousTitre">{{ friend.userName }}</p>
           </ion-label>
+          <ng-container *ngIf="friend.uid != currentUser?.uid">
+            <ng-container *ngIf="friendFind(friend)">
+              <ion-thumbnail
+                class="delete"
+                (click)="removeFriend(friend)"
+                slot="end"
+                style="background-image: url('assets/icon/delete.svg')"
+              >
+              </ion-thumbnail>
+              <ion-thumbnail
+                (click)="chat(friend)"
+                slot="end"
+                style="
+                  background-image: url('assets/icon/chat.svg');
+                  background-color: white;
+                "
+              >
+              </ion-thumbnail>
+            </ng-container>
+            <ion-thumbnail
+              class="add"
+              *ngIf="!friendFind(friend)"
+              (click)="addFriend(friend)"
+              slot="end"
+              style="background-image: url('assets/icon/add.svg')"
+            >
+            </ion-thumbnail>
+          </ng-container>
         </ion-item>
       </ng-container>
     </section>
@@ -102,25 +118,14 @@
     vertical="bottom"
     horizontal="end"
     slot="fixed"
-    *ngIf="userId != currentUser.uid"
+    *ngIf="userId != currentUser?.uid"
   >
-    <ion-fab-button>
-      <ion-icon name="add"></ion-icon>
+    <ion-fab-button
+      style="--background: white"
+      (click)="chat(user)"
+      *ngIf="friendBool"
+    >
+      <img src="assets/icon/chat.svg" alt="" />
     </ion-fab-button>
-    <ion-fab-list side="top">
-      <ion-fab-button color="primary" (click)="addFriend()" *ngIf="!friendBool">
-        <img src="assets/icon/friends-white.svg" alt="" />
-      </ion-fab-button>
-      <ion-fab-button
-        color="warning"
-        (click)="removeFriend()"
-        *ngIf="friendBool"
-      >
-        <img src="assets/icon/friends-white.svg" alt="" />
-      </ion-fab-button>
-      <ion-fab-button color="success" (click)="chat()">
-        <img src="assets/icon/chat_white.svg" alt="" />
-      </ion-fab-button>
-    </ion-fab-list>
   </ion-fab>
 </ion-content>

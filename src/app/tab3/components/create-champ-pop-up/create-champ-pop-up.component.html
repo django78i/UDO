@@ -276,13 +276,13 @@
             style="--background: #ed2d6a; width: 50%"
             (click)="nextFriends()"
             [disabled]="formChamp.invalid"
-            >Publier
+            >Suivant
           </ion-button>
         </div>
       </div>
     </ng-template>
     <ng-template swiperSlide>
-      <div style="height: 100%; overflow-y: auto">
+      <div style="height: 100%;">
         <div id="top">
           <app-activity-list
             *ngIf="sliderPage == 'activity'"

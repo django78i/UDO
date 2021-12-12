@@ -358,18 +358,25 @@
             </ion-label>
           </ion-item>
         </ion-card-header>
-        <div
-          (click)="openDetail(item)"
+        <ion-thumbnail
           *ngIf="item.type == 'picture' && item.photo"
-          [style.backgroundImage]="'url(\'' + item.photo +'\')'"
           style="
+            background-color: rgb(233, 229, 229);
             height: 300px;
             width: 100%;
             background-position: center;
             background-size: cover;
             border-radius: 15px;
           "
-        ></div>
+          (click)="openDetail(item)"
+        >
+          <ion-img
+            [src]=" item.photo"
+            (ionImgDidLoad)="show($event, i)"
+            style="border-radius: 15px; border: 0"
+          >
+          </ion-img>
+        </ion-thumbnail>
         <ng-container *ngIf="item.photo =='' && item.comment ==''">
           <div
             style="

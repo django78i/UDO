@@ -8,7 +8,10 @@ export class TimeChampPipe implements PipeTransform {
   transform(value: any): any {
     moment.locale('fr');
     console.log(value);
-    const time = moment(value.toDate()).fromNow();
+    console.log(typeof value);
+    const time = moment(
+      typeof value == 'string' ? value : value.toDate()
+    ).fromNow();
     // const newTime = time.split(' ');
     // newTime.splice(0, 3);
     // // newTime.push('restants');

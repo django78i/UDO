@@ -41,11 +41,11 @@ export class MusicFeedService {
     const table = [];
 
     const db = getFirestore();
-    console.log(competition)
+    console.log(competition);
     // Query the first page of docs
     const first = query(
       collection(db, 'post-session-now'),
-      where(competition, '==', champUid),
+      where('competitionId', '==', champUid),
       orderBy('startDate', 'desc'),
       limit(15)
     );
@@ -96,9 +96,12 @@ export class MusicFeedService {
         }
         break;
     }
-
-    const documentSnapshots = await getDocs(first);
-    return this.returnQueryObject(documentSnapshots);
+    if (first) {
+      const documentSnapshots = await getDocs(first);
+      return this.returnQueryObject(documentSnapshots);
+    } else {
+      return { table: [], last: null };
+    }
   }
 
   /**Ajout de la suite du feed général */
@@ -139,7 +142,7 @@ export class MusicFeedService {
       case 'Mes amis':
         const tableFriends: any[] = [];
         user.friends.forEach((friend) => tableFriends.push(friend.uid));
-        if (tableFriends) {
+        if (tableFriends.length) {
           queryColl = query(
             collection(db, 'post-session-now'),
             where('userId', 'in', tableFriends),
