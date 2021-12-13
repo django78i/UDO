@@ -244,8 +244,10 @@ export class SessionNowService {
       participants[ind].value += metricValue.nombre;
       //on ajoute incémente l'avancé du challenge
       const evolution = Number(
-        Number(metricValue.nombre) + challenge.completion.value
-      ).toFixed(2) as unknown as number;
+        (
+          Number(metricValue.nombre) + Number(challenge.completion.value)
+        ).toFixed(2)
+      );
       //contrôle si avancé supérieure à objectif
       challenge.completion.value =
         evolution > challenge.objectif ? challenge.objectif : evolution;

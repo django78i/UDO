@@ -259,13 +259,14 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
     this.clickFilter(this.filter, this.indice);
   }
 
-  async openDetail(post) {
+  async openDetail(post, segment?) {
     const modal = await this.modalController.create({
       component: DetailPostComponent,
       cssClass: 'testModal',
       componentProps: {
         post,
         user: this.user,
+        segment: segment,
       },
     });
     return await modal.present();

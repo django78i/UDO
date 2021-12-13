@@ -19,6 +19,7 @@ import { PhotoDetailComponent } from '../photo-detail/photo-detail.component';
 export class DetailPostComponent implements OnInit {
   @Input() post: any;
   @Input() user: any;
+  @Input() segment: string;
   segmentValue = 'resume';
   message: any;
   tableReactions: any[] = [];
@@ -35,6 +36,7 @@ export class DetailPostComponent implements OnInit {
 
   ngOnInit() {
     // console.log(this.post, this.user);
+    this.segmentValue = this.segment ? this.segment : 'resume';
     const users = JSON.parse(localStorage.getItem('usersList'));
     console.log(users, this.post);
     this.post.reactions.map((react) => {

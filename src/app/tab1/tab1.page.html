@@ -165,7 +165,7 @@
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  <section class="contenu" *ngIf="feeds; else showBlank">
+  <section class="contenu" *ngIf="feeds">
     <ion-item
       lines="full"
       *ngFor="let item of feeds; let i = index"
@@ -496,7 +496,7 @@
               </p>
             </ion-label>
             <ion-chip
-              (click)="openDetail(item)"
+              (click)="openDetail(item, 'messages')"
               slot="end"
               style="
                 --background: white;
