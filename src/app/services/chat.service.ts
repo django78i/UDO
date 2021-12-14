@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Unsubscribe } from '@firebase/util';
+import { getAuth } from 'firebase/auth';
 import {
   doc,
   addDoc,
@@ -22,9 +23,11 @@ import { BehaviorSubject, Subject } from 'rxjs';
 export class ChatService {
   msgSubject$: BehaviorSubject<any> = new BehaviorSubject(null);
   roomSubject$: Subject<any> = new Subject();
+  msgAlert: BehaviorSubject<boolean> = new BehaviorSubject(false);
   unsubscribeRoom: Unsubscribe;
   msgSubcription: Unsubscribe;
-  constructor() {}
+  constructor() {
+  }
 
   async findRoom(userUid, contactUid): Promise<any[]> {
     console.log(userUid, contactUid);
@@ -45,20 +48,7 @@ export class ChatService {
     const db = getFirestore();
     const uid = user.uid + contact.uid;
     const roomInfo = {
-      users: [
-        {
-          userName: user.userName,
-          uid: user.uid,
-          avatar: user.avatar,
-          niveau: user.niveau,
-        },
-        {
-          userName: contact.userName,
-          uid: contact.uid,
-          avatar: contact.avatar,
-          niveau: contact.niveau,
-        },
-      ],
+      users: [user.uid, contact.uid],
       dateCreation: new Date(),
       uid: uid,
       lastMsg: '',
@@ -67,14 +57,21 @@ export class ChatService {
     return uid;
   }
 
-  async getMessages(uid) {
+  async getMessages(room, uid) {
     this.msgSubject$ = new BehaviorSubject(null);
     console.log(uid);
     const db = getFirestore();
+    const auth = getAuth();
+
     const docRef = query(
       collection(db, `rooms/${uid}/messages`),
       orderBy('date', 'asc')
     );
+    //le dernier msg envoyé n'est pas de l'utilsateur,
+    console.log(room.senderId, auth.currentUser.uid);
+    if (room.senderId != auth.currentUser.uid) {
+      this.updateRoomState(uid, false);
+    }
     this.msgSubcription = onSnapshot(docRef, (querySnapshot) => {
       const champs = [];
       querySnapshot.docChanges().forEach((changes) => {
@@ -98,6 +95,20 @@ export class ChatService {
     await updateDoc(doc(db, `rooms/${roomId}`), {
       lastMsg: msg.text,
       timestamp: msg.date,
+      senderId: msg.senderId,
+      new: true,
+    });
+  }
+
+  /**
+   * gestion de la vue des messages
+   * @param uid
+   */
+  async updateRoomState(uid, status: boolean) {
+    const db = getFirestore();
+    console.log(status);
+    await updateDoc(doc(db, `rooms/${uid}`), {
+      new: status,
     });
   }
 
@@ -105,28 +116,57 @@ export class ChatService {
     this.roomSubject$ = new BehaviorSubject(null);
     console.log(uid);
     const db = getFirestore();
-    const docRef = query(collection(db, 'rooms'));
+    const auth = getAuth();
+    const docRef = query(
+      collection(db, 'rooms'),
+      where('users', 'array-contains', uid),
+      orderBy('timestamp', 'desc')
+    );
     this.unsubscribeRoom = onSnapshot(docRef, (querySnapshot) => {
-      const champs = [];
+      let indexChange;
+      const currentUser = auth.currentUser.uid;
+
       querySnapshot.docChanges().forEach((changes) => {
-        if (changes) {
-          this.roomSubject$.next(null);
+        this.roomSubject$.next(null);
+        if (changes.type == 'modified') {
+          console.log(changes);
+          // indexChange = changes.oldIndex;
+          const room = changes.doc.data();
+          // indexChange = changes.doc.data().uid;
+          // if (indexChange == currentUser) {
+          // }
         }
       });
-
+      let count = 0;
       querySnapshot.forEach((doc) => {
         const document = doc.data();
         console.log(document, uid);
         if (document) {
-          const bool = document.users.some((user: any) => user.uid == uid);
-          if (bool) {
-            console.log(document);
-            champs.push(document);
-            this.roomSubject$.next(document);
-            console.log(champs);
+          console.log(document);
+          const contact = document.users.find((cont) => cont != currentUser);
+          console.log(contact);
+          if (document.senderId == contact && document.new == true) {
+            count += 1;
           }
+          const room = this.formatRoom(document, contact);
+          console.log(room);
+          this.roomSubject$.next(room);
         }
       });
+      console.log(count)
+      count > 0 ? this.msgAlert.next(true) : this.msgAlert.next(false);
     });
+  }
+
+  formatRoom(room, userId) {
+    const users = JSON.parse(localStorage.getItem('usersList'));
+    const findUser = users.find((user) => user.uid == userId);
+    const roomForomat =
+      room.senderId == userId && room.new == true
+        ? { ...room, userInfo: findUser, vue: false }
+        : { ...room, userInfo: findUser, vue: true };
+    console.log(roomForomat);
+    //contrôle de l'émtteur du dernier message
+    return roomForomat;
   }
 }

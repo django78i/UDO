@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, NavigationExtras } from '@angular/router';
 import {
   AlertController,
@@ -63,7 +64,7 @@ export class ChampionnatPage implements OnInit {
   user: any;
   loading = false;
   championnat$: Observable<any>;
-  text: string;
+  text: string='';
   picture: any;
   boole: Boolean = false;
   feed: any;
@@ -274,25 +275,27 @@ export class ChampionnatPage implements OnInit {
       photo = await getDownloadURL(tof.ref);
     }
 
-    const post = {
-      userId: this.user.uid,
-      type: 'picture',
-      startDate: new Date(),
-      reactions: [],
-      photo: photo ? photo : '',
-      mode: 'public',
-      isLive: false,
-      comment: this.text,
-      activity: '',
-      championnat: this.championnat.uid,
-      competitionType: this.competition,
-      competitionName: this.championnat.name,
-      competitionId: this.championnat.uid,
-      championnatType: this.championnat.type,
-    };
-    console.log(post);
-    this.feedService.sendPost(post);
-    this.feedReinit();
+    if (this.text != '' || this.picture) {
+      const post = {
+        userId: this.user.uid,
+        type: 'picture',
+        startDate: new Date(),
+        reactions: [],
+        photo: photo ? photo : '',
+        mode: 'public',
+        isLive: false,
+        comment: this.text,
+        activity: '',
+        championnat: this.championnat.uid,
+        competitionType: this.competition,
+        competitionName: this.championnat.name,
+        competitionId: this.championnat.uid,
+        championnatType: this.championnat.type,
+      };
+      console.log(post);
+      this.feedService.sendPost(post);
+      this.feedReinit();
+    }
   }
 
   async addContenu() {

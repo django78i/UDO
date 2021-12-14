@@ -28,7 +28,7 @@ export class CreatePostComponent implements OnInit, OnDestroy {
   @Input() user: any;
   picture: any;
   pictureUrl: any;
-  text: string;
+  text: string ='';
   base64: any;
   @ViewChild('InputArea') InputArea: IonInput;
   isVisible = false;
@@ -62,38 +62,42 @@ export class CreatePostComponent implements OnInit, OnDestroy {
   inputRead(event) {
     console.log(event.detail.value);
     this.text = event.detail.value;
+    console.log(this.text)
   }
 
   async send() {
-    console.log(this.text);
+    console.log(this.text, this.picture);
+    if (this.base64 || this.text !='') {
+
     this.sessionowService.presentLoading();
     let url;
     if (this.base64) {
       const tof = await this.savePhoto(this.base64);
       url = await getDownloadURL(tof.ref);
     }
-    const post = {
-      userId: this.user.uid,
-      userName: this.user.userName,
-      userAvatar: this.user.avatar,
-      type: 'picture',
-      startDate: new Date(),
-      reactions: [],
-      photo: url ? url : '',
-      mode: 'public',
-      isLive: false,
-      comment: this.text,
-      activity: '',
-      championnat: '',
-      postCount: 0,
-      reactionsNombre: 0,
-    };
+      const post = {
+        userId: this.user.uid,
+        userName: this.user.userName,
+        userAvatar: this.user.avatar,
+        type: 'picture',
+        startDate: new Date(),
+        reactions: [],
+        photo: url ? url : '',
+        mode: 'public',
+        isLive: false,
+        comment: this.text,
+        activity: '',
+        championnat: '',
+        postCount: 0,
+        reactionsNombre: 0,
+      };
 
-    await this.feedService.sendPost(post);
-    this.text = '';
-    this.sessionowService.dissmissLoading();
-    this.sessionowService.show('Post publies', 'success');
-    this.modalCtrl.dismiss();
+      await this.feedService.sendPost(post);
+      this.text = '';
+      this.sessionowService.dissmissLoading();
+      this.sessionowService.show('Post publies', 'success');
+      this.modalCtrl.dismiss();
+    }
   }
 
   async savePhoto(photo) {

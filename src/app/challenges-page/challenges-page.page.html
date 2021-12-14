@@ -37,7 +37,7 @@
       <ion-item style="--background: transparent" lines="none">
         <ion-label slot="start">
           {{ (challenge.completion.value / challenge.objectifs) * 100 | number:
-          "1.1-2" }} %
+          "1.1-1" }} %
         </ion-label>
         <ion-label style="font-size: 14px; text-align: end"
           >{{ challenge.completion.value | number: "1.1-1" }}/{{
@@ -89,7 +89,6 @@
             clear-on-edit
             placeholder="Publier un post"
           ></ion-input>
-          <div *ngIf="boole">test</div>
           <ion-button
             slot="end"
             type="submit"

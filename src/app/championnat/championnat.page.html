@@ -1,5 +1,5 @@
 <ion-header mode="ios" collapse="condense">
-  <ion-toolbar >
+  <ion-toolbar>
     <ion-button
       slot="start"
       (click)="close()"
@@ -75,7 +75,6 @@
             <img [src]="user.avatar" alt="" />
             <ion-badge>{{ user.niveau }}</ion-badge>
           </ion-avatar>
-
           <ion-input
             #inputFeed
             (ionChange)="inputRead($event)"
@@ -84,7 +83,6 @@
             clear-on-edit
             placeholder="Publier un post"
           ></ion-input>
-          <div *ngIf="boole">test</div>
           <ion-button
             slot="end"
             type="submit"

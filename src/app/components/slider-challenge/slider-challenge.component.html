@@ -47,15 +47,15 @@
 
       <ion-card-content class="cardContentZone">
         <!-- <div>Current slide is {{ data.isActive ? 'active' : 'not active' }}</div> -->
-        <ion-item style="--background: transparent" lines="none">
+        <ion-item style="--background: transparent; display: flex;align-items: flex-end;" lines="none">
           <ion-label slot="start">
             {{
-              (chall.completion.value / chall.objectifs) * 100 | number: "1.1-2"
+              (chall.completion.value / chall.objectifs) * 100 | number: "1.1-1"
             }}
             %
             <!-- <img src="../../assets/icon/Icon feather-percent.svg" alt="" /> -->
           </ion-label>
-          <ion-label style="font-size: 14px; text-align: end"
+          <ion-label style="font-size: 10px; text-align: end"
             >{{ chall.completion.value | number: "1.1-1" }}/{{
               chall.objectifs
             }}

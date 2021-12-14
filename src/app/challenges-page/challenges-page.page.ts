@@ -6,6 +6,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, NavigationExtras } from '@angular/router';
 import {
   AlertController,
@@ -44,7 +45,7 @@ export class ChallengesPagePage implements OnInit {
   startDate: any;
 
   challengeObs$: Observable<any>;
-  text: string;
+  text: string='';
   picture: any;
   boole: Boolean = false;
   feed: any;
@@ -54,6 +55,7 @@ export class ChallengesPagePage implements OnInit {
   @ViewChild('inputFeed') inputFeed: IonInput;
   admin: boolean = false;
   pourcentage: number;
+  challForm: FormGroup;
   constructor(
     private navCtl: NavController,
     public userService: UserService,
@@ -63,7 +65,7 @@ export class ChallengesPagePage implements OnInit {
     public alertController: AlertController,
     public modalCtrl: ModalController,
     public feedService: MusicFeedService,
-    public http: HttpClient
+    public http: HttpClient,
   ) {}
 
   ngOnInit() {
@@ -262,27 +264,29 @@ export class ChallengesPagePage implements OnInit {
       const tof = await this.savePhoto(this.picture);
       photo = await getDownloadURL(tof.ref);
     }
-
-    const post = {
-      userId: this.user.uid,
-      type: 'picture',
-      startDate: new Date(),
-      reactions: [],
-      photo: photo ? photo : '',
-      mode: 'public',
-      isLive: false,
-      comment: this.text,
-      activity: '',
-      challenge: this.challenge.uid,
-      competitionType: this.competition,
-      challIcon: this.challenge.icon,
-      competitionName: this.challenge.name,
-      competitionId: this.challenge.uid,
-    };
-    console.log(post);
-    this.feedService.sendPost(post);
-    this.feedReinit();
+    if (this.text != '' || this.picture) {
+      const post = {
+        userId: this.user.uid,
+        type: 'picture',
+        startDate: new Date(),
+        reactions: [],
+        photo: photo ? photo : '',
+        mode: 'public',
+        isLive: false,
+        comment: this.text,
+        activity: '',
+        challenge: this.challenge.uid,
+        competitionType: this.competition,
+        challIcon: this.challenge.icon,
+        competitionName: this.challenge.name,
+        competitionId: this.challenge.uid,
+      };
+      console.log(post);
+      this.feedService.sendPost(post);
+      this.feedReinit();
+    }
   }
+
 
   async feedReinit() {
     this.feed = [];

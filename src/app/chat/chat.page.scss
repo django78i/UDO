@@ -23,3 +23,16 @@ ion-avatar {
 ion-header {
   background: #f7f7fa;
 }
+
+.bold {
+  font-weight: 800;
+  font-size: 13px;
+}
+
+.titleMsg::part(native) {
+  padding: 0;
+}
+
+.sousTitre {
+  font-size: 14px;
+}

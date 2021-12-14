@@ -21,6 +21,7 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
   @Input() contact: any;
   @Input() user: any;
   @Input() id: any;
+  @Input() room: any;
   message$: Observable<any>;
   text;
   @ViewChild('inputMsg') input: IonInput;
@@ -35,7 +36,7 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
 
   ionViewWillEnter () {
     console.log(this.contact, this.user, this.id);
-    this.chatService.getMessages(this.id);
+    this.chatService.getMessages(this.room,this.id);
     this.chatService.msgSubject$
       .pipe(
         tap((r) => {

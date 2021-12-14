@@ -109,14 +109,17 @@ export class PublicationPage implements OnInit, OnDestroy {
       this.max = this.user.niveau * 100;
 
       this.user.metrics.forEach((metrics, i) => {
-        const metricFormat = (metrics.value =
-          metrics.value + Number(this.listActivite[i].value));
+        const metricFormat = Number(
+          (Number(metrics.value) + Number(this.listActivite[i].value)).toFixed(
+            2
+          )
+        );
         this.xpMax += Number(this.listActivite[i].value);
         return { ...metrics, value: metricFormat };
       });
       this.newxp = this.user.exp + this.xpMax;
-      this.xpUserOnTotal = this.user.exp / this.max;
-      this.user.exp += this.xpMax;
+      this.xpUserOnTotal = Number((this.user.exp / this.max).toFixed(2));
+      this.user.exp += Number(this.xpMax.toFixed(2));
       this.xpNewOnTotal = this.newxp / this.max;
       this.updateUser();
     });

@@ -8,32 +8,63 @@
       <img src="assets/mocks/Icon feather-arrow-left.svg" alt="" />
     </ion-button>
 
-    <ion-title>chat</ion-title>
+    <ion-title>Messagerie</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-list>
     <!-- <ng-container *ngIf="rooms$|async as rooms"> -->
-      <ng-container *ngIf="roomTable.length">
-        <ion-item
-          lines="full"
-          *ngFor="let room of roomTable"
-          (click)="openChat(room)"
-        >
-          <ion-avatar slot="start">
-            <img [src]="room.users.avatar" alt="" />
-            <ion-badge>{{ room.users.niveau }}</ion-badge>
-          </ion-avatar>
-          <ion-label>
-            <p class="sousTitre black">{{room.users.userName}}</p>
-            <p>{{room.lastMsg}}</p>
-          </ion-label>
-          <ion-label style="font-size: 12px" slot="end"
-            >{{room.timestamp|timeRelative}}</ion-label
+    <ng-container *ngIf="roomTable.length">
+      <ion-item
+        lines="full"
+        *ngFor="let room of roomTable"
+        (click)="openChat(room)"
+      >
+        <ion-avatar slot="start">
+          <img [src]="room.userInfo.avatar" alt="" />
+          <ion-badge>{{ room.userInfo.niveau }}</ion-badge>
+        </ion-avatar>
+        <ion-label>
+          <ion-item lines="none" class="titleMsg">
+            <ion-label class="sousTitre black">
+              {{room.userInfo.userName}}
+              <ion-icon
+                name="ellipse"
+                style="font-size: 6px; margin: 0 5px 1px 3px"
+              ></ion-icon>
+              <span
+                [class.bold]="room.vue == false"
+                style="font-size: 12px; color: #7070706c;font-weight: 500;"
+                slot="end"
+                *ngIf="room.lastMsg"
+                >{{room.timestamp|timeRelative}}</span
+              >
+            </ion-label>
+          </ion-item>
+          <p
+            style="
+              font-size: 12px;
+              font-size: 12px;
+              color: #707070;
+              max-width: 21ch;
+            "
+            [class.bold]="room.vue == false"
           >
-        </ion-item>
-      </ng-container>
+            {{room.lastMsg}}
+          </p>
+        </ion-label>
+        <!-- <ion-label [class.bold]="room.vue == false" style="font-size: 12px" slot="end" *ngIf="room.lastMsg"
+          >{{room.timestamp|timeRelative}}</ion-label
+        > -->
+        <ion-icon
+          *ngIf="room.vue == false"
+          name="ellipse"
+          slot="end"
+          style="font-size: 12px; color: #e32d57"
+        ></ion-icon>
+      </ion-item>
+    </ng-container>
     <!-- </ng-container> -->
   </ion-list>
 </ion-content>

@@ -13,6 +13,7 @@ interface Message {
   timestamp: Date;
   uid: string;
   users: any[];
+  userInfo: any;
 }
 
 @Component({
@@ -41,24 +42,7 @@ export class ChatPage implements OnInit, OnDestroy {
       .pipe(
         tap((r: Message) => {
           console.log(r);
-          if (r) {
-            const roomPlace = r;
-            if (roomPlace) {
-              const roomTemp = roomPlace;
-              console.log(roomTemp);
-              //Recherche room avec user en cours
-              const findIndex = roomPlace.users.findIndex(
-                (us) => us.uid != user.uid
-              );
-              roomTemp.users = roomPlace.users[findIndex];
-
-              this.roomTable.push(roomTemp);
-              this.ref.detectChanges();
-              console.log(this.roomTable);
-            }
-          }else{
-            this.roomTable = []
-          }
+          r ? this.roomTable.push(r) : (this.roomTable = []);
         })
       )
       .subscribe();
@@ -70,10 +54,14 @@ export class ChatPage implements OnInit, OnDestroy {
       component: ChatRoomComponent,
       componentProps: {
         user: this.currentUSer,
-        contact: room.users,
+        contact: room.userInfo,
         id: room.uid,
+        room: room,
       },
     });
+    modal
+      .onDidDismiss()
+      .then(() => this.chatService.getUserRoom(this.currentUSer.uid));
     return await modal.present();
   }
 

@@ -21,19 +21,24 @@
       </span>
     </ion-row>
     <ion-row>
-      <span class="xp">{{newxp}} / {{max}} XP</span>
+      <span class="xp">{{xpNewOnTotal}}| number: "1.1-1" XP</span>
     </ion-row>
 
     <ion-row [class]="modeRow">
       <ion-col class="c-col" size="4" *ngFor="let item of listActivite">
-        <round-progress [current]="item.value" [max]="valeur" [color]="'#000000'" [background]="'#7070703d'" [radius]="47" [stroke]="4" >
+        <round-progress
+          [current]="item.value"
+          [max]="valeur"
+          [color]="'#000000'"
+          [background]="'#7070703d'"
+          [radius]="47"
+          [stroke]="4"
+        >
         </round-progress>
         <ion-row [class]="modeClasse">
-          <div
-            class="val">+{{item.value}}
-          </div>
+          <div class="val">+{{item.value| number: "1.1-1"}}</div>
         </ion-row>
-          <ion-row [class]="modeClasse">
+        <ion-row [class]="modeClasse">
           <div class="val-xp">xp</div>
         </ion-row>
         <ion-row class="c-name">
@@ -43,7 +48,7 @@
     </ion-row>
     <ion-row class="gtotal">
       <ion-col class="c-col total" size="7"><span>TOTAL</span></ion-col>
-      <ion-col class="c-col total" size="5"><span>+{{valeur}}XP</span></ion-col>
+      <ion-col class="c-col total" size="5"><span>+{{valeur| number: "1.1-1"}}XP</span></ion-col>
     </ion-row>
   </ng-container>
 </ion-content>

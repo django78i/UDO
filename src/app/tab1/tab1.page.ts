@@ -24,6 +24,7 @@ import { UserProfilComponent } from '../components/user-profil/user-profil.compo
 import { SessionNowService } from '../services/session-now-service.service';
 import { DetailPostComponent } from '../tab3/components/detail-post/detail-post.component';
 import { EditPageComponent } from '../components/edit-page/edit-page.component';
+import { ChatService } from '../services/chat.service';
 
 interface Reaction {
   icon: string;
@@ -102,7 +103,7 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
     public userService: UserService,
     public ref: ElementRef,
     public snsService: SessionNowService,
-    public popoverController: PopoverController
+    public popoverController: PopoverController,
   ) {}
 
   ngOnInit() {}
