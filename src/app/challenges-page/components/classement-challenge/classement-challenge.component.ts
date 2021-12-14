@@ -20,7 +20,7 @@ export class ClassementChallengeComponent implements OnInit, OnChanges {
     console.log(this.challenge);
     this.classement = _.orderBy(
       this.challenge.participants,
-      ['points'],
+      ['value'],
       ['desc']
     );
   }
@@ -29,7 +29,7 @@ export class ClassementChallengeComponent implements OnInit, OnChanges {
     console.log(this.challenge);
     this.classement = _.orderBy(
       this.challenge.participants,
-      ['points'],
+      ['value'],
       ['desc']
     );
   }

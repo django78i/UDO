@@ -36,7 +36,7 @@
               />
               <ion-label
                 slot="start"
-                style="font-size: 10px; font-weight: 900; color: #bfb7b7"
+                style="font-size: 10px; font-weight: 900; color: #ffffff70"
               >
                 {{ chall.participants.length }} participants
               </ion-label>
@@ -47,7 +47,14 @@
 
       <ion-card-content class="cardContentZone">
         <!-- <div>Current slide is {{ data.isActive ? 'active' : 'not active' }}</div> -->
-        <ion-item style="--background: transparent; display: flex;align-items: flex-end;" lines="none">
+        <ion-item
+          style="
+            --background: transparent;
+            display: flex;
+            align-items: flex-end;
+          "
+          lines="none"
+        >
           <ion-label slot="start">
             {{
               (chall.completion.value / chall.objectifs) * 100 | number: "1.1-1"
@@ -65,7 +72,12 @@
         </ion-item>
         <ion-progress-bar
           [value]="chall.completion.value / chall.objectifs"
-          style="--progress-background: white; height: 6px; border-radius: 10px"
+          style="
+            --background: rgba(0, 0, 0, 0.445);
+            --progress-background: white;
+            height: 6px;
+            border-radius: 10px;
+          "
         ></ion-progress-bar>
       </ion-card-content>
     </ion-card>

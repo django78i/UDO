@@ -250,7 +250,7 @@ export class SessionNowService {
       );
       //contrôle si avancé supérieure à objectif
       challenge.completion.value =
-        evolution > challenge.objectif ? challenge.objectif : evolution;
+        evolution >= Number(challenge.objectif) ? challenge.objectif : evolution;
 
       //MAJ du challenge
       const chall = { ...challenge, participants: participants };
