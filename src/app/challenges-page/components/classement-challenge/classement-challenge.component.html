@@ -16,7 +16,7 @@
       <ion-label
         slot="start"
         style="font-size: 28px; font-weight: 700"
-        *ngIf="challenge.status == 'en cours'"
+        *ngIf="challenge.status == 'en cours' || challenge.status  == 'termine'"
         >{{ i + 1 }}</ion-label
       >
       <ion-item lines="none">
@@ -47,21 +47,25 @@
           </h3>
           <p
             style="font-size: 12px; font-weight: 500; color: black"
-            *ngIf="challenge.status == 'en cours'"
+            *ngIf="
+              cl.status == 'en cours' || cl.status == 'termine'
+            "
           >
-            s.<span style="font-weight: 600">{{ cl.seance }}</span>
+            s.<span style="font-weight: 600">{{
+              cl.seance ? cl.seance : 0
+            }}</span>
           </p>
         </ion-label>
       </ion-item>
       <ion-label
         slot="end"
         style="display: flex; align-items: center; flex-direction: column"
-        *ngIf="challenge.status == 'en cours'"
+        *ngIf="challenge.status == 'en cours' || challenge.status == 'termine'"
       >
         <p
           style="font-size: 18px; font-weight: 700; color: black; margin: 4px 0"
         >
-          {{ cl.value | number: "1.1-1" }}
+          {{ cl.value ? (cl.value | number: "1.1-1") : 0 }}
         </p>
         <p style="font-size: 10px; font-weight: 700; color: black">
           {{ challenge.metric.metric }}

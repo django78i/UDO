@@ -3,9 +3,11 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnChanges,
   OnInit,
   Output,
   QueryList,
+  SimpleChanges,
   ViewChildren,
 } from '@angular/core';
 import { ModalController } from '@ionic/angular';
@@ -20,12 +22,13 @@ import { SwiperComponent } from 'swiper/angular';
   templateUrl: './chall-view.component.html',
   styleUrls: ['./chall-view.component.scss'],
 })
-export class ChallViewComponent implements OnInit {
+export class ChallViewComponent implements OnInit, OnChanges {
   bannData: any;
   @Input() challenges: any[];
   @Input() challEncours: any[];
   @Input() challengesUser: any[];
   @Input() user: any;
+  @Input() challengesTermines: any[];
 
   @Output() createChall: EventEmitter<any> = new EventEmitter();
   @Output() challengeId: EventEmitter<any> = new EventEmitter();
@@ -46,9 +49,6 @@ export class ChallViewComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    setTimeout(() => {
-      this.loading = false;
-    }, 500);
     this.http
       .get<any[]>('../../../assets/mocks/admin.json')
       .pipe(
@@ -58,6 +58,17 @@ export class ChallViewComponent implements OnInit {
         )
       )
       .subscribe();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes);
+    if (
+      this.challenges.length ||
+      this.challEncours.length ||
+      this.challengesUser.length
+    ) {
+      this.loading = false;
+    }
   }
 
   buttonClick() {
@@ -71,12 +82,5 @@ export class ChallViewComponent implements OnInit {
 
   async openCompetitionList() {
     this.viewAllChall.emit([]);
-    // const modal = await this.modalController.create({
-    //   component: CompetitionsListComponent,
-    //   componentProps : {
-    //     segmentSelected : 'challenges'
-    //   }
-    // });
-    // return await modal.present();
   }
 }

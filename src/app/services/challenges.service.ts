@@ -17,6 +17,17 @@ import {
   limit,
 } from 'firebase/firestore';
 import { BehaviorSubject } from 'rxjs';
+import { NotificationService } from './notification-service.service';
+
+interface Notification {
+  type: string;
+  linkId: string;
+  users: any;
+  dateCreation: Date;
+  senderId: string;
+  competitionName?: string;
+  challIcon?: string;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -28,14 +39,32 @@ export class ChallengesService {
   singleChallSub$: BehaviorSubject<any> = new BehaviorSubject(null);
   challengesList$: BehaviorSubject<any> = new BehaviorSubject(null);
   challengeUser$: BehaviorSubject<any> = new BehaviorSubject(null);
+  challengeTermines$: BehaviorSubject<any> = new BehaviorSubject(null);
   unsubscribe: Unsubscribe;
 
-  constructor() {}
+  constructor(public notificationService: NotificationService) {}
 
   async createChallenge(chall) {
+    const auth = getAuth();
     console.log(chall);
     const id = this.createId();
     chall = { ...chall, uid: id };
+
+    //utilisateurs à notifier
+    const participantsToNotify = chall.participants
+      .filter((part) => auth.currentUser.uid != part.uid)
+      .map((part) => part.uid);
+
+    const notification: Notification = {
+      type: `invitation championnat ${chall.type}`,
+      competitionName: chall.name,
+      linkId: chall.uid,
+      users: participantsToNotify,
+      senderId: chall.createur.uid,
+      dateCreation: new Date(),
+    };
+    this.notificationService.createNotifications(notification);
+
     await setDoc(doc(this.db, 'challenges', chall.uid), chall);
   }
 
@@ -105,8 +134,10 @@ export class ChallengesService {
           } else if (document.status == 'en attente' && bool) {
             this.challengeUser$.next(docFormat);
           } else if (document.status == 'en attente' && !bool) {
-            console.log(docFormat)
+            console.log(docFormat);
             this.challenges$.next(docFormat);
+          } else if (document.status == 'termine' && bool) {
+            this.challengeTermines$.next(docFormat);
           }
         }
       });

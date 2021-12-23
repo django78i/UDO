@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
@@ -19,16 +19,15 @@ import { VideoCapturePlus } from '@ionic-native/video-capture-plus/ngx';
 import { VideoEditor } from '@ionic-native/video-editor/ngx';
 import { MediaCapture } from '@ionic-native/media-capture/ngx';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
-import { TimeRelativePipe } from './pipe/time-relative.pipe';
-import { TimeChampPipe } from './pipe/time-champ.pipe';
-import { NumberOnlyDirective } from './directives/numberOnly.directive';
 import { BackgroundMode } from '@ionic-native/background-mode/ngx';
 import { Camera } from '@ionic-native/camera/ngx';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
+import { registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/fr';
+registerLocaleData(localeFr);
+
 @NgModule({
-  declarations: [
-    AppComponent
-    ],
+  declarations: [AppComponent],
   entryComponents: [],
   imports: [
     BrowserModule,
@@ -54,7 +53,8 @@ import { Keyboard } from '@ionic-native/keyboard/ngx';
     NativeStorage,
     BackgroundMode,
     Camera,
-    Keyboard
+    Keyboard,
+    { provide: LOCALE_ID, useValue: 'fr-FR' },
   ],
   bootstrap: [AppComponent],
 })

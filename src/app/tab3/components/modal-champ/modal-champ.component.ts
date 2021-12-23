@@ -29,15 +29,18 @@ import { FriendPageListComponent } from 'src/app/components/friend-page-list/fri
 import { ChallengesService } from 'src/app/services/challenges.service';
 import { ChampionnatsService } from 'src/app/services/championnats.service';
 import { MusicFeedService } from 'src/app/services/music-feed.service';
+import { NotificationService } from 'src/app/services/notification-service.service';
 import { UserService } from 'src/app/services/user-service.service';
 import { AddContenuComponent } from 'src/app/session-now/add-contenu/add-contenu.component';
 
-interface ChampionnatNav {
+interface Notification {
   type: string;
-  competitionName?: string;
-  competitionId?: string;
-  challengeStatus?: number;
-  challengeMetric?: string;
+  linkId: string;
+  users: any;
+  competitionName: string;
+  dateCreation: Date;
+  senderId: string;
+  challIcon?: string;
 }
 
 interface Championnat {
@@ -52,7 +55,7 @@ interface Championnat {
   niveauMax: number;
   niveauMin: number;
   activites: [];
-  createur: string;
+  createur: any;
   type: string;
   participants: any[];
   nbParticipants: string;
@@ -102,7 +105,8 @@ export class ModalChampComponent implements OnInit, AfterViewInit {
     public userService: UserService,
     public challService: ChallengesService,
     public feedService: MusicFeedService,
-    public http: HttpClient
+    public http: HttpClient,
+    public notificationService: NotificationService
   ) {}
 
   ngOnInit() {
@@ -301,13 +305,16 @@ export class ModalChampComponent implements OnInit, AfterViewInit {
       this.challenge.dureeMax,
       'weeks'
     );
-    const champ = this.challenge.participants.map((part: any, i) => ({
-      ...part,
-      seance: 0,
-      value: 0,
-    }));
-    const final = champ.filter((ch) => ch.etat != 'en attente');
-    this.challenge.participants = final;
+    const champ = this.challenge.participants
+      .map((part: any, i) => ({
+        ...part,
+        seance: 0,
+        value: 0,
+      }))
+      .filter((ch) => ch.etat != 'en attente');
+
+    this.sendNotification(champ);
+    this.challenge.participants = champ;
     this.challService.updateChall({
       ...this.challenge,
       dateFin: this.challenge.dateFin.toDate(),
@@ -315,7 +322,7 @@ export class ModalChampComponent implements OnInit, AfterViewInit {
     this.loading = false;
 
     this.ref.detectChanges();
-    console.log(final);
+    console.log(champ);
   }
 
   loadChamp() {
@@ -326,24 +333,51 @@ export class ModalChampComponent implements OnInit, AfterViewInit {
       this.championnat.dureeMax,
       'weeks'
     );
-    const champ = this.championnat.participants.map((part: any, i) => ({
-      ...part,
-      journeeEnCours: 0,
-      points: 0,
-      bonus: 0,
-    }));
-    const final = champ.filter((ch) => ch.etat != 'en attente');
-    this.championnat.participants = final;
+
+    //initialisation des participants
+    const champ = this.championnat.participants
+      .map((part: any, i) => ({
+        ...part,
+        journeeEnCours: 0,
+        points: 0,
+        bonus: 0,
+      }))
+      .filter((ch) => ch.etat != 'en attente');
+
+    this.sendNotification(champ);
+    this.championnat.participants = champ;
     this.champService.updateChamp({
       ...this.championnat,
       dateFin: this.championnat.dateFin.toDate(),
     });
-    this.loading = false;
-
+    
     this.champService.getChampionnat(this.championnat.uid);
-    console.log(final);
+    this.loading = false;
+    console.log(champ);
   }
 
+  sendNotification(participants) {
+    //liste des users à notifier
+    const participantsToNotify = participants
+      .filter((ch) => ch.uid != this.user.uid)
+      .map((us) => us.uid);
+    console.log(participantsToNotify);
+
+    const notification: Notification = {
+      type:
+        this.entryData == 'championnat'
+          ? `démarrage championnat ${this.championnat.type}`
+          : 'démarrage challenge',
+      linkId: this.championnat.uid,
+      users: participantsToNotify,
+      challIcon: this.challenge.icon,
+      competitionName: this.championnat.name,
+      dateCreation: new Date(),
+      senderId: this.championnat.createur.uid,
+    };
+    console.log(notification);
+    this.notificationService.createNotifications(notification);
+  }
   deletePhoto() {
     this.picture = null;
   }
@@ -463,6 +497,7 @@ export class ModalChampComponent implements OnInit, AfterViewInit {
     const modal = await this.modalCtrl.create({
       component: FriendPageListComponent,
       componentProps: {
+        challIcon: this.challenge?.icon,
         user: this.user,
         competition: this.championnat,
         type: this.entryData.toLowerCase(),

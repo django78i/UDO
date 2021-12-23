@@ -268,7 +268,10 @@ export class CreateChampPopUpComponent
       niveau: this.user.niveau,
       uid: this.user.uid,
     };
+
+
     this.friendsList.push(userOne);
+
     console.log(this.friendsList);
     const champ: Championnat = {
       dateCreation: new Date(),

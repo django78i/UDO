@@ -147,6 +147,7 @@
           <ion-button
             slot="end"
             type="submit"
+            (click)="send()"
             style="
               --border-radius: 50%;
               --background: #0a122129;
@@ -157,7 +158,6 @@
             "
           >
             <img
-              (click)="send()"
               src="assets/icon/icons8-email-send.svg"
               alt=""
             />
@@ -262,11 +262,12 @@
           userEncours?.etat == 'prêt' &&
           championnat?.createur.uid != user.uid
         "
-        ><span *ngIf="!loading">
+      >
+        <ion-spinner *ngIf="loading" name="crescent" mode="md"></ion-spinner>
+        <span *ngIf="!loading">
           {{ championnat.dateDemarrage | timeChamp }}</span
         ></ion-button
-      ><ion-spinner *ngIf="loading" name="crescent" mode="md"></ion-spinner>
-
+      >
       <ion-button
         style=" --i : {{ championnat.banniere.color }}"
         (click)="seanceNow()"

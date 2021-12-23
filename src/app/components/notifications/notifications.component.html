@@ -1,0 +1,110 @@
+<ion-header style="background: #f7f7fa">
+  <ion-toolbar>
+    <ion-button
+      slot="start"
+      (click)="back()"
+      style="--background: transparent; --background-activated: transparent"
+    >
+      <img src="assets/mocks/Icon feather-arrow-left.svg" alt="" />
+    </ion-button>
+    <ion-title>Liste des notifications</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-list style="background: #f7f7fa; padding: 0 15px">
+    <ion-item *ngFor="let notif of userNotif" lines="none" class="champColor">
+      <ion-avatar style="margin-right: 10px; margin-bottom: 10px">
+        <img [src]="notif.user ? notif.user.avatar : notif.challIcon" alt="" />
+        <ion-thumbnail
+          *ngIf="
+            notif.type == 'invitation championnat Friends&Familly' ||
+            notif.type == 'démarrage championnat Friends&Familly'
+          "
+          class="badge"
+          style="
+            background-image: url('assets/icon/FriendsFamilly.svg');
+            --background: white;
+          "
+        >
+        </ion-thumbnail>
+        <ion-thumbnail
+          *ngIf="
+            notif.type == 'invitation championnat Network' ||
+            notif.type == 'démarrage championnat Network'
+          "
+          class="badge"
+          style="
+            background-image: url('assets/icon/Icon feather-globe.svg');
+            --background: white;
+          "
+        >
+        </ion-thumbnail>
+        <!-- <ion-thumbnail
+          *ngIf="notif.type == 'invitation challenge'"
+          class="badge"
+          [ngStyle]="{ 'background-image': 'url(' + notif.iconChall + ')' }"
+          style="--background: white"
+        >
+        </ion-thumbnail> -->
+        <ion-thumbnail
+          class="badge"
+          style="
+            background-image: url('assets/icon/add.svg');
+            --background: white;
+          "
+          *ngIf="notif.type == 'invitation amis'"
+        >
+        </ion-thumbnail>
+      </ion-avatar>
+      <div (click)="navigate(notif)">
+        <p
+          class="sousTitre"
+          *ngIf="
+            notif.type == 'invitation championnat Friends&Familly' ||
+            notif.type == 'invitation championnat Network'
+          "
+        >
+          {{ notif.user.userName }}
+          <span style="font-weight: 500">Vous a invité à son championnat</span>
+        </p>
+        <p class="sousTitre" *ngIf="notif.type == 'invitation amis'">
+          {{ notif.user.userName }}
+          <span style="font-weight: 500"
+            >Vous a ajouté en ami, ajoutez le retour
+          </span>
+        </p>
+        <p
+          class="sousTitre"
+          *ngIf="
+            notif.type == 'démarrage championnat Friends&Familly' ||
+            notif.type == 'démarrage championnat Network'
+          "
+        >
+          {{ notif.user.userName }}
+          <span style="font-weight: 500"
+            >a démarré le championnat {{ notif.competitionName }}
+          </span>
+        </p>
+        <p
+          style="font-weight: 500;font-size: 10px"
+          *ngIf="notif.type == 'invitation challenge'"
+        >
+          le challenge
+          <span class="sousTitre">{{ notif.competitionName }} </span>
+          a démarré
+        </p>
+        <ion-note style="font-size: 10px">
+          {{ notif.dateCreation * 1000 | date: "d MMMM 'à' h'h'mm ":"fr" }}
+        </ion-note>
+      </div>
+    </ion-item>
+  </ion-list>
+  <!-- <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more data..."
+    >
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll> -->
+  <!-- <div style="height: 50px; width: 100%"></div> -->
+</ion-content>

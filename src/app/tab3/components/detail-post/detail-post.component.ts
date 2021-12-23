@@ -10,6 +10,8 @@ import { ChampionnatsService } from 'src/app/services/championnats.service';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { AddContenuComponent } from 'src/app/session-now/add-contenu/add-contenu.component';
 import { PhotoDetailComponent } from '../photo-detail/photo-detail.component';
+import { MusicFeedService } from 'src/app/services/music-feed.service';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-detail-post',
@@ -24,28 +26,33 @@ export class DetailPostComponent implements OnInit {
   message: any;
   tableReactions: any[] = [];
   picture: any;
-
+  postList: any[] = [];
   @ViewChild('texArea') textArea: IonInput;
 
   constructor(
     public modalCtrl: ModalController,
     public ref: ChangeDetectorRef,
     public champService: ChampionnatsService,
-    public modalController: ModalController
+    public modalController: ModalController,
+    public feedService: MusicFeedService
   ) {}
 
   ngOnInit() {
-    // console.log(this.post, this.user);
     this.segmentValue = this.segment ? this.segment : 'resume';
-    const users = JSON.parse(localStorage.getItem('usersList'));
-    console.log(users, this.post);
+    this.formatPost();
+  }
+
+  async formatPost() {
+    this.post = await this.feedService.getPost(this.post.uid);
+    this.post.user = this.findUser(this.post.userId);
+    let table: any[] = [];
     this.post.reactions.map((react) => {
       if (react.users.length) {
         react.users.map((user) => {
           console.log(user);
-          const userFind = users.find((us) => user.uid == us.uid);
+          const userFind = this.findUser(user.uid);
           console.log(userFind);
-          this.tableReactions.push({
+          table.push({
             icon: react.icon,
             text: react.text,
             user: userFind,
@@ -54,7 +61,13 @@ export class DetailPostComponent implements OnInit {
         });
       }
     });
-    console.log(this.tableReactions);
+    this.tableReactions = _.orderBy(table, ['date'], ['desc']);
+    console.log(this.tableReactions, this.post);
+  }
+
+  findUser(uid) {
+    const users = JSON.parse(localStorage.getItem('usersList'));
+    return users.find((us) => uid == us.uid);
   }
 
   close() {

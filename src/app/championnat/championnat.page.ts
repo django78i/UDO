@@ -20,7 +20,18 @@ import { ChampionnatsService } from 'src/app/services/championnats.service';
 import { UserService } from 'src/app/services/user-service.service';
 import { FriendPageListComponent } from '../components/friend-page-list/friend-page-list.component';
 import { MusicFeedService } from '../services/music-feed.service';
+import { NotificationService } from '../services/notification-service.service';
 import { AddContenuComponent } from '../session-now/add-contenu/add-contenu.component';
+
+interface Notification {
+  type: string;
+  linkId: string;
+  users: any;
+  dateCreation: Date;
+  senderId: string;
+  competitionName?: string;
+  challIcon?: string;
+}
 
 interface ChampionnatNav {
   type: string;
@@ -63,8 +74,9 @@ export class ChampionnatPage implements OnInit {
   championnat: any;
   user: any;
   loading = false;
+  loadFeed = true;
   championnat$: Observable<any>;
-  text: string='';
+  text: string = '';
   picture: any;
   boole: Boolean = false;
   feed: any;
@@ -81,10 +93,12 @@ export class ChampionnatPage implements OnInit {
     public ref: ChangeDetectorRef,
     public route: ActivatedRoute,
     public userService: UserService,
-    public feedService: MusicFeedService
+    public feedService: MusicFeedService,
+    public notificationService: NotificationService
   ) {}
 
   ngOnInit() {
+
     this.userService.getCurrentUser().then((user) => {
       this.user = user;
       const uid = this.route.snapshot.params['id'];
@@ -106,10 +120,12 @@ export class ChampionnatPage implements OnInit {
   ngAfterViewInit() {}
 
   async getFeedChampionnat(uid) {
+    this.loadFeed = true;
     const feedPrime = await this.feedService.feedQuery(uid, this.competition);
     console.log(feedPrime);
     this.feed = feedPrime.table;
     this.lastVisible = feedPrime.last;
+    this.loadFeed = false;
   }
 
   close(ev) {
@@ -186,6 +202,7 @@ export class ChampionnatPage implements OnInit {
 
   async feedReinit() {
     this.feed = [];
+    this.loadFeed = true;
     console.log(this.feed);
     const feedRefresh = await this.feedService.feedQuery(
       this.championnat.uid,
@@ -194,6 +211,7 @@ export class ChampionnatPage implements OnInit {
     console.log(feedRefresh);
     this.feed = feedRefresh.table;
     this.lastVisible = feedRefresh.last;
+    this.loadFeed = false;
     if (this.inputFeed) {
       this.inputFeed.value = null;
     }
@@ -219,22 +237,43 @@ export class ChampionnatPage implements OnInit {
       this.championnat.dureeMax,
       'weeks'
     );
-    const champ = this.championnat.participants.map((part: any, i) => ({
-      ...part,
-      journeeEnCours: 0,
-      points: 0,
-      bonus: 0,
-    }));
-    const final = champ.filter((ch) => ch.etat != 'en attente');
-    this.championnat.participants = final;
+
+    //filtrage des participants prêts
+    const champParticipants = this.championnat.participants
+      .map((part: any, i) => ({
+        ...part,
+        journeeEnCours: 0,
+        points: 0,
+        bonus: 0,
+      }))
+      .filter((ch) => ch.etat != 'en attente');
+
+    //update du championnat
+    this.championnat.participants = champParticipants;
     this.champService.updateChamp({
       ...this.championnat,
       dateFin: this.championnat.dateFin.toDate(),
     });
-    this.loading = false;
 
+    console.log(champParticipants);
+    //liste des users à notifier
+    const participantsToNotify = champParticipants
+      .filter((ch) => ch.uid != this.user.uid)
+      .map((us) => us.uid);
+    console.log(participantsToNotify);
+
+    const notification: Notification = {
+      type: `démarrage championnat ${this.championnat.type}`,
+      linkId: this.championnat.uid,
+      users: participantsToNotify,
+      competitionName: this.championnat.name,
+      dateCreation: new Date(),
+      senderId: this.championnat.createur.uid,
+    };
+    console.log(notification);
+    this.notificationService.createNotifications(notification);
     this.champService.getChampionnat(this.championnat.uid);
-    console.log(final);
+    this.loading = false;
   }
 
   seanceNow() {

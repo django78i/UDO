@@ -28,7 +28,7 @@ export class CreatePostComponent implements OnInit, OnDestroy {
   @Input() user: any;
   picture: any;
   pictureUrl: any;
-  text: string ='';
+  text: string = '';
   base64: any;
   @ViewChild('InputArea') InputArea: IonInput;
   isVisible = false;
@@ -62,19 +62,18 @@ export class CreatePostComponent implements OnInit, OnDestroy {
   inputRead(event) {
     console.log(event.detail.value);
     this.text = event.detail.value;
-    console.log(this.text)
+    console.log(this.text);
   }
 
   async send() {
     console.log(this.text, this.picture);
-    if (this.base64 || this.text !='') {
-
-    this.sessionowService.presentLoading();
-    let url;
-    if (this.base64) {
-      const tof = await this.savePhoto(this.base64);
-      url = await getDownloadURL(tof.ref);
-    }
+    if (this.base64 || this.text != '') {
+      this.sessionowService.presentLoading();
+      let url;
+      if (this.base64) {
+        const tof = await this.savePhoto(this.base64);
+        url = await getDownloadURL(tof.ref);
+      }
       const post = {
         userId: this.user.uid,
         userName: this.user.userName,
@@ -96,6 +95,8 @@ export class CreatePostComponent implements OnInit, OnDestroy {
       this.text = '';
       this.sessionowService.dissmissLoading();
       this.sessionowService.show('Post publies', 'success');
+      await this.feedService.feedFilter('Récent');
+
       this.modalCtrl.dismiss();
     }
   }

@@ -248,12 +248,22 @@ export class SessionNowService {
           Number(metricValue.nombre) + Number(challenge.completion.value)
         ).toFixed(2)
       );
+      let status: string;
+      if (evolution >= challenge.objectif) {
+        status = 'termine';
+      }
       //contrôle si avancé supérieure à objectif
       challenge.completion.value =
-        evolution >= Number(challenge.objectif) ? challenge.objectif : evolution;
+        evolution >= Number(challenge.objectif)
+          ? challenge.objectif
+          : evolution;
 
       //MAJ du challenge
-      const chall = { ...challenge, participants: participants };
+      const chall = {
+        ...challenge,
+        participants: participants,
+        status: status,
+      };
       updateDoc(doc(db, 'challenges', sessionNow.competitionId), chall);
     }
   }

@@ -92,6 +92,7 @@
           <ion-button
             slot="end"
             type="submit"
+            (click)="send()"
             style="
               --border-radius: 50%;
               --background: #0a122129;
@@ -101,11 +102,7 @@
               margin-right: 0;
             "
           >
-            <img
-              (click)="send()"
-              src="assets/icon/icons8-email-send.svg"
-              alt=""
-            />
+            <img src="assets/icon/icons8-email-send.svg" alt="" />
           </ion-button>
         </ion-item>
         <ion-item lines="none">
@@ -133,6 +130,7 @@
 <ion-content scrollY="false">
   <ng-container *ngIf="challengeObs$|async as challenge">
     <app-chall-template
+      [loadFeed]="loadFeed"
       [challenge]="challenge"
       [user]="user"
       [userEncours]="userEncours"
@@ -153,7 +151,7 @@
         z-index: 100;
         padding-bottom: 10px;
       "
-      *ngIf="challenge.participants.length < challenge.participantsMax"
+      *ngIf="challenge.participants.length < challenge.participantsMax || userEncours"
     >
       <ion-button
         expand="block"
@@ -172,7 +170,7 @@
         class="buttonNextSlide"
         style=" --i : {{ challenge.banniereColor }}"
         (click)="participer()"
-        *ngIf="(challenge && !userEncours) ||(challenge && userEncours?.etat =='en attente')"
+        *ngIf="(challenge && !userEncours) ||( challenge && userEncours?.etat =='en attente')"
         >Participer</ion-button
       >
       <ion-button
@@ -180,13 +178,15 @@
         class="buttonNextSlide"
         style=" --i : {{ challenge.banniereColor }}"
         *ngIf="challenge && challenge?.status == 'en attente' && userEncours?.etat == 'prêt' && user.uid != challenge.userId"
-        ><span *ngIf="!loading"> {{ startDate }}</span></ion-button
-      ><ion-spinner *ngIf="loading" name="crescent" mode="md"></ion-spinner>
+      >
+        <ion-spinner *ngIf="loading" name="crescent" mode="md"></ion-spinner>
+        <span *ngIf="!loading"> {{ startDate }}</span></ion-button
+      >
       <ion-button
         expand="block"
         style=" --i : {{ challenge.banniereColor }}"
         (click)="seanceNow()"
-        *ngIf="challenge && challenge?.status == 'en cours' && userEncours"
+        *ngIf="challenge && challenge.status == 'en cours' && userEncours?.etat == 'prêt'"
         class="buttonNextSlide"
         >Séance Now</ion-button
       >

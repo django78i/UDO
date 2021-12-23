@@ -56,6 +56,7 @@ export class FeedsComponent implements OnInit, OnChanges {
   @Input() lastVisible: any;
   @Input() feed: any;
   @Input() competition: any;
+  @Input() loadFeed: any;
 
   reaction: any;
   picture: any;
@@ -65,9 +66,12 @@ export class FeedsComponent implements OnInit, OnChanges {
   blob: Blob;
   @ViewChild('inputFeed') inputFeed: IonInput;
   @ViewChild('player') videoPlayerInput: any;
+  templateTable = ['','','','','','','']
 
   videoInfo: BehaviorSubject<any> = new BehaviorSubject(null);
   videoThumb: any;
+
+  feedLoading: boolean;
   private win: any = window;
 
   constructor(
@@ -84,7 +88,7 @@ export class FeedsComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     this.competition.toLowerCase();
-    console.log('init', this.feed, this.competition);
+    console.log('init', this.feed, this.competition, this.loadFeed);
   }
 
   async loadData(event) {
@@ -131,22 +135,28 @@ export class FeedsComponent implements OnInit, OnChanges {
       this.reaction ? f.nom == this.reaction.nom : f.nom == reaction.nom
     );
 
+    //le user a déjà utilisé cet émoji
+    const userAlreadyUseEmoji: boolean = reaction?.users?.some(
+      (us) => us.uid == this.user.uid
+    );
+
     if (isEmojiExist != -1) {
       console.log('parla');
+      if (!userAlreadyUseEmoji) {
+        //incrémente de 1 compteur général réactions
+        this.feed[i].reactionsNombre += 1;
 
-      //incrémente de 1 compteur général réactions
-      this.feed[i].reactionsNombre += 1;
+        //incrémente de 1 compteur de la réaction
+        this.feed[i].reactions[isEmojiExist].nombre += 1;
 
-      //incrémente de 1 compteur de la réaction
-      this.feed[i].reactions[isEmojiExist].nombre += 1;
-
-      //Ajout user dans le tableau des users de la réaction
-      this.feed[i].reactions[isEmojiExist].users.push({
-        uid: this.user.uid,
-        name: this.user.userName,
-        avatar: this.user.avatar,
-        date: new Date(),
-      });
+        //Ajout user dans le tableau des users de la réaction
+        this.feed[i].reactions[isEmojiExist].users.push({
+          uid: this.user.uid,
+          name: this.user.userName,
+          avatar: this.user.avatar,
+          date: new Date(),
+        });
+      }
     } else {
       //incrémente de 1 compteur général réactions
       this.feed[i].reactionsNombre = this.feed[i].reactionsNombre += 1;

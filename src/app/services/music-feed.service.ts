@@ -78,7 +78,6 @@ export class MusicFeedService {
       case 'Populaire':
         first = query(
           collection(db, 'post-session-now'),
-          // where('isLive', '==', true),
           orderBy('reactionsNombre', 'desc'),
           limit(15)
         );
@@ -102,6 +101,12 @@ export class MusicFeedService {
     } else {
       return { table: [], last: null };
     }
+  }
+
+  async getPost(uid) {
+    const db = getFirestore();
+    const docSnap = await getDoc(doc(db, 'post-session-now', uid));
+    return docSnap.data();
   }
 
   /**Ajout de la suite du feed général */
@@ -190,7 +195,9 @@ export class MusicFeedService {
     return { table: table, last: lastVisible };
   }
 
-  //récupération des informations des auteurs des post en temps réél
+  /** récupération des informations des auteurs des post en temps réél
+   * 
+   */
   formatQuery(data, users) {
     let postLast;
     const findUser = users.find((user) => user.uid == data.userId);

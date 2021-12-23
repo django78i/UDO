@@ -41,39 +41,6 @@ export class AddContenuComponent implements OnInit {
     await this.modalCtr.dismiss(closeModal);
   }
 
-  /* async openCamera() {
-    const image = await Camera.getPhoto({
-      quality: 100,
-      allowEditing: false,
-      source: CameraSource.Camera,
-      resultType: CameraResultType.DataUrl,
-    });
-
-    // Here you get the image as result.
-    const theActualPicture = image.dataUrl;
-    this.base64Image = theActualPicture;
-    // localStorage.setItem('picture', this.base64Image);
-    // this.upload();
-    this.modalCtr.dismiss(this.base64Image);
-
-  } */
-
-  /* async openGallery() {
-    const image = await Camera.getPhoto({
-      quality: 100,
-      allowEditing: false,
-      source: CameraSource.Photos,
-      resultType: CameraResultType.DataUrl,
-    });
-
-    // Here you get the image as result.
-    const theActualPicture = image.dataUrl;
-    this.base64Image = theActualPicture;
-    // this.upload();
-    this.modalCtr.dismiss(this.base64Image);
-
-  } */
-
   /**
    * cette fonction permet d'ouvrir la gallery
    */
@@ -83,7 +50,7 @@ export class AddContenuComponent implements OnInit {
       : this.camera.EncodingType.JPEG;
     console.log(encode);
     const options: CameraOptions = {
-      quality: 100,
+      quality: 50,
       destinationType: this.camera.DestinationType.DATA_URL,
       encodingType: encode,
       mediaType: this.camera.MediaType.PICTURE,
@@ -110,7 +77,7 @@ export class AddContenuComponent implements OnInit {
   openCamera() {
     console.log('ici');
     const options: CameraOptions = {
-      quality: 100,
+      quality: 50,
       destinationType: this.camera.DestinationType.DATA_URL,
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE,
@@ -118,6 +85,7 @@ export class AddContenuComponent implements OnInit {
 
     this.camera.getPicture(options).then(
       (imageData) => {
+        console.log(JSON.stringify(imageData));
         // imageData is either a base64 encoded string or a file URI
         // If it's base64 (DATA_URL):
         this.base64Image = 'data:image/jpeg;base64,' + imageData;

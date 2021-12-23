@@ -5,6 +5,7 @@ import { tap } from 'rxjs/operators';
 import { ChatService } from 'src/app/services/chat.service';
 import { UserService } from 'src/app/services/user-service.service';
 import { MenuUserComponent } from '../menu-user/menu-user.component';
+import { NotificationsComponent } from '../notifications/notifications.component';
 
 @Component({
   selector: 'app-header',
@@ -34,6 +35,16 @@ export class HeaderComponent implements OnInit, OnChanges {
   async showMenu() {
     const modal = await this.modalController.create({
       component: MenuUserComponent,
+      componentProps: {
+        user: this.user,
+      },
+    });
+    return await modal.present();
+  }
+
+  async notificationsPage() {
+    const modal = await this.modalController.create({
+      component: NotificationsComponent,
       componentProps: {
         user: this.user,
       },

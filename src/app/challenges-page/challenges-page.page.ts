@@ -24,11 +24,21 @@ import moment from 'moment';
 import { Observable } from 'rxjs';
 import { takeLast, tap } from 'rxjs/operators';
 import { FriendPageListComponent } from '../components/friend-page-list/friend-page-list.component';
-import { UserProfilComponent } from '../components/user-profil/user-profil.component';
 import { ChallengesService } from '../services/challenges.service';
 import { MusicFeedService } from '../services/music-feed.service';
+import { NotificationService } from '../services/notification-service.service';
 import { UserService } from '../services/user-service.service';
 import { AddContenuComponent } from '../session-now/add-contenu/add-contenu.component';
+
+interface Notification {
+  type: string;
+  linkId: string;
+  users: any;
+  dateCreation: Date;
+  senderId: string;
+  competitionName?: string;
+  challIcon?: string;
+}
 
 @Component({
   selector: 'app-challenges-page',
@@ -45,7 +55,7 @@ export class ChallengesPagePage implements OnInit {
   startDate: any;
 
   challengeObs$: Observable<any>;
-  text: string='';
+  text: string = '';
   picture: any;
   boole: Boolean = false;
   feed: any;
@@ -56,6 +66,7 @@ export class ChallengesPagePage implements OnInit {
   admin: boolean = false;
   pourcentage: number;
   challForm: FormGroup;
+  loadFeed: boolean = true;
   constructor(
     private navCtl: NavController,
     public userService: UserService,
@@ -66,6 +77,7 @@ export class ChallengesPagePage implements OnInit {
     public modalCtrl: ModalController,
     public feedService: MusicFeedService,
     public http: HttpClient,
+    public notificationService: NotificationService
   ) {}
 
   ngOnInit() {
@@ -104,10 +116,12 @@ export class ChallengesPagePage implements OnInit {
   }
 
   async getFeedChallenge(uid) {
+    this.loadFeed = true;
     const feedPrime = await this.feedService.feedQuery(uid, this.competition);
     console.log(feedPrime);
     this.feed = feedPrime.table;
     this.lastVisible = feedPrime.last;
+    this.loadFeed = false;
   }
 
   startChall(ev) {
@@ -127,21 +141,42 @@ export class ChallengesPagePage implements OnInit {
       this.challenge.dureeMax,
       'weeks'
     );
-    const champ = this.challenge.participants.map((part: any, i) => ({
-      ...part,
-      seance: 0,
-      value: 0,
-    }));
-    const final = champ.filter((ch) => ch.etat != 'en attente');
-    this.challenge.participants = final;
+
+    //filtrage des users en attente
+    const champ = this.challenge.participants
+      .map((part: any, i) => ({
+        ...part,
+        seance: 0,
+        value: 0,
+      }))
+      .filter((ch) => ch.etat != 'en attente');
+
+    console.log(champ);
+
+    //récupération id users à notifier
+    const participantsToNotify = champ
+      .filter((ch) => ch.uid != this.user.uid)
+      .map((us) => us.uid);
+    console.log(participantsToNotify);
+
+    const notification: Notification = {
+      type: `démarrage challenge`,
+      linkId: this.challenge.uid,
+      users: participantsToNotify,
+      competitionName: this.challenge.name,
+      dateCreation: new Date(),
+      senderId: '',
+    };
+    console.log(notification);
+    this.notificationService.createNotifications(notification);
+
     this.challService.updateChall({
       ...this.challenge,
       dateFin: this.challenge.dateFin.toDate(),
     });
-    this.loading = false;
     this.challService.getChallenge(this.challenge.uid);
+    this.loading = false;
     this.ref.detectChanges();
-    console.log(final);
   }
 
   participer() {
@@ -214,9 +249,10 @@ export class ChallengesPagePage implements OnInit {
     const modal = await this.modalCtrl.create({
       component: FriendPageListComponent,
       componentProps: {
+        challIcon: this.challenge.icon,
         user: this.user,
         competition: this.challenge,
-        type: 'challenges',
+        type: 'challenge',
       },
     });
     modal.onDidDismiss().then((data: any) => {
@@ -287,10 +323,10 @@ export class ChallengesPagePage implements OnInit {
     }
   }
 
-
   async feedReinit() {
     this.feed = [];
     console.log(this.feed);
+    this.loadFeed = true;
     const feedRefresh = await this.feedService.feedQuery(
       this.challenge.uid,
       this.competition
@@ -298,6 +334,7 @@ export class ChallengesPagePage implements OnInit {
     console.log(feedRefresh);
     this.feed = feedRefresh.table;
     this.lastVisible = feedRefresh.last;
+    this.loadFeed = false;
     if (this.inputFeed) {
       this.inputFeed.value = null;
     }

@@ -57,13 +57,13 @@ swiper ion-card {
     ion-label {
       font-size: 40px;
     }
-    ion-label::after {
-      content: "POINTS";
-      position: absolute;
-      font-size: 12px;
-      top: 16px;
-      margin-left: 5px;
-    }
+    // ion-label::after {
+    //   content: "POINTS";
+    //   position: absolute;
+    //   font-size: 12px;
+    //   top: 16px;
+    //   margin-left: 5px;
+    // }
   }
 }
 

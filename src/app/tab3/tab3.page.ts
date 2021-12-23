@@ -53,11 +53,13 @@ export class Tab3Page implements OnInit, AfterContentChecked, OnDestroy {
   champinonatNetwork: any[] = [];
   championnatsList: any[] = [];
   userChampionnats: any[] = [];
+  championnatTermines: any[] = [];
 
   //Challenges
   challengesEnAttente: any[] = [];
   challengesEnCours: any[] = [];
   challengesUser: any[] = [];
+  challengesTermines: any[] = [];
 
   bannData: any;
   affiche: BehaviorSubject<any> = new BehaviorSubject(null);
@@ -144,18 +146,29 @@ export class Tab3Page implements OnInit, AfterContentChecked, OnDestroy {
       .pipe(
         tap((r) => {
           console.log(r);
-          r == null
-            ? (this.challengesUser = [])
-            : this.challengesUser.push(r);
+          r == null ? (this.challengesUser = []) : this.challengesUser.push(r);
         })
       )
       .subscribe();
+    this.challServ.challengeTermines$
+      .pipe(
+        tap((r) => {
+          console.log(r);
+          r == null ? (this.challengesTermines = []) : this.challengesTermines.push(r);
+        })
+      )
+      .subscribe();
+    this.champService.champtermines$.pipe(
+      tap((r) =>
+        r == null
+          ? (this.championnatTermines = [])
+          : this.championnatTermines.push(r)
+      )
+    ).subscribe();
     this.ref.detectChanges();
   }
 
-  ionViewDidEnter() {
-    
-  }
+  ionViewDidEnter() {}
 
   ngAfterContentChecked(): void {
     if (this.swiper) {

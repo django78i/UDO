@@ -19,6 +19,27 @@ import { UserService } from 'src/app/services/user-service.service';
 import { ChatRoomComponent } from '../chat-room/chat-room.component';
 import * as _ from 'lodash';
 import { SessionNowService } from 'src/app/services/session-now-service.service';
+import { tap } from 'rxjs/operators';
+import { NotificationService } from 'src/app/services/notification-service.service';
+
+interface Message {
+  dateCreation: Date;
+  lastMsg: string;
+  timestamp: Date;
+  uid: string;
+  users: any[];
+  userInfo: any;
+}
+
+interface Notification {
+  type: string;
+  linkId: string;
+  users: any;
+  dateCreation: Date;
+  senderId: string;
+  competitionName?: string;
+  challIcon?: string;
+}
 
 interface User {
   activitesPratiquees: any[];
@@ -131,7 +152,8 @@ export class UserProfilComponent implements OnInit {
     public chatService: ChatService,
     public sessionNowService: SessionNowService,
     public navParams: NavParams,
-    public alertController: AlertController
+    public alertController: AlertController,
+    public notifService: NotificationService
   ) {}
 
   ngOnInit() {}
@@ -146,6 +168,22 @@ export class UserProfilComponent implements OnInit {
     this.currentUser = await this.userService.getCurrentUser();
     const userFind = await this.userService.findUser(this.userId);
     this.user = userFind.data();
+    console.log(this.user);
+    this.chatService.getUserRoom(this.userId);
+    this.chatService.roomSubject$
+      .pipe(
+        tap((room: Message) => {
+          console.log(room);
+          this.user.friends.forEach((friend, i) => {
+            console.log(friend, room);
+            return room && room?.userInfo.uid == friend.uid
+              ? (this.user.friends[i] = { ...friend, room: room })
+              : friend;
+          });
+          console.log(this.user);
+        })
+      )
+      .subscribe();
 
     const tableOrder = _.orderBy(this.user.metrics, ['value'], ['desc']);
     this.max = this.user.metrics ? Math.round(tableOrder[0].value * 1.2) : 0;
@@ -176,6 +214,15 @@ export class UserProfilComponent implements OnInit {
 
   addFriend(friend) {
     this.userService.addFriend(friend, this.currentUser);
+    const notification: Notification = {
+      type: `invitation amis`,
+      linkId: this.currentUser.uid,
+      users: [friend.uid],
+      senderId: this.currentUser.uid,
+      dateCreation: new Date(),
+    };
+    this.notifService.createNotifications(notification);
+
     this.friendBool = true;
     this.sessionNowService.show('Ajouté avec succès', 'success');
   }
@@ -216,7 +263,6 @@ export class UserProfilComponent implements OnInit {
     await alert.present();
   }
 
-
   controlRoom(userContact): Promise<any> {
     return this.chatService.findRoom(this.currentUser.uid, userContact.uid);
   }
@@ -227,13 +273,19 @@ export class UserProfilComponent implements OnInit {
       ? check.uid
       : await this.chatService.createRoom(this.currentUser, userContact);
 
-    console.log(check);
+    console.log(check, userContact);
     const modal = await this.modalController.create({
       component: ChatRoomComponent,
+      // componentProps: {
+      //   user: this.currentUser,
+      //   contact: userContact,
+      //   id: roomId,
+      // },
       componentProps: {
         user: this.currentUser,
         contact: userContact,
-        id: roomId,
+        id: userContact.room?.uid,
+        room: userContact.room,
       },
     });
     return await modal.present();

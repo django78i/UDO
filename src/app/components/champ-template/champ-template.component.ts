@@ -21,6 +21,7 @@ export class ChampTemplateComponent implements OnInit, OnChanges {
   @Input() lastVisible: any;
   @Input() feed: any;
   @Input() competition: any;
+  @Input() loadFeed: any;
 
   @Output() friends: EventEmitter<boolean> = new EventEmitter();
   @Output() start: EventEmitter<any> = new EventEmitter();
@@ -36,6 +37,7 @@ export class ChampTemplateComponent implements OnInit, OnChanges {
   ngOnInit() {}
   ngOnChanges() {
     console.log(
+      this.loadFeed,
       this.user,
       this.userEncours,
       this.participantsList,

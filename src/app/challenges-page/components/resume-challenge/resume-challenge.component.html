@@ -1,5 +1,5 @@
 <section style="overflow: auto; height: 100%">
-  <section *ngIf="challenge?.status == 'en cours'" class="contentTotal">
+  <section *ngIf="challenge?.status == 'en cours' || challenge?.status == 'termine'" class="contentTotal">
     <div class="iconTitle">
       <img
         src="assets/icon/dot.svg"

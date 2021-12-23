@@ -1,5 +1,5 @@
 <section *ngIf="championnat">
-  <section *ngIf="championnat?.status == 'en cours'" class="contentTotal">
+  <section *ngIf="championnat?.status == 'en cours' ||championnat?.status == 'termine' " class="contentTotal">
     <div class="iconTitle">
       <img
         src="../../../../assets/icon/dot.svg"

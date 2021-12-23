@@ -18,7 +18,18 @@ import {
 } from 'firebase/firestore';
 import { BehaviorSubject, from, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { NotificationService as NotificationService } from './notification-service.service';
 import { UserService } from './user-service.service';
+
+interface Notification {
+  type: string;
+  linkId: string;
+  users: any;
+  dateCreation: Date;
+  senderId: string;
+  competitionName?: string;
+  challIcon?: string;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -28,6 +39,7 @@ export class ChampionnatsService {
   champEnCoursSubject$: BehaviorSubject<any> = new BehaviorSubject(null);
   champNetWork$: BehaviorSubject<any> = new BehaviorSubject(null);
   champNetWorkList$: BehaviorSubject<any> = new BehaviorSubject(null);
+  champtermines$: BehaviorSubject<any> = new BehaviorSubject(null);
   friendsListSubject$: BehaviorSubject<any> = new BehaviorSubject(null);
   db = getFirestore();
   messagesSubject$: Subject<any> = new Subject();
@@ -35,12 +47,31 @@ export class ChampionnatsService {
   unsubscribe: Unsubscribe;
   unsubscribe2: Unsubscribe;
 
-  constructor(public userService: UserService) {}
+  constructor(
+    public userService: UserService,
+    public notificationService: NotificationService
+  ) {}
 
   async createChampionnat(champ) {
-    console.log(champ);
+    const auth = getAuth();
+
     const id = this.createId();
     champ = { ...champ, uid: id };
+
+    //utilisateurs à notifier
+    const participantsToNotify = champ.participants
+      .filter((part) => auth.currentUser.uid != part.uid)
+      .map((part) => part.uid);
+
+    const notification: Notification = {
+      type: `invitation championnat ${champ.type}`,
+      competitionName: champ.name,
+      linkId: champ.uid,
+      users: participantsToNotify,
+      senderId: champ.createur.uid,
+      dateCreation: new Date(),
+    };
+    this.notificationService.createNotifications(notification);
     await setDoc(doc(this.db, 'championnats', champ.uid), champ);
   }
 
@@ -103,7 +134,11 @@ export class ChampionnatsService {
     const auth = getAuth();
     auth.currentUser.uid;
 
-    const docRef = query(collection(this.db, 'championnats'));
+    const docRef = query(
+      collection(this.db, 'championnats')
+      // orderBy('dateCreation'),
+      // limit(10)
+    );
     this.unsubscribe = onSnapshot(docRef, (querySnapshot) => {
       const champs = [];
       const users = JSON.parse(localStorage.getItem('usersList'));
@@ -130,6 +165,9 @@ export class ChampionnatsService {
           document.type == 'Network'
         ) {
           this.champNetWork$.next(docFormat);
+        } else if (document.status == 'termine' && bool) {
+          this.champtermines$.next(docFormat);
+          console.log(docFormat)
         }
       });
     });

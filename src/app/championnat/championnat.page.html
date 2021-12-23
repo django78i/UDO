@@ -86,6 +86,7 @@
           <ion-button
             slot="end"
             type="submit"
+            (click)="send()"
             style="
               --border-radius: 50%;
               --background: #0a122129;
@@ -96,7 +97,6 @@
             "
           >
             <img
-              (click)="send()"
               src="assets/icon/icons8-email-send.svg"
               alt=""
             />
@@ -130,6 +130,7 @@
     <app-champ-template
       [championnat]="champ"
       [user]="user"
+      [loadFeed]="loadFeed"
       [userEncours]="userEncours"
       [participantsList]="participantsList"
       [segmentValue]="segmentValue"
@@ -171,10 +172,12 @@
         class="buttonNextSlide"
         style=" --i : {{ championnat.banniere.color }}"
         *ngIf="championnat?.status == 'en attente' && userEncours?.etat == 'prêt' && championnat?.createur.uid != user.uid"
-        ><span *ngIf="!loading">
+      >
+        <ion-spinner *ngIf="loading" name="crescent" mode="md"></ion-spinner>
+        <span *ngIf="!loading">
           {{ championnat.dateDemarrage | timeChamp }}</span
         ></ion-button
-      ><ion-spinner *ngIf="loading" name="crescent" mode="md"></ion-spinner>
+      >
 
       <ion-button
         style=" --i : {{ championnat.banniere.color }}"

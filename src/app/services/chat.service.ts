@@ -26,8 +26,7 @@ export class ChatService {
   msgAlert: BehaviorSubject<boolean> = new BehaviorSubject(false);
   unsubscribeRoom: Unsubscribe;
   msgSubcription: Unsubscribe;
-  constructor() {
-  }
+  constructor() {}
 
   async findRoom(userUid, contactUid): Promise<any[]> {
     console.log(userUid, contactUid);
@@ -68,8 +67,7 @@ export class ChatService {
       orderBy('date', 'asc')
     );
     //le dernier msg envoyé n'est pas de l'utilsateur,
-    console.log(room.senderId, auth.currentUser.uid);
-    if (room.senderId != auth.currentUser.uid) {
+    if (room && room.senderId != auth.currentUser.uid) {
       this.updateRoomState(uid, false);
     }
     this.msgSubcription = onSnapshot(docRef, (querySnapshot) => {
@@ -128,14 +126,6 @@ export class ChatService {
 
       querySnapshot.docChanges().forEach((changes) => {
         this.roomSubject$.next(null);
-        if (changes.type == 'modified') {
-          console.log(changes);
-          // indexChange = changes.oldIndex;
-          const room = changes.doc.data();
-          // indexChange = changes.doc.data().uid;
-          // if (indexChange == currentUser) {
-          // }
-        }
       });
       let count = 0;
       querySnapshot.forEach((doc) => {
@@ -153,7 +143,7 @@ export class ChatService {
           this.roomSubject$.next(room);
         }
       });
-      console.log(count)
+      console.log(count);
       count > 0 ? this.msgAlert.next(true) : this.msgAlert.next(false);
     });
   }

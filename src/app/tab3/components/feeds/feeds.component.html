@@ -3,209 +3,220 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <section class="contenu" *ngIf="feed && feed.length; else showBlank">
-    <ion-item
-      lines="full"
-      *ngFor="let item of feed; let i = index"
-      style="
-        margin-bottom: 10px;
-        --inner-padding-end: 0;
-        --padding-start: 15px;
-        --padding-end: 15px;
-      "
-    >
-      <ion-card
-        style="
-          box-shadow: none;
-          width: 100%;
-          --background: #f4f5fa00;
-          margin-right: 0;
-          margin-left: 0;
-        "
-      >
-        <ion-card-header *ngIf="item.type == 'picture'">
-          <ion-toolbar class="postZone">
-            <ion-avatar
-              style="margin-right: 10px; background: grey"
-              slot="start"
-              (click)="openProfil(item.user.uid)"
-            >
-              <img [src]="item.user.avatar" />
-            </ion-avatar>
-            <ion-label>
-              <div style="display: flex; align-items: center; gap: 4px">
-                <p style="margin-bottom: 0">{{ item.user.userName }}</p>
-                <ion-icon name="ellipse" style="font-size: 6px"></ion-icon>
-
-                <p style="font-size: 10px">
-                  {{ item.startDate | timeRelative }}
-                </p>
-              </div>
-              <div style="display: flex; gap: 5px; align-items: center">
-                <div style="display: flex; gap: 5px; align-items: center">
-                  <img
-                    style="
-                      padding: 5px;
-                      border-radius: 50%;
-                      background: #eaebef;
-                    "
-                    src="assets/icon/FriendsFamilly.svg"
-                    alt=""
-                    *ngIf="item.championnatType == 'Friends&Familly'"
-                  />
-                  <img
-                    style="
-                      height: 26px;
-                      padding: 2px;
-                      border-radius: 50%;
-                      background: #eaebef;
-                      width: 26px;
-                    "
-                    [src]="item.challIcon"
-                    alt=""
-                    *ngIf="item.challIcon"
-                  />
-                  <img
-                    style="
-                      padding: 5px;
-                      border-radius: 50%;
-                      background: #eaebef;
-                    "
-                    src="assets/icon/Icon feather-globe.svg"
-                    alt=""
-                    *ngIf="item.championnatType == 'Network'"
-                  />
-                  <p style="color: #6f99f7; font-size: 10px; font-weight: 600">
-                    {{ item.competitionName }}
-                  </p>
-                </div>
-
-                <div style="display: flex; gap: 5px; align-items: center">
-                  <img
-                    *ngIf="item.activity"
-                    [src]="item.activity.image"
-                    alt=""
-                    style="width: 20px; height: 20px"
-                  />
-                  <p
-                    style="font-size: 10px; font-weight: 900"
-                    *ngIf="item.activity"
-                  >
-                    {{ item.activity.name }}
-                  </p>
-                </div>
-              </div>
-            </ion-label>
-
-            <img
-              slot="end"
-              src="../../assets/icon/threeDot.svg"
-              alt=""
-              style="height: 20px"
-            />
-          </ion-toolbar>
-          <p
-            style="margin: 0 12px 12px 0; font-size: 14px; font-weight: 600"
-            (click)="openDetail(item)"
-          >
-            {{ item.comment }}
-          </p>
-        </ion-card-header>
-        <ion-card-header *ngIf="item.type == 'session-now'">
-          <ion-item lines="none" class="liveZone">
-            <ion-avatar
-              (click)="openProfil(item.user.uid)"
-              style="margin-right: 10px; background: grey"
-              slot="start"
-            >
-              <img [src]="item.user.avatar" />
-            </ion-avatar>
-            <ion-label>
-              <div style="display: flex; align-items: center; gap: 4px">
-                <p style="margin-bottom: 0">{{ item.user.userName }}</p>
-                <ion-icon name="ellipse" style="font-size: 6px"></ion-icon>
-
-                <p style="font-size: 10px">
-                  {{ item.startDate | timeRelative }}
-                </p>
-              </div>
-              <div style="display: flex; gap: 5px; align-items: center">
-                <img
-                  [src]="item.activity.image"
-                  alt=""
-                  style="width: 20px; height: 20px"
-                />
-                <p style="font-size: 10px; font-weight: 900">
-                  {{ item.activity.name }}
-                </p>
-                <ion-icon name="ellipse" style="font-size: 6px"></ion-icon>
-                <p class="liveIndicator">LIVE</p>
-              </div>
-            </ion-label>
-          </ion-item>
-        </ion-card-header>
-        <ion-thumbnail
-          *ngIf="item.type == 'picture' && item.photo"
+  <section class="contenu" *ngIf="loadFeed == false; else showBlank">
+    <ng-container *ngIf="feed.length; else noFeed">
+      <ion-list style="background: #f7f7fa">
+        <ion-item
+          lines="full"
+          *ngFor="let item of feed; let i = index"
           style="
-            background-color: rgb(233, 229, 229);
-            height: 300px;
-            width: 100%;
-            background-position: center;
-            background-size: cover;
-            border-radius: 15px;
+            margin-bottom: 10px;
+            --inner-padding-end: 0;
+            --padding-start: 15px;
+            --padding-end: 15px;
           "
-          (click)="openDetail(item)"
         >
-          <ion-img [src]="item.photo" style="border-radius: 15px; border: 0">
-          </ion-img>
-        </ion-thumbnail>
-        <ion-card-content style="padding: 0">
-          <div
+          <ion-card
             style="
-              display: flex;
-              gap: 10px;
-              align-items: center;
-              padding-top: 9px;
+              box-shadow: none;
+              width: 100%;
+              --background: #f4f5fa00;
+              margin-right: 0;
+              margin-left: 0;
             "
           >
-            <img
-              (click)="presentPopover(i, item)"
-              src="../../assets/icon/Icon material-add-circle-outline.svg"
-              alt=""
-            />
-            <div style="overflow-x: auto; padding: 10px 15px">
-              <div style="display: inline-flex; gap: 25px">
-                <ng-container *ngFor="let rect of item.reactions">
-                  <div
-                    style="
-                      display: flex;
-                      border-radius: 20px;
-                      width: 51px;
-                      justify-content: space-between;
-                      position: relative;
-                      box-shadow: 0px 3px 6px #00000029;
-                    "
-                    *ngIf="rect.nombre !== 0"
-                    (click)="controleReaction(i, item.reactions, rect)"
-                  >
-                    <div style="flex: 1">
-                      <img
-                        [src]="rect.icon"
-                        alt=""
-                        style="position: absolute; left: -22px; top: -14px"
-                      />
-                    </div>
-                    <span
-                      style="
-                        flex: 1;
-                        text-align: center;
-                        font-weight: 900;
-                        color: black;
-                      "
-                      >{{ rect.nombre }}</span
-                    >
+            <ion-card-header *ngIf="item.type == 'picture'">
+              <ion-toolbar class="postZone">
+                <ion-avatar
+                  style="margin-right: 10px; background: grey"
+                  slot="start"
+                  (click)="openProfil(item.user.uid)"
+                >
+                  <img [src]="item.user.avatar" />
+                </ion-avatar>
+                <ion-label>
+                  <div style="display: flex; align-items: center; gap: 4px">
+                    <p style="margin-bottom: 0">{{ item.user.userName }}</p>
+                    <ion-icon name="ellipse" style="font-size: 6px"></ion-icon>
+
+                    <p style="font-size: 10px">
+                      {{ item.startDate | timeRelative }}
+                    </p>
                   </div>
-                  <!-- <ion-chip
+                  <div style="display: flex; gap: 5px; align-items: center">
+                    <div style="display: flex; gap: 5px; align-items: center">
+                      <img
+                        style="
+                          padding: 5px;
+                          border-radius: 50%;
+                          background: #eaebef;
+                        "
+                        src="assets/icon/FriendsFamilly.svg"
+                        alt=""
+                        *ngIf="item.championnatType == 'Friends&Familly'"
+                      />
+                      <img
+                        style="
+                          height: 26px;
+                          padding: 2px;
+                          border-radius: 50%;
+                          background: #eaebef;
+                          width: 26px;
+                        "
+                        [src]="item.challIcon"
+                        alt=""
+                        *ngIf="item.challIcon"
+                      />
+                      <img
+                        style="
+                          padding: 5px;
+                          border-radius: 50%;
+                          background: #eaebef;
+                        "
+                        src="assets/icon/Icon feather-globe.svg"
+                        alt=""
+                        *ngIf="item.championnatType == 'Network'"
+                      />
+                      <p
+                        style="
+                          color: #6f99f7;
+                          font-size: 10px;
+                          font-weight: 600;
+                        "
+                      >
+                        {{ item.competitionName }}
+                      </p>
+                    </div>
+
+                    <div style="display: flex; gap: 5px; align-items: center">
+                      <img
+                        *ngIf="item.activity"
+                        [src]="item.activity.image"
+                        alt=""
+                        style="width: 20px; height: 20px"
+                      />
+                      <p
+                        style="font-size: 10px; font-weight: 900"
+                        *ngIf="item.activity"
+                      >
+                        {{ item.activity.name }}
+                      </p>
+                    </div>
+                  </div>
+                </ion-label>
+
+                <img
+                  slot="end"
+                  src="../../assets/icon/threeDot.svg"
+                  alt=""
+                  style="height: 20px"
+                />
+              </ion-toolbar>
+              <p
+                style="margin: 0 12px 12px 0; font-size: 14px; font-weight: 600"
+                (click)="openDetail(item)"
+              >
+                {{ item.comment }}
+              </p>
+            </ion-card-header>
+            <ion-card-header *ngIf="item.type == 'session-now'">
+              <ion-item lines="none" class="liveZone">
+                <ion-avatar
+                  (click)="openProfil(item.user.uid)"
+                  style="margin-right: 10px; background: grey"
+                  slot="start"
+                >
+                  <img [src]="item.user.avatar" />
+                </ion-avatar>
+                <ion-label>
+                  <div style="display: flex; align-items: center; gap: 4px">
+                    <p style="margin-bottom: 0">{{ item.user.userName }}</p>
+                    <ion-icon name="ellipse" style="font-size: 6px"></ion-icon>
+
+                    <p style="font-size: 10px">
+                      {{ item.startDate | timeRelative }}
+                    </p>
+                  </div>
+                  <div style="display: flex; gap: 5px; align-items: center">
+                    <img
+                      [src]="item.activity.image"
+                      alt=""
+                      style="width: 20px; height: 20px"
+                    />
+                    <p style="font-size: 10px; font-weight: 900">
+                      {{ item.activity.name }}
+                    </p>
+                    <ion-icon name="ellipse" style="font-size: 6px"></ion-icon>
+                    <p class="liveIndicator">LIVE</p>
+                  </div>
+                </ion-label>
+              </ion-item>
+            </ion-card-header>
+            <ion-thumbnail
+              *ngIf="item.type == 'picture' && item.photo"
+              style="
+                background-color: rgb(233, 229, 229);
+                height: 300px;
+                width: 100%;
+                background-position: center;
+                background-size: cover;
+                border-radius: 15px;
+              "
+              (click)="openDetail(item)"
+            >
+              <ion-img
+                [src]="item.photo"
+                style="border-radius: 15px; border: 0"
+              >
+              </ion-img>
+            </ion-thumbnail>
+            <ion-card-content style="padding: 0">
+              <div
+                style="
+                  display: flex;
+                  gap: 10px;
+                  align-items: center;
+                  padding-top: 9px;
+                "
+              >
+                <img
+                  (click)="presentPopover(i, item)"
+                  src="../../assets/icon/Icon material-add-circle-outline.svg"
+                  alt=""
+                />
+                <div style="overflow-x: auto; padding: 10px 15px">
+                  <div style="display: inline-flex; gap: 25px">
+                    <ng-container *ngFor="let rect of item.reactions">
+                      <div
+                        style="
+                          display: flex;
+                          border-radius: 20px;
+                          width: 51px;
+                          justify-content: space-between;
+                          position: relative;
+                          box-shadow: 0px 3px 6px #00000029;
+                        "
+                        *ngIf="rect.nombre !== 0"
+                        (click)="controleReaction(i, item.reactions, rect)"
+                      >
+                        <div style="flex: 1">
+                          <img
+                            [src]="rect.icon"
+                            alt=""
+                            style="position: absolute; left: -22px; top: -14px"
+                          />
+                        </div>
+                        <span
+                          style="
+                            flex: 1;
+                            text-align: center;
+                            font-weight: 900;
+                            color: black;
+                          "
+                          >{{ rect.nombre }}</span
+                        >
+                      </div>
+                      <!-- <ion-chip
                     outline
                     *ngIf="rect.nombre > 0"
                     (click)="controleReaction(i, item.reactions, rect)"
@@ -215,89 +226,175 @@
                     </ion-avatar>
                     <ion-label>{{ rect.nombre }}</ion-label>
                   </ion-chip> -->
-                </ng-container>
+                    </ng-container>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-          <ion-item *ngIf="item.postLast" lines="none">
-            <ion-avatar
-              style="margin-right: 10px; background: grey"
-              slot="start"
-            >
-              <img [src]="item.postLast.sender.avatar" />
-            </ion-avatar>
-            <ion-label>
-              <div style="display: flex; align-items: center; gap: 10px">
-                <p style="margin-bottom: 0; font-weight: 700">
-                  {{ item.postLast.sender.userName }}
-                </p>
-                <ion-icon
-                  name="ellipse"
-                  style="font-size: 6px; margin-right: 5px"
-                ></ion-icon>
+              <ion-item *ngIf="item.postLast" lines="none">
+                <ion-avatar
+                  style="margin-right: 10px; background: grey"
+                  slot="start"
+                >
+                  <img [src]="item.postLast.sender.avatar" />
+                </ion-avatar>
+                <ion-label>
+                  <div style="display: flex; align-items: center; gap: 10px">
+                    <p style="margin-bottom: 0; font-weight: 700">
+                      {{ item.postLast.sender.userName }}
+                    </p>
+                    <ion-icon
+                      name="ellipse"
+                      style="font-size: 6px; margin-right: 5px"
+                    ></ion-icon>
 
-                <p style="font-size: 10px">
-                  {{ item.postLast.date | timeRelative }}
-                </p>
-              </div>
-              <p style="font-size: 12px; color: black">
-                {{ item.postLast.text }}
-              </p>
-            </ion-label>
-            <ion-chip
-              (click)="openDetail(item)"
-              slot="end"
-              style="
-                --background: white;
-                --color: black;
-                box-shadow: 0px 3px 6px #00000029;
-                font-weight: 900;
-                margin: 0;
-              "
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="23.519"
-                height="21.005"
-                viewBox="0 0 23.519 21.005"
-              >
-                <defs>
-                  <style>
-                    .a {
-                      fill: #000000;
-                      stroke: #000000;
-                      stroke-width: 0.5px;
-                    }
-                  </style>
-                </defs>
-                <path
-                  class="a"
-                  d="M313.56,676.9H295.593a2.54,2.54,0,0,0-2.526,2.527v15.733c0,2.236,3.058,2.856,4.4,1.511l.9-.9a1.168,1.168,0,0,1,.826-.341H313.56a2.539,2.539,0,0,0,2.526-2.527V679.431A2.538,2.538,0,0,0,313.56,676.9Zm-.281,2.807v12.914H298.2a1.146,1.146,0,0,0-.812.336l-.916.915a.35.35,0,0,1-.6-.247V679.711Z"
-                  transform="translate(-292.817 -676.654)"
-                />
-              </svg>
-              {{ item.postCount }}
-            </ion-chip>
-          </ion-item>
-        </ion-card-content>
+                    <p style="font-size: 10px">
+                      {{ item.postLast.date | timeRelative }}
+                    </p>
+                  </div>
+                  <p style="font-size: 12px; color: black">
+                    {{ item.postLast.text }}
+                  </p>
+                </ion-label>
+                <ion-chip
+                  (click)="openDetail(item)"
+                  slot="end"
+                  style="
+                    --background: white;
+                    --color: black;
+                    box-shadow: 0px 3px 6px #00000029;
+                    font-weight: 900;
+                    margin: 0;
+                  "
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="23.519"
+                    height="21.005"
+                    viewBox="0 0 23.519 21.005"
+                  >
+                    <defs>
+                      <style>
+                        .a {
+                          fill: #000000;
+                          stroke: #000000;
+                          stroke-width: 0.5px;
+                        }
+                      </style>
+                    </defs>
+                    <path
+                      class="a"
+                      d="M313.56,676.9H295.593a2.54,2.54,0,0,0-2.526,2.527v15.733c0,2.236,3.058,2.856,4.4,1.511l.9-.9a1.168,1.168,0,0,1,.826-.341H313.56a2.539,2.539,0,0,0,2.526-2.527V679.431A2.538,2.538,0,0,0,313.56,676.9Zm-.281,2.807v12.914H298.2a1.146,1.146,0,0,0-.812.336l-.916.915a.35.35,0,0,1-.6-.247V679.711Z"
+                      transform="translate(-292.817 -676.654)"
+                    />
+                  </svg>
+                  {{ item.postCount }}
+                </ion-chip>
+              </ion-item>
+            </ion-card-content>
+          </ion-card>
+        </ion-item>
+      </ion-list>
+    </ng-container>
+    <ng-template #noFeed>
+      <ion-card class="blank">
+        <img src="assets/mocks/Groupe 3959.png" alt="" />
+        <ion-card-header>
+          <ion-card-title style="text-align: center"
+            >Aucun post pour le moment</ion-card-title
+          >
+          <ion-card-subtitle style="text-align: center"
+            >Vous pourrez suivre ici l’activité de tous les participants de
+            cette compétition</ion-card-subtitle
+          >
+        </ion-card-header>
       </ion-card>
-    </ion-item>
+    </ng-template>
   </section>
   <section style="height: 100px"></section>
 
   <ng-template #showBlank>
-    <ion-card class="blank">
-      <img src="assets/mocks/Groupe 3959.png" alt="" />
-      <ion-card-header>
-        <ion-card-title style="text-align: center"
-          >Aucun post pour le moment</ion-card-title
+    <ion-list>
+      <ion-item
+        lines="full"
+        *ngFor="let item of templateTable; let i = index"
+        style="
+          margin-bottom: 10px;
+          --inner-padding-end: 0;
+          --padding-start: 15px;
+          --padding-end: 15px;
+        "
+      >
+        <ion-card
+          style="
+            box-shadow: none;
+            width: 100%;
+            --background: #f4f5fa00;
+            margin-right: 0;
+            margin-left: 0;
+          "
         >
-        <ion-card-subtitle style="text-align: center"
-          >Vous pourrez suivre ici l’activité de tous les participants de cette
-          compétition</ion-card-subtitle
-        >
-      </ion-card-header>
-    </ion-card>
+          <ion-card-header>
+            <ion-toolbar class="postZone">
+              <ion-avatar
+                style="margin-right: 10px; background: grey"
+                slot="start"
+              >
+                <!-- <img [src]="item.user.avatar" /> -->
+                <ion-skeleton-text animated></ion-skeleton-text>
+              </ion-avatar>
+              <ion-label>
+                <div
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 4px;
+                    margin-bottom: 10px;
+                  "
+                >
+                  <ion-skeleton-text
+                    animated
+                    style="width: 15%"
+                  ></ion-skeleton-text>
+                  <ion-icon name="ellipse" style="font-size: 6px"></ion-icon>
+
+                  <ion-skeleton-text
+                    animated
+                    style="width: 15%"
+                  ></ion-skeleton-text>
+                </div>
+                <div style="display: flex; gap: 5px; align-items: center">
+                  <ion-avatar style="height: 26px; width: 26px">
+                    <ion-skeleton-text animated></ion-skeleton-text>
+                  </ion-avatar>
+                  <ion-skeleton-text
+                    animated
+                    style="width: 15%"
+                  ></ion-skeleton-text>
+
+                  <ion-avatar style="height: 26px; width: 26px">
+                    <ion-skeleton-text animated></ion-skeleton-text>
+                  </ion-avatar>
+                  <ion-skeleton-text
+                    animated
+                    style="width: 15%"
+                  ></ion-skeleton-text>
+                </div>
+              </ion-label>
+            </ion-toolbar>
+          </ion-card-header>
+          <ion-thumbnail
+            style="
+              background-color: rgb(233, 229, 229);
+              height: 300px;
+              width: 100%;
+              background-position: center;
+              background-size: cover;
+              border-radius: 15px;
+            "
+          >
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-thumbnail> </ion-card></ion-item
+    ></ion-list>
   </ng-template>
   <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
     <ion-infinite-scroll-content

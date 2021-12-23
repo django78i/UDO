@@ -94,6 +94,7 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
   loading: boolean = true;
   reaction: any;
   filter: string = 'Récent';
+  templateTable = ['','','','','','','']
   constructor(
     public modalController: ModalController,
     public animationCtrl: AnimationController,
@@ -103,7 +104,7 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
     public userService: UserService,
     public ref: ElementRef,
     public snsService: SessionNowService,
-    public popoverController: PopoverController,
+    public popoverController: PopoverController
   ) {}
 
   ngOnInit() {}
@@ -115,17 +116,17 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
       this.user = us;
       this.controlLivePost();
     });
-    this.getFeeds();
   }
 
   async controlLivePost() {
+    this.loading = true;
     const feed = await this.snsService.controlLive(this.user.uid);
-    this.refreshFeed();
+    await this.getFeeds();
+    this.loading = false;
   }
 
   async getFeeds() {
     const feed = await this.feedService.feedFilter('Récent');
-    this.loading = false;
     this.feeds = feed.table;
     this.lastVisible = feed.last;
     this.indice = 0;
@@ -147,7 +148,7 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
     return await modal.present();
   }
 
-  //Recharger le feed
+  //charger plus de données dans le feed
   async loadData(event) {
     const taille = await this.feedService.feedFilter(this.filter);
     const feedPlus = await this.feedService.addQuery(
@@ -177,14 +178,14 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
 
   //Choix du filtre
   async clickFilter(filter: string, i) {
-    // this.snsService.presentLoading();
+    this.loading = true;
     this.indice = i;
     this.feeds = [];
     this.filter = filter;
     const feedRefresh = await this.feedService.feedFilter(filter);
     this.feeds = feedRefresh.table;
     this.lastVisible = feedRefresh.last;
-    // this.snsService.dissmissLoading();
+    this.loading = false;
   }
 
   async presentPopover(i: number, feedLik) {
@@ -210,20 +211,27 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
       reaction ? f.nom == reaction.nom : f.nom == reaction.nom
     );
 
+    //le user a déjà utilisé cet émoji
+    const userAlreadyUseEmoji: boolean = reaction.users?.some(
+      (us) => us.uid == this.user.uid
+    );
+    console.log(userAlreadyUseEmoji);
     if (isEmojiExist != -1) {
-      //incrémente de 1 compteur général réactions
-      this.feeds[i].reactionsNombre += 1;
+      if (!userAlreadyUseEmoji) {
+        //incrémente de 1 compteur général réactions
+        this.feeds[i].reactionsNombre += 1;
 
-      //incrémente de 1 compteur de la réaction
-      this.feeds[i].reactions[isEmojiExist].nombre += 1;
+        //incrémente de 1 compteur de la réaction
+        this.feeds[i].reactions[isEmojiExist].nombre += 1;
 
-      //Ajout user dans le tableau des users de la réaction
-      this.feeds[i].reactions[isEmojiExist].users.push({
-        uid: this.user.uid,
-        name: this.user.userName,
-        avatar: this.user.avatar,
-        date: new Date(),
-      });
+        //Ajout user dans le tableau des users de la réaction
+        this.feeds[i].reactions[isEmojiExist].users.push({
+          uid: this.user.uid,
+          name: this.user.userName,
+          avatar: this.user.avatar,
+          date: new Date(),
+        });
+      }
     } else {
       //incrémente de 1 compteur général réactions
       this.feeds[i].reactionsNombre = this.feeds[i].reactionsNombre + 1;
@@ -257,7 +265,6 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
       this.feedService.createReactionSeanceNow(this.feeds[i], reactionPost);
     }
     this.feedService.updatePost(this.feeds[i]);
-    this.clickFilter(this.filter, this.indice);
   }
 
   async openDetail(post, segment?) {

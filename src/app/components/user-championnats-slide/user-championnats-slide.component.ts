@@ -39,6 +39,8 @@ export class UserChampionnatsSlideComponent
 
   //informations sur le user dans le championnat
   userInfo: any;
+  //position
+  postion: number;
   constructor(
     public zone: NgZone,
     public ref: ChangeDetectorRef,
@@ -52,8 +54,11 @@ export class UserChampionnatsSlideComponent
         this.userInfo = champ.participants.find(
           (userChamp) => user.uid == userChamp.uid
         );
+        this.postion =
+          champ.participants.findIndex((champ) => champ.uid == user.uid) + 1;
         // console.log(this.userInfo);
-        champ.userInfo = this.userInfo;
+
+        champ.userInfo = { ...this.userInfo, position: this.postion };
         // this.ref.detectChanges()
       });
       console.log(this.championnats);

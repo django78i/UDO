@@ -121,6 +121,28 @@
       </swiper>
     </ng-template>
   </div>
+  <div style="width: 100%; margin-top: 15px">
+    <div class="iconTitle">
+      <img
+        src="../../assets/icon/dot.svg"
+        style="
+          background-color: rgb(233, 229, 229);
+          padding: 10px;
+          border-radius: 50%;
+        "
+        alt=""
+      />
+      <h4 style="font-weight: 900; margin: 0">TERMINES</h4>
+    </div>
+    <ng-container *ngIf="!loading; else tempChamp">
+      <app-slider-challenge
+        [challenges]="challengesTermines"
+        *ngIf="challengesTermines"
+        (challengeId)="chooseChallenge($event)"
+      >
+      </app-slider-challenge>
+    </ng-container>
+  </div>
   <div style="width: 100%">
     <div class="iconTitle">
       <img

@@ -18,10 +18,11 @@ export class ChallTemplateComponent implements OnInit, OnChanges {
   @Input() user: any;
   @Input() userEncours: any;
   @Input() participantsList: any;
-  @Input() segmentValue: string ="résumé";
+  @Input() segmentValue: string = 'résumé';
   @Input() lastVisible: any;
   @Input() feed: any;
   @Input() competition: any;
+  @Input() loadFeed: boolean;
 
   @Output() friends: EventEmitter<boolean> = new EventEmitter();
   @Output() start: EventEmitter<any> = new EventEmitter();

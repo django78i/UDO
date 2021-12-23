@@ -1,0 +1,57 @@
+.champColor {
+  height: 70px;
+  --background: #ffffff;
+  border-radius: 14px;
+  margin-bottom: 10px;
+}
+
+ion-item {
+  display: flex;
+  align-items: center;
+  --inner-padding-top: 3px;
+  --inner-padding-bottom: 5px;
+}
+
+.sousTitre {
+  font-size: 12px;
+}
+
+ion-badge {
+  font-size: 10px;
+  position: absolute;
+  min-width: 26px;
+  min-height: 26px;
+  --padding-top: 8px;
+  --padding-end: 0;
+  --padding-bottom: 8px;
+  --padding-start: 0;
+  --background: white;
+  --color: black;
+  right: 0;
+  bottom: 0;
+  border-radius: 50%;
+}
+
+.badge {
+  position: absolute;
+  // min-width: 26px;
+  // min-height: 26px;
+  box-shadow: 0px 4px 10px #14151757;
+  right: 0;
+  bottom: 0;
+  border-radius: 50%;
+  background: white;
+  display: flex;
+  justify-content: center;
+  background-repeat: no-repeat;
+  background-size: 60%;
+  width: 26px;
+  height: 26px;
+  background-position: center;
+}
+
+ion-avatar {
+  position: relative;
+  height: 50px;
+  width: 50px;
+}

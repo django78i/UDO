@@ -17,6 +17,7 @@
       [userChampionnats]="userChampionnats"
       [championnatsList]="championnatsList"
       [champinonatNetwork]="champinonatNetwork"
+      [championnatTermines]="championnatTermines"
       (champChoice)="launchDetail($event)"
       (createChamp)="buttonClick($event)"
       (viewAllChamp)="viewCompetitions($event)"
@@ -24,6 +25,7 @@
   </ng-container>
   <ng-container *ngIf="segmentValue == 'challenges'">
     <app-chall-view
+      [challengesTermines]="challengesTermines"
       (viewAllChall)="viewCompetitions($event)"
       (createChall)="createChallenge($event)"
       [challenges]="challengesEnAttente"

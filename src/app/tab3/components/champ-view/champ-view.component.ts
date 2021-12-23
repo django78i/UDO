@@ -26,6 +26,7 @@ export class ChampViewComponent
   @Input() userChampionnats: any[];
   @Input() championnatsList: any[];
   @Input() champinonatNetwork: any[];
+  @Input() championnatTermines: any[];
 
   @Output() champChoice: EventEmitter<any> = new EventEmitter();
   @Output() createChamp: EventEmitter<any> = new EventEmitter();
@@ -43,9 +44,6 @@ export class ChampViewComponent
   constructor(public router: Router, public modalController: ModalController) {}
 
   ngOnInit() {
-    setTimeout(() => {
-      this.loading = false;
-    }, 500);
   }
 
   ngAfterContentChecked() {
@@ -59,6 +57,18 @@ export class ChampViewComponent
   }
 
   ngOnChanges(changes) {
+    if (
+      this.userChampionnats.length ||
+      this.championnatsList.length ||
+      this.champinonatNetwork.length
+    ) {
+      this.loading = false;
+    }
+    // setTimeout(() => {
+    //   this.loading = false;
+    // }, 3500);
+    console.log(this.loading)
+
     console.log(changes);
   }
 

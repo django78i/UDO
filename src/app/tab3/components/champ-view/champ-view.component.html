@@ -16,7 +16,7 @@
       <app-user-championnats-slide
         [championnats]="userChampionnats"
         (champ)="launchDetail($event)"
-        *ngIf="userChampionnats"
+        *ngIf="userChampionnats; else tempChamp"
       >
       </app-user-championnats-slide>
     </ng-container>
@@ -118,6 +118,27 @@
         [championnats]="championnatsList"
         *ngIf="championnatsList"
       ></app-slider-championnat>
+    </ng-container>
+  </div>
+  <div style="width: 100%; margin-top: 15px">
+    <div class="iconTitle">
+      <img
+        src="../../assets/icon/dot.svg"
+        style="
+          background-color: rgb(233, 229, 229);
+          padding: 10px;
+          border-radius: 50%;
+        "
+        alt=""
+      />
+      <h4 style="font-weight: 900; margin: 0">TERMINES</h4>
+    </div>
+    <ng-container *ngIf="!loading; else tempChamp">
+      <app-user-championnats-slide
+        (champ)="launchDetail($event)"
+        [championnats]="championnatTermines"
+        *ngIf="championnatsList"
+      ></app-user-championnats-slide>
     </ng-container>
   </div>
   <div style="width: 100%; margin-bottom: 30px; margin-top: 15px">

@@ -17,7 +17,7 @@ import { ChatService } from 'src/app/services/chat.service';
   templateUrl: './chat-room.component.html',
   styleUrls: ['./chat-room.component.scss'],
 })
-export class ChatRoomComponent implements OnInit, OnDestroy {
+export class ChatRoomComponent implements OnInit {
   @Input() contact: any;
   @Input() user: any;
   @Input() id: any;
@@ -34,9 +34,14 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
     public ref: ChangeDetectorRef
   ) {}
 
-  ionViewWillEnter () {
+  async ionViewWillEnter() {
     console.log(this.contact, this.user, this.id);
-    this.chatService.getMessages(this.room,this.id);
+    if (!this.id) {
+      this.id = await this.chatService.createRoom(this.user, this.contact);
+      this.messages = [];
+    }
+    console.log(this.id);
+    this.chatService.getMessages(this.room, this.id);
     this.chatService.msgSubject$
       .pipe(
         tap((r) => {
@@ -48,11 +53,9 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe();
-
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   close() {
     this.modaCtl.dismiss();
@@ -74,10 +77,5 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
     };
     this.chatService.sendMessage(this.id, msg);
     this.input.value = null;
-
-  }
-
-  ngOnDestroy() {
-    this.chatService.msgSubcription();
   }
 }

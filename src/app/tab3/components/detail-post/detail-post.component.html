@@ -17,7 +17,7 @@
     </ion-buttons>
   </ion-toolbar>
 
-  <ion-item lines="none" style="--background: #f4f5fa">
+  <ion-item lines="none" style="--background: #f4f5fa" *ngIf="post">
     <ion-avatar style="margin-right: 10px; background: grey" slot="start">
       <img [src]="post.user.avatar" />
     </ion-avatar>
@@ -156,19 +156,6 @@
       </ion-img>
     </ion-thumbnail>
 
-    <!-- <div
-      (click)="detailPhoto(post.photo)"
-      *ngIf="post.photo"
-      [style.backgroundImage]="'url(\'' + post.photo + '\')'"
-      style="
-        height: 300px;
-        width: 100%;
-        background-position: center;
-        background-size: cover;
-        border-radius: 15px;
-      "
-    ></div> -->
-
     <div class="iconTitle" *ngIf="post.metrics">
       <img
         src="../../assets/icon/dot.svg"
@@ -181,42 +168,43 @@
       />
       <h4 style="font-weight: 900; margin: 0">STATISTIQUES</h4>
     </div>
-    <div style="text-align: center" *ngIf="post.metrics">
-      <span style="font-size: 33px; font-weight: 700">
-        {{ post.duree.mn | number: "2.0-0" }}:{{
-          post.duree.s | number: "2.0-0"
-        }}</span
-      >
-    </div>
-    <div
-      style="
-        display: flex;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        gap: 20px;
-      "
-      *ngIf="post.activity"
-    >
-      <div
-        *ngFor="let metric of post.metrics"
-        style="
-          min-width: 150px;
-          display: flex;
-          flex-direction: column;
-          gap: 5px;
-          align-items: center;
-        "
-      >
-        <img [src]="metric.img" style="height: 10px" alt="" />
-        <p style="font-size: 23px; margin: 0; font-weight: 600">
-          {{ metric.nombre }}
-        </p>
-        <p style="margin: 0; font-weight: 600; color: #00000070">
-          {{ metric.name }}
-        </p>
+    <ng-container *ngIf="post">
+      <div style="text-align: center" *ngIf="post.metrics">
+        <span style="font-size: 33px; font-weight: 700">
+          {{ post.duree.mn | number: "2.0-0" }}:{{
+            post.duree.s | number: "2.0-0"
+          }}</span
+        >
       </div>
-    </div>
-
+      <div
+        style="
+          display: flex;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          gap: 20px;
+        "
+        *ngIf="post.activity"
+      >
+        <div
+          *ngFor="let metric of post.metrics"
+          style="
+            min-width: 150px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            align-items: center;
+          "
+        >
+          <img [src]="metric.img" style="height: 10px" alt="" />
+          <p style="font-size: 23px; margin: 0; font-weight: 600">
+            {{ metric.nombre }}
+          </p>
+          <p style="margin: 0; font-weight: 600; color: #00000070">
+            {{ metric.name }}
+          </p>
+        </div>
+      </div>
+    </ng-container>
     <div class="iconTitle">
       <img
         src="../../assets/icon/dot.svg"
@@ -230,37 +218,39 @@
       <h4 style="font-weight: 900; margin: 0">ENCOURAGEMENTS</h4>
     </div>
 
-    <ion-item
-      *ngFor="let react of tableReactions"
-      lines="none"
-      style="--background: white; border-radius: 20px; margin-bottom: 10px"
-    >
-      <ion-avatar slot="start" (click)="openProfil(react.user.uid)">
-        <img [src]="react.user.avatar" alt="" *ngIf="react.user.avatar" />
-        <img
-          src="https://img.icons8.com/ios-filled/50/000000/gender-neutral-user.png"
-          *ngIf="!react.user.avatar"
-          alt=""
-        />
-        <ion-badge>{{ react.user.niveau }}</ion-badge>
-      </ion-avatar>
-      <ion-label>
-        <h3
-          style="
-            font-size: 14px;
-            color: black;
-            font-weight: 700;
-            margin: 0 0 2px;
-          "
-        >
-          {{ react.user.userName }}
-        </h3>
-        <p>{{ react.date | timeChamp }}</p>
-      </ion-label>
-      <ion-thumbnail slot="end">
-        <img [src]="react.icon" alt="" />
-      </ion-thumbnail>
-    </ion-item>
+    <ng-container *ngIf="post">
+      <ion-item
+        *ngFor="let react of tableReactions"
+        lines="none"
+        style="--background: white; border-radius: 20px; margin-bottom: 10px"
+      >
+        <ion-avatar slot="start" (click)="openProfil(react.user.uid)">
+          <img [src]="react.user.avatar" alt="" *ngIf="react.user.avatar" />
+          <img
+            src="https://img.icons8.com/ios-filled/50/000000/gender-neutral-user.png"
+            *ngIf="!react.user.avatar"
+            alt=""
+          />
+          <ion-badge>{{ react.user.niveau }}</ion-badge>
+        </ion-avatar>
+        <ion-label>
+          <h3
+            style="
+              font-size: 14px;
+              color: black;
+              font-weight: 700;
+              margin: 0 0 2px;
+            "
+          >
+            {{ react.user.userName }}
+          </h3>
+          <p>{{ react.date | timeChamp }}</p>
+        </ion-label>
+        <ion-thumbnail slot="end">
+          <img [src]="react.icon" alt="" />
+        </ion-thumbnail>
+      </ion-item>
+    </ng-container>
   </section>
 
   <app-messages
