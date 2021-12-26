@@ -87,9 +87,11 @@ export class Tab3Page implements OnInit, AfterContentChecked, OnDestroy {
 
   ngOnInit() {
     //user en cours
+    console.log(this.champService.champSubject$)
     this.userService.getCurrentUser().then((user) => (this.user = user));
-
-    this.champService.getChampionnats();
+    
+      this.champService.getChampionnats();
+    
     this.challServ.getChallenges();
 
     this.champService.champSubject$
@@ -154,17 +156,21 @@ export class Tab3Page implements OnInit, AfterContentChecked, OnDestroy {
       .pipe(
         tap((r) => {
           console.log(r);
-          r == null ? (this.challengesTermines = []) : this.challengesTermines.push(r);
+          r == null
+            ? (this.challengesTermines = [])
+            : this.challengesTermines.push(r);
         })
       )
       .subscribe();
-    this.champService.champtermines$.pipe(
-      tap((r) =>
-        r == null
-          ? (this.championnatTermines = [])
-          : this.championnatTermines.push(r)
+    this.champService.champtermines$
+      .pipe(
+        tap((r) =>
+          r == null
+            ? (this.championnatTermines = [])
+            : this.championnatTermines.push(r)
+        )
       )
-    ).subscribe();
+      .subscribe();
     this.ref.detectChanges();
   }
 

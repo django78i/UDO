@@ -62,7 +62,6 @@ export class SessionNowService {
 
   async controlLive(uid) {
     console.log('control');
-    // this.presentLoading();
     //récupération des posts de l'utilisateur
     const postList = await this.getSessionNow(uid);
     if (postList) {
@@ -79,11 +78,9 @@ export class SessionNowService {
             //update status du post
             this.updatePostLies(postData.uid);
           }
-          // this.mFeed.feedFilter('Récent');
         }
       });
     }
-    // this.dissmissLoading();
   }
 
   async updatePostSeanceNow(post) {

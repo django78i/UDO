@@ -19,9 +19,6 @@ ion-segment-button {
   }
 }
 
-ion-header {
-  background: #f7f7fa;
-}
 
 :host ::ng-depp {
   .searchbar-input-container.sc-ion-searchbar-ios {
@@ -32,8 +29,13 @@ ion-header {
   }
 }
 
-swiper {
-  height: 100%;
+ion-item.template {
+  margin: 0;
+  width: 100%;
+  --background: transparent;
+  &::part(native) {
+    padding: 0;
+  }
 }
 
 ion-card {

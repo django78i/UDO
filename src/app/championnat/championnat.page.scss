@@ -29,9 +29,6 @@ ion-card-subtitle {
   opacity: 1;
 }
 
-ion-header {
-  background: #f7f7fa;
-}
 ion-card-header {
   transition: 0.3s ease all;
 }
@@ -134,8 +131,8 @@ ion-segment-button {
 }
 
 .notActive {
-  height: 0px;
-  margin-bottom: 0;
+  height: 0px !important;
+  margin-bottom: 0 !important;
 }
 
 .notActiveContent {

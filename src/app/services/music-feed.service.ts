@@ -115,7 +115,7 @@ export class MusicFeedService {
     const table = [];
     let queryColl;
     const user = await this.userService.getCurrentUser();
-
+    console.log(last);
     //requête en fonction du filtre de feed
     switch (filter) {
       case 'En direct':
@@ -196,7 +196,7 @@ export class MusicFeedService {
   }
 
   /** récupération des informations des auteurs des post en temps réél
-   * 
+   *
    */
   formatQuery(data, users) {
     let postLast;

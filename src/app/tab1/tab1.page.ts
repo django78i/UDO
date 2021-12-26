@@ -94,7 +94,7 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
   loading: boolean = true;
   reaction: any;
   filter: string = 'Récent';
-  templateTable = ['','','','','','','']
+  templateTable = ['', '', '', '', '', '', ''];
   constructor(
     public modalController: ModalController,
     public animationCtrl: AnimationController,
@@ -109,7 +109,7 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
 
   ngOnInit() {}
 
-  ionViewWillEnter() {
+  ionViewDidEnter() {
     console.log('ionViewDidEnter');
     const user = from(this.userService.getCurrentUser());
     this.subscription = user.subscribe((us) => {
@@ -120,7 +120,7 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
 
   async controlLivePost() {
     this.loading = true;
-    const feed = await this.snsService.controlLive(this.user.uid);
+    await this.snsService.controlLive(this.user.uid);
     await this.getFeeds();
     this.loading = false;
   }

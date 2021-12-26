@@ -1,3 +1,10 @@
+import {
+  animate,
+  state,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, NavigationExtras } from '@angular/router';
@@ -63,11 +70,17 @@ interface Championnat {
 }
 
 @Component({
+  animations: [
+    trigger('flyInOut', [
+      transition('* => void', [animate(100)]),
+      transition('void => *', [animate(100)]),
+    ]),
+  ],
   selector: 'app-championnat',
   templateUrl: './championnat.page.html',
   styleUrls: ['./championnat.page.scss'],
 })
-export class ChampionnatPage implements OnInit {
+export class ChampionnatPage {
   segmentValue = 'resume';
   participantsList: any[];
   userEncours: any;
@@ -84,6 +97,7 @@ export class ChampionnatPage implements OnInit {
   pictureUrl: string;
   competition = 'championnat';
   @ViewChild('inputFeed') inputFeed: IonInput;
+  loadingComp = true;
 
   constructor(
     private modalCtrl: ModalController,
@@ -97,8 +111,7 @@ export class ChampionnatPage implements OnInit {
     public notificationService: NotificationService
   ) {}
 
-  ngOnInit() {
-
+  ionViewDidEnter() {
     this.userService.getCurrentUser().then((user) => {
       this.user = user;
       const uid = this.route.snapshot.params['id'];
@@ -114,6 +127,7 @@ export class ChampionnatPage implements OnInit {
           );
         })
       );
+      this.loadingComp = false;
     });
   }
 

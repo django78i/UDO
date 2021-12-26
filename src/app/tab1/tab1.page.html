@@ -613,7 +613,7 @@
                   ></ion-skeleton-text>
                 </div>
                 <div style="display: flex; gap: 5px; align-items: center">
-                  <ion-avatar style="height: 26px; width: 26px">
+                  <ion-avatar style="height: 22px; width: 22px">
                     <ion-skeleton-text animated></ion-skeleton-text>
                   </ion-avatar>
                   <ion-skeleton-text
@@ -621,7 +621,7 @@
                     style="width: 15%"
                   ></ion-skeleton-text>
 
-                  <ion-avatar style="height: 26px; width: 26px">
+                  <ion-avatar style="height: 22px; width: 22px">
                     <ion-skeleton-text animated></ion-skeleton-text>
                   </ion-avatar>
                   <ion-skeleton-text
@@ -648,8 +648,8 @@
   </ng-template>
   <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
     <ion-infinite-scroll-content
-      loadingSpinner="bubbles"
-      loadingText="Loading more data..."
+      loadingSpinner="crescent"
+      loadingText="Veuillez patienter..."
     >
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>

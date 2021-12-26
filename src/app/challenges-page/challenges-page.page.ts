@@ -1,5 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import {
+  animate,
+  state,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
+
+import {
   AfterViewInit,
   ChangeDetectorRef,
   Component,
@@ -41,11 +49,18 @@ interface Notification {
 }
 
 @Component({
+  animations: [
+    trigger('flyInOut', [
+      transition('* => void', [animate(100)]),
+      transition('void => *', [animate(100)]),
+    ]),
+  ],
+
   selector: 'app-challenges-page',
   templateUrl: './challenges-page.page.html',
   styleUrls: ['./challenges-page.page.scss'],
 })
-export class ChallengesPagePage implements OnInit {
+export class ChallengesPagePage {
   segmentValue = 'resume';
   user: any;
   challenge: any;
@@ -53,6 +68,7 @@ export class ChallengesPagePage implements OnInit {
   challenge$: Observable<any>;
   loading = false;
   startDate: any;
+  loadingChall = true;
 
   challengeObs$: Observable<any>;
   text: string = '';
@@ -80,7 +96,7 @@ export class ChallengesPagePage implements OnInit {
     public notificationService: NotificationService
   ) {}
 
-  ngOnInit() {
+  ionViewDidEnter() {
     this.userService.getCurrentUser().then((user) => {
       this.user = user;
       this.http
@@ -113,6 +129,7 @@ export class ChallengesPagePage implements OnInit {
         })
       );
     });
+    this.loadingChall = false;
   }
 
   async getFeedChallenge(uid) {

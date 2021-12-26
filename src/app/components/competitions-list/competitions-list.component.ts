@@ -23,15 +23,8 @@ import { SwiperComponent } from 'swiper/angular';
   templateUrl: './competitions-list.component.html',
   styleUrls: ['./competitions-list.component.scss'],
 })
-export class CompetitionsListComponent implements OnInit, AfterContentChecked {
-  @ViewChild('swiper') swiper: SwiperComponent;
+export class CompetitionsListComponent {
   segmentValue: string = 'championnats';
-  config: SwiperOptions = {
-    slidesPerView: 2.5,
-    spaceBetween: 10,
-    direction: 'vertical',
-  };
-
   @Input() segmentSelected: string;
 
   championnatNetwork: any[] = [];
@@ -40,7 +33,11 @@ export class CompetitionsListComponent implements OnInit, AfterContentChecked {
   subscription: Subscription;
   challenges: any[] = [];
   challengesFilered: any[] = [];
+  lastVisibleChamp: any;
+  lastVisibleChall: any;
 
+  loading: boolean = true;
+  template: any[] = ['', '', '', '', ''];
   constructor(
     public modalCtrl: ModalController,
     public champService: ChampionnatsService,
@@ -51,11 +48,15 @@ export class CompetitionsListComponent implements OnInit, AfterContentChecked {
     public challService: ChallengesService // public navParams: NavParams
   ) {}
 
-  ngOnInit() {
-    // this.segmentValue = this.navParams.data.segmentSelected;
+  ionViewDidEnter() {
     console.log('state');
-    this.champService.getChampionnatNetwork();
-    this.challService.getChallengesList();
+    this.champService.getChampionnatNetwork().then((r) => {
+      console.log(r);
+      this.lastVisibleChamp = r;
+    });
+    this.challService
+      .getChallengesList()
+      .then((r) => (this.lastVisibleChall = r));
 
     this.champService.champNetWorkList$
       .pipe(
@@ -70,16 +71,44 @@ export class CompetitionsListComponent implements OnInit, AfterContentChecked {
     this.challService.challengesList$
       .pipe(
         tap((r) => {
-          r == null ? (this.challenges = []) : this.challenges.push(r);
+          console.log(r);
+          if (r) {
+            this.challenges.push(r);
+          }
         })
       )
       .subscribe();
+    this.loading = false;
   }
 
-  ngAfterContentChecked() {
-    if (this.swiper) {
-      this.swiper.updateSwiper({});
-    }
+  // charger plus de données dans le feed
+  async loadData(event) {
+    const feedPlus =
+      this.segmentValue == 'championnats'
+        ? await this.addDdataChamp(this.lastVisibleChamp)
+        : await this.addDataChallenges(this.lastVisibleChall);
+    setTimeout(() => {
+      event.target.complete();
+      const lastVisible = feedPlus;
+      if (
+        (lastVisible &&
+          (this.segmentValue == 'championnats' &&
+          lastVisible.data() <= this.championnatNetwork.length ||
+      (this.segmentValue == 'challenges' &&
+          lastVisible.data() <= this.challenges.length))
+      )) {
+        event.target.disabled = true;
+      }
+    }, 500);
+  }
+
+  async addDataChallenges(last): Promise<any> {
+    return await this.challService.addChallenges(last);
+  }
+
+  async addDdataChamp(last): Promise<any> {
+    console.log(last);
+    return await this.champService.addNetWork(last);
   }
 
   search(ev) {

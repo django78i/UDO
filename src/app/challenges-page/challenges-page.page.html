@@ -1,5 +1,5 @@
-<ion-header mode="ios">
-  <ion-toolbar style="--border-width: 0 0 0 !important">
+<ion-header>
+  <ion-toolbar style="--background: #f7f7fa; --border-width: 0 0 0 !important">
     <ion-button
       slot="start"
       (click)="close()"
@@ -8,63 +8,114 @@
       <img src="../../../../assets/mocks/Icon feather-arrow-left.svg" alt="" />
     </ion-button>
   </ion-toolbar>
-  <ion-card
-    *ngIf="challengeObs$|async as challenge"
+  <div
     [ngClass]="{ notActive: segmentValue != 'resume' }"
-    [style.backgroundColor]="challenge.banniereColor"
-    style="background-image: url('assets/icon/udoIconFond.svg')"
+    style="
+      width: 100%;
+      position: relative;
+      padding: 0 15px;
+      transition: 0.5s ease all;
+      background: #f7f7fa;
+      height: 235px;
+    "
   >
-    <span style="width: 150px; position: absolute; right: 5px; top: 15px">
-      <img [src]="challenge.banniereImage" alt="" />
-    </span>
+    <ng-template #tempChallenge>
+      <ion-card
+        [ngClass]="{ notActive: segmentValue != 'resume' }"
+        @flyInOut
+        style="
+          position: absolute;
+          width: 92%;
+          margin: 0;
+          background-image: url('assets/icon/udoIconFond.svg');
+          background-color: #e3e3e3;
+          background-position: center;
+          background-repeat: no-repeat;
+        "
+      >
+        <ion-card-header [ngClass]="{ notActive: segmentValue != 'resume' }">
+          <ion-skeleton-text style="width: 30%" animated></ion-skeleton-text>
+        </ion-card-header>
 
-    <ion-card-header [ngClass]="{ notActive: segmentValue != 'resume' }">
-      <ion-card-title class="cardSlide">
-        <img
-          [src]="challenge.icon"
-          alt=""
-          style="width: 34px; height: 34px; border-radius: 50%"
-        />
-        <div style="display: flex; flex-direction: column; gap: 5px">
-          <ion-label style="font-size: 12px; color: white; font-weight: 700"
-            >{{ challenge.name }}</ion-label
-          >
-        </div>
-      </ion-card-title>
-    </ion-card-header>
+        <ion-card-content class="champ">
+          <div style="display: flex">
+            <ion-avatar>
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </ion-avatar>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </ng-template>
 
-    <ion-card-content>
-      <ion-item style="--background: transparent" lines="none">
-        <ion-label slot="start">
-          {{ (challenge.completion.value / challenge.objectifs) * 100 | number:
-          "1.1-1" }} %
-        </ion-label>
-        <ion-label style="font-size: 14px; text-align: end"
-          >{{ challenge.completion.value | number: "1.1-1" }}/{{
-          challenge.objectifs }} {{ challenge.metric.metric }}</ion-label
-        >
-      </ion-item>
-      <ion-progress-bar
-        [value]="pourcentage"
-        style="--progress-background: white; height: 6px; border-radius: 10px"
-      ></ion-progress-bar>
-    </ion-card-content>
-  </ion-card>
-  <ion-segment
-    (ionChange)="segmentChanged($event)"
-    [value]="segmentValue"
-    mode="ios"
+    <ng-container *ngIf="!loadingChall;else tempChallenge">
+      <ion-card
+        *ngIf="challengeObs$|async as challenge"
+        [ngClass]="{ notActive: segmentValue != 'resume' }"
+        [style.backgroundColor]="challenge.banniereColor"
+        style="background-image: url('assets/icon/udoIconFond.svg'); margin: 0"
+      >
+        <span style="width: 150px; position: absolute; right: 5px; top: 15px">
+          <img [src]="challenge.banniereImage" alt="" />
+        </span>
+
+        <ion-card-header [ngClass]="{ notActive: segmentValue != 'resume' }">
+          <ion-card-title class="cardSlide">
+            <img
+              [src]="challenge.icon"
+              alt=""
+              style="width: 34px; height: 34px; border-radius: 50%"
+            />
+            <div style="display: flex; flex-direction: column; gap: 5px">
+              <ion-label style="font-size: 12px; color: white; font-weight: 700"
+                >{{ challenge.name }}</ion-label
+              >
+            </div>
+          </ion-card-title>
+        </ion-card-header>
+
+        <ion-card-content>
+          <ion-item style="--background: transparent" lines="none">
+            <ion-label slot="start">
+              {{ (challenge.completion.value / challenge.objectifs) * 100 |
+              number: "1.1-1" }} %
+            </ion-label>
+            <ion-label style="font-size: 14px; text-align: end"
+              >{{ challenge.completion.value | number: "1.1-1" }}/{{
+              challenge.objectifs }} {{ challenge.metric.metric }}</ion-label
+            >
+          </ion-item>
+          <ion-progress-bar
+            [value]="pourcentage"
+            style="
+              --progress-background: white;
+              height: 6px;
+              border-radius: 10px;
+            "
+          ></ion-progress-bar>
+        </ion-card-content>
+      </ion-card>
+    </ng-container>
+  </div>
+  <ion-item
+    lines="none"
+    style="padding-top: 9px; padding-bottom: 15px; background: #f7f7fa"
   >
-    <ion-segment-button value="resume">
-      <ion-label>Résumé</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="participants">
-      <ion-label>Participants</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="feed">
-      <ion-label>Feed</ion-label>
-    </ion-segment-button>
-  </ion-segment>
+    <ion-segment
+      (ionChange)="segmentChanged($event)"
+      [value]="segmentValue"
+      mode="ios"
+    >
+      <ion-segment-button value="resume">
+        <ion-label>Résumé</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="participants">
+        <ion-label>Participants</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="feed">
+        <ion-label>Feed</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-item>
   <section *ngIf="segmentValue == 'feed'">
     <ion-toolbar
       mode="ios"
@@ -128,6 +179,23 @@
   </section>
 </ion-header>
 <ion-content scrollY="false">
+  <ng-container *ngIf="loadingChall">
+    <div
+      style="
+        height: 280px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      "
+    >
+      <ion-spinner
+        name="crescent"
+        style="height: 50px; width: 50px"
+      ></ion-spinner>
+    </div>
+  </ng-container>
+
   <ng-container *ngIf="challengeObs$|async as challenge">
     <app-chall-template
       [loadFeed]="loadFeed"

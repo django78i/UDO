@@ -15,6 +15,7 @@ import {
   getDoc,
   Unsubscribe,
   limit,
+  startAfter,
 } from 'firebase/firestore';
 import { BehaviorSubject, from, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -75,48 +76,62 @@ export class ChampionnatsService {
     await setDoc(doc(this.db, 'championnats', champ.uid), champ);
   }
 
-  getChampionnatsEnCours(): BehaviorSubject<any> {
-    const docRef = query(
-      collection(this.db, 'championnats'),
-      where('status', '==', 'en cours')
-    );
-    const auth = getAuth();
-
-    this.unsubscribe2 = onSnapshot(docRef, (querySnapshot) => {
-      const champs = [];
-      querySnapshot.forEach((doc) => {
-        console.log(doc.data());
-        const document = doc.data();
-        const bool = document.participants.some(
-          (users: any) => users.uid == auth.currentUser.uid
-        );
-        if (bool) {
-          champs.push(doc.data());
-        }
-        this.champEnCoursSubject$.next(champs);
-      });
-    });
-    return this.champEnCoursSubject$;
-  }
-
   async getChampionnatNetwork() {
     this.champNetWorkList$ = new BehaviorSubject(null);
+    const users = JSON.parse(localStorage.getItem('usersList'));
 
     const docRef = query(
       collection(this.db, 'championnats'),
       where('type', '==', 'Network'),
+      where('status', '==', 'en attente'),
+      orderBy('dateCreation', 'desc'),
       limit(15)
     );
     const documentSnapshots = await getDocs(docRef);
     let table = [];
     documentSnapshots.forEach((doc) => {
-      if (doc && doc.data().status == 'en attente') {
+      const document = doc.data();
+      const docFormat = this.formatChamp(document, users);
+
+      if (document) {
         console.log(doc.data());
-        this.champNetWorkList$.next(doc.data());
-        // table.push(doc.data());
+        this.champNetWorkList$.next(docFormat);
       }
     });
+    const lastVisible: any = documentSnapshots.docs[
+      documentSnapshots.docs.length - 1
+    ]
+      ? documentSnapshots.docs[documentSnapshots.docs.length - 1]
+      : null;
+    return lastVisible;
     console.log(table);
+  }
+
+  async addNetWork(last) {
+    const users = JSON.parse(localStorage.getItem('usersList'));
+    console.log(last);
+    const docRef = query(
+      collection(this.db, 'championnats'),
+      where('type', '==', 'Network'),
+      where('status', '==', 'en attente'),
+      orderBy('dateCreation', 'desc'),
+      startAfter(last),
+      limit(15)
+    );
+    const documentSnapshots = await getDocs(docRef);
+    let table = [];
+    documentSnapshots.forEach((doc) => {
+      const document = doc.data();
+      const docFormat = this.formatChamp(document, users);
+      console.log(doc.data());
+      this.champNetWorkList$.next(docFormat);
+    });
+    const lastVisible: any = documentSnapshots.docs[
+      documentSnapshots.docs.length - 1
+    ]
+      ? documentSnapshots.docs[documentSnapshots.docs.length - 1]
+      : null;
+    return lastVisible;
   }
 
   async getChampionnat(uid) {
@@ -167,7 +182,7 @@ export class ChampionnatsService {
           this.champNetWork$.next(docFormat);
         } else if (document.status == 'termine' && bool) {
           this.champtermines$.next(docFormat);
-          console.log(docFormat)
+          console.log(docFormat);
         }
       });
     });

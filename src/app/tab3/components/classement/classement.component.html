@@ -1,4 +1,4 @@
-<section style="height: 100%; overflow: auto">
+<section style="height: 100%; overflow: auto; padding: 0 15px">
   <div class="iconTitle">
     <img
       src="../../../../assets/icon/dot.svg"
@@ -64,7 +64,9 @@
       <ion-label
         slot="end"
         style="display: flex; align-items: center; flex-direction: column"
-        *ngIf="championnat.status == 'en cours'||championnat?.status == 'termine'"
+        *ngIf="
+          championnat.status == 'en cours' || championnat?.status == 'termine'
+        "
       >
         <p
           style="font-size: 18px; font-weight: 700; color: black; margin: 4px 0"

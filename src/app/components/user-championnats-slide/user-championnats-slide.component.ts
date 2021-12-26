@@ -24,9 +24,7 @@ import { UserService } from 'src/app/services/user-service.service';
   templateUrl: './user-championnats-slide.component.html',
   styleUrls: ['./user-championnats-slide.component.scss'],
 })
-export class UserChampionnatsSlideComponent
-  implements OnInit, AfterViewInit, OnChanges
-{
+export class UserChampionnatsSlideComponent implements OnChanges {
   @Input() championnats: any[];
   @Output() champ: EventEmitter<any> = new EventEmitter();
 
@@ -47,23 +45,21 @@ export class UserChampionnatsSlideComponent
     public userService: UserService
   ) {}
 
-  ngOnInit() {
-    let user = JSON.parse(localStorage.getItem('user'));
-    if (this.championnats.length) {
-      this.championnats.forEach((champ, i) => {
-        this.userInfo = champ.participants.find(
-          (userChamp) => user.uid == userChamp.uid
-        );
-        this.postion =
-          champ.participants.findIndex((champ) => champ.uid == user.uid) + 1;
-        // console.log(this.userInfo);
+  // ionViewDidEnter() {
+  //   let user = JSON.parse(localStorage.getItem('user'));
+  //   if (this.championnats.length) {
+  //     this.championnats.forEach((champ, i) => {
+  //       this.userInfo = champ.participants.find(
+  //         (userChamp) => user.uid == userChamp.uid
+  //       );
+  //       this.postion =
+  //         champ.participants.findIndex((champ) => champ.uid == user.uid) + 1;
 
-        champ.userInfo = { ...this.userInfo, position: this.postion };
-        // this.ref.detectChanges()
-      });
-      console.log(this.championnats);
-    }
-  }
+  //       champ.userInfo = { ...this.userInfo, position: this.postion };
+  //     });
+  //     console.log(this.championnats);
+  //   }
+  // }
 
   ngOnChanges() {
     let user = JSON.parse(localStorage.getItem('user'));
@@ -72,20 +68,13 @@ export class UserChampionnatsSlideComponent
         this.userInfo = champ.participants.find(
           (userChamp) => user.uid == userChamp.uid
         );
-        // console.log(this.userInfo);
-        champ.userInfo = this.userInfo;
-        // this.ref.detectChanges()
+        this.postion =
+          champ.participants.findIndex((champ) => champ.uid == user.uid) + 1;
+
+        champ.userInfo = { ...this.userInfo, position: this.postion };
       });
       console.log(this.championnats);
     }
-  }
-
-  ngAfterViewInit() {}
-
-  ngAfterContentChecked(): void {
-    // if (this.swiper) {
-    //   this.swiper.map((swip) => swip.updateSwiper({}));
-    // }
   }
 
   choice(champ) {

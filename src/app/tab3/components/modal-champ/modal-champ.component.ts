@@ -1,5 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import {
+  animate,
+  state,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
+
+import {
   AfterViewInit,
   ChangeDetectorRef,
   Component,
@@ -65,11 +73,18 @@ interface Championnat {
 }
 
 @Component({
+  animations: [
+    trigger('flyInOut', [
+      transition('* => void', [animate(100)]),
+      transition('void => *', [animate(100)]),
+    ]),
+  ],
+
   selector: 'app-modal-champ',
   templateUrl: './modal-champ.component.html',
   styleUrls: ['./modal-champ.component.scss'],
 })
-export class ModalChampComponent implements OnInit, AfterViewInit {
+export class ModalChampComponent implements OnInit {
   @Input() championnat: Championnat;
   @Input() user: any;
   segmentValue = 'resume';
@@ -93,6 +108,7 @@ export class ModalChampComponent implements OnInit, AfterViewInit {
   feed: any;
   admin: boolean = false;
   pourcentage: number = 0;
+  loadingComp: boolean = true;
 
   constructor(
     private modalCtrl: ModalController,
@@ -111,64 +127,67 @@ export class ModalChampComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     console.log('modail', this.navParam.data, this.entryData);
-    const uid = this.navParam.data.champId;
     this.entryData = this.navParam.data.entryData;
-
-    this.userService.getCurrentUser().then((user) => {
-      console.log(user);
-      this.user = user;
-      this.http
-        .get<any[]>('../../../../assets/mocks/admin.json')
-        .pipe(
-          tap(
-            (ad) =>
-              (this.admin = ad.some((userAdmin) => userAdmin == this.user.uid))
-          )
-        )
-        .subscribe();
-
-      if (this.entryData == 'championnat') {
-        this.champService.getChampionnat(uid);
-        this.championnat$ = this.champService.singleChampSub$.pipe(
-          tap((champ) => {
-            if (champ) {
-              console.log(champ);
-              this.championnat = champ;
-              this.getFeedChampionnat(this.championnat.uid);
-
-              this.participantsList = this.championnat.participants.slice(0, 4);
-              this.userEncours = this.championnat.participants.find(
-                (part) => part.uid == this.user.uid
-              );
-            }
-          })
-        );
-      } else {
-        this.challService.getChallenge(uid);
-        this.challengeObs$ = this.challService.singleChallSub$.pipe(
-          tap((chall) => {
-            if (chall) {
-              this.challenge = chall;
-              console.log(this.entryData);
-              this.getFeedChampionnat(this.challenge.uid);
-              this.pourcentage = Number(
-                this.challenge.completion.value / this.challenge.objectifs
-              );
-
-              this.userEncours = this.challenge.participants.find(
-                (part) => part.uid == this.user.uid
-              );
-              this.startDate = moment(this.challenge.dateDemarrage).fromNow();
-              console.log(this.challenge);
-              this.ref.detectChanges();
-            }
-          })
-        );
-      }
-    });
   }
 
-  ngAfterViewInit() {}
+  ionViewDidEnter() {
+    this.getCompetition();
+  }
+
+  async getCompetition() {
+    this.user = await this.userService.getCurrentUser();
+
+    if (this.entryData == 'championnat') {
+      this.champService.getChampionnat(this.navParam.data.champId);
+      this.championnat$ = this.champService.singleChampSub$.pipe(
+        tap((champ) => {
+          if (champ) {
+            console.log(champ);
+            this.championnat = champ;
+            this.getFeedChampionnat(this.championnat.uid);
+
+            this.participantsList = this.championnat.participants.slice(0, 4);
+            this.userEncours = this.championnat.participants.find(
+              (part) => part.uid == this.user.uid
+            );
+          }
+        })
+      );
+    } else {
+      this.challService.getChallenge(this.navParam.data.champId);
+      this.challengeObs$ = this.challService.singleChallSub$.pipe(
+        tap((chall) => {
+          if (chall) {
+            this.challenge = chall;
+            console.log(this.entryData);
+            this.getFeedChampionnat(this.challenge.uid);
+            this.pourcentage = Number(
+              this.challenge.completion.value / this.challenge.objectifs
+            );
+
+            this.userEncours = this.challenge.participants.find(
+              (part) => part.uid == this.user.uid
+            );
+            this.startDate = moment(this.challenge.dateDemarrage).fromNow();
+            console.log(this.challenge);
+            this.ref.detectChanges();
+          }
+        })
+      );
+    }
+
+    this.http
+      .get<any[]>('../../../../assets/mocks/admin.json')
+      .pipe(
+        tap(
+          (ad) =>
+            (this.admin = ad.some((userAdmin) => userAdmin == this.user.uid))
+        )
+      )
+      .subscribe();
+    this.loadingComp = false;
+    this.ref.detectChanges();
+  }
 
   async getFeedChampionnat(uid) {
     const feedPrime = await this.feedService.feedQuery(
@@ -350,7 +369,7 @@ export class ModalChampComponent implements OnInit, AfterViewInit {
       ...this.championnat,
       dateFin: this.championnat.dateFin.toDate(),
     });
-    
+
     this.champService.getChampionnat(this.championnat.uid);
     this.loading = false;
     console.log(champ);

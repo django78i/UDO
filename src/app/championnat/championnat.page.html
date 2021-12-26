@@ -1,4 +1,4 @@
-<ion-header mode="ios" collapse="condense">
+<ion-header>
   <ion-toolbar>
     <ion-button
       slot="start"
@@ -8,58 +8,118 @@
       <img src="../../../../assets/mocks/Icon feather-arrow-left.svg" alt="" />
     </ion-button>
   </ion-toolbar>
-  <ion-card
-    *ngIf="championnat$|async as championnat"
-    [style.backgroundColor]="championnat.banniere.color"
-    style="background-image: url('assets/icon/udoIconFond.svg')"
+  <div
     [ngClass]="{ notActive: segmentValue != 'resume' }"
+    style="
+      width: 100%;
+      position: relative;
+      padding: 0 15px;
+      transition: 0.5s ease all;
+      background: #f7f7fa;
+      height: 235px;
+    "
   >
-    <ion-card-header [ngClass]="{ notActiveContent: segmentValue != 'resume' }">
-      <ion-card-subtitle *ngIf="championnat?.status == 'en cours'">
-        {{ championnat?.dateFin | timeChamp }}
-      </ion-card-subtitle>
-      <ion-card-subtitle *ngIf="champ?.status == 'en attente'">
-        {{ championnat?.dateDemarrage | timeChamp }}
-      </ion-card-subtitle>
-      <ion-card-title style="color: white"
-        >{{ championnat?.name }}</ion-card-title
+    <ng-template #tempChampionnat>
+      <ion-card
+        [ngClass]="{ notActive: segmentValue != 'resume' }"
+        @flyInOut
+        style="
+          position: absolute;
+          width: 92%;
+          margin: 0;
+          background-image: url('assets/icon/udoIconFond.svg');
+          background-color: #e3e3e3;
+          background-position: center;
+          background-repeat: no-repeat;
+        "
       >
-    </ion-card-header>
+        <ion-card-header [ngClass]="{ notActive: segmentValue != 'resume' }">
+          <ion-skeleton-text style="width: 30%" animated></ion-skeleton-text>
+        </ion-card-header>
 
-    <ion-card-content>
-      <div style="display: flex">
-        <ng-container *ngFor="let champ of participantsList; let i = index">
-          <ion-avatar style="--i : {{ i }}; --mess : {{ champ.user.niveau }} ">
-            <img [src]="champ?.user.avatar" alt="" />
-            <ion-badge>{{ champ.user.niveau }}</ion-badge>
-          </ion-avatar>
-        </ng-container>
-        <div
-          class="champCarousel"
-          *ngIf="championnat.participants.length - participantsList.length != 0"
+        <ion-card-content class="champ">
+          <div style="display: flex">
+            <ion-avatar>
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </ion-avatar>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </ng-template>
+
+    <ng-container *ngIf="!loadingComp;else tempChampionnat">
+      <ng-container *ngIf="championnat$|async as championnat">
+        <ion-card
+          @flyInOut
+          [style.backgroundColor]="championnat.banniere.color"
+          style="
+            background-image: url('assets/icon/udoIconFond.svg');
+            margin: 0;
+            /* margin-bottom: 30px; */
+          "
+          [ngClass]="{ notActive: segmentValue != 'resume' }"
         >
-          <p style="font-size: 20px">
-            + {{ championnat?.participants.length - participantsList?.length }}
-          </p>
-        </div>
-      </div>
-    </ion-card-content>
-  </ion-card>
-  <ion-segment
-    (ionChange)="segmentChanged($event)"
-    [value]="segmentValue"
-    mode="ios"
+          <ion-card-header
+            [ngClass]="{ notActiveContent: segmentValue != 'resume' }"
+          >
+            <ion-card-subtitle *ngIf="championnat?.status == 'en cours'">
+              {{ championnat?.dateFin | timeChamp }}
+            </ion-card-subtitle>
+            <ion-card-subtitle *ngIf="champ?.status == 'en attente'">
+              {{ championnat?.dateDemarrage | timeChamp }}
+            </ion-card-subtitle>
+            <ion-card-title style="color: white"
+              >{{ championnat?.name }}</ion-card-title
+            >
+          </ion-card-header>
+
+          <ion-card-content>
+            <div style="display: flex">
+              <ng-container
+                *ngFor="let champ of participantsList; let i = index"
+              >
+                <ion-avatar
+                  style="--i : {{ i }}; --mess : {{ champ.user.niveau }} "
+                >
+                  <img [src]="champ?.user.avatar" alt="" />
+                  <ion-badge>{{ champ.user.niveau }}</ion-badge>
+                </ion-avatar>
+              </ng-container>
+              <div
+                class="champCarousel"
+                *ngIf="championnat.participants.length - participantsList.length != 0"
+              >
+                <p style="font-size: 20px">
+                  + {{ championnat?.participants.length -
+                  participantsList?.length }}
+                </p>
+              </div>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </ng-container>
+    </ng-container>
+  </div>
+  <ion-item
+    lines="none"
+    style="padding-top: 9px; padding-bottom: 15px; background: #f7f7fa"
   >
-    <ion-segment-button value="resume">
-      <ion-label>Résumé</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="participants">
-      <ion-label>Participants</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="feed">
-      <ion-label>Feed</ion-label>
-    </ion-segment-button>
-  </ion-segment>
+    <ion-segment
+      (ionChange)="segmentChanged($event)"
+      [value]="segmentValue"
+      mode="ios"
+    >
+      <ion-segment-button value="resume">
+        <ion-label>Résumé</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="participants">
+        <ion-label>Participants</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="feed">
+        <ion-label>Feed</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-item>
   <section *ngIf="segmentValue == 'feed'">
     <ion-toolbar
       mode="ios"
@@ -96,10 +156,7 @@
               margin-right: 0;
             "
           >
-            <img
-              src="assets/icon/icons8-email-send.svg"
-              alt=""
-            />
+            <img src="assets/icon/icons8-email-send.svg" alt="" />
           </ion-button>
         </ion-item>
         <ion-item lines="none">
@@ -125,7 +182,23 @@
   </section>
 </ion-header>
 
-<ion-content fullscreen>
+<ion-content>
+  <ng-container *ngIf="loadingComp">
+    <div
+      style="
+        height: 280px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      "
+    >
+      <ion-spinner
+        name="crescent"
+        style="height: 50px; width: 50px"
+      ></ion-spinner>
+    </div>
+  </ng-container>
   <ng-container *ngIf="championnat$|async as champ">
     <app-champ-template
       [championnat]="champ"

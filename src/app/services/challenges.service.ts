@@ -15,6 +15,7 @@ import {
   getDoc,
   Unsubscribe,
   limit,
+  startAfter,
 } from 'firebase/firestore';
 import { BehaviorSubject } from 'rxjs';
 import { NotificationService } from './notification-service.service';
@@ -93,17 +94,50 @@ export class ChallengesService {
   async getChallengesList() {
     this.challengesList$ = new BehaviorSubject(null);
 
-    const docRef = query(collection(this.db, 'challenges'), limit(15));
+    const docRef = query(
+      collection(this.db, 'challenges'),
+      orderBy('dateCreation', 'desc'),
+      limit(15)
+    );
     const documentSnapshots = await getDocs(docRef);
     let table = [];
     documentSnapshots.forEach((doc) => {
       if (doc) {
         console.log(doc.data());
         this.challengesList$.next(doc.data());
-        // table.push(doc.data());
       }
     });
     console.log(table);
+    const lastVisible: any = documentSnapshots.docs[
+      documentSnapshots.docs.length - 1
+    ]
+      ? documentSnapshots.docs[documentSnapshots.docs.length - 1]
+      : null;
+    return lastVisible;
+  }
+
+  async addChallenges(last) {
+    const docRef = query(
+      collection(this.db, 'challenges'),
+      orderBy('dateCreation', 'desc'),
+      startAfter(last),
+      limit(15)
+    );
+
+    const documentSnapshots = await getDocs(docRef);
+
+    documentSnapshots.forEach((doc) => {
+      const document = doc.data();
+      console.log(doc.data());
+      this.challengesList$.next(document);
+    });
+
+    const lastVisible: any = documentSnapshots.docs[
+      documentSnapshots.docs.length - 1
+    ]
+      ? documentSnapshots.docs[documentSnapshots.docs.length - 1]
+      : null;
+    return lastVisible;
   }
 
   getChallenges() {
