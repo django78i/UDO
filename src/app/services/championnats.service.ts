@@ -240,10 +240,13 @@ export class ChampionnatsService {
   async sendMessage(msg, post) {
     post.postCount += 1 as Number;
     const postLast = msg;
+
+    //écriture du message dans la collection
     await addDoc(
       collection(this.db, `post-session-now/${post.uid}/messages`),
       msg
     );
+    //update du dernier msg et comptage des posts non lus
     await updateDoc(doc(this.db, `post-session-now/${post.uid}`), {
       postCount: post.postCount,
       postLast: postLast,

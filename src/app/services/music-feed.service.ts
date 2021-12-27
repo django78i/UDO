@@ -35,7 +35,10 @@ export class MusicFeedService {
     public championnatService: ChampionnatsService
   ) {}
 
-  //Feed d'un championnat ou d'un challenge
+  /**Feed d'un championnat ou d'un challenge
+   * @champUid : string
+   * @competitionName : string
+   */
   async feedQuery(champUid, competition) {
     console.log('là');
     const table = [];
@@ -53,7 +56,10 @@ export class MusicFeedService {
     return this.returnQueryObject(documentSnapshots);
   }
 
-  //Feed global
+  /**feed global
+   * @filter: string
+   * returns Promise<any>
+   */
   async feedFilter(filter: string) {
     const table = [];
     const db = getFirestore();
@@ -102,7 +108,11 @@ export class MusicFeedService {
       return { table: [], last: null };
     }
   }
-
+/**
+ * 
+ * @param uid 
+ * @returns Promise<DocumentData>
+ */
   async getPost(uid) {
     const db = getFirestore();
     const docSnap = await getDoc(doc(db, 'post-session-now', uid));
@@ -163,7 +173,13 @@ export class MusicFeedService {
     return this.returnQueryObject(documentSnapshots);
   }
 
-  //Ajout de post dans le feed du championnat ou challenge
+  /**
+   *
+   * @param competition
+   * @param last
+   * @param champUid
+   * @returns Promise QuerySnapshot<DocumentData>
+   */
   async addFeedChamps(competition, last, champUid?) {
     const db = getFirestore();
     const queryColl = query(
@@ -177,8 +193,10 @@ export class MusicFeedService {
     return this.returnQueryObject(documentSnapshots);
   }
 
-  //Retourne le tableau de résultat + dernier élément de la requête
-  returnQueryObject(documentSnap) {
+  /**Retourne le tableau de résultat + dernier élément de la requête
+   *@documentSnap : QuerySnapshot<DocumentData>
+   */
+  returnQueryObject(documentSnap): any {
     const table = [];
     const users = JSON.parse(localStorage.getItem('usersList'));
 
@@ -195,10 +213,12 @@ export class MusicFeedService {
     return { table: table, last: lastVisible };
   }
 
-  /** récupération des informations des auteurs des post en temps réél
+  /**récupération des informations des auteurs des posts
    *
+   * @data : any
+   * users : any[]
    */
-  formatQuery(data, users) {
+  formatQuery(data, users): any {
     let postLast;
     const findUser = users.find((user) => user.uid == data.userId);
     console.log(findUser);

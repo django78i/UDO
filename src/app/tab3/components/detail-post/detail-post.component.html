@@ -7,14 +7,14 @@
     >
       <img src="../../../../assets/mocks/Icon feather-arrow-left.svg" alt="" />
     </ion-button>
-    <ion-buttons slot="end">
+    <!-- <ion-buttons slot="end">
       <ion-button>
         <img src="../../../../assets/mocks/Icon feather-share-2.svg" alt="" />
       </ion-button>
       <ion-button>
         <img src="../../../../assets/mocks/Icon feather-settings.svg" alt="" />
       </ion-button>
-    </ion-buttons>
+    </ion-buttons> -->
   </ion-toolbar>
 
   <ion-item lines="none" style="--background: #f4f5fa" *ngIf="post">
@@ -23,15 +23,12 @@
     </ion-avatar>
     <ion-label>
       <div style="display: flex; gap: 10px; align-items: center">
-        <p>{{ post.user.userName }}</p>
+        <p style="font-weight: 700">{{ post.user.userName }}</p>
         <ion-note style="font-size: 10px; font-weight: 600">{{
           post.startDate | timeRelative
         }}</ion-note>
       </div>
-      <div
-        style="display: flex; gap: 5px; align-items: center"
-        *ngIf="post.activity"
-      >
+      <div style="display: flex; gap: 5px; align-items: center">
         <div style="display: flex; gap: 5px; align-items: center">
           <img
             style="padding: 5px; border-radius: 50%; background: #eaebef"
@@ -50,7 +47,10 @@
           </p>
         </div>
 
-        <div style="display: flex; gap: 5px; align-items: center">
+        <div
+          style="display: flex; gap: 5px; align-items: center"
+          *ngIf="post.activity"
+        >
           <img
             [src]="post.activity.image"
             alt=""
@@ -62,7 +62,7 @@
         </div>
       </div>
       <ion-note
-        style="font-size: 12px; padding-left: 40px"
+        style="font-size: 12px; font-weight: 600"
         *ngIf="post.comment"
         >{{ post.comment }}</ion-note
       >

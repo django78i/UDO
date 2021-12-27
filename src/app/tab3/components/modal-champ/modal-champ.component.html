@@ -17,11 +17,14 @@
       transition: 0.5s ease all;
       background: #f7f7fa;
       height: 235px;
+      transition: 0.5s ease all;
+      padding-top: 10px !important;
     "
   >
     <ng-template #competTemplate>
       <ion-card
         @flyInOut
+        [ngClass]="{ notActive: segmentValue != 'resume' }"
         style="
           position: absolute;
           width: 92%;

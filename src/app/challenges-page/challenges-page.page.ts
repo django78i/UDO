@@ -96,7 +96,7 @@ export class ChallengesPagePage {
     public notificationService: NotificationService
   ) {}
 
-  ionViewDidEnter() {
+  ionViewWillEnter() {
     this.userService.getCurrentUser().then((user) => {
       this.user = user;
       this.http

@@ -127,7 +127,6 @@ ion-card-content.challenge {
   }
 }
 
-
 .champCarousel {
   height: 57px;
   width: 57px;
@@ -200,4 +199,9 @@ ion-grid {
   * {
     padding: 0;
   }
+}
+
+.notActive {
+  height: 0px !important;
+  margin-bottom: 0 !important;
 }

@@ -130,7 +130,7 @@ export class ModalChampComponent implements OnInit {
     this.entryData = this.navParam.data.entryData;
   }
 
-  ionViewDidEnter() {
+  ionViewWillEnter() {
     this.getCompetition();
   }
 

@@ -52,7 +52,7 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
   challenges: Observable<any>;
   @ViewChildren('player') videoPlayers: QueryList<any>;
   currentPlaying: HTMLVideoElement = null;
-  indice: number;
+  indice: number = 0;
   stickyVideo: HTMLVideoElement = null;
   stickyPlaying = false;
   @ViewChild('stickyplayer', { static: false }) stickyPlayer: ElementRef;
@@ -109,6 +109,11 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
 
   ngOnInit() {}
 
+  ionViewWillEnter(){
+    this.loading = true;
+
+  }
+
   ionViewDidEnter() {
     console.log('ionViewDidEnter');
     const user = from(this.userService.getCurrentUser());
@@ -119,7 +124,7 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
   }
 
   async controlLivePost() {
-    this.loading = true;
+    // this.loading = true;
     await this.snsService.controlLive(this.user.uid);
     await this.getFeeds();
     this.loading = false;

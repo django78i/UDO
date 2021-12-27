@@ -111,7 +111,7 @@ export class ChampionnatPage {
     public notificationService: NotificationService
   ) {}
 
-  ionViewDidEnter() {
+  ionViewWillEnter() {
     this.userService.getCurrentUser().then((user) => {
       this.user = user;
       const uid = this.route.snapshot.params['id'];

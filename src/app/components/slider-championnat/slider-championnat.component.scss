@@ -1,3 +1,9 @@
+:host ::ng-deep {
+  .swiper-wrapper {
+    padding-bottom: 20px;
+  }
+}
+
 swiper ion-card {
   width: 100%;
   height: 170px;

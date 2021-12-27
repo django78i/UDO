@@ -80,7 +80,31 @@
     "icon": "../assets/emojis/Surprised.png"
   },
   {
-    "nom": "Wink",
-    "icon": "../assets/emojis/Wink.png"
+    "nom": "Machiiiine",
+    "icon": "../assets/emojis/RobotArm.png"
+  },
+  {
+    "nom": "GG",
+    "icon": "../assets/emojis/GG.png"
+  },
+  {
+    "nom": "Enjoy!",
+    "icon": "../assets/emojis/Aubergine.png"
+  },
+  {
+    "nom": "Une Banane et ça repart !!",
+    "icon": "../assets/emojis/Banana.png"
+  },
+  {
+    "nom": "Tu veux des cerises ?",
+    "icon": "../assets/emojis/Peach.png"
+  },
+  {
+    "nom": "Tu veux du boirer ?",
+    "icon": "../assets/emojis/Water.png"
+  },
+  {
+    "nom": "CHAMPION !!!",
+    "icon": "../assets/emojis/Victory.png"
   }
 ]
