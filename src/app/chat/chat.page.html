@@ -15,7 +15,7 @@
 <ion-content>
   <ion-list>
     <!-- <ng-container *ngIf="rooms$|async as rooms"> -->
-    <ng-container *ngIf="roomTable.length">
+    <ng-container *ngIf="roomTable.length; else loader">
       <ion-item
         lines="full"
         *ngFor="let room of roomTable"
@@ -35,7 +35,7 @@
               ></ion-icon>
               <span
                 [class.bold]="room.vue == false"
-                style="font-size: 12px; color: #7070706c;font-weight: 500;"
+                style="font-size: 12px; color: #7070706c; font-weight: 500"
                 slot="end"
                 *ngIf="room.lastMsg"
                 >{{room.timestamp|timeRelative}}</span
@@ -65,6 +65,22 @@
         ></ion-icon>
       </ion-item>
     </ng-container>
-    <!-- </ng-container> -->
+    <ng-template #loader>
+      <div
+        style="
+          height: 280px;
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: #f7f7fa;
+        "
+      >
+        <ion-spinner
+          name="crescent"
+          style="height: 50px; width: 50px"
+        ></ion-spinner>
+      </div>
+    </ng-template>
   </ion-list>
 </ion-content>

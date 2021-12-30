@@ -6,7 +6,7 @@
 >
   <ng-template swiperSlide *ngFor="let chall of challenges">
     <ion-card
-      (click)="showChallenge(chall.uid)"
+      (click)="showChallenge(chall)"
       [style.backgroundColor]="chall.banniereColor"
       style="background-image: url('assets/icon/udoIconFond.svg')"
     >
@@ -52,20 +52,34 @@
             --background: transparent;
             display: flex;
             align-items: flex-end;
+            --inner-padding-end: 0;
           "
           lines="none"
         >
-          <ion-label slot="start">
+          <ion-label
+            slot="start"
+            style="letter-spacing: -0.07em; font-size: 35px"
+          >
             {{
               (chall.completion.value / chall.objectifs) * 100 > 100
                 ? "100"
                 : ((chall.completion.value / chall.objectifs) * 100
                   | number: "1.1-1")
             }}
-            %
+            <span
+              style="
+                position: absolute;
+                font-size: 14px;
+                text-transform: uppercase;
+                top: 8px;
+                margin-left: 5px;
+              "
+              >%</span
+            >
+
             <!-- <img src="../../assets/icon/Icon feather-percent.svg" alt="" /> -->
           </ion-label>
-          <ion-label style="font-size: 10px; text-align: end"
+          <ion-label style="font-size: 10px; text-align: end; margin-right: 0"
             >{{ chall.completion.value | number: "1.1-1" }}/{{
               chall.objectifs
             }}

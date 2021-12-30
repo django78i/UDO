@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import {
   animate,
+  keyframes,
   state,
   style,
   transition,
@@ -19,7 +20,9 @@ import {
 import { NavigationExtras, Router } from '@angular/router';
 import {
   AlertController,
+  AnimationController,
   IonInput,
+  IonSegment,
   ModalController,
   NavController,
   NavParams,
@@ -73,13 +76,6 @@ interface Championnat {
 }
 
 @Component({
-  animations: [
-    trigger('flyInOut', [
-      transition('* => void', [animate(100)]),
-      transition('void => *', [animate(100)]),
-    ]),
-  ],
-
   selector: 'app-modal-champ',
   templateUrl: './modal-champ.component.html',
   styleUrls: ['./modal-champ.component.scss'],
@@ -87,9 +83,12 @@ interface Championnat {
 export class ModalChampComponent implements OnInit {
   @Input() championnat: Championnat;
   @Input() user: any;
+  @Input() competition: any;
+  @Input() position: number;
+  @Input() participantsList: any[];
+  @Input() userEncours: any;
+
   segmentValue = 'resume';
-  participantsList: any[];
-  userEncours: any;
   loading = false;
   championnat$: Observable<any>;
   entryData: string;
@@ -97,6 +96,7 @@ export class ModalChampComponent implements OnInit {
   challenge: any;
   challenge$: Observable<any>;
   startDate: any;
+  loadFeed: boolean = true;
 
   challengeObs$: Observable<any>;
   @ViewChild('inputFeed') inputFeed: IonInput;
@@ -109,6 +109,8 @@ export class ModalChampComponent implements OnInit {
   admin: boolean = false;
   pourcentage: number = 0;
   loadingComp: boolean = true;
+  loaderValue: number = 0;
+  segmentBool: boolean = true;
 
   constructor(
     private modalCtrl: ModalController,
@@ -122,7 +124,8 @@ export class ModalChampComponent implements OnInit {
     public challService: ChallengesService,
     public feedService: MusicFeedService,
     public http: HttpClient,
-    public notificationService: NotificationService
+    public notificationService: NotificationService,
+    public animCtl: AnimationController
   ) {}
 
   ngOnInit() {
@@ -130,14 +133,20 @@ export class ModalChampComponent implements OnInit {
     this.entryData = this.navParam.data.entryData;
   }
 
-  ionViewWillEnter() {
+  IonViewWillEnter() {}
+
+  ionViewDidEnter() {
+    if (this.entryData == 'challenges') {
+      this.loaderValue =
+        this.competition.completion.value / this.competition.objectifs;
+    }
     this.getCompetition();
   }
 
   async getCompetition() {
     this.user = await this.userService.getCurrentUser();
 
-    if (this.entryData == 'championnat') {
+    if (this.entryData == 'championnats') {
       this.champService.getChampionnat(this.navParam.data.champId);
       this.championnat$ = this.champService.singleChampSub$.pipe(
         tap((champ) => {
@@ -145,11 +154,6 @@ export class ModalChampComponent implements OnInit {
             console.log(champ);
             this.championnat = champ;
             this.getFeedChampionnat(this.championnat.uid);
-
-            this.participantsList = this.championnat.participants.slice(0, 4);
-            this.userEncours = this.championnat.participants.find(
-              (part) => part.uid == this.user.uid
-            );
           }
         })
       );
@@ -168,6 +172,7 @@ export class ModalChampComponent implements OnInit {
             this.userEncours = this.challenge.participants.find(
               (part) => part.uid == this.user.uid
             );
+
             this.startDate = moment(this.challenge.dateDemarrage).fromNow();
             console.log(this.challenge);
             this.ref.detectChanges();
@@ -175,6 +180,8 @@ export class ModalChampComponent implements OnInit {
         })
       );
     }
+
+    this.loadFeed = false;
 
     this.http
       .get<any[]>('../../../../assets/mocks/admin.json')
@@ -384,7 +391,7 @@ export class ModalChampComponent implements OnInit {
 
     const notification: Notification = {
       type:
-        this.entryData == 'championnat'
+        this.entryData == 'championnats'
           ? `démarrage championnat ${this.championnat.type}`
           : 'démarrage challenge',
       linkId: this.championnat.uid,
@@ -442,7 +449,7 @@ export class ModalChampComponent implements OnInit {
         : this.challenge.uid,
     };
 
-    this.entryData.toLowerCase() == 'championnat'
+    this.entryData.toLowerCase() == 'championnats'
       ? (post.championnat = this.championnat.uid)
       : (post.challenge = this.challenge.uid);
 
@@ -482,12 +489,35 @@ export class ModalChampComponent implements OnInit {
   }
 
   segmentChanged(ev) {
+    const animation = this.animCtl
+      .create()
+      .addElement(document.querySelector('.cardAnim'))
+      .duration(300)
+      .fromTo('height', '214', '0');
+    const animationRevert = this.animCtl
+      .create()
+      .addElement(document.querySelector('.cardAnim'))
+      .duration(300)
+      .beforeStyles({
+        height: 0,
+      })
+      .fromTo('height', '0', '214px');
+
     this.segmentValue = ev.detail.value;
+    console.log(this.segmentValue, this.segmentBool);
+    if (this.segmentValue != 'resume' && this.segmentBool == true) {
+      animation.play();
+      this.segmentBool = false;
+    } else if (this.segmentValue == 'resume' && this.segmentBool == false) {
+      console.log('revert');
+      animationRevert.play();
+      this.segmentBool = true;
+    }
   }
 
-  seanceNow(ev, type) {
+  seanceNow() {
     let competInfo: NavigationExtras;
-    if (type == 'championnat') {
+    if (this.entryData == 'championnats') {
       competInfo = {
         queryParams: {
           championnatType: this.championnat.type,
@@ -509,6 +539,7 @@ export class ModalChampComponent implements OnInit {
       };
     }
     this.navCtl.navigateForward('session-now', competInfo);
+    this.modalCtrl.dismiss();
   }
 
   async addFriend() {
@@ -523,7 +554,7 @@ export class ModalChampComponent implements OnInit {
       },
     });
     modal.onDidDismiss().then((data: any) => {
-      if (this.entryData == 'Championnat') {
+      if (this.entryData == 'Championnats') {
         this.champService.getChampionnat(this.championnat.uid);
       } else {
         this.challService.getChallenge(this.challenge.uid);

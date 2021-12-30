@@ -1,82 +1,96 @@
-<ng-container *ngIf="challengesFilered.length; else list">
-  <!-- <swiper #swiper [config]="config" style="padding: 0 15px">
-    <ng-template swiperSlide *ngFor="let chall of challengesFilered"> -->
-  <ion-card
-    *ngFor="let chall of challengesFilered"
-    (click)="showChallenge(chall.uid)"
-    [style.backgroundColor]="chall.banniereColor"
-    style="background-image: url('assets/icon/udoIconFond.svg')"
-  >
-    <ion-card-header>
-      <ion-card-title class="cardSlide">
-        <img
-          [src]="chall.icon"
-          alt=""
-          style="
-            margin-right: 10px;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-          "
-        />
-        <div style="display: flex; flex-direction: column; gap: 5px">
-          <ion-label style="font-size: 12px; color: white; font-weight: 700">{{
-            chall.name
-          }}</ion-label>
-          <div style="--background: transparent; display: flex; gap: 5px">
-            <img
-              src="assets/icon/friends-white.svg"
-              alt=""
-              slot="start"
-              style="height: 10px"
-            />
+<ng-container *ngIf="challengesFilered; else list">
+  <ng-container *ngIf="challengesFilered.length; else noFilter">
+    <ion-card
+      *ngFor="let chall of challengesFilered"
+      (click)="showChallenge(chall.uid)"
+      [style.backgroundColor]="chall.banniereColor"
+      style="background-image: url('assets/icon/udoIconFond.svg')"
+    >
+      <ion-card-header>
+        <ion-card-title class="cardSlide">
+          <img
+            [src]="chall.icon"
+            alt=""
+            style="
+              margin-right: 10px;
+              border-radius: 50%;
+              width: 30px;
+              height: 30px;
+            "
+          />
+          <div style="display: flex; flex-direction: column; gap: 5px">
             <ion-label
-              slot="start"
-              style="font-size: 10px; font-weight: 900; color: #bfb7b7"
+              style="font-size: 12px; color: white; font-weight: 700"
+              >{{ chall.name }}</ion-label
             >
-              {{ chall.participants.length }} participants
-            </ion-label>
+            <div style="--background: transparent; display: flex; gap: 5px">
+              <img
+                src="assets/icon/friends-white.svg"
+                alt=""
+                slot="start"
+                style="height: 10px"
+              />
+              <ion-label
+                slot="start"
+                style="font-size: 10px; font-weight: 900; color: #bfb7b7"
+              >
+                {{ chall.participants.length }} participants
+              </ion-label>
+            </div>
           </div>
-        </div>
-      </ion-card-title>
-    </ion-card-header>
+        </ion-card-title>
+      </ion-card-header>
 
-    <ion-card-content class="cardContentZone">
-      <!-- <div>Current slide is {{ data.isActive ? 'active' : 'not active' }}</div> -->
-      <ion-item style="--background: transparent" lines="none">
-        <ion-label slot="start">
-          {{
-            (chall.completion.value / chall.objectifs) * 100 | number: "1.1-2"
-          }}
-          %
-          <!-- <img src="../../assets/icon/Icon feather-percent.svg" alt="" /> -->
-        </ion-label>
-        <ion-label style="font-size: 14px; text-align: end"
-          >{{ chall.completion.value | number: "1.1-1" }}/{{ chall.objectifs }}
-          {{ chall.metric.metric }}</ion-label
-        >
-        <!-- <ion-note>{{chall.dateFin|timeRelative | uppercase}}</ion-note> -->
-      </ion-item>
-      <ion-progress-bar
-        [value]="chall.completion.percent"
-        style="
-          --progress-background: rgb(138, 44, 44);
-          height: 6px;
-          border-radius: 10px;
-        "
-      ></ion-progress-bar>
-    </ion-card-content>
-  </ion-card>
-  <!-- </ng-template>
-  </swiper> -->
+      <ion-card-content class="cardContentZone">
+        <!-- <div>Current slide is {{ data.isActive ? 'active' : 'not active' }}</div> -->
+        <ion-item style="--background: transparent" lines="none">
+          <ion-label slot="start">
+            {{
+              (chall.completion.value / chall.objectifs) * 100 | number: "1.1-2"
+            }}
+            %
+            <!-- <img src="../../assets/icon/Icon feather-percent.svg" alt="" /> -->
+          </ion-label>
+          <ion-label style="font-size: 14px; text-align: end"
+            >{{ chall.completion.value | number: "1.1-1" }}/{{
+              chall.objectifs
+            }}
+            {{ chall.metric.metric }}</ion-label
+          >
+          <!-- <ion-note>{{chall.dateFin|timeRelative | uppercase}}</ion-note> -->
+        </ion-item>
+        <ion-progress-bar
+          [value]="chall.completion.percent"
+          style="
+            --progress-background: rgb(138, 44, 44);
+            height: 6px;
+            border-radius: 10px;
+          "
+        ></ion-progress-bar>
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
+  <ng-template #noFilter>
+    <div
+      style="
+        height: 300px;
+        width: 100%;
+        display: flex;
+        align-content: center;
+        justify-content: center;
+      "
+    >
+      <p>Aucun résultat</p>
+    </div>
+  </ng-template>
 </ng-container>
 <ng-template #list>
-  <ng-container *ngIf="challenges.length">
+  <ng-container *ngIf="challenges.length; else tempNull">
     <!-- <swiper #swiper [config]="config" style="padding: 0 15px">
       <ng-template swiperSlide *ngFor="let chall of challenges"> -->
     <ion-card
       *ngFor="let chall of challenges"
-      (click)="showChallenge(chall.uid)"
+      (click)="showChallenge(chall)"
       [style.backgroundColor]="chall.banniereColor"
       style="background-image: url('assets/icon/udoIconFond.svg')"
     >
@@ -142,4 +156,19 @@
     <!-- </ng-template>
     </swiper> -->
   </ng-container>
+  <ng-template #tempNull>
+    <div
+      style="
+        height: 190px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      "
+    >
+      <ion-label style="font-weight: 600; color: #04040561; text-align: center"
+        >Aucun championnat disponible actuellement</ion-label
+      >
+    </div>
+  </ng-template>
 </ng-template>

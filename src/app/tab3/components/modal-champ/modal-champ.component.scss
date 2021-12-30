@@ -3,7 +3,7 @@
 }
 
 ion-card {
-  height: 214px;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -12,6 +12,10 @@ ion-card {
   margin-top: 0;
   margin: 0;
 }
+
+// .cardAdmin {
+//   transform-origin: top;
+// }
 
 ion-card-subtitle {
   background: white;
@@ -29,8 +33,18 @@ ion-card-header {
   transition: 0.3s ease all;
 }
 
+ion-label.position {
+  color: white;
+  font-size: 37px;
+  font-weight: 900;
+  position: relative;
+}
+
 ion-card-content.champ {
   display: flex;
+  padding-inline-end: 60px;
+  justify-content: space-between;
+  align-items: flex-end;
   ion-avatar {
     position: relative;
     height: 57px;
@@ -96,6 +110,10 @@ ion-segment-button {
     font-size: 14px;
     font-weight: 600;
   }
+}
+
+ion-item::part(native) {
+  --padding-start: 0 !important;
 }
 
 ion-card-content.challenge {
@@ -192,7 +210,7 @@ ion-avatar {
   --border-radius: 25px;
   --background: var(--i);
   --background-activated: var(--i);
-  margin: 5px;
+  margin: 5px 5px 0 5px;
 }
 
 ion-grid {

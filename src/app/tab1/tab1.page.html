@@ -16,14 +16,12 @@
     </div>
   </section>
 
-  <swiper #swiper2 [config]="config2" class="sliderFilter">
-    <ng-template swiperSlide>
-      <ion-item
+  <div style="overflow-x: auto; padding: 10px 15px 25px; background: #f7f7fa">
+    <div style="display: inline-flex; gap: 10px">
+      <div
+        class="slideFeed"
         [ngClass]="{black: indice == 0, white :  indice !==0}"
         (click)="clickFilter(filters[0].name, 0)"
-        style="width: auto"
-        lines="none"
-        class="chipFilter"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -48,20 +46,17 @@
           </g>
         </svg>
 
-        <ion-label
+        <p
           style="font-size: 14px; font-weight: 900"
           [ngClass]="{whiteLabel: indice == 0 , blackLabel : indice !== 0}"
-          >{{filters[0].name}}</ion-label
+          >{{filters[0].name}}</p
         >
-      </ion-item>
-    </ng-template>
-    <ng-template swiperSlide>
-      <ion-item
+
+      </div>
+      <div
+        class="slideFeed"
         [ngClass]="{black: indice == 1, white :  indice !== 1}"
         (click)="clickFilter(filters[1].name, 1)"
-        style="width: auto"
-        lines="none"
-        class="chipFilter"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -77,20 +72,16 @@
           </g>
         </svg>
 
-        <ion-label
+        <p
           style="font-size: 14px; font-weight: 900"
           [ngClass]="{whiteLabel: indice == 1 , blackLabel : indice !== 1}"
-          >{{filters[1].name}}</ion-label
+          >{{filters[1].name}}</p
         >
-      </ion-item>
-    </ng-template>
-    <ng-template swiperSlide>
-      <ion-item
+      </div>
+      <div
+        class="slideFeed"
         [ngClass]="{black: indice == 2, white :  indice !== 2}"
         (click)="clickFilter(filters[2].name, 2)"
-        style="width: auto"
-        lines="none"
-        class="chipFilter"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -105,20 +96,16 @@
             </g>
           </g>
         </svg>
-        <ion-label
+        <p
           style="font-size: 14px; font-weight: 900"
           [ngClass]="{whiteLabel: indice == 2 , blackLabel : indice !== 2}"
-          >{{filters[2].name}}</ion-label
+          >{{filters[2].name}}</p
         >
-      </ion-item>
-    </ng-template>
-    <ng-template swiperSlide>
-      <ion-item
+      </div>
+      <div
+        class="slideFeed"
         [ngClass]="{black: indice == 3, white :  indice !== 3}"
         (click)="clickFilter(filters[3].name, 3)"
-        style="width: auto"
-        lines="none"
-        class="chipFilter"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -152,14 +139,14 @@
             </g>
           </g>
         </svg>
-        <ion-label
+        <p
           style="font-size: 14px; font-weight: 900"
           [ngClass]="{whiteLabel: indice == 3 , blackLabel : indice !== 3}"
-          >{{filters[3].name}}</ion-label
+          >{{filters[3].name}}</p
         >
-      </ion-item>
-    </ng-template>
-  </swiper>
+      </div>
+    </div>
+  </div>
 </ion-header>
 <ion-content>
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">

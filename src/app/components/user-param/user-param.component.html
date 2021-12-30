@@ -1,122 +1,130 @@
-<div class="iconTitle">
-  <img
-    src="assets/icon/dot.svg"
-    style="
-      background-color: rgb(233, 229, 229);
-      padding: 10px;
-      border-radius: 50%;
-    "
-    alt=""
-  />
-  <h4 style="font-weight: 900; margin: 0">skills</h4>
-</div>
-
-<div style="margin-top: 15px; display: flex; justify-content: center">
-  <div style="margin: auto">
-    <svg width=" 280px" height="250px">
-      <text x="0" y="80" font-family="Verdana" font-size="10" font-weight="700">
-        SPL
-      </text>
-      <text
-        x="0"
-        y="180"
-        font-family="Verdana"
-        font-size="10"
-        font-weight="700"
-      >
-        XPL
-      </text>
-      <text
-        x="120"
-        y="10"
-        font-family="Verdana"
-        font-size="10"
-        font-weight="700"
-      >
-        CB
-      </text>
-      <text
-        x="240"
-        y="80"
-        font-family="Verdana"
-        font-size="10"
-        font-weight="700"
-      >
-        CH
-      </text>
-      <text
-        x="240"
-        y="180"
-        font-family="Verdana"
-        font-size="10"
-        font-weight="700"
-      >
-        GNG
-      </text>
-      <text
-        x="120"
-        y="250"
-        font-family="Verdana"
-        font-size="10"
-        font-weight="700"
-      >
-        CRD
-      </text>
-      <polygon
-        style="
-          position: relative;
-          fill: #f7f7fa;
-          stroke-linejoin: round;
-          stroke: #cfced6;
-        "
-        *ngFor="let form of donneeFormat"
-        #hexagon
-      ></polygon>
-      <polygon
-        style="
-          position: relative;
-          fill: #ed42783b;
-          stroke-linejoin: round;
-          stroke: #e93a72;
-          stroke-width: 3px;
-        "
-        #stat
-      ></polygon>
-      <circle
-        style="fill: #f7f7fa; stroke-width: 2px; stroke: #e93a72"
-        id="pointA"
-        #points
-        r="2"
-        *ngFor="let stat of statTable"
-      />
-    </svg>
+<section class="sectionParam">
+  <div class="iconTitle">
+    <img
+      src="assets/icon/dot.svg"
+      style="
+        background-color: rgb(233, 229, 229);
+        padding: 10px;
+        border-radius: 50%;
+      "
+      alt=""
+    />
+    <h4 style="font-weight: 900; margin: 0">skills</h4>
   </div>
-</div>
-<div class="iconTitle">
-  <img
-    src="assets/icon/dot.svg"
-    style="
-      background-color: rgb(233, 229, 229);
-      padding: 10px;
-      border-radius: 50%;
-    "
-    alt=""
-  />
-  <h4 style="font-weight: 900; margin: 0">DETAILS</h4>
-</div>
-<section style="display: flex; gap: 10px 10px; flex-wrap: wrap">
-  <ion-card
-    class="cardActivities"
-    *ngFor="let metric of user.metrics; let i = index"
-  >
-    <ion-card-header>
-      <ion-card-title>
-        <img [src]="tableMetrics[i]" />
-      </ion-card-title>
-    </ion-card-header>
-    <ion-card-content style="padding: 0 20px 10px">
-      <ion-card-title>{{ metric.value }} </ion-card-title>
-      <ion-card-subtitle> {{ metric.name }} </ion-card-subtitle>
-    </ion-card-content>
-  </ion-card>
+
+  <div style="margin-top: 15px; display: flex; justify-content: center">
+    <div style="margin: auto">
+      <svg width=" 280px" height="250px">
+        <text
+          x="0"
+          y="80"
+          font-family="Verdana"
+          font-size="10"
+          font-weight="700"
+        >
+          SPL
+        </text>
+        <text
+          x="0"
+          y="180"
+          font-family="Verdana"
+          font-size="10"
+          font-weight="700"
+        >
+          XPL
+        </text>
+        <text
+          x="120"
+          y="10"
+          font-family="Verdana"
+          font-size="10"
+          font-weight="700"
+        >
+          CB
+        </text>
+        <text
+          x="240"
+          y="80"
+          font-family="Verdana"
+          font-size="10"
+          font-weight="700"
+        >
+          CH
+        </text>
+        <text
+          x="240"
+          y="180"
+          font-family="Verdana"
+          font-size="10"
+          font-weight="700"
+        >
+          GNG
+        </text>
+        <text
+          x="120"
+          y="250"
+          font-family="Verdana"
+          font-size="10"
+          font-weight="700"
+        >
+          CRD
+        </text>
+        <polygon
+          style="
+            position: relative;
+            fill: #f7f7fa;
+            stroke-linejoin: round;
+            stroke: #cfced6;
+          "
+          *ngFor="let form of donneeFormat"
+          #hexagon
+        ></polygon>
+        <polygon
+          style="
+            position: relative;
+            fill: #ed42783b;
+            stroke-linejoin: round;
+            stroke: #e93a72;
+            stroke-width: 3px;
+          "
+          #stat
+        ></polygon>
+        <circle
+          style="fill: #f7f7fa; stroke-width: 2px; stroke: #e93a72"
+          id="pointA"
+          #points
+          r="2"
+          *ngFor="let stat of statTable"
+        />
+      </svg>
+    </div>
+  </div>
+  <div class="iconTitle">
+    <img
+      src="assets/icon/dot.svg"
+      style="
+        background-color: rgb(233, 229, 229);
+        padding: 10px;
+        border-radius: 50%;
+      "
+      alt=""
+    />
+    <h4 style="font-weight: 900; margin: 0">DETAILS</h4>
+  </div>
+  <section style="display: flex; gap: 10px 10px; flex-wrap: wrap">
+    <ion-card
+      class="cardActivities"
+      *ngFor="let metric of user.metrics; let i = index"
+    >
+      <ion-card-header>
+        <ion-card-title>
+          <img [src]="tableMetrics[i]" />
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content style="padding: 0 20px 10px">
+        <ion-card-title>{{ metric.value }} </ion-card-title>
+        <ion-card-subtitle> {{ metric.name }} </ion-card-subtitle>
+      </ion-card-content>
+    </ion-card>
+  </section>
 </section>

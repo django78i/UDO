@@ -1,3 +1,4 @@
+import { animate, style, transition, trigger } from '@angular/animations';
 import {
   AfterViewInit,
   Component,
@@ -8,6 +9,7 @@ import {
   ViewChild,
   ViewChildren,
 } from '@angular/core';
+import { createAnimation } from '@ionic/angular';
 import * as _ from 'lodash';
 
 @Component({
@@ -106,6 +108,12 @@ export class UserParamComponent implements OnInit, AfterViewInit {
     console.log(tableOrder);
     this.max = this.user.metrics ? Math.round(tableOrder[0].value * 1.2) : 0;
     this.position = this.createStats();
+    const animation = createAnimation()
+    .addElement(document.querySelector('.sectionParam'))
+    .duration(500)
+    .fromTo('opacity', '0', '1');
+    animation.play()
+
   }
 
   ngAfterViewInit() {

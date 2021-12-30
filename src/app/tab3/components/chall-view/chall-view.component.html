@@ -12,10 +12,10 @@
       />
       <h4 style="font-weight: 900; margin: 0">EN COURS</h4>
     </div>
-    <ng-container *ngIf="!loading; else tempChamp">
+    <ng-container *ngIf="!loader; else tempChamp">
       <app-slider-challenge
         [challenges]="challEncours"
-        *ngIf="challEncours"
+        *ngIf="challEncours.length;else tempNull"
         (challengeId)="chooseChallenge($event)"
       >
       </app-slider-challenge>
@@ -66,10 +66,10 @@
       />
       <h4 style="font-weight: 900; margin: 0">EN ATTENTE</h4>
     </div>
-    <ng-container *ngIf="!loading; else tempChamp">
+    <ng-container *ngIf="!loader; else tempChamp">
       <app-slider-challenge
         [challenges]="challengesUser"
-        *ngIf="challEncours"
+        *ngIf="challengesUser.length;else tempNull"
         (challengeId)="chooseChallenge($event)"
       >
       </app-slider-challenge>
@@ -134,10 +134,10 @@
       />
       <h4 style="font-weight: 900; margin: 0">TERMINES</h4>
     </div>
-    <ng-container *ngIf="!loading; else tempChamp">
+    <ng-container *ngIf="!loader; else tempChamp">
       <app-slider-challenge
         [challenges]="challengesTermines"
-        *ngIf="challengesTermines"
+        *ngIf="challengesTermines.length;else tempNull"
         (challengeId)="chooseChallenge($event)"
       >
       </app-slider-challenge>
@@ -156,13 +156,29 @@
       />
       <h4 style="font-weight: 900; margin: 0">EXPLORER</h4>
     </div>
-    <ng-container *ngIf="!loading; else tempNetWork">
+    <ng-container *ngIf="!loader; else tempNetWork">
       <app-big-chall-slider
         [challenges]="challenges"
-        *ngIf="challenges"
+        *ngIf="challenges.length;else tempNull"
         (challengeId)="chooseChallenge($event)"
       ></app-big-chall-slider>
     </ng-container>
+    <ng-template #tempNull>
+      <div
+        style="
+          height: 190px;
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        "
+      >
+        <ion-label style="font-weight: 600; color: #04040561"
+          >Vous n'avez aucun challenge</ion-label
+        >
+      </div>
+    </ng-template>
+
     <ng-template #tempNetWork>
       <swiper #swiper [config]="config" style="padding-left: 0">
         <ng-template swiperSlide *ngFor="let chall of temporaire">
@@ -209,20 +225,6 @@
         </ng-template>
       </swiper>
     </ng-template>
-  </div>
-  <div style="width: 100%; margin-bottom: 30px; margin-top: 15px">
-    <div class="iconTitle">
-      <img
-        src="assets/icon/dot.svg"
-        style="
-          background-color: rgb(233, 229, 229);
-          padding: 10px;
-          border-radius: 50%;
-        "
-        alt=""
-      />
-      <h4 style="font-weight: 900; margin: 0">TERMINES</h4>
-    </div>
   </div>
   <ion-item
     button

@@ -140,6 +140,7 @@ export class UserProfilComponent implements OnInit {
   statTable = [];
   position: string;
   @Input() userId: any;
+  @Input() userInfo: any;
   currentUser: any;
   user: any;
 
@@ -201,7 +202,8 @@ export class UserProfilComponent implements OnInit {
     const modal = await this.modalController.create({
       component: UserProfilComponent,
       componentProps: {
-        userId: contact,
+        userId: contact.uid,
+        userInfo: contact,
       },
     });
     this.setUser();

@@ -38,17 +38,21 @@
 
       <ion-card-content class="cardContentZone">
         <ion-item style="--background: transparent" lines="none">
-          <ion-label *ngIf="champ.status == 'en cours'">
+          <ion-label
+            *ngIf="champ.status == 'en cours'"
+            style="position: relative"
+          >
             {{ champ.userInfo.points }}
             <span
               style="
                 position: absolute;
                 font-size: 12px;
-                top: 0;
+                top: 8px;
                 margin-left: 5px;
               "
-              >{{ POINTS }}</span
             >
+              PTS
+            </span>
           </ion-label>
           <ion-label
             *ngIf="champ.status == 'termine'"
@@ -59,7 +63,8 @@
               style="
                 position: absolute;
                 font-size: 12px;
-                top: 0;
+                text-transform: uppercase;
+                top: 8px;
                 margin-left: 5px;
               "
               >{{ champ.userInfo.position == 1 ? "er" : "ème" }}</span

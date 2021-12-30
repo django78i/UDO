@@ -68,6 +68,8 @@ ion-thumbnail {
 .barStat {
   --padding-start: 15px;
   --padding-end: 15px;
+  display: flex;
+  justify-content: center;
 }
 
 h4 {

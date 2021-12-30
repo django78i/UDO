@@ -33,7 +33,7 @@ export class MenuUserComponent implements OnInit {
       component: UserProfilComponent,
       componentProps: {
         userId: this.user.uid,
-        // currentUser: this.user,
+        userInfo: this.user,
         segment : ev
       },
     });

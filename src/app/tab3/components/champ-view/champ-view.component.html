@@ -16,7 +16,7 @@
       <app-user-championnats-slide
         [championnats]="userChampionnats"
         (champ)="launchDetail($event)"
-        *ngIf="userChampionnats; else tempChamp"
+        *ngIf="userChampionnats.length; else tempNull"
       >
       </app-user-championnats-slide>
     </ng-container>
@@ -116,7 +116,7 @@
       <app-slider-championnat
         (champ)="launchDetail($event)"
         [championnats]="championnatsList"
-        *ngIf="championnatsList"
+        *ngIf="championnatsList.length; else tempNull"
       ></app-slider-championnat>
     </ng-container>
   </div>
@@ -137,7 +137,7 @@
       <app-user-championnats-slide
         (champ)="launchDetail($event)"
         [championnats]="championnatTermines"
-        *ngIf="championnatsList"
+        *ngIf="championnatTermines.length; else tempNull"
       ></app-user-championnats-slide>
     </ng-container>
   </div>
@@ -158,9 +158,25 @@
       <app-slider-network
         (champ)="launchDetail($event)"
         [championnats]="champinonatNetwork"
-        *ngIf="champinonatNetwork"
+        *ngIf="champinonatNetwork.length; else tempNull"
       ></app-slider-network>
     </ng-container>
+    <ng-template #tempNull>
+      <div
+        style="
+          height: 190px;
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        "
+      >
+        <ion-label style="font-weight: 600; color: #04040561"
+          >Vous n'avez aucun championnat</ion-label
+        >
+      </div>
+    </ng-template>
+
     <ng-template #tempNetWork>
       <swiper #swiper [config]="config" style="padding-left: 0">
         <ng-template swiperSlide *ngFor="let chall of temporaire">

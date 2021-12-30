@@ -91,7 +91,7 @@ export class ChampionnatsService {
     let table = [];
     documentSnapshots.forEach((doc) => {
       const document = doc.data();
-      const docFormat = this.formatChamp(document, users);
+      const docFormat = this.formatChamp(document);
 
       if (document) {
         console.log(doc.data());
@@ -122,7 +122,7 @@ export class ChampionnatsService {
     let table = [];
     documentSnapshots.forEach((doc) => {
       const document = doc.data();
-      const docFormat = this.formatChamp(document, users);
+      const docFormat = this.formatChamp(document);
       console.log(doc.data());
       this.champNetWorkList$.next(docFormat);
     });
@@ -135,12 +135,13 @@ export class ChampionnatsService {
   }
 
   async getChampionnat(uid) {
+    this.singleChampSub$ = new BehaviorSubject(null);
     console.log(uid);
     const users = JSON.parse(localStorage.getItem('usersList'));
     const docData = await getDoc(doc(this.db, 'championnats', uid));
     const dataDoc = docData.data();
     console.log(dataDoc);
-    const champ = this.formatChamp(dataDoc, users);
+    const champ = this.formatChamp(dataDoc);
     console.log(champ);
     this.singleChampSub$.next(champ);
   }
@@ -155,7 +156,6 @@ export class ChampionnatsService {
       // limit(10)
     );
     this.unsubscribe = onSnapshot(docRef, (querySnapshot) => {
-      const champs = [];
       const users = JSON.parse(localStorage.getItem('usersList'));
       querySnapshot.docChanges().forEach((changes) => {
         if (changes) {
@@ -169,7 +169,7 @@ export class ChampionnatsService {
         const bool = document.participants.some(
           (users: any) => users.uid == auth.currentUser.uid
         );
-        const docFormat = this.formatChamp(document, users);
+        const docFormat = this.formatChamp(document);
         if (document.status == 'en cours' && bool) {
           this.champEnCoursSubject$.next(docFormat);
         } else if (document.status == 'en attente' && bool) {
@@ -188,12 +188,23 @@ export class ChampionnatsService {
     });
   }
 
-  formatChamp(champ, users) {
+  formatChamp(champ) {
+    const users = JSON.parse(localStorage.getItem('usersList'));
+
     const championnat = champ;
     console.log(champ);
     if (championnat.participants) {
       championnat.participants = championnat.participants.map((participant) => {
-        const partFormat = users?.find((user) => participant.uid == user.uid);
+        const partFormat = users
+          .map((r) => {
+            return {
+              avatar: r.avatar,
+              userName: r.userName,
+              uid: r.uid,
+              niveau: r.niveau,
+            };
+          })
+          .find((user) => participant.uid == user.uid);
         return { ...participant, user: partFormat };
       });
     }

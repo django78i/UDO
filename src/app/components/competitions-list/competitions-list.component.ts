@@ -28,11 +28,11 @@ export class CompetitionsListComponent {
   @Input() segmentSelected: string;
 
   championnatNetwork: any[] = [];
-  championnatsFiltered: any[] = [];
+  championnatsFiltered: any[];
   filter: string;
   subscription: Subscription;
   challenges: any[] = [];
-  challengesFilered: any[] = [];
+  challengesFilered: any[];
   lastVisibleChamp: any;
   lastVisibleChall: any;
 
@@ -91,12 +91,12 @@ export class CompetitionsListComponent {
       event.target.complete();
       const lastVisible = feedPlus;
       if (
-        (lastVisible &&
-          (this.segmentValue == 'championnats' &&
-          lastVisible.data() <= this.championnatNetwork.length ||
-      (this.segmentValue == 'challenges' &&
-          lastVisible.data() <= this.challenges.length))
-      )) {
+        lastVisible &&
+        ((this.segmentValue == 'championnats' &&
+          lastVisible.data() <= this.championnatNetwork.length) ||
+          (this.segmentValue == 'challenges' &&
+            lastVisible.data() <= this.challenges.length))
+      ) {
         event.target.disabled = true;
       }
     }, 500);
@@ -120,19 +120,28 @@ export class CompetitionsListComponent {
       chall.name.toLowerCase().includes(this.filter.toLowerCase().trim())
     );
     console.log(filterChallenge);
-    this.challengesFilered = filterChallenge;
-
-    this.championnatsFiltered = filterChamp;
+    if (this.filter != '') {
+      this.challengesFilered = filterChallenge;
+      this.championnatsFiltered = filterChamp;
+    } else {
+      this.challengesFilered = undefined;
+      this.championnatsFiltered = undefined;
+    }
   }
 
   viewChange(ev) {
     this.segmentValue = ev.detail.value;
   }
 
-  async navigateChallenge(ev) {
+  async navigateChallenge(ev, chall) {
+    console.log('ici');
     const modal = await this.modalCtrl.create({
       component: ModalChampComponent,
-      componentProps: { champId: ev, entryData: 'challenge' },
+      componentProps: {
+        champId: ev.uid,
+        entryData: 'challenges',
+        competition: ev,
+      },
     });
     return await modal.present();
   }
@@ -140,7 +149,11 @@ export class CompetitionsListComponent {
   async navigateChampionnat(ev) {
     const modal = await this.modalCtrl.create({
       component: ModalChampComponent,
-      componentProps: { champId: ev, entryData: 'championnat' },
+      componentProps: {
+        champId: ev.uid,
+        entryData: 'championnat',
+        competition: ev,
+      },
     });
     return await modal.present();
   }

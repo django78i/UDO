@@ -69,7 +69,7 @@ export class Tab3Page implements OnInit, AfterContentChecked, OnDestroy {
 
   //loader
   loaderUserChamp: boolean;
-  loaderChamp: boolean;
+  loader: boolean = true;
   loaderNetwork: boolean;
 
   constructor(
@@ -86,14 +86,12 @@ export class Tab3Page implements OnInit, AfterContentChecked, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.loader = true;
     //user en cours
-    console.log(this.champService.champSubject$)
+    console.log(this.champService.champSubject$);
     this.userService.getCurrentUser().then((user) => (this.user = user));
-    
-      this.champService.getChampionnats();
-    
-    this.challServ.getChallenges();
 
+    this.champService.getChampionnats();
     this.champService.champSubject$
       .pipe(
         tap((r) => {
@@ -123,6 +121,17 @@ export class Tab3Page implements OnInit, AfterContentChecked, OnDestroy {
         })
       )
       .subscribe();
+    this.champService.champtermines$
+      .pipe(
+        tap((r) =>
+          r == null
+            ? (this.championnatTermines = [])
+            : this.championnatTermines.push(r)
+        )
+      )
+      .subscribe();
+    this.challServ.getChallenges();
+
     this.challServ.challenges$
       .pipe(
         tap((r) => {
@@ -143,7 +152,6 @@ export class Tab3Page implements OnInit, AfterContentChecked, OnDestroy {
         })
       )
       .subscribe();
-    this.ref.detectChanges();
     this.challServ.challengeUser$
       .pipe(
         tap((r) => {
@@ -162,19 +170,12 @@ export class Tab3Page implements OnInit, AfterContentChecked, OnDestroy {
         })
       )
       .subscribe();
-    this.champService.champtermines$
-      .pipe(
-        tap((r) =>
-          r == null
-            ? (this.championnatTermines = [])
-            : this.championnatTermines.push(r)
-        )
-      )
-      .subscribe();
-    this.ref.detectChanges();
   }
 
-  ionViewDidEnter() {}
+  ionViewDidEnter() {
+    this.loader = false;
+
+  }
 
   ngAfterContentChecked(): void {
     if (this.swiper) {
@@ -207,10 +208,6 @@ export class Tab3Page implements OnInit, AfterContentChecked, OnDestroy {
     this.ref.detectChanges();
   }
 
-  champModal(event) {
-    this.launchDetail(event);
-  }
-
   async showMenu() {
     const modal = await this.modalController.create({
       component: MenuUserComponent,
@@ -235,13 +232,39 @@ export class Tab3Page implements OnInit, AfterContentChecked, OnDestroy {
     this.navCtl.navigateForward('competitionsList');
   }
 
-  async launchDetail(ev) {
-    this.router.navigate([`/championnat/${ev.uid}`]);
+  async launchDetail(ev, compet) {
+    console.log(ev, compet);
+    const position =
+      ev.participants.findIndex((champ) => champ.uid == this.user.uid) + 1;
+
+    const participantsList = ev.participants.slice(0, 4);
+
+    const modal = await this.modalController.create({
+      component: ModalChampComponent,
+      componentProps: {
+        champId: ev.uid,
+        entryData: 'championnats',
+        competition: ev,
+        position: position,
+        participantsList: participantsList,
+        userEncours: this.user,
+      },
+    });
+    return await modal.present();
+    // this.router.navigate([`/championnat/${ev.uid}`]);
   }
 
   async openChallenge(ev) {
     console.log(ev);
-    this.router.navigate([`/challenge/${ev}`]);
+    const modal = await this.modalController.create({
+      component: ModalChampComponent,
+      componentProps: {
+        champId: ev.uid,
+        entryData: 'challenges',
+        competition: ev,
+      },
+    });
+    return await modal.present();
   }
 
   chatPage() {

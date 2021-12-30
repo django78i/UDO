@@ -2,9 +2,9 @@
   style="padding: 5px 15px; --border-width: 0; --background: #f7f7fa"
   mode="ios"
 >
-  <ion-avatar slot="start" class="big" (click)="showMenu()" *ngIf="user">
-    <img [src]="user.avatar" alt="" />
-    <ion-badge>{{ user.niveau }}</ion-badge>
+  <ion-avatar slot="start" class="big" (click)="showMenu()" >
+    <img *ngIf="user" [src]="user.avatar" alt="" />
+    <ion-badge *ngIf="user">{{ user.niveau }}</ion-badge>
   </ion-avatar>
   <ion-title>
     <img src="assets/icon/udoIcon.svg" alt="" />

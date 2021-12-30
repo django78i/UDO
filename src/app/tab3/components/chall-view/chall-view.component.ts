@@ -29,6 +29,7 @@ export class ChallViewComponent implements OnInit, OnChanges {
   @Input() challengesUser: any[];
   @Input() user: any;
   @Input() challengesTermines: any[];
+  @Input() loader: boolean
 
   @Output() createChall: EventEmitter<any> = new EventEmitter();
   @Output() challengeId: EventEmitter<any> = new EventEmitter();
@@ -59,6 +60,8 @@ export class ChallViewComponent implements OnInit, OnChanges {
       )
       .subscribe();
   }
+
+  ionViewWillEnter() {}
 
   ngOnChanges(changes: SimpleChanges): void {
     console.log(changes);

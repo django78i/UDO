@@ -1,101 +1,140 @@
-
-<ion-content>
+<ion-content fullscreen>
   <ion-toolbar>
     <ion-item lines="none">
-      <ion-img slot="start" class="notifiy-img" src="assets/images/feather-smile.svg" (click)="notification()"> </ion-img>
+      <ion-img
+        slot="start"
+        class="notifiy-img"
+        src="assets/images/feather-smile.svg"
+        (click)="notification()"
+      >
+      </ion-img>
       <span class="notify" (click)="notification()"> {{reactions}} </span>
-      <ion-img slot="end" class="img-info" src="assets/images/feather-info.svg" (click)="information()"> </ion-img>
+      <ion-img
+        slot="end"
+        class="img-info"
+        src="assets/images/feather-info.svg"
+        (click)="information()"
+      >
+      </ion-img>
     </ion-item>
   </ion-toolbar>
-  <ion-slides [options]="slideOptsOne" #mySlider pager="true" (ionSlideWillChange)="slideChange()" [class]="modeClasse">
+  <ion-slides
+    [options]="slideOptsOne"
+    #mySlider
+    pager="true"
+    (ionSlideWillChange)="slideChange()"
+    [class]="modeClasse"
+  >
     <ion-slide>
       <app-reglages></app-reglages>
     </ion-slide>
-    <ion-slide>
-  <ion-row>
-    <div class="circle">
-      <ion-img [src]="activite?.image"></ion-img>
-    </div>
-  </ion-row>
-  <ion-row class="classic-item">
-    <ion-label class="classic">
-     {{activite?.name}}
-    </ion-label>
-  </ion-row>
-  <ion-row class="row-activite">
-    <ion-label class="activite">
-      Séance libre
-    </ion-label>
-  </ion-row>
-  <ion-grid class="time">
-    <ion-row>
-      <span class="value"> {{mn | number: '2.0-0'}}:{{s| number: '2.0-0'}} </span>
-    </ion-row>
-    <ion-row>
-      <span class="duree">
-        Durée
-      </span>
-    </ion-row>
-  </ion-grid>
-  <ion-grid>
-    <ion-row>
-      <ion-col (click)="choix(listElement[j],i)" class="c-col" size="6" *ngFor="let j of [0,1,2,3]  ; let i=index">
-        <ion-row >
-          <ion-img class="c-image" [ngStyle]="{'width': listElement[j].width ? listElement[j].width : listElement[j].width,'height' : listElement[j].height ? listElement[j].height : listElement[j].height}" [src]="listElement[j].img"></ion-img>
+    <ion-slide style="overflow-y: auto;">
+      <ion-row>
+        <div class="circle">
+          <ion-img [src]="activite?.image"></ion-img>
+        </div>
+      </ion-row>
+      <ion-row class="classic-item">
+        <ion-label class="classic"> {{activite?.name}} </ion-label>
+      </ion-row>
+      <ion-row class="row-activite">
+        <ion-label class="activite"> Séance libre </ion-label>
+      </ion-row>
+      <ion-grid class="time">
+        <ion-row>
+          <span class="value">
+            {{mn | number: '2.0-0'}}:{{s| number: '2.0-0'}}
+          </span>
         </ion-row>
         <ion-row>
-         <div class="element">
-          <ion-label class="nombre"> {{listElement[j].nombre}} </ion-label>
-          <span class="exposant" *ngIf="listElement[j].exposant"> {{listElement[j].exposant}} </span>
-         </div>
+          <span class="duree"> Durée </span>
         </ion-row>
+      </ion-grid>
+      <ion-grid>
         <ion-row>
-          <ion-label class="name">
-            {{listElement[j].name}}
-          </ion-label>
+          <ion-col
+            (click)="choix(listElement[j],i)"
+            class="c-col"
+            size="6"
+            *ngFor="let j of [0,1,2,3]  ; let i=index"
+          >
+            <ion-row>
+              <ion-img
+                class="c-image"
+                [ngStyle]="{'width': listElement[j].width ? listElement[j].width : listElement[j].width,'height' : listElement[j].height ? listElement[j].height : listElement[j].height}"
+                [src]="listElement[j].img"
+              ></ion-img>
+            </ion-row>
+            <ion-row>
+              <div class="element">
+                <ion-label class="nombre">
+                  {{listElement[j].nombre}}
+                </ion-label>
+                <span class="exposant" *ngIf="listElement[j].exposant">
+                  {{listElement[j].exposant}}
+                </span>
+              </div>
+            </ion-row>
+            <ion-row>
+              <ion-label class="name"> {{listElement[j].name}} </ion-label>
+            </ion-row>
+          </ion-col>
         </ion-row>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-
-  </ion-slide>
-  <ion-slide>
-
-  </ion-slide>
+      </ion-grid>
+      <div style="height: 123px;"></div>
+    </ion-slide>
+    <ion-slide> </ion-slide>
   </ion-slides>
 
- 
+  <div
+    style="
+      position: fixed;
+      bottom: 0;
+      display: flex;
+      justify-content: center;
+      align-content: center;
+      width: 100%;
+      z-index: 100;
+      padding-bottom: 4px;
+    "
+  >
+    <ion-grid>
+      <ion-row class="demarrage">
+        <ion-item lines="none">
+          <span class="param" slot="start" (click)="reglage()">
+            <ion-img src="assets/images/settings.svg"></ion-img>
+          </span>
+          <span
+            class="start"
+            *ngIf="status==='pause'"
+            ion-long-press
+            [interval]="400"
+            (click)="start()"
+            (longPressed)="displayRecap()"
+          >
+            <div class="contenu">
+              <ion-img src="assets/images/play.svg"></ion-img>
+            </div>
+          </span>
+          <span
+            class="start"
+            *ngIf="status==='play'"
+            ion-long-press
+            [interval]="400"
+            (click)="stop()"
+            (longPressed)="displayRecap()"
+          >
+            <div class="contenu">
+              <ion-img src="assets/images/demarrer.svg"></ion-img>
+            </div>
+          </span>
+
+          <span class="photo" slot="end" (click)="openCamera()">
+            <ion-img src="assets/images/photo.svg"></ion-img>
+          </span>
+        </ion-item>
+      </ion-row>
+    </ion-grid>
+  </div>
 </ion-content>
-<ion-footer>
-  <ion-grid>
-    <ion-row class="demarrage">
-      <ion-item lines="none">
-        <span class="param" slot="start" (click)="reglage()" >
-          <ion-img src="assets/images/settings.svg"></ion-img>
-        </span>
-        <!--
-
-        <button ion-button ion-long-press [interval]="400" (pressed)="pressed()" (longPressed)="active()" (pressEnded)="released()"></button>
--->
-
-
-        <span class="start" *ngIf="status==='pause'"   ion-long-press  [interval]="400" (click)="start()"  (longPressed)="displayRecap()"  >
-          <div class="contenu">
-            <ion-img src="assets/images/play.svg"></ion-img>
-          </div>
-
-        </span>
-        <span class="start" *ngIf="status==='play'" ion-long-press  [interval]="400" (click)="stop()"  (longPressed)="displayRecap()" >
-          <div class="contenu">
-            <ion-img src="assets/images/demarrer.svg"></ion-img>
-          </div>
-
-        </span>
-
-        <span class="photo" slot="end" (click)="openCamera()">
-          <ion-img src="assets/images/photo.svg"></ion-img>
-        </span>
-      </ion-item>
-    </ion-row>
-  </ion-grid>
-</ion-footer>
+<ion-footer> </ion-footer>

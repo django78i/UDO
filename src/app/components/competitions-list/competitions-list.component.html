@@ -35,14 +35,14 @@
 <ion-content slot="fixed">
   <ng-container *ngIf="segmentValue == 'championnats'">
     <section style="padding: 0 15px">
-      <ng-container *ngIf="!championnatsFiltered.length; else list">
+      <ng-container *ngIf="!championnatsFiltered; else list">
         <ng-container *ngIf="!loading; else champTemplate">
-          <ng-container *ngIf="championnatNetwork.length">
+          <ng-container *ngIf="championnatNetwork.length; else tempNull">
             <ion-card
               *ngFor="let champ of championnatNetwork"
               [style.backgroundColor]="champ.banniere.color"
               style="background-image: url('assets/icon/udoIconFond.svg')"
-              (click)="navigateChampionnat(champ.uid)"
+              (click)="navigateChampionnat(champ.uid, champ)"
             >
               <ion-card-header>
                 <ion-card-title class="cardSlide">
@@ -99,6 +99,22 @@
               </ion-card-content>
             </ion-card>
           </ng-container>
+          <ng-template #tempNull>
+            <div
+              style="
+                height: 190px;
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              "
+            >
+              <ion-label
+                style="font-weight: 600; color: #04040561; text-align: center"
+                >Aucun championnat disponible actuellement</ion-label
+              >
+            </div>
+          </ng-template>
         </ng-container>
 
         <ng-template #champTemplate>
@@ -150,64 +166,79 @@
     </section>
   </ng-container>
   <ng-template #list>
-    <ion-card
-      *ngFor="let champ of championnatsFiltered"
-      [style.backgroundColor]="champ.banniere.color"
-      style="background-image: url('assets/icon/udoIconFond.svg')"
-      (click)="navigateChampionnat(champ.uid)"
-    >
-      <ion-card-header>
-        <ion-card-title class="cardSlide">
-          <img
-            [src]="champ.createur.avatar"
-            alt=""
-            style="width: 34px; height: 34px; border-radius: 50%"
-          />
-          <div style="display: flex; flex-direction: column; gap: 5px">
-            <ion-label
-              style="font-size: 12px; color: white; font-weight: 700"
-              >{{ champ.name }}</ion-label
-            >
-            <ion-note style="font-size: 10px; color: white; font-weight: 700">
-              {{ champ.createur.userName }}
-            </ion-note>
+    <ng-container *ngIf="championnatsFiltered.length; else noFilter">
+      <ion-card
+        *ngFor="let champ of championnatsFiltered"
+        [style.backgroundColor]="champ.banniere.color"
+        style="background-image: url('assets/icon/udoIconFond.svg')"
+        (click)="navigateChampionnat(champ)"
+      >
+        <ion-card-header>
+          <ion-card-title class="cardSlide">
+            <img
+              [src]="champ.createur.avatar"
+              alt=""
+              style="width: 34px; height: 34px; border-radius: 50%"
+            />
+            <div style="display: flex; flex-direction: column; gap: 5px">
+              <ion-label
+                style="font-size: 12px; color: white; font-weight: 700"
+                >{{ champ.name }}</ion-label
+              >
+              <ion-note style="font-size: 10px; color: white; font-weight: 700">
+                {{ champ.createur.userName }}
+              </ion-note>
+            </div>
+          </ion-card-title>
+          <div class="typeLogo">
+            <img
+              src="../../../assets/icon/Icon feather-globe.svg"
+              alt=""
+              *ngIf="champ?.type == 'Network'"
+            />
+            <img
+              src="../../../assets/icon/FriendsFamilly.svg"
+              alt=""
+              *ngIf="champ?.type == 'Friends&Familly'"
+            />
           </div>
-        </ion-card-title>
-        <div class="typeLogo">
-          <img
-            src="../../../assets/icon/Icon feather-globe.svg"
-            alt=""
-            *ngIf="champ?.type == 'Network'"
-          />
-          <img
-            src="../../../assets/icon/FriendsFamilly.svg"
-            alt=""
-            *ngIf="champ?.type == 'Friends&Familly'"
-          />
-        </div>
-      </ion-card-header>
+        </ion-card-header>
 
-      <ion-card-content class="cardContentZone">
-        <ion-card-subtitle> EN ATTENTE </ion-card-subtitle>
+        <ion-card-content class="cardContentZone">
+          <ion-card-subtitle> EN ATTENTE </ion-card-subtitle>
 
-        <ion-item style="--background: transparent" lines="none">
-          <ion-img
-            src="../../../assets/icon/friends-white.svg"
-            alt=""
-            slot="start"
-            style="margin-right: 9.5px"
-          >
-          </ion-img>
-          <ion-label slot="start">
-            {{ champ?.participants?.length }} participants
-          </ion-label>
-          <ion-note slot="end">
-            <img src="../../../assets/icon/duration.svg" alt="" />
-            {{ champ?.dureeMax }} sem.</ion-note
-          >
-        </ion-item>
-      </ion-card-content>
-    </ion-card>
+          <ion-item style="--background: transparent" lines="none">
+            <ion-img
+              src="../../../assets/icon/friends-white.svg"
+              alt=""
+              slot="start"
+              style="margin-right: 9.5px"
+            >
+            </ion-img>
+            <ion-label slot="start">
+              {{ champ?.participants?.length }} participants
+            </ion-label>
+            <ion-note slot="end">
+              <img src="../../../assets/icon/duration.svg" alt="" />
+              {{ champ?.dureeMax }} sem.</ion-note
+            >
+          </ion-item>
+        </ion-card-content>
+      </ion-card>
+    </ng-container>
+    <ng-template #noFilter>
+      <div
+        style="
+          height: 300px;
+          width: 100%;
+          display: flex;
+          align-content: center;
+          justify-content: center;
+        "
+      >
+        <p>Aucun résultat</p>
+      </div>
+    </ng-template>
   </ng-template>
 
   <ng-container *ngIf="segmentValue == 'challenges'">

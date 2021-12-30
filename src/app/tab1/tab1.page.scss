@@ -13,7 +13,7 @@ ion-col {
   flex-direction: column;
 }
 
-ion-skeleton-text{
+ion-skeleton-text {
   margin: 0 !important;
 }
 
@@ -197,23 +197,40 @@ ion-avatar {
   }
 }
 
+.slideFeed {
+  border-radius: 13px;
+  padding: 10px 17px;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  border: 1px solid #E1E4EF;
+
+  p{
+    clear: both;
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    margin: 0;
+  }
+}
+
 .big {
   height: 50px;
   width: 50px;
 }
 
 .black {
-  --background: black;
+  background: black;
 }
 .white {
-  --background: white;
+  background: white;
 }
 
 .blackLabel {
-  --color: black;
+  color: black;
 }
 .whiteLabel {
-  --color: white;
+  color: white;
 }
 
 .blackFill {

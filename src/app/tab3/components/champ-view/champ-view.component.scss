@@ -21,6 +21,12 @@ ion-item {
   --color: black;
 }
 
+:host ::ng-deep {
+  .swiper-wrapper {
+    padding-bottom: 20px;
+  }
+}
+
 .challengeCreate {
   --background: white;
   &::part(detail-icon) {

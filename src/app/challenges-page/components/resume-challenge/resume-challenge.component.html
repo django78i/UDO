@@ -1,5 +1,8 @@
-<section style="overflow: auto; height: 100%">
-  <section *ngIf="challenge?.status == 'en cours' || challenge?.status == 'termine'" class="contentTotal">
+<section style="overflow: auto; height: 100%" @flyInOut>
+  <section
+    *ngIf="challenge?.status == 'en cours' || challenge?.status == 'termine'"
+    class="contentTotal"
+  >
     <div class="iconTitle">
       <img
         src="assets/icon/dot.svg"
@@ -13,13 +16,14 @@
       <h4 style="font-weight: 900; margin: 0">VOS INFORMATIONS</h4>
     </div>
     <ion-toolbar class="barStat" *ngIf="userEncours">
-      <ion-item slot="start" lines="none" class="itemLeft">
-        <ion-label class="titre">
-          {{ challenge?.semaineEnCours }}
-        </ion-label>
-        <ion-label class="sousTitre black"> Semaines </ion-label>
-      </ion-item>
-      <ion-title>
+      <span style="display: flex; justify-content: center; align-items: center">
+        <ion-item slot="start" lines="none" class="itemLeft">
+          <ion-label class="titre">
+            {{ challenge?.semaineEnCours }}
+          </ion-label>
+          <ion-label class="sousTitre black"> Semaines </ion-label>
+        </ion-item>
+
         <ion-item lines="none">
           <ion-label class="titre">
             {{ userEncours.value | number: "1.1-1"
@@ -30,7 +34,7 @@
             challenge.metric.metric
           }}</ion-label>
         </ion-item>
-      </ion-title>
+      </span>
     </ion-toolbar>
   </section>
   <section class="contentTotal">
@@ -111,6 +115,5 @@
       </ion-thumbnail>
     </ion-toolbar>
   </section>
-  <section style="height: 100px;"></section>
-
+  <section style="height: 100px"></section>
 </section>

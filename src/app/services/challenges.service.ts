@@ -16,6 +16,8 @@ import {
   Unsubscribe,
   limit,
   startAfter,
+  QuerySnapshot,
+  DocumentData,
 } from 'firebase/firestore';
 import { BehaviorSubject } from 'rxjs';
 import { NotificationService } from './notification-service.service';
@@ -83,14 +85,19 @@ export class ChallengesService {
   }
 
   async getChallenge(uid) {
-    const users = JSON.parse(localStorage.getItem('usersList'));
-    const docData = await getDoc(doc(this.db, 'challenges', uid));
-    const dataDoc = await docData.data();
-    const champ = this.formatChall(dataDoc, users);
+    this.singleChallSub$ = new BehaviorSubject(null);
+    const docData = await (
+      await getDoc(doc(this.db, 'challenges', uid))
+    ).data();
+    const champ = this.formatChall(docData);
     console.log(champ);
     this.singleChallSub$.next(champ);
   }
 
+  /**
+   * Challenge en attente et en cours dans la liste toutes le compétitions
+   * @returns void
+   */
   async getChallengesList() {
     this.challengesList$ = new BehaviorSubject(null);
 
@@ -100,13 +107,8 @@ export class ChallengesService {
       limit(15)
     );
     const documentSnapshots = await getDocs(docRef);
+    this.pushChallenge(documentSnapshots);
     let table = [];
-    documentSnapshots.forEach((doc) => {
-      if (doc) {
-        console.log(doc.data());
-        this.challengesList$.next(doc.data());
-      }
-    });
     console.log(table);
     const lastVisible: any = documentSnapshots.docs[
       documentSnapshots.docs.length - 1
@@ -126,12 +128,7 @@ export class ChallengesService {
 
     const documentSnapshots = await getDocs(docRef);
 
-    documentSnapshots.forEach((doc) => {
-      const document = doc.data();
-      console.log(doc.data());
-      this.challengesList$.next(document);
-    });
-
+    this.pushChallenge(documentSnapshots);
     const lastVisible: any = documentSnapshots.docs[
       documentSnapshots.docs.length - 1
     ]
@@ -140,13 +137,30 @@ export class ChallengesService {
     return lastVisible;
   }
 
+  /**
+   *
+   * @param documentSnapshots
+   */
+  pushChallenge(documentSnapshots: QuerySnapshot<DocumentData>) {
+    documentSnapshots.forEach((doc) => {
+      if (doc) {
+        console.log(doc.data());
+        const document = doc.data();
+        if (document.status == 'en cours' || document.status == 'en attente') {
+          const docFormat = this.formatChall(document);
+          this.challengesList$.next(docFormat);
+        }
+      }
+    });
+  }
+
   getChallenges() {
     const auth = getAuth();
     auth.currentUser.uid;
 
     const docRef = collection(this.db, 'challenges');
     this.unsubscribe = onSnapshot(docRef, (querySnapshot) => {
-      const users = JSON.parse(localStorage.getItem('usersList'));
+      //détection des changements
       querySnapshot.docChanges().forEach((changes) => {
         if (changes) {
           console.log('ici', changes);
@@ -161,8 +175,9 @@ export class ChallengesService {
           const bool = document.participants.some(
             (users: any) => users.uid == auth.currentUser.uid
           );
-          const docFormat = this.formatChall(document, users);
+          const docFormat = this.formatChall(document);
           console.log(docFormat);
+          //tris des challenges
           if (document.status == 'en cours' && bool) {
             this.challengeEnCours$.next(docFormat);
           } else if (document.status == 'en attente' && bool) {
@@ -182,10 +197,20 @@ export class ChallengesService {
     await updateDoc(doc(this.db, 'challenges', chall.uid), chall);
   }
 
-  formatChall(chall, users) {
+  formatChall(chall) {
+    const users = JSON.parse(localStorage.getItem('usersList'));
     const challenge = chall;
     challenge.participants = challenge.participants.map((participant) => {
-      const partFormat = users?.find((user) => participant.uid == user.uid);
+      const partFormat = users
+        .map((r) => {
+          return {
+            avatar: r.avatar,
+            userName: r.userName,
+            uid: r.uid,
+            niveau: r.niveau,
+          };
+        })
+        .find((user) => participant.uid == user.uid);
       return { ...participant, user: partFormat };
     });
     return challenge;

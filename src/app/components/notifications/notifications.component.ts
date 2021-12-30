@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Router } from '@angular/router';
 import { ModalController, NavController } from '@ionic/angular';
 
 import { NotificationService } from 'src/app/services/notification-service.service';
@@ -16,7 +17,8 @@ export class NotificationsComponent implements OnInit {
   constructor(
     public notifService: NotificationService,
     public modalController: ModalController,
-    public navCtl: NavController
+    public navCtl: NavController,
+    public router: Router
   ) {}
 
   ngOnInit() {
@@ -61,22 +63,23 @@ export class NotificationsComponent implements OnInit {
     console.log(notif);
     switch (notif.type) {
       case 'invitation championnat Network':
-        this.navCtl.navigateForward(`championnat/${notif.linkId}`);
+        this.router.navigate([`championnat/${notif.linkId}`]);
         break;
       case 'invitation championnat Friends&Familly':
-        this.navCtl.navigateForward(`championnat/${notif.linkId}`);
+        this.router.navigate([`championnat/${notif.linkId}`]);
         break;
       case 'démarrage championnat Friends&Familly':
-        this.navCtl.navigateForward(`championnat/${notif.linkId}`);
+        this.router.navigate([`championnat/${notif.linkId}`]);
         break;
       case 'démarrage championnat NetWork':
-        this.navCtl.navigateForward(`championnat/${notif.linkId}`);
+        console.log('network');
+        this.router.navigate([`championnat/${notif.linkId}`]);
         break;
       case 'démarrage challenge':
-        this.navCtl.navigateForward(`challenge/${notif.linkId}`);
+        this.router.navigate([`challenge/${notif.linkId}`]);
         break;
       case 'invitation challenge':
-        this.navCtl.navigateForward(`challenge/${notif.linkId}`);
+        this.router.navigate([`challenge/${notif.linkId}`]);
         break;
       case 'invitation amis':
         this.openProfil(notif.senderId);

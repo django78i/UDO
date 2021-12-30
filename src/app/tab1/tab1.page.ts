@@ -216,12 +216,13 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
       reaction ? f.nom == reaction.nom : f.nom == reaction.nom
     );
 
+    console.log( isEmojiExist, reaction);
+    if (isEmojiExist != -1) {
     //le user a déjà utilisé cet émoji
-    const userAlreadyUseEmoji: boolean = reaction.users?.some(
+    const userAlreadyUseEmoji: boolean = react[isEmojiExist].users?.some(
       (us) => us.uid == this.user.uid
     );
-    console.log(userAlreadyUseEmoji);
-    if (isEmojiExist != -1) {
+
       if (!userAlreadyUseEmoji) {
         //incrémente de 1 compteur général réactions
         this.feeds[i].reactionsNombre += 1;
