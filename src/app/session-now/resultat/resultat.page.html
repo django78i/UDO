@@ -58,13 +58,18 @@
   </ion-grid>
   <ion-grid class="choice">
     <ion-row>
-
-      <ion-col class="c-col" size="6" *ngFor="let j of [0,1,2,3]  ; let i=index">
+      <ion-col
+        class="c-col"
+        size="6"
+        *ngFor="let j of [0,1,2,3]  ; let i=index"
+      >
         <ion-row>
-          <ion-img class="c-image"
+          <ion-img
+            class="c-image"
             [ngStyle]="{'width': listElement[j].width ? listElement[j].width : listElement[j].width,'height' : listElement[j].height ? listElement[j].height : listElement[j].height}"
-            [src]="listElement[j].img"></ion-img>
-<!-- dev Moustapha
+            [src]="listElement[j].img"
+          ></ion-img>
+          <!-- dev Moustapha
       <ion-col
         class="c-col"
         size="6"
@@ -127,15 +132,30 @@
     <div *ngIf="!isVisible" expand="block" class="c-ion-fab" (click)="publier()" type="submit">Publier
     </div> -->
 
-<ion-footer [class]="mode">
-  <ion-footer>
-    <ion-button
+<ion-footer
+  [class]="mode"
+  style="
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f4f5fa;
+  "
+>
+  <ion-button
+    type="submit"
+    color="primary"
+    class="buttonNextSlide"
+    (click)="publier()"
+    *ngIf="!isVisible"
+    ><span> Publier</span></ion-button
+  >
+
+  <!-- <ion-button
       *ngIf="!isVisible"
       expand="block"
       class="c-ion-fab"
       (click)="publier()"
       type="submit"
       >Publier
-    </ion-button>
-  </ion-footer>
+    </ion-button> -->
 </ion-footer>

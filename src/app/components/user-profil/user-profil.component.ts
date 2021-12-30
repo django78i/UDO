@@ -258,7 +258,7 @@ export class UserProfilComponent implements OnInit {
         this.userService.removeFriend(contact, this.currentUser);
         this.friendBool = false;
         this.setUser();
-        this.sessionNowService.show('supprimer des amis', 'warning');
+        this.sessionNowService.show("supprimer de la liste d'amis", 'warning');
       }
       console.log(dat);
     });

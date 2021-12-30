@@ -1,64 +1,84 @@
 <ion-content style="--padding-top: 20px">
-  <ng-container *ngIf="messagesList; else showBlank">
-    <ion-card
-      *ngFor="let message of messagesList"
-      style="--background: #f7f7fa; box-shadow: none; margin: 24px 15px"
-    >
-      <ion-card-header style="padding-left: 0">
-        <ion-item lines="none">
-          <ion-avatar
-            slot="start"
-            [ngClass]="{ greyBlank: !message?.sender.avatar }"
-            (click)="openProfil(message.sender)"
-          >
-            <img
-              [src]="message?.sender.avatar"
-              *ngIf="message.sender"
-              alt=""
-            />
-            <ion-badge>{{ message.sender.niveau }}</ion-badge>
-          </ion-avatar>
-          <ion-label>
-            <p style="font-size: 14px; color: black; font-weight: 700">
-              {{ message.sender.userName }}
-            </p>
-            <p style="font-size: 10px">
-              {{ message.date | timeRelative }}
-            </p>
-          </ion-label>
-        </ion-item>
-        <ion-item style="--padding-start: 71px" lines="none">
-          <span style="font-size: 14px; font-weight: 500">{{
-            message.text
-          }}</span>
-        </ion-item>
-      </ion-card-header>
-      <img
-        [src]="message?.image"
-        style="
-          display: block;
-          max-width: 400px;
-          max-height: 300px;
-          width: auto;
-          height: auto;
-          margin: auto;
-          border-radius: 15px;
-        "
-        alt=""
-      />
-      <ion-card-content style="padding-left: 73px"> </ion-card-content>
-    </ion-card>
+  <ng-container *ngIf="messagesList; else loading">
+    <ng-container *ngIf="messagesList.length; else showBlank">
+      <ion-card
+        *ngFor="let message of messagesList"
+        style="--background: #f7f7fa; box-shadow: none; margin: 24px 15px"
+      >
+        <ion-card-header style="padding-left: 0">
+          <ion-item lines="none">
+            <ion-avatar
+              slot="start"
+              [ngClass]="{ greyBlank: !message?.sender.avatar }"
+              (click)="openProfil(message.sender)"
+            >
+              <img
+                [src]="message?.sender.avatar"
+                *ngIf="message.sender"
+                alt=""
+              />
+              <ion-badge>{{ message.sender.niveau }}</ion-badge>
+            </ion-avatar>
+            <ion-label>
+              <p style="font-size: 14px; color: black; font-weight: 700">
+                {{ message.sender.userName }}
+              </p>
+              <p style="font-size: 10px">
+                {{ message.date | timeRelative }}
+              </p>
+            </ion-label>
+          </ion-item>
+          <ion-item style="--padding-start: 71px" lines="none">
+            <span style="font-size: 14px; font-weight: 500">{{
+              message.text
+            }}</span>
+          </ion-item>
+        </ion-card-header>
+        <img
+          [src]="message?.image"
+          style="
+            display: block;
+            max-width: 400px;
+            max-height: 300px;
+            width: auto;
+            height: auto;
+            margin: auto;
+            border-radius: 15px;
+          "
+          alt=""
+        />
+        <ion-card-content style="padding-left: 73px"> </ion-card-content>
+      </ion-card>
+    </ng-container>
   </ng-container>
+  <ng-template #loading>
+    <div
+      style="
+        height: 280px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      "
+    >
+      <ion-spinner
+        name="crescent"
+        style="height: 100px; width: 100px"
+      ></ion-spinner>
+    </div>
+  </ng-template>
+
   <ng-template #showBlank>
     <ion-card class="blank">
-      <img src="assets/mocks/Groupe 3959.png" alt="" />
+      <img src="assets/icon/empty_message.svg" alt="" />
       <ion-card-header>
-        <ion-card-title style="text-align: center"
-          >Aucun post pour le moment</ion-card-title
+        <ion-card-title
+          style="text-align: center; font-size: 16px; margin-bottom: 7px;"
+          >La conversation est vide</ion-card-title
         >
-        <ion-card-subtitle style="text-align: center"
-          >Vous pourrez suivre ici l’activité de tous les participants de cette
-          compétition</ion-card-subtitle
+        <ion-card-subtitle style="text-align: center; font-size: 11px"
+          >Ecris un premier message pour démarrer la
+          conversation</ion-card-subtitle
         >
       </ion-card-header>
     </ion-card>

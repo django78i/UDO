@@ -42,14 +42,21 @@
       </ion-card-header>
 
       <ion-card-content class="cardContentZone">
-        <!-- <div>Current slide is {{ data.isActive ? 'active' : 'not active' }}</div> -->
         <ion-item style="--background: transparent" lines="none">
           <ion-label slot="start">
             {{
               (chall.completion.value / chall.objectifs) * 100 | number: "1.1-2"
             }}
-            %
-            <!-- <img src="../../assets/icon/Icon feather-percent.svg" alt="" /> -->
+            <span
+              style="
+                position: absolute;
+                font-size: 14px;
+                text-transform: uppercase;
+                top: 8px;
+                margin-left: 5px;
+              "
+              >%</span
+            >
           </ion-label>
           <ion-label style="font-size: 14px; text-align: end"
             >{{ chall.completion.value | number: "1.1-1" }}/{{
@@ -57,7 +64,6 @@
             }}
             {{ chall.metric.metric }}</ion-label
           >
-          <!-- <ion-note>{{chall.dateFin|timeRelative | uppercase}}</ion-note> -->
         </ion-item>
         <ion-progress-bar
           [value]="chall.completion.percent"
@@ -86,8 +92,6 @@
 </ng-container>
 <ng-template #list>
   <ng-container *ngIf="challenges.length; else tempNull">
-    <!-- <swiper #swiper [config]="config" style="padding: 0 15px">
-      <ng-template swiperSlide *ngFor="let chall of challenges"> -->
     <ion-card
       *ngFor="let chall of challenges"
       (click)="showChallenge(chall)"
@@ -130,14 +134,24 @@
       </ion-card-header>
 
       <ion-card-content class="cardContentZone">
-        <!-- <div>Current slide is {{ data.isActive ? 'active' : 'not active' }}</div> -->
         <ion-item style="--background: transparent" lines="none">
-          <ion-label slot="start">
+          <ion-label
+            slot="start"
+            style="letter-spacing: -0.07em; font-size: 35px"
+          >
             {{
               (chall.completion.value / chall.objectifs) * 100 | number: "1.1-2"
             }}
-            %
-            <!-- <img src="../../assets/icon/Icon feather-percent.svg" alt="" /> -->
+            <span
+              style="
+                position: absolute;
+                font-size: 14px;
+                text-transform: uppercase;
+                top: 8px;
+                margin-left: 5px;
+              "
+              >%</span
+            >
           </ion-label>
           <ion-label style="font-size: 14px; text-align: end"
             >{{ chall.completion.value | number: "1.1-1" }}/{{
@@ -145,7 +159,6 @@
             }}
             {{ chall.metric.metric }}</ion-label
           >
-          <!-- <ion-note>{{chall.dateFin|timeRelative | uppercase}}</ion-note> -->
         </ion-item>
         <ion-progress-bar
           [value]="chall.completion.value / chall.objectifs"
@@ -153,8 +166,6 @@
         ></ion-progress-bar>
       </ion-card-content>
     </ion-card>
-    <!-- </ng-template>
-    </swiper> -->
   </ng-container>
   <ng-template #tempNull>
     <div

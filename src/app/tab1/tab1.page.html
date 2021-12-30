@@ -16,7 +16,10 @@
     </div>
   </section>
 
-  <div style="overflow-x: auto; padding: 10px 15px 25px; background: #f7f7fa">
+  <div
+    style="overflow-x: auto; padding: 10px 15px 25px; background: #f7f7fa"
+    class="example"
+  >
     <div style="display: inline-flex; gap: 10px">
       <div
         class="slideFeed"
@@ -49,9 +52,9 @@
         <p
           style="font-size: 14px; font-weight: 900"
           [ngClass]="{whiteLabel: indice == 0 , blackLabel : indice !== 0}"
-          >{{filters[0].name}}</p
         >
-
+          {{filters[0].name}}
+        </p>
       </div>
       <div
         class="slideFeed"
@@ -75,8 +78,9 @@
         <p
           style="font-size: 14px; font-weight: 900"
           [ngClass]="{whiteLabel: indice == 1 , blackLabel : indice !== 1}"
-          >{{filters[1].name}}</p
         >
+          {{filters[1].name}}
+        </p>
       </div>
       <div
         class="slideFeed"
@@ -99,8 +103,9 @@
         <p
           style="font-size: 14px; font-weight: 900"
           [ngClass]="{whiteLabel: indice == 2 , blackLabel : indice !== 2}"
-          >{{filters[2].name}}</p
         >
+          {{filters[2].name}}
+        </p>
       </div>
       <div
         class="slideFeed"
@@ -142,15 +147,16 @@
         <p
           style="font-size: 14px; font-weight: 900"
           [ngClass]="{whiteLabel: indice == 3 , blackLabel : indice !== 3}"
-          >{{filters[3].name}}</p
         >
+          {{filters[3].name}}
+        </p>
       </div>
     </div>
   </div>
 </ion-header>
 <ion-content>
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
-    <ion-refresher-content></ion-refresher-content>
+    <ion-refresher-content refreshingSpinner="crescent"></ion-refresher-content>
   </ion-refresher>
   <section class="contenu" *ngIf="loading == false ; else showBlank">
     <ng-container *ngIf="feeds.length;else noFeed">
@@ -301,6 +307,8 @@
                     <p style="font-size: 10px">
                       {{ item.startDate | timeRelative }}
                     </p>
+                    <ion-icon name="ellipse" style="font-size: 6px"></ion-icon>
+                    <p class="liveIndicator">LIVE</p>
                   </div>
                   <div style="display: flex; gap: 5px; align-items: center">
                     <div style="display: flex; gap: 5px; align-items: center">
@@ -335,24 +343,25 @@
                           {{item.competitionName}}
                         </p>
                       </div>
+                      <ion-icon
+                        name="ellipse"
+                        style="font-size: 6px"
+                      ></ion-icon>
 
-                      <div style="display: flex; gap: 5px; align-items: center">
-                        <img
-                          *ngIf="item.activity"
-                          [src]="item.activity.image"
-                          alt=""
-                          style="width: 20px; height: 20px"
-                        />
-                        <p
-                          style="font-size: 10px; font-weight: 900"
-                          *ngIf="item.activity"
-                        >
-                          {{ item.activity.name }}
-                        </p>
-                      </div>
+                      <img
+                        *ngIf="item.activity"
+                        [src]="item.activity.image"
+                        alt=""
+                        style="width: 20px; height: 20px"
+                      />
+                      <p
+                        style="font-size: 10px; font-weight: 900"
+                        *ngIf="item.activity"
+                      >
+                        {{ item.activity.name }}
+                      </p>
+                      <!-- </div> -->
                     </div>
-                    <ion-icon name="ellipse" style="font-size: 6px"></ion-icon>
-                    <p class="liveIndicator">LIVE</p>
                   </div>
                 </ion-label>
               </ion-item>
@@ -536,7 +545,7 @@
     </ng-container>
     <ng-template #noFeed>
       <ion-card class="blank">
-        <img src="assets/mocks/Groupe 3959.png" alt="" />
+        <img src="assets/icon/empty_feed.svg" alt="" />
         <ion-card-header>
           <ion-card-title style="text-align: center"
             >Aucun post pour le moment</ion-card-title

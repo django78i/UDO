@@ -91,7 +91,7 @@ ion-content {
           font-family: "StaatlichesRegular" !important;
           font-size: 31px;
           color: #040405;
-           margin-top: -70px;
+          margin-top: -70px;
         }
         .val-xp {
           font-family: "PoppinsSemiBold" !important;
@@ -170,15 +170,17 @@ ion-content {
 }
 ion-footer {
   background: #f7f7fa !important;
+  display: flex;
+  justify-content: center;
   .c-ion-fab {
     background: #3e4add 0% 0% no-repeat padding-box;
-    border-radius: 33px;
-    width: 88%;
+    border-radius: 25px;
     margin: 0 20px;
-    height: 89px;
+    height: 70px;
+    width: 200px;
     text-align: center;
     padding-top: 30px;
-    margin-bottom: 20px;
+    margin-bottom: 7px;
     span {
       letter-spacing: 0px;
       color: #ffffff;
@@ -202,4 +204,11 @@ ion-footer {
       font-family: "PoppinsSemiBold" !important;
     }
   }
+}
+
+.buttonNextSlide {
+  height: 70px;
+  width: 200px;
+  --border-radius: 25px;
+  margin-bottom: 7px;
 }

@@ -297,12 +297,13 @@
     </ng-container>
     <ng-template #noFeed>
       <ion-card class="blank">
-        <img src="assets/mocks/Groupe 3959.png" alt="" />
-        <ion-card-header>
-          <ion-card-title style="text-align: center"
+        <img src="assets/icon/empty_feed.svg" alt="" />
+        <ion-card-header style="padding: 20px">
+          <ion-card-title
+            style="text-align: center; font-size: 16px; margin-bottom: 7px"
             >Aucun post pour le moment</ion-card-title
           >
-          <ion-card-subtitle style="text-align: center"
+          <ion-card-subtitle style="text-align: center; font-size: 11px"
             >Vous pourrez suivre ici l’activité de tous les participants de
             cette compétition</ion-card-subtitle
           >
@@ -398,9 +399,9 @@
   </ng-template>
   <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
     <ion-infinite-scroll-content
-    loadingSpinner="crescent"
-    loadingText="Veuillez patienter..."
-  >
+      loadingSpinner="crescent"
+      loadingText="Veuillez patienter..."
+    >
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
 </ion-content>

@@ -109,9 +109,8 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
 
   ngOnInit() {}
 
-  ionViewWillEnter(){
+  ionViewWillEnter() {
     this.loading = true;
-
   }
 
   ionViewDidEnter() {
@@ -172,12 +171,15 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
 
   //Refresh du feed
   async doRefresh(event) {
+    this.loading = true;
+
     this.feeds = [];
     const feedRefresh = await this.feedService.feedFilter(this.filter);
     setTimeout(() => {
       event ? event.target.complete() : '';
       this.feeds = feedRefresh.table;
       this.lastVisible = feedRefresh.last;
+      this.loading = false;
     }, 2000);
   }
 
@@ -216,12 +218,12 @@ export class Tab1Page implements OnInit, OnDestroy, AfterContentChecked {
       reaction ? f.nom == reaction.nom : f.nom == reaction.nom
     );
 
-    console.log( isEmojiExist, reaction);
+    console.log(isEmojiExist, reaction);
     if (isEmojiExist != -1) {
-    //le user a déjà utilisé cet émoji
-    const userAlreadyUseEmoji: boolean = react[isEmojiExist].users?.some(
-      (us) => us.uid == this.user.uid
-    );
+      //le user a déjà utilisé cet émoji
+      const userAlreadyUseEmoji: boolean = react[isEmojiExist].users?.some(
+        (us) => us.uid == this.user.uid
+      );
 
       if (!userAlreadyUseEmoji) {
         //incrémente de 1 compteur général réactions

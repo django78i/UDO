@@ -197,15 +197,19 @@ ion-avatar {
   }
 }
 
+.example::-webkit-scrollbar {
+  display: none;
+}
+
 .slideFeed {
   border-radius: 13px;
   padding: 10px 17px;
   display: flex;
   gap: 5px;
   align-items: center;
-  border: 1px solid #E1E4EF;
+  border: 1px solid #e1e4ef;
 
-  p{
+  p {
     clear: both;
     display: inline-block;
     overflow: hidden;

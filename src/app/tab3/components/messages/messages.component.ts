@@ -40,7 +40,7 @@ export class MessagesComponent implements OnInit, OnDestroy {
           };
         });
 
-        this.messagesList = msgFormat;
+        this.messagesList = msgFormat ? msgFormat : [];
         console.log(this.messagesList);
         this.ref.detectChanges();
       }

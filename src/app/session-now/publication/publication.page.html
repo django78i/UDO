@@ -21,7 +21,7 @@
       </span>
     </ion-row>
     <ion-row>
-      <span class="xp">{{xpNewOnTotal| number: "1.1-1"}} XP</span>
+      <span class="xp">{{user.exp| number: "1.0-0"}} XP</span>
     </ion-row>
 
     <ion-row [class]="modeRow">
@@ -36,7 +36,7 @@
         >
         </round-progress>
         <ion-row [class]="modeClasse">
-          <div class="val">+{{item.value| number: "1.1-1"}}</div>
+          <div class="val">+{{item.value| number: "1.0-0"}}</div>
         </ion-row>
         <ion-row [class]="modeClasse">
           <div class="val-xp">xp</div>
@@ -48,12 +48,21 @@
     </ion-row>
     <ion-row class="gtotal">
       <ion-col class="c-col total" size="7"><span>TOTAL</span></ion-col>
-      <ion-col class="c-col total" size="5"><span>+{{valeur| number: "1.1-1"}}XP</span></ion-col>
+      <ion-col class="c-col total" size="5"
+        ><span>+{{valeur| number: "1.0-0"}}XP</span></ion-col
+      >
     </ion-row>
   </ng-container>
 </ion-content>
-<ion-footer (click)="fermer()">
-  <div [class]="demarrage">
+<ion-footer>
+  <ion-button
+    type="submit"
+    color="primary"
+    class="buttonNextSlide"
+    (click)="fermer()"
+    ><span> Publier</span></ion-button
+  >
+  <!-- <div [class]="demarrage">
     <span>Fermer</span>
-  </div>
+  </div> -->
 </ion-footer>
