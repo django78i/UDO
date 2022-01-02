@@ -24,6 +24,8 @@ import { Camera } from '@ionic-native/camera/ngx';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
+import { FeedCall } from './models/api/feed.model';
+import { FeedFormat } from './models/format/feedFormat';
 registerLocaleData(localeFr);
 
 @NgModule({
@@ -45,12 +47,14 @@ registerLocaleData(localeFr);
     VideoPlayer,
     AppLauncher,
     MusicFeedService,
+    FeedCall,
     GooglePlus,
     ScreenOrientation,
     VideoCapturePlus,
     VideoEditor,
     MediaCapture,
     NativeStorage,
+    FeedFormat,
     BackgroundMode,
     Camera,
     Keyboard,

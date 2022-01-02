@@ -259,9 +259,9 @@
   </ng-container>
 
   <ng-container *ngIf="entryData == 'championnats'; else challenges">
-    <ng-container *ngIf="championnat$ | async as champ">
+    <ng-container *ngIf="championnat">
       <app-champ-template
-        [championnat]="champ"
+        [championnat]="championnat"
         [user]="user"
         [userEncours]="userEncours"
         [participantsList]="participantsList"
@@ -274,7 +274,7 @@
     </ng-container>
   </ng-container>
   <ng-template #challenges>
-    <ng-container *ngIf="challengeObs$ | async as challenge">
+    <ng-container *ngIf="challenge">
       <app-chall-template
         [challenge]="challenge"
         [user]="user"
@@ -301,49 +301,64 @@
     "
   >
     <ng-container *ngIf="!loadingComp">
-      <ng-container *ngIf="championnat$ | async as championnat">
-        <ion-button
-          class="buttonNextSlide"
-          style=" --i : {{ championnat.banniere.color }}"
-          (click)="startChamp()"
-          *ngIf="
-            championnat.status == 'en attente' &&
-            championnat.createur.uid == user.uid
-          "
-          >{{ loading ? "" : "Démarrer"
-          }}<ion-spinner *ngIf="loading" name="crescent" mode="md"></ion-spinner
-        ></ion-button>
-        <ion-button
-          class="buttonNextSlide"
-          style=" --i : {{ championnat.banniere.color }}"
-          (click)="participer('championnat')"
-          *ngIf="
-            championnat?.status == 'en attente' &&
-            (userEncours?.etat == 'en attente' || !userEncours)
-          "
-          >Participer</ion-button
-        >
-        <ion-button
-          class="buttonNextSlide"
-          style=" --i : {{ championnat.banniere.color }}"
-          *ngIf="
-            championnat?.status == 'en attente' &&
-            userEncours?.etat == 'prêt' &&
-            championnat?.createur.uid != user.uid
-          "
-        >
-          <ion-spinner *ngIf="loading" name="crescent" mode="md"></ion-spinner>
-          <span *ngIf="!loading">
-            {{ championnat.dateDemarrage | timeChamp }}</span
-          ></ion-button
-        >
-        <ion-button
-          style=" --i : {{ championnat.banniere.color }}"
-          (click)="seanceNow()"
-          *ngIf="championnat?.status == 'en cours'"
-          class="buttonNextSlide"
-          >Séance Now</ion-button
-        >
+      <ng-container *ngIf="championnat">
+        <ng-container *ngIf="show; else noLevel">
+          <ion-button
+            class="buttonNextSlide"
+            style=" --i : {{ championnat.banniere.color }}"
+            (click)="startChamp()"
+            *ngIf="
+              championnat.status == 'en attente' &&
+              championnat.createur.uid == user.uid
+            "
+            >{{ loading ? "" : "Démarrer"
+            }}<ion-spinner
+              *ngIf="loading"
+              name="crescent"
+              mode="md"
+            ></ion-spinner
+          ></ion-button>
+          <ion-button
+            class="buttonNextSlide"
+            style=" --i : {{ championnat.banniere.color }}"
+            (click)="participer('championnat')"
+            *ngIf="
+              championnat?.status == 'en attente' &&
+              (userEncours?.etat == 'en attente' || !userEncours)
+            "
+            >Participer</ion-button
+          >
+          <ion-button
+            class="buttonNextSlide"
+            style=" --i : {{ championnat.banniere.color }}"
+            *ngIf="
+              championnat?.status == 'en attente' &&
+              userEncours?.etat == 'prêt' &&
+              championnat?.createur.uid != user.uid
+            "
+          >
+            <ion-spinner
+              *ngIf="loading"
+              name="crescent"
+              mode="md"
+            ></ion-spinner>
+            <span *ngIf="!loading">
+              {{ championnat.dateDemarrage | timeChamp }}</span
+            ></ion-button
+          >
+          <ion-button
+            style=" --i : {{ championnat.banniere.color }}"
+            (click)="seanceNow()"
+            *ngIf="championnat?.status == 'en cours'"
+            class="buttonNextSlide"
+            >Séance Now</ion-button
+          >
+        </ng-container>
+        <ng-template #noLevel>
+          <ion-button color="dark" disabled class="buttonNextSlide"
+            >Vous n'avez pas le niveau</ion-button
+          >
+        </ng-template>
         <ion-fab
           vertical="bottom"
           horizontal="end"
@@ -366,7 +381,7 @@
           </ion-fab-list>
         </ion-fab>
       </ng-container>
-      <ng-container *ngIf="challengeObs$ | async as challenge">
+      <ng-container *ngIf="challenge">
         <ion-button
           class="buttonNextSlide"
           style=" --i : {{ challenge.banniereColor }}"

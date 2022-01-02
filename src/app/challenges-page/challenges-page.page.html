@@ -51,7 +51,7 @@
 
     <ng-container *ngIf="!loadingChall;else tempChallenge">
       <ion-card
-        *ngIf="challengeObs$|async as challenge"
+        *ngIf="challenge"
         [ngClass]="{ notActive: segmentValue != 'resume' }"
         [style.backgroundColor]="challenge.banniereColor"
         style="background-image: url('assets/icon/udoIconFond.svg'); margin: 0"
@@ -198,7 +198,7 @@
     </div>
   </ng-container>
 
-  <ng-container *ngIf="challengeObs$|async as challenge">
+  <ng-container *ngIf="challenge">
     <app-chall-template
       [loadFeed]="loadFeed"
       [challenge]="challenge"

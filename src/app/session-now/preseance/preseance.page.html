@@ -262,39 +262,43 @@
     </ion-slide>
   </ion-slides>
   <div
-  style="
-    position: fixed;
-    bottom: 0;
-    display: flex;
-    justify-content: center;
-    align-content: center;
-    width: 100%;
-    z-index: 100;
-    padding-bottom: 4px;
-  "
->
-
-  <ion-row class="demarrage">
-    <ion-item lines="none">
-      <span class="param" slot="start" (click)="reglage(mySlider)">
-        <ion-img src="assets/images/settings.svg"></ion-img>
-      </span>
-      <ion-img
-        class="feather-rose"
-        *ngIf="!isActif"
-        src="assets/images/warning.svg"
-      ></ion-img>
-  
-      <span class="start" (click)="start()">
-        <ion-img src="assets/images/play.svg"></ion-img>
-      </span>
-  
-      <span class="photo" slot="end" (click)="openCamera()">
-        <ion-img src="assets/images/photo.svg"></ion-img>
-      </span>
-    </ion-item>
-  </ion-row>
+    style="
+      position: fixed;
+      bottom: 0;
+      display: flex;
+      justify-content: center;
+      align-content: center;
+      width: 100%;
+      z-index: 100;
+      padding-bottom: 4px;
+    "
+  >
+    <ion-grid style="padding-bottom: 15px">
+      <ion-row class="demarrage ion-align-items-center">
+        <!-- <ion-item lines="none">
+          <span class="param" slot="start" (click)="reglage(mySlider)"> -->
+        <ion-col size="3">
+          <ion-img class="param" src="assets/images/settings.svg"></ion-img>
+          <!-- </span> -->
+          <ion-img
+            class="feather-rose"
+            *ngIf="!isActif"
+            src="assets/images/warning.svg"
+          ></ion-img>
+        </ion-col>
+        <ion-col size="4">
+          <!-- <span class="start" (click)="start()"> -->
+          <ion-img class="start" (click)="start()" src="assets/images/play.svg"></ion-img>
+        </ion-col>
+        <!-- </span> -->
+        <ion-col size="3">
+          <!-- <span class="photo" slot="end" (click)="openCamera()"> -->
+          <ion-img class="photo" src="assets/images/photo.svg"></ion-img>
+        </ion-col>
+        <!-- </span> -->
+        <!-- </ion-item> -->
+      </ion-row>
+    </ion-grid>
   </div>
 </ion-content>
-<ion-footer>
-</ion-footer>
+<ion-footer> </ion-footer>

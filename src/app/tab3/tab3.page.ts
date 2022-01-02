@@ -171,10 +171,12 @@ export class Tab3Page implements OnInit, AfterContentChecked, OnDestroy {
       )
       .subscribe();
   }
+  ionViewWillEnter() {
+    this.ref.detectChanges();
+  }
 
   ionViewDidEnter() {
     this.loader = false;
-
   }
 
   ngAfterContentChecked(): void {
@@ -232,8 +234,7 @@ export class Tab3Page implements OnInit, AfterContentChecked, OnDestroy {
     this.navCtl.navigateForward('competitionsList');
   }
 
-  async launchDetail(ev, compet) {
-    console.log(ev, compet);
+  async launchDetail(ev) {
     const position =
       ev.participants.findIndex((champ) => champ.uid == this.user.uid) + 1;
 

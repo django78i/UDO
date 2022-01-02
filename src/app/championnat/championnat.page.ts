@@ -5,7 +5,7 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, NavigationExtras } from '@angular/router';
 import {
@@ -21,7 +21,7 @@ import {
   uploadString,
 } from 'firebase/storage';
 import moment from 'moment';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { ChampionnatsService } from 'src/app/services/championnats.service';
 import { UserService } from 'src/app/services/user-service.service';
@@ -80,7 +80,7 @@ interface Championnat {
   templateUrl: './championnat.page.html',
   styleUrls: ['./championnat.page.scss'],
 })
-export class ChampionnatPage {
+export class ChampionnatPage implements OnDestroy {
   segmentValue = 'resume';
   participantsList: any[];
   userEncours: any;
@@ -98,6 +98,7 @@ export class ChampionnatPage {
   competition = 'championnat';
   @ViewChild('inputFeed') inputFeed: IonInput;
   loadingComp = true;
+  subcription: Subscription;
 
   constructor(
     private modalCtrl: ModalController,
@@ -116,16 +117,15 @@ export class ChampionnatPage {
       this.user = user;
       const uid = this.route.snapshot.params['id'];
       this.champService.getChampionnat(uid);
-      this.championnat$ = this.champService.singleChampSub$.pipe(
-        tap((champ) => {
-          console.log(champ, this.user);
+      this.subcription = this.champService.singleChampSub$.subscribe(
+        (champ) => {
           this.championnat = champ;
           this.getFeedChampionnat(this.championnat.uid);
           this.participantsList = this.championnat.participants.slice(0, 4);
           this.userEncours = this.championnat.participants.find(
             (part) => part.uid == this.user.uid
           );
-        })
+        }
       );
       this.loadingComp = false;
     });
@@ -376,5 +376,9 @@ export class ChampionnatPage {
       this.champService.getChampionnat(this.championnat.uid);
     });
     return await modal.present();
+  }
+
+  ngOnDestroy(): void {
+      this.subcription.unsubscribe()
   }
 }

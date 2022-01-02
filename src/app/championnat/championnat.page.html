@@ -49,7 +49,7 @@
     </ng-template>
 
     <ng-container *ngIf="!loadingComp;else tempChampionnat">
-      <ng-container *ngIf="championnat$|async as championnat">
+      <ng-container *ngIf="championnat">
         <ion-card
           @flyInOut
           [style.backgroundColor]="championnat.banniere.color"
@@ -200,9 +200,9 @@
       ></ion-spinner>
     </div>
   </ng-container>
-  <ng-container *ngIf="championnat$|async as champ">
+  <ng-container *ngIf="championnat">
     <app-champ-template
-      [championnat]="champ"
+      [championnat]="championnat"
       [user]="user"
       [loadFeed]="loadFeed"
       [userEncours]="userEncours"
@@ -262,7 +262,7 @@
       >
     </div>
   </ng-container>
-  <ng-container *ngIf="championnat$|async as championnat">
+  <ng-container *ngIf="championnat">
     <ion-fab
       vertical="bottom"
       horizontal="end"

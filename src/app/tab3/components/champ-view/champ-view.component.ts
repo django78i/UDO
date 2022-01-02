@@ -8,6 +8,7 @@ import {
   ViewChildren,
   QueryList,
   AfterContentChecked,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
@@ -27,7 +28,7 @@ export class ChampViewComponent
   @Input() championnatsList: any[];
   @Input() champinonatNetwork: any[];
   @Input() championnatTermines: any[];
-  @Input() loader:boolean;
+  @Input() loader: boolean;
 
   @Output() champChoice: EventEmitter<any> = new EventEmitter();
   @Output() createChamp: EventEmitter<any> = new EventEmitter();
@@ -42,10 +43,13 @@ export class ChampViewComponent
   @ViewChildren('swiper') swiper: QueryList<SwiperComponent>;
   temporaire = [1, 2, 3];
 
-  constructor(public router: Router, public modalController: ModalController) {}
+  constructor(
+    public router: Router,
+    public modalController: ModalController,
+  ) {}
 
   ngOnInit() {
-    console.log(this.loader)
+    console.log(this.loader);
   }
 
   ngAfterContentChecked() {
@@ -60,13 +64,17 @@ export class ChampViewComponent
 
   ngOnChanges(changes) {
     if (
-      this.userChampionnats.length ||
-      this.championnatsList.length ||
-      this.champinonatNetwork.length
+      this.userChampionnats?.length ||
+      this.championnatsList?.length ||
+      this.champinonatNetwork?.length ||
+      this.championnatTermines?.length
+      // changes.userChampionnats?.currentValue.length ||
+      // changes.championnatsList?.currentValue.length ||
+      // changes.champinonatNetwork?.currentValue.length
     ) {
       this.loading = false;
     }
-    // console.log(this.loading)
+    console.log(this.loading);
 
     console.log(changes);
   }

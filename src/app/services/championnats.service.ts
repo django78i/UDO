@@ -19,6 +19,8 @@ import {
 } from 'firebase/firestore';
 import { BehaviorSubject, from, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { FeedCall } from '../models/api/feed.model';
+import { MusicFeedService } from './music-feed.service';
 import { NotificationService as NotificationService } from './notification-service.service';
 import { UserService } from './user-service.service';
 
@@ -50,7 +52,9 @@ export class ChampionnatsService {
 
   constructor(
     public userService: UserService,
-    public notificationService: NotificationService
+    // public feedService: MusicFeedService,
+    public notificationService: NotificationService,
+    public feedApi: FeedCall
   ) {}
 
   async createChampionnat(champ) {
@@ -149,12 +153,7 @@ export class ChampionnatsService {
   getChampionnats() {
     const auth = getAuth();
     auth.currentUser.uid;
-
-    const docRef = query(
-      collection(this.db, 'championnats')
-      // orderBy('dateCreation'),
-      // limit(10)
-    );
+    const docRef = query(collection(this.db, 'championnats'));
     this.unsubscribe = onSnapshot(docRef, (querySnapshot) => {
       const users = JSON.parse(localStorage.getItem('usersList'));
       querySnapshot.docChanges().forEach((changes) => {
@@ -262,6 +261,8 @@ export class ChampionnatsService {
       postCount: post.postCount,
       postLast: postLast,
     });
+    await this.feedApi.feedFilter('Récent');
+    // await this.feedService.feedFilter('Récent');
   }
 
   async getMessage(postUid) {

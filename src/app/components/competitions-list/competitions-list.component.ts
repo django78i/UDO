@@ -14,6 +14,7 @@ import { Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { ChallengesService } from 'src/app/services/challenges.service';
 import { ChampionnatsService } from 'src/app/services/championnats.service';
+import { UserService } from 'src/app/services/user-service.service';
 import { ModalChampComponent } from 'src/app/tab3/components/modal-champ/modal-champ.component';
 import { SwiperOptions } from 'swiper';
 import { SwiperComponent } from 'swiper/angular';
@@ -45,7 +46,8 @@ export class CompetitionsListComponent {
     public router: Router,
     public navCtl: NavController,
     public zone: NgZone,
-    public challService: ChallengesService // public navParams: NavParams
+    public challService: ChallengesService,
+    private userService: UserService
   ) {}
 
   ionViewDidEnter() {
@@ -54,9 +56,9 @@ export class CompetitionsListComponent {
       console.log(r);
       this.lastVisibleChamp = r;
     });
-    this.challService
-      .getChallengesList()
-      .then((r) => (this.lastVisibleChall = r));
+    this.challService.getChallengesList().then((r) => {
+      this.lastVisibleChall = r;
+    });
 
     this.champService.champNetWorkList$
       .pipe(
@@ -65,9 +67,11 @@ export class CompetitionsListComponent {
             console.log(r);
             this.championnatNetwork.push(r);
           }
+          this.loading = false;
         })
       )
       .subscribe();
+
     this.challService.challengesList$
       .pipe(
         tap((r) => {
@@ -78,7 +82,6 @@ export class CompetitionsListComponent {
         })
       )
       .subscribe();
-    this.loading = false;
   }
 
   // charger plus de données dans le feed
@@ -146,13 +149,23 @@ export class CompetitionsListComponent {
     return await modal.present();
   }
 
-  async navigateChampionnat(ev) {
+  async navigateChampionnat(champ) {
+    const user = await this.userService.getCurrentUser();
+    console.log(champ);
+    const position =
+      champ.participants.findIndex((champ) => champ.uid == user.uid) + 1;
+
+    const participantsList = champ.participants.slice(0, 4);
+
     const modal = await this.modalCtrl.create({
       component: ModalChampComponent,
       componentProps: {
-        champId: ev.uid,
-        entryData: 'championnat',
-        competition: ev,
+        champId: champ.uid,
+        entryData: 'championnats',
+        competition: champ,
+        position: position,
+        participantsList: participantsList,
+        userEncours: user,
       },
     });
     return await modal.present();

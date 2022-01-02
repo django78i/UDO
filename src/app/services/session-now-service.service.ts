@@ -69,15 +69,14 @@ export class SessionNowService {
         const postData = post.data();
         console.log(postData);
         //update du post si il est toujours en live
-        if (postData.isLive == true) {
-          console.log(postData);
-          //suppression du post de type sessionNow si aucune réaction pendant la séance
-          if (postData.type == 'session-now') {
-            this.deleteSessionCascade(postData.sessionId);
-          } else {
-            //update status du post
-            this.updatePostLies(postData.uid);
-          }
+
+        console.log(postData);
+        //suppression du post de type sessionNow si aucune réaction pendant la séance
+        if (postData.type == 'session-now') {
+          this.deleteSessionCascade(postData.sessionId);
+        } else {
+          //update status du post
+          this.updatePostLies(postData.uid);
         }
       });
     }
@@ -93,7 +92,8 @@ export class SessionNowService {
     const db = getFirestore();
     const querySelect = query(
       collection(db, 'post-session-now'),
-      where('userId', '==', uid)
+      where('userId', '==', uid),
+      where('isLive', '==', ' true')
     );
     const document = await getDocs(querySelect);
     return document;

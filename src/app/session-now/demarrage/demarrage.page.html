@@ -28,7 +28,7 @@
     <ion-slide>
       <app-reglages></app-reglages>
     </ion-slide>
-    <ion-slide style="overflow-y: auto;">
+    <ion-slide style="overflow-y: auto">
       <ion-row>
         <div class="circle">
           <ion-img [src]="activite?.image"></ion-img>
@@ -81,7 +81,7 @@
           </ion-col>
         </ion-row>
       </ion-grid>
-      <div style="height: 123px;"></div>
+      <div style="height: 123px"></div>
     </ion-slide>
     <ion-slide> </ion-slide>
   </ion-slides>
@@ -98,25 +98,47 @@
       padding-bottom: 4px;
     "
   >
-    <ion-grid>
-      <ion-row class="demarrage">
-        <ion-item lines="none">
-          <span class="param" slot="start" (click)="reglage()">
-            <ion-img src="assets/images/settings.svg"></ion-img>
-          </span>
-          <span
+    <ion-grid style="padding-bottom: 15px">
+      <ion-row class="demarrage ion-align-items-center">
+        <!-- <ion-item lines="none"> -->
+        <ion-col size="3">
+          <!-- <span class="param" slot="start" (click)="reglage()"> -->
+          <ion-img
+            class="param"
+            (click)="reglage()"
+            src="assets/images/settings.svg"
+          ></ion-img>
+          <!-- </span> -->
+        </ion-col>
+        <ion-col size="4">
+          <!-- <span
             class="start"
             *ngIf="status==='pause'"
             ion-long-press
             [interval]="400"
             (click)="start()"
             (longPressed)="displayRecap()"
+          > -->
+          <div
+            ion-long-press
+            [interval]="400"
+            (click)="start()"
+            (longPressed)="displayRecap()"
+            class="start"
+            *ngIf="status==='pause'"
           >
-            <div class="contenu">
-              <ion-img src="assets/images/play.svg"></ion-img>
-            </div>
-          </span>
-          <span
+            <ion-img class="contenu" src="assets/images/play.svg"></ion-img>
+          </div>
+          <!-- </span> -->
+          <!-- <span
+            class="start"
+            *ngIf="status==='play'"
+            ion-long-press
+            [interval]="400"
+            (click)="stop()"
+            (longPressed)="displayRecap()"
+          > -->
+          <div
             class="start"
             *ngIf="status==='play'"
             ion-long-press
@@ -124,15 +146,20 @@
             (click)="stop()"
             (longPressed)="displayRecap()"
           >
-            <div class="contenu">
-              <ion-img src="assets/images/demarrer.svg"></ion-img>
-            </div>
-          </span>
-
-          <span class="photo" slot="end" (click)="openCamera()">
-            <ion-img src="assets/images/photo.svg"></ion-img>
-          </span>
-        </ion-item>
+            <ion-img class="contenu" src="assets/images/demarrer.svg"></ion-img>
+          </div>
+          <!-- </span> -->
+        </ion-col>
+        <ion-col size="3">
+          <!-- <span class="photo" slot="end" (click)="openCamera()"> -->
+          <ion-img
+            class="photo"
+            (click)="openCamera()"
+            src="assets/images/photo.svg"
+          ></ion-img>
+          <!-- </span> -->
+        </ion-col>
+        <!-- </ion-item> -->
       </ion-row>
     </ion-grid>
   </div>

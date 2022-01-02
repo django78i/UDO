@@ -165,11 +165,7 @@ export class AddContenuComponent implements OnInit {
           );
         })
       )
-      .subscribe((url) => {
-        if (url) {
-          console.log(url);
-        }
-      });
+      .subscribe();
   }
 
   base64ToImage(dataURI) {

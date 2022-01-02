@@ -45,22 +45,6 @@ export class UserChampionnatsSlideComponent implements OnChanges {
     public userService: UserService
   ) {}
 
-  // ionViewDidEnter() {
-  //   let user = JSON.parse(localStorage.getItem('user'));
-  //   if (this.championnats.length) {
-  //     this.championnats.forEach((champ, i) => {
-  //       this.userInfo = champ.participants.find(
-  //         (userChamp) => user.uid == userChamp.uid
-  //       );
-  //       this.postion =
-  //         champ.participants.findIndex((champ) => champ.uid == user.uid) + 1;
-
-  //       champ.userInfo = { ...this.userInfo, position: this.postion };
-  //     });
-  //     console.log(this.championnats);
-  //   }
-  // }
-
   ngOnChanges() {
     let user = JSON.parse(localStorage.getItem('user'));
     if (this.championnats.length) {

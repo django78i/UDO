@@ -14,6 +14,7 @@ import {
   Component,
   ElementRef,
   Input,
+  OnDestroy,
   OnInit,
   ViewChild,
 } from '@angular/core';
@@ -34,7 +35,7 @@ import {
   uploadString,
 } from 'firebase/storage';
 import moment from 'moment';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { FriendPageListComponent } from 'src/app/components/friend-page-list/friend-page-list.component';
 import { ChallengesService } from 'src/app/services/challenges.service';
@@ -80,7 +81,7 @@ interface Championnat {
   templateUrl: './modal-champ.component.html',
   styleUrls: ['./modal-champ.component.scss'],
 })
-export class ModalChampComponent implements OnInit {
+export class ModalChampComponent implements OnInit, OnDestroy {
   @Input() championnat: Championnat;
   @Input() user: any;
   @Input() competition: any;
@@ -111,7 +112,8 @@ export class ModalChampComponent implements OnInit {
   loadingComp: boolean = true;
   loaderValue: number = 0;
   segmentBool: boolean = true;
-
+  show: boolean = true;
+  subscription: Subscription;
   constructor(
     private modalCtrl: ModalController,
     public alertController: AlertController,
@@ -148,19 +150,31 @@ export class ModalChampComponent implements OnInit {
 
     if (this.entryData == 'championnats') {
       this.champService.getChampionnat(this.navParam.data.champId);
-      this.championnat$ = this.champService.singleChampSub$.pipe(
-        tap((champ) => {
+      this.subscription = this.champService.singleChampSub$.subscribe(
+        (champ) => {
           if (champ) {
             console.log(champ);
             this.championnat = champ;
+            if (champ.niveauMax != '' && champ.niveauMin != '') {
+              if (
+                this.user.niveau < champ.niveauMax &&
+                this.user.niveau > champ.niveauMin
+              ) {
+                this.show = true;
+              } else {
+                this.show = false;
+              }
+            }
+            console.log(this.show);
             this.getFeedChampionnat(this.championnat.uid);
           }
-        })
+        }
+        // })
       );
     } else {
       this.challService.getChallenge(this.navParam.data.champId);
-      this.challengeObs$ = this.challService.singleChallSub$.pipe(
-        tap((chall) => {
+      this.subscription = this.challService.singleChallSub$.subscribe(
+        (chall) => {
           if (chall) {
             this.challenge = chall;
             console.log(this.entryData);
@@ -177,7 +191,7 @@ export class ModalChampComponent implements OnInit {
             console.log(this.challenge);
             this.ref.detectChanges();
           }
-        })
+        }
       );
     }
 
@@ -561,5 +575,9 @@ export class ModalChampComponent implements OnInit {
       }
     });
     return await modal.present();
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }

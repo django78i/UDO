@@ -37,7 +37,7 @@ export class FriendPageListComponent implements OnInit {
 
   ngOnInit() {
     this.championnat = this.navParm.data.competition;
-    console.log(this.championnat);
+    console.log(this.championnat, this.type);
   }
 
   close(ev) {
@@ -84,19 +84,19 @@ export class FriendPageListComponent implements OnInit {
       dateCreation: new Date(),
       competitionName: this.championnat.name,
       type:
-        this.type == 'championnat'
+        this.type == 'championnats'
           ? `invitation championnat ${this.championnat.type}`
           : 'invitation challenge',
       linkId: this.championnat.uid,
       users: participantsToNotify,
       challIcon: this.challIcon ? this.challIcon : '',
       senderId:
-        this.type == 'championnat' ? this.championnat.createur.uid : 'UDO',
+        this.type == 'championnats' ? this.championnat.createur.uid : 'UDO',
     };
     this.notifService.createNotifications(notification);
 
     console.log(this.championnat, this.type);
-    if (this.type == 'championnat') {
+    if (this.type == 'championnats') {
       this.champService
         .updateChamp(this.championnat)
         .then(() => this.sessionNowService.show('Invitation enoyé', 'success'))

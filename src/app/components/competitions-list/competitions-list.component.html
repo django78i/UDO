@@ -42,7 +42,7 @@
               *ngFor="let champ of championnatNetwork"
               [style.backgroundColor]="champ.banniere.color"
               style="background-image: url('assets/icon/udoIconFond.svg')"
-              (click)="navigateChampionnat(champ.uid, champ)"
+              (click)="navigateChampionnat( champ)"
             >
               <ion-card-header>
                 <ion-card-title class="cardSlide">

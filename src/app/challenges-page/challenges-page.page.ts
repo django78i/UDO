@@ -29,7 +29,7 @@ import {
   uploadString,
 } from 'firebase/storage';
 import moment from 'moment';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { takeLast, tap } from 'rxjs/operators';
 import { FriendPageListComponent } from '../components/friend-page-list/friend-page-list.component';
 import { ChallengesService } from '../services/challenges.service';
@@ -83,6 +83,7 @@ export class ChallengesPagePage {
   pourcentage: number;
   challForm: FormGroup;
   loadFeed: boolean = true;
+  subcription: Subscription;
   constructor(
     private navCtl: NavController,
     public userService: UserService,
@@ -110,8 +111,8 @@ export class ChallengesPagePage {
         .subscribe();
       const uid = this.route.snapshot.params['id'];
       this.challService.getChallenge(uid);
-      this.challengeObs$ = this.challService.singleChallSub$.pipe(
-        tap((chall) => {
+      this.subcription = this.challService.singleChallSub$.subscribe(
+        (chall) => {
           if (chall) {
             this.challenge = chall;
             this.pourcentage = Number(
@@ -126,7 +127,7 @@ export class ChallengesPagePage {
             console.log(this.userEncours, this.challenge, this.startDate);
             this.ref.detectChanges();
           }
-        })
+        }
       );
     });
     this.loadingChall = false;
@@ -374,5 +375,9 @@ export class ChallengesPagePage {
 
   close() {
     this.navCtl.navigateBack('/tabs/tab3');
+  }
+
+  ngOnDestroy(): void {
+    this.subcription.unsubscribe();
   }
 }
